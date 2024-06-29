@@ -3,7 +3,7 @@
 import { api } from "@/trpc/react"
 
 export const Component = () => {
-    const { data, isError, isLoading } = api.post.hello.useQuery({ text: "from tRPC" }, { });
+    const { data, isError, isLoading } = api.post.hello.useQuery({ text: "Desde TRPC" }, { });
 
     
 
