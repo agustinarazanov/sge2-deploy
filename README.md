@@ -27,3 +27,19 @@ You can check out the [create-t3-app GitHub repository](https://github.com/t3-os
 ## How do I deploy this?
 
 Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+
+## TODOs - Viernes 05 de Julio
+- [x] Sistema corriendo local
+- [x] Login de Discord
+- [ ] Pantalla simple cuando no esta logueado
+- [ ] Pantalla con información cuando si esta logueado
+- [ ] Módulo de Biblioteca vista con listado
+- [ ] Módulo de Biblioteca vista con filtrado
+- [ ] Módulo de Biblioteca Alta, Baja y Modificación
+- [ ] Prevenir render de paginas si no tiene el rol
+- [ ] Navbar con funcionamiento en cliente para mostrar y ocultar elementos
+
+## TODOs - Largo plazo
+- [ ] Sistema corriendo en internet
+- [ ] Sistema corriendo en Docker
+- [ ] Login de Keycloak

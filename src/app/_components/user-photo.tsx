@@ -10,11 +10,12 @@ export default async function UserPhoto() {
 
     return (
       <>
-        <div className="h-8 w-8">
+        <div className="h-8 w-8 relative">
           <Image
             alt="Imagen de perfil"
             src={session.user.image!}
             className="rounded-full"
+            sizes="32px"
             fill
           />
         </div>
