@@ -63,6 +63,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
+    books         Biblioteca[]
 }
 
 model VerificationToken {
@@ -71,4 +72,26 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+// Init businesses model
+model Biblioteca {
+    id              Int      @id @default(autoincrement())
+    titulo          String
+    inventario      String
+    bibliotecaId    String
+    autor           String
+    anio            String
+    editorial       String
+    idioma          String
+    isbn            String
+    estado          String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    createdBy   User   @relation(fields: [createdById], references: [id])
+    createdById String
+
+    @@index([titulo])
 }

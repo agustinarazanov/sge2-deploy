@@ -33,11 +33,14 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
 - [x] Login de Discord
 - [ ] Pantalla simple cuando no esta logueado
 - [ ] Pantalla con información cuando si esta logueado
-- [ ] Módulo de Biblioteca vista con listado
-- [ ] Módulo de Biblioteca vista con filtrado
-- [ ] Módulo de Biblioteca Alta, Baja y Modificación
 - [ ] Prevenir render de paginas si no tiene el rol
 - [ ] Navbar con funcionamiento en cliente para mostrar y ocultar elementos
+
+## TODOs - Biblioteca
+- [ ] Schema en la base de datos
+- [ ] Router queries basicas
+- [ ] Pantalla biblioteca listado y filtrado
+- [ ] Pantalla Alta, baja y modificación
 
 ## TODOs - Largo plazo
 - [ ] Sistema corriendo en internet

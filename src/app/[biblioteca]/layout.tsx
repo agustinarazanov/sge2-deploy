@@ -5,12 +5,12 @@ type LayoutProps = {
 }
 
 export default async function Layout({ children }: LayoutProps) {
-  const numero = 27;
 
   return (
-    <div>
-      <h1>Layout {numero}</h1>
-      <div className="bg-red-400">{children}</div>
-    </div>
+    <main className="flex min-h-screen flex-col bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
+      <div className="flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+        {children}
+      </div>
+    </main>
   );
 }
