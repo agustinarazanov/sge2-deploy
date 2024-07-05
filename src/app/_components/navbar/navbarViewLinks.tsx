@@ -16,24 +16,26 @@ const MOBILE_CLASS = "space-y-1 px-2 py-2";
 const DESKTOP_CLASS = "flex space-x-4";
 
 export default function NavbarViewLinks({ user, isMobile }: MobileViewProps) {
-    const isLogged = user !== undefined;
+  const isLogged = user !== undefined;
 
-    const pathname = usePathname();
+  const pathname = usePathname();
 
-    const availableLinks = NAVBAR_LINKS.filter(link => isLogged || link.isPublic);
+  const availableLinks = NAVBAR_LINKS.filter(
+    (link) => isLogged || link.isPublic,
+  );
 
-    return (
-      <div className={cn(isMobile ? MOBILE_CLASS : DESKTOP_CLASS)}>
-        {availableLinks.map((link) => (
-          <NavbarLink
-            key={link.href}
-            href={link.href}
-            isActive={link.href === pathname}
-            isMobile={isMobile}
-          >
-            {link.label}
-          </NavbarLink>
-        ))}
-      </div>
-    );
+  return (
+    <div className={cn(isMobile ? MOBILE_CLASS : DESKTOP_CLASS)}>
+      {availableLinks.map((link) => (
+        <NavbarLink
+          key={link.href}
+          href={link.href}
+          isActive={link.href === pathname}
+          isMobile={isMobile}
+        >
+          {link.label}
+        </NavbarLink>
+      ))}
+    </div>
+  );
 }

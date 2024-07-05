@@ -1,27 +1,22 @@
-import { z } from "zod";
-import { publicProcedure } from "../../trpc";
-import { getAllLibros } from "../../repositories/biblioteca/biblioteca.repository";
+import { protectedProcedure } from "../../trpc";
+import { getAllLibros, addLibro } from "../../repositories/biblioteca/biblioteca.repository";
+import { inputAddBooks, inputGetBooks } from "@/shared/biblioteca-filter.schema";
 
+export const getAllBooksProcedure = protectedProcedure.input(inputGetBooks).query(async ({ ctx, input }) => {
+  const libros = await getAllLibros(ctx, input);
 
-export const inputGetAllBooks = z.object({
-  filter: z.object({
-    inventory: z.string().optional(),
-    bibliotecaId: z.string().optional(),
-    title: z.string().optional(),
-    author: z.string().optional(),
-    year: z.string().optional(),
-    editorial: z.string().optional(),
-    language: z.string().optional(),
-    isbn: z.string().optional(),
-    subjects: z.array(z.string()).optional(),
-    status: z.enum(["available", "unavailable"]).optional(),
-  })
+  return libros;
 });
 
-export const getAllBooksProcedure = publicProcedure
-  .input(inputGetAllBooks)
-  .query(async ({ ctx, input }) => {
-    const libros = await getAllLibros(ctx, input);
+export const nuevoLibroProcedure = protectedProcedure.input(inputAddBooks).mutation(async ({ ctx, input }) => {
+  const isValidInput = inputAddBooks.safeParse(input);
+  if (!isValidInput.success) {
+    throw new Error("Invalid input");
+  }
 
-    return libros;
-  });
+  const userId = ctx.session.user.id;
+
+  const libro = await addLibro(ctx, input, userId);
+
+  return libro;
+});

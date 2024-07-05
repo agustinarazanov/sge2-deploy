@@ -55,9 +55,9 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String       @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?      @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
@@ -76,16 +76,16 @@ model VerificationToken {
 
 // Init businesses model
 model Biblioteca {
-    id              Int      @id @default(autoincrement())
-    titulo          String
-    inventario      String
-    bibliotecaId    String
-    autor           String
-    anio            String
-    editorial       String
-    idioma          String
-    isbn            String
-    estado          String
+    id           Int    @id @default(autoincrement())
+    titulo       String
+    inventario   String
+    bibliotecaId String
+    autor        String
+    anio         String
+    editorial    String
+    idioma       String
+    isbn         String
+    estado       String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -93,5 +93,6 @@ model Biblioteca {
     createdBy   User   @relation(fields: [createdById], references: [id])
     createdById String
 
+    @@unique([inventario])
     @@index([titulo])
 }

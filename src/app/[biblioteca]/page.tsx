@@ -2,12 +2,15 @@
 
 import { api } from "@/trpc/react";
 
+import { BibliotecaButtonOrderBy, bibliotecaFilterAtom } from "./(components)/biblioteca-filter";
+import { useAtomValue } from "@zedux/react";
+import { BibliotecaNewLibro } from "./(components)/biblioteca-new-book";
+
 export default function Biblioteca() {
-  const {
-    data: libros,
-    isError,
-    isLoading,
-  } = api.biblioteca.getAll.useQuery({ filter: {} }, {});
+  const filterData = useAtomValue(bibliotecaFilterAtom);
+
+  const utils = api.useUtils();
+  const { data: libros, isError, isLoading } = api.biblioteca.getAll.useQuery({ filter: { ...filterData.filter } }, {});
 
   if (isError) {
     return <div>Error cargando libros</div>;
@@ -17,16 +20,22 @@ export default function Biblioteca() {
     return <div>Cargando libros...</div>;
   }
 
+  const handleNewLibro = async () => {
+    await utils.biblioteca.getAll.invalidate();
+  };
+
   return (
     <>
-      <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">
-        Biblioteca
-      </h3>
+      <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">Biblioteca</h3>
+
+      <div className="relative flex w-full flex-row items-center justify-end space-x-1.5">
+        <BibliotecaButtonOrderBy />
+
+        <BibliotecaNewLibro onSubmit={handleNewLibro} />
+      </div>
 
       <table className="table- table-auto">
-        <caption className="caption-top">
-          Lista de todos los libros en la biblioteca
-        </caption>
+        <caption className="caption-top">Lista de todos los libros en la biblioteca</caption>
         <thead>
           <tr>
             <th>Inventario</th>
