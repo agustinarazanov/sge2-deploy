@@ -2,7 +2,7 @@ import { forwardRef, memo, useId, type InputHTMLAttributes, type ReactElement, t
 import { get } from "lodash";
 import { useFormContext, type Control, type FieldError, type FieldValues, type Path } from "react-hook-form";
 
-import { cn } from "@/utils";
+import { cn } from "@/components/utils";
 import { Calendar, Clock } from "lucide-react";
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "placeholder"> {

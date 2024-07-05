@@ -323,10 +323,7 @@ export const rfqPlugin = plugin(
 
 export default {
   presets: [sgePeset],
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "../../packages/shared/ui/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx}", "../../packages/shared/ui/**/*.{js,ts,jsx,tsx}"],
   plugins: [
     require("@tailwindcss/typography"),
     require("@tailwindcss/forms"),

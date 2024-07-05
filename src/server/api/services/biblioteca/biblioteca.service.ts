@@ -1,6 +1,6 @@
 import { protectedProcedure } from "../../trpc";
-import { getAllLibros, addLibro } from "../../repositories/biblioteca/biblioteca.repository";
-import { inputAddBooks, inputGetBooks } from "@/shared/biblioteca-filter.schema";
+import { getAllLibros, addLibro, deleteLibro } from "../../repositories/biblioteca/biblioteca.repository";
+import { inputAddBooks, inputEliminarLibro, inputGetBooks } from "@/shared/biblioteca-filter.schema";
 
 export const getAllBooksProcedure = protectedProcedure.input(inputGetBooks).query(async ({ ctx, input }) => {
   const libros = await getAllLibros(ctx, input);
@@ -17,6 +17,12 @@ export const nuevoLibroProcedure = protectedProcedure.input(inputAddBooks).mutat
   const userId = ctx.session.user.id;
 
   const libro = await addLibro(ctx, input, userId);
+
+  return libro;
+});
+
+export const eliminarLibroProcedure = protectedProcedure.input(inputEliminarLibro).mutation(async ({ ctx, input }) => {
+  const libro = await deleteLibro(ctx, input);
 
   return libro;
 });

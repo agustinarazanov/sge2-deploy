@@ -20,16 +20,14 @@ export default function NavbarViewLinks({ user, isMobile }: MobileViewProps) {
 
   const pathname = usePathname();
 
-  const availableLinks = NAVBAR_LINKS.filter(
-    (link) => isLogged || link.isPublic,
-  );
+  const availableLinks = NAVBAR_LINKS.filter((link) => isLogged || link.isPublic);
 
   return (
     <div className={cn(isMobile ? MOBILE_CLASS : DESKTOP_CLASS)}>
       {availableLinks.map((link) => (
         <NavbarLink
           key={link.href}
-          href={link.href}
+          href={link.inConstruction ? "/en_construccion" : link.href}
           isActive={link.href === pathname}
           isMobile={isMobile}
         >

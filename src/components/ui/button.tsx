@@ -5,7 +5,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2, type LucideIcon } from "lucide-react";
 
-import { cn } from "@/utils";
+import { cn } from "@/components/utils";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center border rounded-md text-sm leading-6 transition-colors font-medium !outline-none !ring-transparent disabled:pointer-events-none disabled:opacity-30 shadow-[0px_1px_3px_0px_#00000040]",

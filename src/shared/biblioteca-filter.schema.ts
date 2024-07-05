@@ -35,3 +35,7 @@ export const inputAddBooks = z
     //   });
     // }
   });
+
+export const inputEliminarLibro = z.object({
+  libroId: z.number(),
+});

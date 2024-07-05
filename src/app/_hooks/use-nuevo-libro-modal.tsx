@@ -1,11 +1,11 @@
 "use client";
 
 import { FormProvider, useForm } from "react-hook-form";
-import { Button } from "../_components/button";
+import { Button } from "../../components/ui/button";
 import { useCommonModal } from "./use-common-modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
-import { FormInput, toast } from "@/ui";
+import { FormInput, toast } from "@/components/ui";
 import { inputAddBooks } from "@/shared/biblioteca-filter.schema";
 
 import { api } from "@/trpc/react";

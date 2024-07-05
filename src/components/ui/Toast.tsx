@@ -3,7 +3,7 @@
 import { AlertTriangleIcon, CheckCircle2Icon, InfoIcon, XCircleIcon, XIcon, type LucideIcon } from "lucide-react";
 import { Toaster as Sonner, toast as toaster, type ExternalToast } from "sonner";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/components/utils/cn";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 type ToastType = "success" | "error" | "warning" | "info";

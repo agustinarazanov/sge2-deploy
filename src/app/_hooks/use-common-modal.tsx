@@ -2,7 +2,7 @@ import { Fragment, useMemo, useState, type ReactElement, type ReactNode } from "
 import { Dialog, Transition } from "@headlessui/react";
 import { useAtomState } from "@zedux/react";
 
-import { cn } from "@/utils";
+import { cn } from "@/components/utils";
 import { atom } from "@zedux/react";
 import { Cross } from "lucide-react";
 

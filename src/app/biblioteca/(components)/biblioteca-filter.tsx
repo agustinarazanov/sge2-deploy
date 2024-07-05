@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/app/_components/button";
+import { Button } from "@/components/ui/button";
 import { CircleChevronDown } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent } from "@radix-ui/react-popover";
-import { FormRadio } from "@/ui";
+import { FormRadio } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { type z } from "zod";
@@ -11,7 +11,7 @@ import { api, atom, injectStore, useAtomState } from "@zedux/react";
 import { type RouterInputs } from "@/trpc/react";
 import { inputGetBooks } from "@/shared/biblioteca-filter.schema";
 
-const sortItemStyle = "p-2 rounded-md hover:bg-gray-700";
+const sortItemStyle = "px-2 rounded-md hover:bg-gray-700";
 
 type SortValue = RouterInputs["biblioteca"]["getAll"]["filter"]["orderBy"];
 
@@ -51,7 +51,7 @@ export const BibliotecaButtonOrderBy = () => {
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent align="end" className="mt-2 w-60 bg-nocturne p-2">
+        <PopoverContent align="end" className="z-10 mt-2 w-60 rounded-md bg-nocturne p-2">
           {opciones.map((option) => (
             <FormRadio
               key={option.value}

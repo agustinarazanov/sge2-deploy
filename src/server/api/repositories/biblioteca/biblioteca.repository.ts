@@ -1,4 +1,4 @@
-import { type inputAddBooks, type inputGetBooks } from "@/shared/biblioteca-filter.schema";
+import { inputEliminarLibro, type inputAddBooks, type inputGetBooks } from "@/shared/biblioteca-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 
@@ -44,5 +44,20 @@ export const addLibro = async (ctx: { db: PrismaClient }, input: InputAddLibro, 
     }
 
     throw new Error("Error agregando libro");
+  }
+};
+
+type InputDeleteLibro = z.infer<typeof inputEliminarLibro>;
+export const deleteLibro = async (ctx: { db: PrismaClient }, input: InputDeleteLibro) => {
+  try {
+    const libro = await ctx.db.biblioteca.delete({
+      where: {
+        id: input.libroId,
+      },
+    });
+
+    return libro;
+  } catch (error) {
+    throw new Error(`Error eliminando libro ${input.libroId}`);
   }
 };

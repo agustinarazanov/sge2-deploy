@@ -14,7 +14,7 @@ export default async function Navbar() {
   const isLogged = user !== undefined;
 
   return (
-    <nav className="bg-gray-500 text-white">
+    <nav className="bg-gray-500">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           {/* Left side of the navbar - Mobile Links Controls (only mobile) */}
@@ -25,13 +25,7 @@ export default async function Navbar() {
             {/* UTN Logo */}
             <div className="flex flex-shrink-0">
               <div className="h-8 w-8">
-                <Image
-                  src={"utn-logo.svg"}
-                  alt={"Logo UTN"}
-                  width={40}
-                  height={40}
-                  className="text-white"
-                />
+                <Image src={"utn-logo.svg"} alt={"Logo UTN"} width={40} height={40} />
               </div>
             </div>
 

@@ -4,7 +4,7 @@ import { GeistSans } from "geist/font/sans";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import Navbar from "./_components/navbar/navbar";
-import { Toaster } from "@/ui";
+import { Toaster } from "@/components/ui";
 
 export const metadata = {
   title: "SGE",

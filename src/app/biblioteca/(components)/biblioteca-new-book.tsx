@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/app/_components/button";
+import { Button } from "@/components/ui/button";
 import useNuevoLibroModal from "@/app/_hooks/use-nuevo-libro-modal";
 import { Plus } from "lucide-react";
 

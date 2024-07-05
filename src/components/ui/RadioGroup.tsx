@@ -5,7 +5,7 @@ import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { Circle } from "lucide-react";
 
 import { Label } from "./Label";
-import { cn } from "@/utils";
+import { cn } from "@/components/utils";
 
 export type RadioProps = {
   label?: React.ReactNode | string;
@@ -40,7 +40,7 @@ const RadioGroupItem = React.forwardRef<
   };
 
   return (
-    <div className={cn("flex items-start space-x-2", className)}>
+    <div className={cn("flex items-center space-x-2", className)}>
       <RadioGroupPrimitive.Item
         ref={ref}
         disabled={disabled}
@@ -54,7 +54,7 @@ const RadioGroupItem = React.forwardRef<
           <Circle className="h-2 w-2 rounded-full fill-primary" />
         </RadioGroupPrimitive.Indicator>
       </RadioGroupPrimitive.Item>
-      <div className="flex flex-col">
+      <div className="flex w-full flex-col">
         {label && (
           <Label
             htmlFor={props.id}
@@ -62,6 +62,8 @@ const RadioGroupItem = React.forwardRef<
               "opacity-50": disabled,
               "cursor-pointer": clickableSpace,
               "text-white": clickableSpace,
+              "w-full": clickableSpace,
+              "py-2": clickableSpace,
             })}
             onClick={handleClick}
           >
