@@ -1,0 +1,76 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# testing
+coverage
+
+# database
+**/prisma/db.sqlite
+**/prisma/db.sqlite-journal
+
+# next.js
+.next/
+out/
+next-env.d.ts
+
+# expo
+.expo/
+dist/
+
+# production
+build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env
+.env.devenv*
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+
+# turbo
+.turbo
+
+# Devenv
+.devenv*
+.direnv*
+devenv.local.nix
+
+versions.txt
+affected.txt
+changelog-*.md
+
+@types
+
+apps/pool/artifacts/__generated__
+apps/hi-web/src/artifacts/__generated__
+apps/hi-data/src/artifacts/__generated__
+apps/sentinel/src/artifacts/__generated__
+apps/hi-widgets/static/widget-dist/all/assets/*.js
+apps/derivatives/src/db/generated/meta
+
+packages/rfq/db/prisma/seed/data/*.json
+packages/db/rfq/seed/data/*.json
+packages/db/kratos/src/generated/meta
+packages/db/kratos/openapi-schema.ts
+packages/db/kratos/ory_rest_api.json
+packages/db/pool/src/generated/meta
+packages/db/derivatives/src/generated/meta
+packages/db/rfq/drizzle/meta
