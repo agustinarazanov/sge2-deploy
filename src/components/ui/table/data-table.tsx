@@ -24,6 +24,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 
 interface DataTableProps<TData> {
   manualSorting?: boolean;
+  manualPagination?: boolean;
+  pageSize?: number;
+  pageIndex?: number;
+  rowCount?: number;
   columns: ColumnDef<TData>[];
   data: TData[];
   onRowClick?: (row: Row<TData>) => void;
@@ -63,6 +67,7 @@ type Config = {
   containerClass?: string;
   sorting?: SortingState;
   onSortingChange?: OnChangeFn<SortingState>;
+  onPaginationChange?: OnChangeFn<PaginationState>;
   rowSelection?: Record<number, boolean>;
   onRowSelectionChange?: OnChangeFn<RowSelectionState>;
   emptyComponent?: React.ReactNode;
@@ -83,14 +88,18 @@ export function DataTable<T>({
   action,
   initialState,
   manualSorting,
+  manualPagination,
+  pageSize,
+  pageIndex,
+  rowCount,
   ...props
 }: DataTableProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [pagination, setPagination] = useState<PaginationState>(
     initialState?.pagination ?? {
-      pageSize: 10,
-      pageIndex: 0,
+      pageSize: pageSize ?? 10,
+      pageIndex: pageIndex ?? 0,
     },
   );
 
@@ -114,12 +123,14 @@ export function DataTable<T>({
     columns,
     enableRowSelection: true,
     manualSorting,
+    manualPagination,
+    rowCount,
     onRowSelectionChange: config?.onRowSelectionChange ?? setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: paginationConfig ? getPaginationRowModel() : undefined,
     onSortingChange: config?.onSortingChange ?? setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onPaginationChange: setPagination,
+    onPaginationChange: config?.onPaginationChange ?? setPagination,
     state: {
       rowSelection: config?.rowSelection ?? rowSelection,
       sorting: config?.sorting ?? sorting,
@@ -205,7 +216,7 @@ export function DataTable<T>({
                 ) : config?.emptyComponent ? (
                   config.emptyComponent
                 ) : (
-                  "No results."
+                  "Sin resultados."
                 )}
               </TableCell>
             </TableRow>

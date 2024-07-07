@@ -1,14 +1,14 @@
 import { api } from "@/trpc/server";
 import { BibliotecaTable } from "./table";
 import { type ReadonlyURLSearchParams } from "next/navigation";
-import { getQueryParamFilters } from "../_queryParams";
+import { inputGetBooks } from "@/shared/biblioteca-filter.schema";
 
 type BibliotecaTableContainerProps = {
   searchParams: ReadonlyURLSearchParams;
 };
 
 export default async function BibliotecaTableContainer({ searchParams }: BibliotecaTableContainerProps) {
-  const filter = getQueryParamFilters(searchParams);
+  const filter = inputGetBooks.parse(searchParams);
 
   const libros = await api.biblioteca.getAll({ ...filter });
 

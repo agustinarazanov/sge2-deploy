@@ -36,7 +36,7 @@ export const getColumns = () => {
     colHelper.accessor("isbn", {
       header: "ISBN",
     }),
-    colHelper.display({
+    colHelper.accessor("estado", {
       header: "Estado",
       cell: ({ row }) => {
         const { estado, id } = row.original;

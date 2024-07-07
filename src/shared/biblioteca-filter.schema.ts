@@ -32,7 +32,7 @@ export const inputAddBooks = z
 
 export const inputGetBooks = z.object({
   pageSize: z.enum(["10", "20", "30", "40", "50"]).default("10").catch("10"),
-  page: z
+  pageIndex: z
     .string()
     .default("1")
     .refine((value) => parseInt(value) > 0, { message: "Debe ser mayor a 0" })

@@ -18,7 +18,7 @@ interface DataTablePaginationProps<TData> {
 }
 
 export function DataTablePagination<TData>({ table, config }: DataTablePaginationProps<TData>) {
-  const { selectedRows = true, pageSize = true, pageNumber = true } = config || {};
+  const { selectedRows = true, pageSize = true, pageNumber = true } = config ?? {};
   return (
     <div className="mt-4 flex items-center justify-between px-2">
       <div className="flex-1 text-sm text-muted-foreground">
@@ -54,7 +54,7 @@ export function DataTablePagination<TData>({ table, config }: DataTablePaginatio
         )}
         {pageNumber && (
           <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+            Página {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
           </div>
         )}
         <div className="flex items-center space-x-2">
@@ -67,7 +67,7 @@ export function DataTablePagination<TData>({ table, config }: DataTablePaginatio
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
-            <span className="sr-only">Go to first page</span>
+            <span className="sr-only">Ir a la primera página</span>
           </Button>
           <Button
             variant="icon"
@@ -77,7 +77,7 @@ export function DataTablePagination<TData>({ table, config }: DataTablePaginatio
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            <span className="sr-only">Go to previous page</span>
+            <span className="sr-only">Ir a la página anterior</span>
           </Button>
           <Button
             variant="icon"
@@ -87,7 +87,7 @@ export function DataTablePagination<TData>({ table, config }: DataTablePaginatio
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            <span className="sr-only">Go to next page</span>
+            <span className="sr-only">Ir a la próxima página</span>
           </Button>
           <Button
             variant="icon"
@@ -98,7 +98,7 @@ export function DataTablePagination<TData>({ table, config }: DataTablePaginatio
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           >
-            <span className="sr-only">Go to last page</span>
+            <span className="sr-only">Ir a la última página</span>
           </Button>
         </div>
       </div>

@@ -3,10 +3,10 @@ import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 
 type InputGetAll = z.infer<typeof inputGetBooks>;
-export const getAllLibros = (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { page, pageSize, searchText, orderBy, orderDirection } = input;
+export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
+  const { pageIndex, pageSize, searchText, orderBy, orderDirection } = input;
 
-  const libros = ctx.db.biblioteca.findMany({
+  const libros = await ctx.db.biblioteca.findMany({
     where: {
       OR: [
         {
@@ -24,9 +24,21 @@ export const getAllLibros = (ctx: { db: PrismaClient }, input: InputGetAll) => {
     orderBy: {
       [orderBy]: orderDirection,
     },
-    skip: (parseInt(page) - 1) * parseInt(pageSize),
+    skip: (parseInt(pageIndex) - 1) * parseInt(pageSize),
     take: parseInt(pageSize),
   });
+
+  console.log(
+    `
+      $$$$$ GET ALL LIBROS $$$$$
+      pageIndex: ${pageIndex}
+      pageSize: ${pageSize}
+      searchText: ${searchText}
+      orderBy: ${orderBy}
+      orderDirection: ${orderDirection}
+      length: ${libros.length}
+    `,
+  );
 
   return libros;
 };

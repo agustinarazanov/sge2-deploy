@@ -6,10 +6,7 @@ import RemoveLibroModal from "../_table/remove-libro";
 import { type RouterOutputs } from "@/trpc/react";
 import { type z } from "zod";
 import { type inputGetBooks } from "@/shared/biblioteca-filter.schema";
-import { type SortingState } from "@tanstack/react-table";
-import { changeSorting, getSorting } from "../_queryParams";
 import { useBibliotecaQueryParam } from "../_hooks/use-biblioteca-query-param";
-import { useEffect, useState } from "react";
 
 type LibroData = RouterOutputs["biblioteca"]["getAll"][number];
 type BibliotecaFilters = z.infer<typeof inputGetBooks>;
@@ -20,35 +17,29 @@ type BibliotecaTableProps = {
 };
 
 export const BibliotecaTable = ({ libros, filters }: BibliotecaTableProps) => {
-  const router = useBibliotecaQueryParam();
+  const { refresh, pagination, sorting, onSortingChange, onPaginationChange } = useBibliotecaQueryParam(filters);
+
   const columns = getColumns();
-
-  const handleCambioEnBiblioteca = () => router.refresh();
-
-  const [sorting, setSorting] = useState<SortingState>(getSorting(filters));
-
-  useEffect(() => {
-    const newFilters = changeSorting(filters, sorting);
-
-    router.changeQueryParams(newFilters);
-
-    console.log({ newFilters, sorting });
-  }, [filters, router, sorting]);
 
   return (
     <>
-      {JSON.stringify({ sorting }, null, 4)}
+      <code>{JSON.stringify({ sorting, pagination }, null, 4)}</code>
       <DataTable
         data={libros ?? []}
         columns={columns}
         paginationConfig={{ pageSize: true, selectedRows: false, pageNumber: true }}
         manualSorting
-        config={{ sorting, onSortingChange: setSorting }}
+        rowCount={22}
+        pageSize={pagination.pageSize}
+        pageIndex={pagination.pageIndex - 1}
+        config={{
+          sorting,
+          onSortingChange,
+          onPaginationChange,
+        }}
         action={{
           cell({ original }) {
-            return (
-              <RemoveLibroModal libroId={original.id} nombre={original.titulo} onSubmit={handleCambioEnBiblioteca} />
-            );
+            return <RemoveLibroModal libroId={original.id} nombre={original.titulo} onSubmit={refresh} />;
           },
         }}
       />
