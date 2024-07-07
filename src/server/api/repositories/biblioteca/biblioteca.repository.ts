@@ -1,10 +1,13 @@
 import { type inputEliminarLibro, type inputAddBooks, type inputGetBooks } from "@/shared/biblioteca-filter.schema";
+import { wait } from "@/shared/wait";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 
 type InputGetAll = z.infer<typeof inputGetBooks>;
 export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
   const { pageIndex, pageSize, searchText, orderBy, orderDirection } = input;
+
+  await wait(3000);
 
   const libros = await ctx.db.biblioteca.findMany({
     where: {
@@ -24,7 +27,7 @@ export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll
     orderBy: {
       [orderBy]: orderDirection,
     },
-    skip: (parseInt(pageIndex) - 1) * parseInt(pageSize),
+    skip: parseInt(pageIndex) * parseInt(pageSize),
     take: parseInt(pageSize),
   });
 

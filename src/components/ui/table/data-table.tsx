@@ -19,7 +19,7 @@ import {
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 
 import { cn } from "@/components/utils";
-import { DataTablePagination, type PaginationConfig } from "./pagination";
+import { DataTablePagination, type PaginationConfig } from "./table-pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
 
 interface DataTableProps<TData> {
@@ -124,6 +124,7 @@ export function DataTable<T>({
     enableRowSelection: true,
     manualSorting,
     manualPagination,
+    autoResetPageIndex: false, // Previene que se resetee el pageIndex al cambiar de data (se necesita para cambiar de página en la tabla, pero al cambiar el orden si se debe resetea)
     rowCount,
     onRowSelectionChange: config?.onRowSelectionChange ?? setRowSelection,
     getCoreRowModel: getCoreRowModel(),
@@ -137,6 +138,7 @@ export function DataTable<T>({
       pagination,
     },
   });
+
   return (
     <>
       <Table containerClass={config?.containerClass}>

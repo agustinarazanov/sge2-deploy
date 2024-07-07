@@ -19,6 +19,7 @@ const changeSorting = (filters: BibliotecaFilters, newSorting: SortingState): Bi
     ...filters,
     orderBy: newSorting[0]?.id as OrderByType,
     orderDirection: newSorting[0]?.desc ? "desc" : "asc",
+    pageIndex: "0",
   };
 
   const filtersTyped = inputGetBooks.parse(newFilters);
@@ -29,7 +30,7 @@ const changeSorting = (filters: BibliotecaFilters, newSorting: SortingState): Bi
 const changePagination = (filters: BibliotecaFilters, newPagination: PaginationState): BibliotecaFilters => {
   const newFilters: BibliotecaFilters = {
     ...filters,
-    pageIndex: (newPagination.pageIndex + 1).toString(),
+    pageIndex: newPagination.pageIndex.toString(),
     pageSize: newPagination.pageSize.toString() as PageSizeType,
   };
 
@@ -66,15 +67,15 @@ export const useBibliotecaQueryParam = (filters: BibliotecaFilters) => {
 
   useEffect(() => {
     const newFilters = changeSorting(filters, sorting);
-    console.log(`### Sorting changed: `, { sorting, newFilters });
-    changeQueryParams(newFilters);
-  }, [changeQueryParams, sorting]);
+
+    changeQueryParams({ ...newFilters, pageIndex: "0" });
+  }, [changeQueryParams, filters, sorting]);
 
   useEffect(() => {
     const newFilters = changePagination(filters, pagination);
-    console.log(`### Pagination changed: `, { pagination, newFilters });
+
     changeQueryParams(newFilters);
-  }, [changeQueryParams, pagination]);
+  }, [changeQueryParams, filters, pagination]);
 
   return {
     refresh: () => router.refresh(),

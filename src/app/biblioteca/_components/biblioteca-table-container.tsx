@@ -14,10 +14,6 @@ export default async function BibliotecaTableContainer({ searchParams }: Bibliot
 
   return (
     <>
-      <div>
-        <p>{JSON.stringify(filter)}</p>
-      </div>
-
       <BibliotecaTable libros={libros} filters={filter} />
     </>
   );

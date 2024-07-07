@@ -7,6 +7,7 @@ import { type RouterOutputs } from "@/trpc/react";
 import { type z } from "zod";
 import { type inputGetBooks } from "@/shared/biblioteca-filter.schema";
 import { useBibliotecaQueryParam } from "../_hooks/use-biblioteca-query-param";
+import { DataTablePaginationStandalone } from "@/components/ui/table/table-pagination-standalone";
 
 type LibroData = RouterOutputs["biblioteca"]["getAll"][number];
 type BibliotecaFilters = z.infer<typeof inputGetBooks>;
@@ -23,25 +24,28 @@ export const BibliotecaTable = ({ libros, filters }: BibliotecaTableProps) => {
 
   return (
     <>
-      <code>{JSON.stringify({ sorting, pagination }, null, 4)}</code>
       <DataTable
         data={libros ?? []}
         columns={columns}
-        paginationConfig={{ pageSize: true, selectedRows: false, pageNumber: true }}
         manualSorting
-        rowCount={22}
         pageSize={pagination.pageSize}
-        pageIndex={pagination.pageIndex - 1}
+        pageIndex={pagination.pageIndex}
         config={{
           sorting,
           onSortingChange,
-          onPaginationChange,
         }}
         action={{
           cell({ original }) {
             return <RemoveLibroModal libroId={original.id} nombre={original.titulo} onSubmit={refresh} />;
           },
         }}
+      />
+
+      <DataTablePaginationStandalone
+        pageIndex={pagination.pageIndex}
+        pageSize={pagination.pageSize}
+        rowCount={22}
+        onChange={onPaginationChange}
       />
     </>
   );

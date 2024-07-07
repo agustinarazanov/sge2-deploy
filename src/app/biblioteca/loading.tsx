@@ -2,6 +2,7 @@ import { Button } from "@/components/ui";
 
 import { getColumnsNames } from "./_table/columns";
 import LoadingTable from "@/components/ui/table/loading-table";
+import LoadingPagination from "@/components/ui/table/loading-pagination";
 
 export default function BibliotecaLoading() {
   const columns = getColumnsNames();
@@ -15,6 +16,8 @@ export default function BibliotecaLoading() {
       </div>
 
       <LoadingTable caption="Cargando Libros..." columns={columns} rowsLength={3} />
+
+      <LoadingPagination />
     </>
   );
 }
