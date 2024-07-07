@@ -1,15 +1,9 @@
 import { z } from "zod";
 
-export const inputGetBooks = z.object({
-  filter: z.object({
-    orderBy: z.enum(["year_asc", "name_asc"]).optional(),
-  }),
-});
-
 export const inputAddBooks = z
   .object({
     inventario: z.string().min(1, { message: "Requerido" }),
-    bibliotecaId: z.string().optional(),
+    id: z.string().optional(),
     titulo: z.string().min(1, { message: "Requerido" }),
     autor: z.string().min(1, { message: "Requerido" }),
     anio: z.string().min(1, { message: "Requerido" }),
@@ -35,6 +29,21 @@ export const inputAddBooks = z
     //   });
     // }
   });
+
+export const inputGetBooks = z.object({
+  pageSize: z.enum(["10", "20", "30", "40", "50"]).default("10").catch("10"),
+  page: z
+    .string()
+    .default("1")
+    .refine((value) => parseInt(value) > 0, { message: "Debe ser mayor a 0" })
+    .catch("1"),
+  orderBy: z
+    .enum(["inventario", "id", "titulo", "autor", "anio", "editorial", "idioma", "isbn", "materias", "estado"])
+    .default("titulo")
+    .catch("titulo"),
+  orderDirection: z.enum(["asc", "desc"]).default("asc").catch("asc"),
+  searchText: z.string().default(""),
+});
 
 export const inputEliminarLibro = z.object({
   libroId: z.number(),

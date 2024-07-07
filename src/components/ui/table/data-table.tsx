@@ -23,6 +23,7 @@ import { DataTablePagination, type PaginationConfig } from "./pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
 
 interface DataTableProps<TData> {
+  manualSorting?: boolean;
   columns: ColumnDef<TData>[];
   data: TData[];
   onRowClick?: (row: Row<TData>) => void;
@@ -81,6 +82,7 @@ export function DataTable<T>({
   config,
   action,
   initialState,
+  manualSorting,
   ...props
 }: DataTableProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -111,15 +113,16 @@ export function DataTable<T>({
     data,
     columns,
     enableRowSelection: true,
-    onRowSelectionChange: config?.onRowSelectionChange || setRowSelection,
+    manualSorting,
+    onRowSelectionChange: config?.onRowSelectionChange ?? setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: paginationConfig ? getPaginationRowModel() : undefined,
-    onSortingChange: config?.onSortingChange || setSorting,
+    onSortingChange: config?.onSortingChange ?? setSorting,
     getSortedRowModel: getSortedRowModel(),
     onPaginationChange: setPagination,
     state: {
-      rowSelection: config?.rowSelection || rowSelection,
-      sorting: config?.sorting || sorting,
+      rowSelection: config?.rowSelection ?? rowSelection,
+      sorting: config?.sorting ?? sorting,
       pagination,
     },
   });

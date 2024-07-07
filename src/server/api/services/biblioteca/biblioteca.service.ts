@@ -3,6 +3,11 @@ import { getAllLibros, addLibro, deleteLibro } from "../../repositories/bibliote
 import { inputAddBooks, inputEliminarLibro, inputGetBooks } from "@/shared/biblioteca-filter.schema";
 
 export const getAllBooksProcedure = protectedProcedure.input(inputGetBooks).query(async ({ ctx, input }) => {
+  const isValidInput = inputGetBooks.safeParse(input);
+  if (!isValidInput.success) {
+    throw new Error("Invalid input");
+  }
+
   const libros = await getAllLibros(ctx, input);
 
   return libros;

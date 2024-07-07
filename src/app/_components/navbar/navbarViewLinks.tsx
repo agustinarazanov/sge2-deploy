@@ -2,10 +2,10 @@
 
 import { type Session } from "next-auth";
 import { NavbarLink } from "./navbarLink";
-import { NAVBAR_LINKS } from "./links";
 import { usePathname } from "next/navigation";
 
 import cn from "classnames";
+import { APP_ROUTES } from "@/shared/server-routes";
 
 type MobileViewProps = {
   user: Session["user"] | undefined;
@@ -20,7 +20,7 @@ export default function NavbarViewLinks({ user, isMobile }: MobileViewProps) {
 
   const pathname = usePathname();
 
-  const availableLinks = NAVBAR_LINKS.filter((link) => isLogged || link.isPublic);
+  const availableLinks = APP_ROUTES.filter((link) => isLogged || link.isPublic);
 
   return (
     <div className={cn(isMobile ? MOBILE_CLASS : DESKTOP_CLASS)}>

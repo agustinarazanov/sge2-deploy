@@ -1,17 +1,31 @@
-import { inputEliminarLibro, type inputAddBooks, type inputGetBooks } from "@/shared/biblioteca-filter.schema";
+import { type inputEliminarLibro, type inputAddBooks, type inputGetBooks } from "@/shared/biblioteca-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 
 type InputGetAll = z.infer<typeof inputGetBooks>;
-export const getAllLibros = (ctx: { db: PrismaClient }, input?: InputGetAll) => {
-  const orderByProp = input?.filter.orderBy;
+export const getAllLibros = (ctx: { db: PrismaClient }, input: InputGetAll) => {
+  const { page, pageSize, searchText, orderBy, orderDirection } = input;
 
   const libros = ctx.db.biblioteca.findMany({
-    orderBy: [
-      {
-        ...(orderByProp === "year_asc" ? { anio: "desc" } : orderByProp === "name_asc" ? { titulo: "asc" } : {}),
-      },
-    ],
+    where: {
+      OR: [
+        {
+          autor: {
+            contains: searchText,
+          },
+        },
+        {
+          titulo: {
+            contains: searchText,
+          },
+        },
+      ],
+    },
+    orderBy: {
+      [orderBy]: orderDirection,
+    },
+    skip: (parseInt(page) - 1) * parseInt(pageSize),
+    take: parseInt(pageSize),
   });
 
   return libros;

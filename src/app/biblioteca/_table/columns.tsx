@@ -1,5 +1,5 @@
 import { type RouterOutputs } from "@/trpc/react";
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import EstadoLibro from "./estado-libro";
 
 type LibroData = RouterOutputs["biblioteca"]["getAll"][number];
@@ -52,4 +52,8 @@ export const getColumns = () => {
     //   },
     // }),
   ] as ColumnDef<LibroData>[];
+};
+
+export const getColumnsNames = () => {
+  return ["Biblioteca ID", "Inventario", "Titulo", "Autor", "Año", "Editorial", "Idioma", "ISBN", "Estado"];
 };
