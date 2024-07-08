@@ -124,7 +124,6 @@ export function DataTable<T>({
     enableRowSelection: true,
     manualSorting,
     manualPagination,
-    autoResetPageIndex: false, // Previene que se resetee el pageIndex al cambiar de data (se necesita para cambiar de página en la tabla, pero al cambiar el orden si se debe resetea)
     rowCount,
     onRowSelectionChange: config?.onRowSelectionChange ?? setRowSelection,
     getCoreRowModel: getCoreRowModel(),

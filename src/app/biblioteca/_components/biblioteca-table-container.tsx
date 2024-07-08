@@ -10,11 +10,11 @@ type BibliotecaTableContainerProps = {
 export default async function BibliotecaTableContainer({ searchParams }: BibliotecaTableContainerProps) {
   const filter = inputGetBooks.parse(searchParams);
 
-  const libros = await api.biblioteca.getAll({ ...filter });
+  const data = await api.biblioteca.getAll({ ...filter });
 
   return (
     <>
-      <BibliotecaTable libros={libros} filters={filter} />
+      <BibliotecaTable data={data} filters={filter} />
     </>
   );
 }

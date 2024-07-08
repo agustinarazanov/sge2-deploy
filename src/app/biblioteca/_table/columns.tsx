@@ -2,7 +2,7 @@ import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import EstadoLibro from "./estado-libro";
 
-type LibroData = RouterOutputs["biblioteca"]["getAll"][number];
+type LibroData = RouterOutputs["biblioteca"]["getAll"]["libros"][number];
 
 export const getColumns = () => {
   const colHelper = createColumnHelper<LibroData>();
@@ -44,13 +44,6 @@ export const getColumns = () => {
         return <EstadoLibro estado={estado} libroId={id} />;
       },
     }),
-    // colHelper.accessor("estado", {
-    //   header: "Estado",
-    //   cell: ({ getValue }) => {
-
-    //     return getValue();
-    //   },
-    // }),
   ] as ColumnDef<LibroData>[];
 };
 

@@ -65,7 +65,6 @@ const NuevoLibroModal = ({ onSubmit, onCancel }: NuevoLibroModalProps) => {
       inventario: "",
       isbn: "",
       titulo: "",
-      bibliotecaId: "",
     },
     resolver: zodResolver(inputAddBooks),
   });

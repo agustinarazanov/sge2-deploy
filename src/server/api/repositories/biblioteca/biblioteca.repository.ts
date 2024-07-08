@@ -1,5 +1,4 @@
 import { type inputEliminarLibro, type inputAddBooks, type inputGetBooks } from "@/shared/biblioteca-filter.schema";
-import { wait } from "@/shared/wait";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 
@@ -7,43 +6,35 @@ type InputGetAll = z.infer<typeof inputGetBooks>;
 export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
   const { pageIndex, pageSize, searchText, orderBy, orderDirection } = input;
 
-  await wait(3000);
-
-  const libros = await ctx.db.biblioteca.findMany({
-    where: {
-      OR: [
-        {
-          autor: {
-            contains: searchText,
+  const [count, libros] = await ctx.db.$transaction([
+    ctx.db.biblioteca.count(),
+    ctx.db.biblioteca.findMany({
+      where: {
+        OR: [
+          {
+            autor: {
+              contains: searchText,
+            },
           },
-        },
-        {
-          titulo: {
-            contains: searchText,
+          {
+            titulo: {
+              contains: searchText,
+            },
           },
-        },
-      ],
-    },
-    orderBy: {
-      [orderBy]: orderDirection,
-    },
-    skip: parseInt(pageIndex) * parseInt(pageSize),
-    take: parseInt(pageSize),
-  });
+        ],
+      },
+      orderBy: {
+        [orderBy]: orderDirection,
+      },
+      skip: parseInt(pageIndex) * parseInt(pageSize),
+      take: parseInt(pageSize),
+    }),
+  ]);
 
-  console.log(
-    `
-      $$$$$ GET ALL LIBROS $$$$$
-      pageIndex: ${pageIndex}
-      pageSize: ${pageSize}
-      searchText: ${searchText}
-      orderBy: ${orderBy}
-      orderDirection: ${orderDirection}
-      length: ${libros.length}
-    `,
-  );
-
-  return libros;
+  return {
+    count,
+    libros,
+  };
 };
 
 type InputAddLibro = z.infer<typeof inputAddBooks>;
@@ -89,4 +80,33 @@ export const deleteLibro = async (ctx: { db: PrismaClient }, input: InputDeleteL
   } catch (error) {
     throw new Error(`Error eliminando libro ${input.libroId}`);
   }
+};
+
+export const countAllLibros = async (ctx: { db: PrismaClient }) => {
+  const count = await ctx.db.biblioteca.count();
+
+  return count;
+};
+
+export const countLibros = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
+  const { searchText } = input;
+
+  const count = await ctx.db.biblioteca.count({
+    where: {
+      OR: [
+        {
+          autor: {
+            contains: searchText,
+          },
+        },
+        {
+          titulo: {
+            contains: searchText,
+          },
+        },
+      ],
+    },
+  });
+
+  return count;
 };

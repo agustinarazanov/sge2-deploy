@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { type RouterOutputs } from "@/trpc/react";
 
-type EstadoType = RouterOutputs["biblioteca"]["getAll"][number]["estado"];
+type EstadoType = RouterOutputs["biblioteca"]["getAll"]["libros"][number]["estado"];
 
 type RemoveLibroModalProps = {
   libroId: number;

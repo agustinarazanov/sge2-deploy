@@ -83,7 +83,7 @@ model Biblioteca {
     autor        String
     anio         String
     editorial    String
-    idioma       String
+    idiomas      String
     isbn         String
     estado       String
 
