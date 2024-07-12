@@ -1,7 +1,7 @@
 import { Skeleton } from "../skeleton";
 
 type LoadingTableProps = {
-  caption?: string;
+  caption?: React.ReactNode;
   columns: string[];
   rowsLength: number;
 };

@@ -5,7 +5,7 @@ type AppRoute = {
   inConstruction?: boolean;
 };
 
-const INICIO_ROUTE: AppRoute = {
+export const INICIO_ROUTE: AppRoute = {
   href: "/",
   label: "Inicio",
   isPublic: true,

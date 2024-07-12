@@ -33,6 +33,11 @@ export function DataTablePaginationStandalone(props: DataTablePaginationProps) {
   return (
     <div className="mt-4 flex items-center justify-between px-2">
       <div className="flex items-center space-x-3 lg:space-x-8">
+        {rowCount > 0 && (
+          <p className="text-sm font-medium">
+            {rowCount} {rowCount === 1 ? "resultado" : "resultados"}
+          </p>
+        )}
         {pageSize && (
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium">Filas por página</p>

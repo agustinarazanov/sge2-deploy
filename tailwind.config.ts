@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 import colors from "tailwindcss/colors";
 
 export const sgePlugin = plugin(
@@ -47,7 +48,6 @@ export const sgePlugin = plugin(
         "--popover": "220 5% 12%",
       },
     });
-
     addBase({
       "html, body": {
         "@apply text-foreground bg-background": {},
