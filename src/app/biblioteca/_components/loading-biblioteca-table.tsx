@@ -14,7 +14,7 @@ export default function LoadingBibliotecaTable() {
         </div>
       }
       columns={columns}
-      rowsLength={3}
+      rowsLength={10}
     />
   );
 }

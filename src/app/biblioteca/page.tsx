@@ -15,8 +15,7 @@ export default async function Page({ searchParams }: PageProps) {
   return (
     <>
       <ActionButtons />
-
-      <Suspense key={String(filters)} fallback={<LoadingBibliotecaTable />}>
+      <Suspense key={JSON.stringify(filters)} fallback={<LoadingBibliotecaTable />}>
         <BibliotecaTableContainer filters={filters} />
       </Suspense>
     </>

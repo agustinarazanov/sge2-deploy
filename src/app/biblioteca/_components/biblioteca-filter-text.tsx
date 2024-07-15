@@ -36,7 +36,7 @@ export const BibliotecaFilterText = () => {
   };
 
   return (
-    <form onSubmit={handleFormSubmit} className="w-full">
+    <form onSubmit={() => handleFormSubmit.flush()} className="w-full">
       <Input
         placeholder={"Buscar por título o por autor"}
         name="searchText"
