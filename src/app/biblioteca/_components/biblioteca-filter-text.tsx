@@ -1,39 +1,38 @@
 "use client";
 
 import { Input } from "@/components/ui";
-import { debounce } from "lodash";
 import { SearchIcon } from "lucide-react";
+import { useDebouncedCallback } from "use-debounce";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
+const DEBOUNCE_TIME = 300;
 
 export const BibliotecaFilterText = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
-  const [searchText, setSearchText] = useState(searchParams.get("searchText") ?? "");
+  const [searchText, setSearchText] = useState(searchParams.get("searchText")?.toString() ?? "");
 
-  const handleFormSubmit = useCallback(async () => {
+  const handleFormSubmit = useDebouncedCallback(async () => {
     const params = searchParams.toString();
     const newParams = new URLSearchParams(params);
 
     newParams.set("searchText", searchText);
 
     router.push(pathname + "?" + newParams.toString());
-  }, [searchParams, searchText, router, pathname]);
-
-  const debounceSave = useCallback(debounce(handleFormSubmit, 300), [handleFormSubmit]);
+  }, DEBOUNCE_TIME);
 
   useEffect(() => {
-    const executeDebounce = async () => await debounceSave();
+    void handleFormSubmit();
 
-    void executeDebounce();
-  }, [debounceSave, searchText]);
+    return () => handleFormSubmit.cancel();
+  }, [handleFormSubmit, searchText]);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setSearchText(e.target.value);
-    debounceSave.cancel();
   };
 
   return (

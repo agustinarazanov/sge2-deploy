@@ -1,12 +1,15 @@
 import { protectedProcedure } from "../../trpc";
 import { getAllLibros, addLibro, deleteLibro } from "../../repositories/biblioteca/biblioteca.repository";
 import { inputAddBooks, inputEliminarLibro, inputGetBooks } from "@/shared/biblioteca-filter.schema";
+import { wait } from "@/shared/wait";
 
 export const getAllBooksProcedure = protectedProcedure.input(inputGetBooks).query(async ({ ctx, input }) => {
   const isValidInput = inputGetBooks.safeParse(input);
   if (!isValidInput.success) {
     throw new Error("Invalid input");
   }
+
+  await wait(3000);
 
   const libros = await getAllLibros(ctx, input);
 

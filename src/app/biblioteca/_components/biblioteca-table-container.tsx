@@ -1,20 +1,16 @@
 import { api } from "@/trpc/server";
 import { BibliotecaTable } from "./table";
-import { type ReadonlyURLSearchParams } from "next/navigation";
-import { inputGetBooks } from "@/shared/biblioteca-filter.schema";
+import { type z } from "zod";
+import { type inputGetBooks } from "@/shared/biblioteca-filter.schema";
+
+type BibliotecaFilters = z.infer<typeof inputGetBooks>;
 
 type BibliotecaTableContainerProps = {
-  searchParams: ReadonlyURLSearchParams;
+  filters: BibliotecaFilters;
 };
 
-export default async function BibliotecaTableContainer({ searchParams }: BibliotecaTableContainerProps) {
-  const filter = inputGetBooks.parse(searchParams);
+export default async function BibliotecaTableContainer({ filters }: BibliotecaTableContainerProps) {
+  const data = await api.biblioteca.getAll(filters);
 
-  const data = await api.biblioteca.getAll({ ...filter });
-
-  return (
-    <>
-      <BibliotecaTable data={data} filters={filter} />
-    </>
-  );
+  return <BibliotecaTable data={data} filters={filters} />;
 }
