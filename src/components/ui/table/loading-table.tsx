@@ -23,7 +23,7 @@ export default function LoadingTable({ caption, columns, rowsLength }: LoadingTa
       </thead>
       <tbody>
         {registers.map((_, rowIndex) => (
-          <tr key={rowIndex} className="border-b border-gray-400 hover:bg-muted/10">
+          <tr key={rowIndex} className="h-[64px] border-b border-gray-400 hover:bg-muted/10">
             {columns.map((column, colIndex) => (
               <td key={colIndex} className="p-4 text-left align-middle">
                 <Skeleton className="h-4 w-full" />

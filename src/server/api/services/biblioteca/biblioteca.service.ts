@@ -9,7 +9,7 @@ export const getAllBooksProcedure = protectedProcedure.input(inputGetBooks).quer
     throw new Error("Invalid input");
   }
 
-  await wait(3000);
+  await wait(1000);
 
   const libros = await getAllLibros(ctx, input);
 

@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui";
-
-import LoadingPagination from "@/components/ui/table/loading-pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 import LoadingBibliotecaTable from "./_components/loading-biblioteca-table";
 
@@ -20,8 +18,6 @@ export default function BibliotecaLoading() {
       </div>
 
       <LoadingBibliotecaTable />
-
-      <LoadingPagination />
     </>
   );
 }
