@@ -12,10 +12,12 @@ type PageProps = {
 export default async function Page({ searchParams }: PageProps) {
   const filters = inputGetBooks.parse(searchParams);
 
+  const filter_as_key = JSON.stringify(filters);
+
   return (
     <>
       <ActionButtons />
-      <Suspense key={JSON.stringify(filters)} fallback={<LoadingBibliotecaTable />}>
+      <Suspense key={filter_as_key} fallback={<LoadingBibliotecaTable />}>
         <BibliotecaTableContainer filters={filters} />
       </Suspense>
     </>
