@@ -1,4 +1,4 @@
-// Las propiedades que estan escritas en ingles, se utilizan por el adapter de NextAuth para el login. No cambiar el nombre de las propiedades.
+// Las propiedades y tablas  que estan escritas en ingles, se utilizan por el adapter de NextAuth para el login. No cambiar el nombre de las propiedades.
 // Todas las propiedades que no esten en ingles, deben tener algun valor por defecto o aceptar nulo.
 // https://authjs.dev/getting-started/adapters/prisma#naming-conventions
 model User {
@@ -39,8 +39,10 @@ model User {
 
     accounts   Account[]
     sessions   Session[]
-    books      Biblioteca[]
     usuarioRol UsuarioRol[]
+
+    reservasCreadas   Reserva[] @relation(name: "reservasCreadas")
+    reservasAprobadas Reserva[] @relation(name: "reservasModificadas")
 
     @@map("usuario")
 }
@@ -52,10 +54,8 @@ model UsuarioRol {
     rolId Int
     rol   Rol @relation(fields: [rolId], references: [id])
 
-    fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
-    usuarioCreadorId     Int // TODO: FK
-    usuarioModificadorId Int // TODO: FK
+    fechaCreacion    DateTime @default(now())
+    usuarioCreadorId String
 
     @@id([userId, rolId])
 }
@@ -70,8 +70,8 @@ model Rol {
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @updatedAt
-    usuarioCreadorId     Int // TODO: FK
-    usuarioModificadorId Int // TODO: FK
+    usuarioCreadorId     String
+    usuarioModificadorId String
 }
 
 model RolPermiso {
@@ -81,10 +81,8 @@ model RolPermiso {
     permisoId Int
     permiso   Permiso @relation(fields: [permisoId], references: [id])
 
-    fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
-    usuarioCreadorId     Int // TODO: FK
-    usuarioModificadorId Int // TODO: FK
+    fechaCreacion    DateTime @default(now())
+    usuarioCreadorId String
 
     @@id([rolId, permisoId])
 }
@@ -98,8 +96,8 @@ model Permiso {
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @updatedAt
-    usuarioCreadorId     Int // TODO: FK
-    usuarioModificadorId Int // TODO: FK
+    usuarioCreadorId     String
+    usuarioModificadorId String
 }
 
 model Provincia {

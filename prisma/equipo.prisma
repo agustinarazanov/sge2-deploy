@@ -35,14 +35,17 @@ model Equipo {
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @updatedAt
-    usuarioCreadorId     Int // TODO: FK
-    usuarioModificadorId Int // TODO: FK
+    usuarioCreadorId     String
+    usuarioModificadorId String
 }
 
 model EquipoMarca {
     id Int @id @default(autoincrement())
 
     nombre String
+
+    fechaCreacion    DateTime @default(now())
+    usuarioCreadorId String
 
     equipos Equipo[]
 }
@@ -52,6 +55,9 @@ model EquipoTipo {
 
     nombre String
 
+    fechaCreacion    DateTime @default(now())
+    usuarioCreadorId String
+
     equipos Equipo[]
 }
 
@@ -59,6 +65,9 @@ model EquipoEstado {
     id Int @id @default(autoincrement())
 
     nombre String
+
+    fechaCreacion    DateTime @default(now())
+    usuarioCreadorId String
 
     equipos Equipo[]
 }

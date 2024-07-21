@@ -19,8 +19,8 @@ model Laboratorio {
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @updatedAt
-    usuarioCreadorId     Int // TODO: FK
-    usuarioModificadorId Int // TODO: FK
+    usuarioCreadorId     String
+    usuarioModificadorId String
 }
 
 model Armario {
@@ -37,8 +37,8 @@ model Armario {
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @updatedAt
-    usuarioCreadorId     Int // TODO: FK
-    usuarioModificadorId Int // TODO: FK
+    usuarioCreadorId     String
+    usuarioModificadorId String
 }
 
 model Estante {
@@ -54,8 +54,8 @@ model Estante {
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @updatedAt
-    usuarioCreadorId     Int // TODO: FK
-    usuarioModificadorId Int // TODO: FK
+    usuarioCreadorId     String
+    usuarioModificadorId String
 }
 
 enum LaboratorioAbiertoTipo {

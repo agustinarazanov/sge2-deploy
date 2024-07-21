@@ -32,8 +32,8 @@ model Curso {
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @updatedAt
-    usuarioCreadorId     Int // TODO: FK
-    usuarioModificadorId Int // TODO: FK
+    usuarioCreadorId     String
+    usuarioModificadorId String
 }
 
 model Division {
@@ -42,6 +42,9 @@ model Division {
     nombre String
     anio   Int
 
+    fechaCreacion    DateTime @default(now())
+    usuarioCreadorId String
+
     cursos Curso[]
 }
 
@@ -49,6 +52,9 @@ model CursoTurno {
     id Int @id @default(autoincrement())
 
     nombre String
+
+    fechaCreacion    DateTime @default(now())
+    usuarioCreadorId String
 
     cursos Curso[]
 }

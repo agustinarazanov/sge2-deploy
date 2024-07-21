@@ -8,7 +8,9 @@ generator client {
     previewFeatures = ["prismaSchemaFolder"]
 }
 
-// Necessary for Next auth
+// Las propiedades y tablas que estan escritas en ingles, se utilizan por el adapter de NextAuth para el login. No cambiar el nombre de las propiedades.
+// Todas las propiedades que no esten en ingles, deben tener algun valor por defecto o aceptar nulo.
+// https://authjs.dev/getting-started/adapters/prisma#naming-conventions
 model Account {
     id                       String  @id @default(cuid())
     userId                   String  @map("usuario_id")

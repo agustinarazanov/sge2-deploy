@@ -1,26 +1,3 @@
-// Init businesses model
-model Biblioteca {
-    id           Int    @id @default(autoincrement())
-    titulo       String
-    inventario   String
-    bibliotecaId String
-    autor        String
-    anio         String
-    editorial    String
-    idiomas      String
-    isbn         String
-    estado       String
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@unique([inventario])
-    @@index([titulo])
-}
-
 model Libro {
     // PK
     id Int @id @default(autoincrement())
@@ -61,8 +38,8 @@ model Libro {
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @updatedAt
-    usuarioCreadorId     Int // TODO: FK
-    usuarioModificadorId Int // TODO: FK
+    usuarioCreadorId     String
+    usuarioModificadorId String
 
     @@index([bibliotecaId])
     @@index([inventarioId])
@@ -76,7 +53,7 @@ model LibroMateria {
     materia Materia @relation(fields: [materiaId], references: [id])
 
     fechaCreacion    DateTime @default(now())
-    usuarioCreadorId Int // TODO: FK
+    usuarioCreadorId String
 
     @@id([libroId, materiaId])
 }
@@ -88,6 +65,9 @@ model LibroAutor {
 
     libros Libro[]
 
+    fechaCreacion    DateTime @default(now())
+    usuarioCreadorId String
+
     @@index([autorNombre])
 }
 
@@ -98,6 +78,9 @@ model LibroIdioma {
 
     libros Libro[]
 
+    fechaCreacion    DateTime @default(now())
+    usuarioCreadorId String
+
     @@index([idioma])
 }
 
@@ -107,6 +90,9 @@ model LibroEditorial {
     editorial String @unique
 
     libros Libro[]
+
+    fechaCreacion    DateTime @default(now())
+    usuarioCreadorId String
 
     @@index([editorial])
 }
