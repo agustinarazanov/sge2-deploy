@@ -44,6 +44,12 @@ model User {
     reservasCreadas   Reserva[] @relation(name: "reservasCreadas")
     reservasAprobadas Reserva[] @relation(name: "reservasModificadas")
 
+    cursosProfesor Curso[] @relation(name: "cursosProfesor")
+    cursosAyudante Curso[] @relation(name: "cursosAyudante")
+
+    materiasDirector            Materia[] @relation(name: "cursosProfesor")
+    materiasJefeTrabajoPractico Materia[] @relation(name: "cursosAyudante")
+
     @@map("usuario")
 }
 

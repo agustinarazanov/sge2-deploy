@@ -12,8 +12,11 @@ model Materia {
     usuarioCreadorId     String
     usuarioModificadorId String
 
-    directorUserioId            String
-    jefeTrabajoPracticoUserioId String
+    directorUsuarioId String
+    directorUsuario   User   @relation(fields: [directorUsuarioId], references: [id], name: "cursosProfesor")
+
+    jefeTrabajoPracticoUsuarioId String
+    jefeTrabajoPracticoUsuario   User   @relation(fields: [jefeTrabajoPracticoUsuarioId], references: [id], name: "cursosAyudante")
 
     cursos              Curso[]
     libros              LibroMateria[]

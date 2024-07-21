@@ -9,8 +9,11 @@ model Curso {
     dia1 CursoDia
     dia2 CursoDia
 
-    profesorUserId Int // TODO: FK
-    ayudanteUserId Int // TODO: FK
+    profesorUserId String
+    profesorUser   User   @relation(fields: [profesorUserId], references: [id], name: "cursosProfesor")
+
+    ayudanteUserId String
+    ayudanteUser   User   @relation(fields: [ayudanteUserId], references: [id], name: "cursosAyudante")
 
     anioDeCarrera Int
     activo        Boolean
