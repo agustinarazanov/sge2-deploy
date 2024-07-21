@@ -1,0 +1,64 @@
+model Equipo {
+    id Int @id @default(autoincrement())
+
+    inventarioId  Int    @unique
+    modelo        String
+    numeroSerie   String
+    observaciones String
+    palabrasClave String
+    imagen        String
+
+    tipoId Int
+    tipo   EquipoTipo @relation(fields: [tipoId], references: [id])
+
+    marcaId Int
+    marca   EquipoMarca @relation(fields: [marcaId], references: [id])
+
+    sedeId Int
+    sede   Sede @relation(fields: [sedeId], references: [id])
+
+    laboratorioId Int
+    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id])
+
+    armarioId Int
+    armario   Armario @relation(fields: [armarioId], references: [id])
+
+    estanteId Int
+    estante   Estante @relation(fields: [estanteId], references: [id])
+
+    estadoId Int
+    estado   EquipoEstado @relation(fields: [estadoId], references: [id])
+
+    reservas                        ReservaEquipo[]
+    reservaLaboratorioCerradoEquipo ReservaLaboratorioCerradoEquipo[]
+    reservaLaboratorioAbiertoEquipo ReservaLaboratorioAbiertoEquipo[]
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+}
+
+model EquipoMarca {
+    id Int @id @default(autoincrement())
+
+    nombre String
+
+    equipos Equipo[]
+}
+
+model EquipoTipo {
+    id Int @id @default(autoincrement())
+
+    nombre String
+
+    equipos Equipo[]
+}
+
+model EquipoEstado {
+    id Int @id @default(autoincrement())
+
+    nombre String
+
+    equipos Equipo[]
+}

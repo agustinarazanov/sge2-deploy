@@ -1,0 +1,54 @@
+model Materia {
+    id Int @id @default(autoincrement())
+
+    nombre   String
+    codigo   String          @unique
+    anio     Int
+    duracion MateriaDuracion
+    tipo     MateriaTipo
+
+    fechaCreacion             DateTime @default(now())
+    fechaModificacion         DateTime @updatedAt
+    usuarioCreadorId          Int // TODO: FK
+    usuarioModificadorId      Int // TODO: FK
+    directorUserId            Int // TODO: FK
+    jefeTrabajoPracticoUserId Int // TODO: FK
+
+    cursos              Curso[]
+    libros              LibroMateria[]
+    materiaPrerequisito MateriaCorrelativa[] @relation(name: "materiaPrerequisito")
+    correlativa         MateriaCorrelativa[] @relation(name: "correlativa")
+
+    @@index([codigo])
+    @@index([nombre])
+}
+
+model MateriaCorrelativa {
+    materiaPrerequisitoId Int
+    correlativaId         Int
+
+    estatusCorrelativa EstatusCorrelativa
+
+    materiaPrerequisito Materia @relation("materiaPrerequisito", fields: [materiaPrerequisitoId], references: [id])
+    correlativa         Materia @relation("correlativa", fields: [correlativaId], references: [id])
+
+    @@id([materiaPrerequisitoId, correlativaId])
+}
+
+enum MateriaDuracion {
+    ANUAL
+    CUATRIMESTRAL
+    AMBOS
+}
+
+enum MateriaTipo {
+    INTEGRADORA
+    OBLIGATORIA
+    ELECTIVA
+}
+
+enum EstatusCorrelativa {
+    CURSAR_REGULARIZADA
+    CURSAR_APROBADA
+    RENDIR_APROBADA
+}

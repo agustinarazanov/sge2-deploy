@@ -1,98 +1,60 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-generator client {
-    provider = "prisma-client-js"
-}
-
 datasource db {
     provider = "postgresql"
-    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@index([name])
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["prismaSchemaFolder"]
 }
 
 // Necessary for Next auth
 model Account {
     id                       String  @id @default(cuid())
-    userId                   String
-    type                     String
-    provider                 String
-    providerAccountId        String
-    refresh_token            String? // @db.Text
-    access_token             String? // @db.Text
-    expires_at               Int?
-    token_type               String?
+    userId                   String  @map("usuario_id")
+    type                     String  @map("tipo")
+    provider                 String  @map("proveedor")
+    providerAccountId        String  @map("proveedor_id")
+    refresh_token            String? @map("token_refreso")
+    access_token             String? @map("token_acceso")
+    expires_at               Int?    @map("expira")
+    token_type               String? @map("tipo_token")
     scope                    String?
-    id_token                 String? // @db.Text
-    session_state            String?
+    id_token                 String? @map("token_id")
+    session_state            String? @map("estado_sesion")
     user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-    refresh_token_expires_in Int?
+    refresh_token_expires_in Int?    @map("expira_refreso")
 
     @@unique([provider, providerAccountId])
+    @@map("cuenta_de_usuario")
 }
 
 model Session {
     id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
+    sessionToken String   @unique @map("token_sesion")
+    userId       String   @map("usuario_id")
+    expires      DateTime @map("expira")
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
 
-model User {
-    id            String       @id @default(cuid())
-    name          String?
-    email         String?      @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    posts         Post[]
-    books         Biblioteca[]
+    @@map("sesion")
 }
 
 model VerificationToken {
-    identifier String
+    identifier String   @map("identificador")
     token      String   @unique
-    expires    DateTime
+    expires    DateTime @map("expira")
 
     @@unique([identifier, token])
+    @@map("token_verificacion")
 }
 
-// Init businesses model
-model Biblioteca {
-    id           Int    @id @default(autoincrement())
-    titulo       String
-    inventario   String
-    bibliotecaId String
-    autor        String
-    anio         String
-    editorial    String
-    idiomas      String
-    isbn         String
-    estado       String
+model Sede {
+    id Int @id @default(autoincrement())
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    nombre String @unique
 
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@unique([inventario])
-    @@index([titulo])
+    cursos       Curso[]
+    equipos      Equipo[]
+    laboratorios Laboratorio[]
+    libros       Libro[]
 }

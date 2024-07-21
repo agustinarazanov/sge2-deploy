@@ -1,0 +1,65 @@
+model Laboratorio {
+    id Int @id @default(autoincrement())
+
+    nombre  String
+    tienePc Boolean
+
+    esAbierto              Boolean
+    laboratorioAbiertoTipo LaboratorioAbiertoTipo
+
+    sedeId Int
+    sede   Sede @relation(fields: [sedeId], references: [id])
+
+    armarios Armario[]
+    equipos  Equipo[]
+    libros   Libro[]
+
+    reservaLaboratorioCerrado ReservaLaboratorioCerrado[]
+    reservaLaboratorioAbierto ReservaLaboratorioAbierto[]
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+}
+
+model Armario {
+    id Int @id @default(autoincrement())
+
+    nombre String
+
+    laboratorioId Int
+    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id])
+
+    estantes Estante[]
+    equipos  Equipo[]
+    libros   Libro[]
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+}
+
+model Estante {
+    id Int @id @default(autoincrement())
+
+    nombre String
+
+    estanteId Int
+    estante   Armario @relation(fields: [estanteId], references: [id])
+
+    equipos Equipo[]
+    libros  Libro[]
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+}
+
+enum LaboratorioAbiertoTipo {
+    LA
+    TLA_BASICA
+    TLA
+}

@@ -1,0 +1,149 @@
+model Reserva {
+    id Int @id @default(autoincrement())
+
+    estatus         ReservaEstatus
+    fechaHoraInicio DateTime
+    fechaHoraFin    DateTime
+    codigo          String         @unique // TODO: QUE ES?
+    tipo            ReservaTipo
+
+    usuarioId        Int // TODO: FK
+    usuarioApruebaId Int // TODO: FK
+
+    reservaEquipo             ReservaEquipo?
+    reservaLibro              ReservaLibro?
+    reservaLaboratorioCerrado ReservaLaboratorioCerrado?
+    reservaLaboratorioAbierto ReservaLaboratorioAbierto?
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+
+    @@index([usuarioId])
+    @@index([tipo])
+    @@index([estatus])
+    @@index([fechaHoraInicio])
+    @@index([fechaHoraFin])
+}
+
+model ReservaEquipo {
+    id Int @id @default(autoincrement())
+
+    fechaEntregado DateTime
+    numeroReserva  Int // TODO: QUE ES? Se puede reemplazar por `reserva.codigo`?
+
+    reservaId Int     @unique
+    reserva   Reserva @relation(fields: [reservaId], references: [id])
+
+    equipoId Int
+    equipo   Equipo @relation(fields: [equipoId], references: [id])
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+}
+
+model ReservaLibro {
+    id Int @id @default(autoincrement())
+
+    fechaEntregado DateTime
+
+    reservaId Int     @unique
+    reserva   Reserva @relation(fields: [reservaId], references: [id])
+
+    libroId Int
+    libro   Libro @relation(fields: [libroId], references: [id])
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+}
+
+model ReservaLaboratorioCerrado {
+    id Int @id @default(autoincrement())
+
+    reservaId Int     @unique
+    reserva   Reserva @relation(fields: [reservaId], references: [id])
+
+    laboratorioId Int
+    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id])
+
+    cursoId Int
+    curso   Curso @relation(fields: [cursoId], references: [id])
+
+    equipoReservado ReservaLaboratorioCerradoEquipo[]
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+}
+
+model ReservaLaboratorioCerradoEquipo {
+    id Int @id @default(autoincrement())
+
+    cantidad Int
+
+    reservaLaboratorioCerradoId Int
+    reservaLaboratorioCerrado   ReservaLaboratorioCerrado @relation(fields: [reservaLaboratorioCerradoId], references: [id])
+
+    equipoId Int
+    equipo   Equipo @relation(fields: [equipoId], references: [id])
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+}
+
+model ReservaLaboratorioAbierto {
+    id Int @id @default(autoincrement())
+
+    reservaId Int     @unique
+    reserva   Reserva @relation(fields: [reservaId], references: [id])
+
+    laboratorioId Int
+    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id])
+
+    asignadoTutorId Int // TODO: FK
+
+    equipoReservado ReservaLaboratorioAbiertoEquipo[]
+
+    especialidad   String
+    descripcion    String
+    numeroReserva  Int // TODO: QUE ES?
+    mailConfirmado Boolean
+}
+
+model ReservaLaboratorioAbiertoEquipo {
+    id Int @id @default(autoincrement())
+
+    cantidad Int
+
+    reservaLaboratorioAbiertoId Int
+    reservaLaboratorioAbierto   ReservaLaboratorioAbierto @relation(fields: [reservaLaboratorioAbiertoId], references: [id])
+
+    equipoId Int
+    equipo   Equipo @relation(fields: [equipoId], references: [id])
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+}
+
+enum ReservaEstatus {
+    PENDIENTE
+    FINALIZADA
+    CANCELADA
+}
+
+enum ReservaTipo {
+    LABORATORIO_ABIERTO
+    LABORATORIO_CERRADO
+    INVENTARIO
+    LIBRO
+}

@@ -1,0 +1,112 @@
+// Init businesses model
+model Biblioteca {
+    id           Int    @id @default(autoincrement())
+    titulo       String
+    inventario   String
+    bibliotecaId String
+    autor        String
+    anio         String
+    editorial    String
+    idiomas      String
+    isbn         String
+    estado       String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    createdBy   User   @relation(fields: [createdById], references: [id])
+    createdById String
+
+    @@unique([inventario])
+    @@index([titulo])
+}
+
+model Libro {
+    // PK
+    id Int @id @default(autoincrement())
+
+    // Identidad
+    bibliotecaId String @unique // TODO: FK
+    inventarioId String @unique // TODO: FK
+
+    titulo String
+
+    anio Int
+    isbn String @unique
+
+    materias LibroMateria[]
+
+    laboratorioId Int
+    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id])
+
+    armarioId Int
+    armario   Armario @relation(fields: [armarioId], references: [id])
+
+    estanteId Int
+    estante   Estante @relation(fields: [estanteId], references: [id])
+
+    autorId Int
+    autor   LibroAutor @relation(fields: [autorId], references: [id])
+
+    idiomaId Int
+    idioma   LibroIdioma @relation(fields: [idiomaId], references: [id])
+
+    editorialId Int
+    editorial   LibroEditorial @relation(fields: [editorialId], references: [id])
+
+    sedeId Int
+    sede   Sede @relation(fields: [sedeId], references: [id])
+
+    reservas ReservaLibro[]
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+
+    @@index([bibliotecaId])
+    @@index([inventarioId])
+}
+
+model LibroMateria {
+    libroId   Int
+    materiaId Int
+
+    libro   Libro   @relation(fields: [libroId], references: [id])
+    materia Materia @relation(fields: [materiaId], references: [id])
+
+    fechaCreacion    DateTime @default(now())
+    usuarioCreadorId Int // TODO: FK
+
+    @@id([libroId, materiaId])
+}
+
+model LibroAutor {
+    id Int @id @default(autoincrement())
+
+    autorNombre String @unique
+
+    libros Libro[]
+
+    @@index([autorNombre])
+}
+
+model LibroIdioma {
+    id Int @id @default(autoincrement())
+
+    idioma String @unique
+
+    libros Libro[]
+
+    @@index([idioma])
+}
+
+model LibroEditorial {
+    id Int @id @default(autoincrement())
+
+    editorial String @unique
+
+    libros Libro[]
+
+    @@index([editorial])
+}

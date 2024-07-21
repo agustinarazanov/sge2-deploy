@@ -1,0 +1,64 @@
+model Curso {
+    id Int @id @default(autoincrement())
+
+    horaInicio1 String
+    duracion1   String
+    horaInicio2 String
+    duracion2   String
+
+    dia1 CursoDia
+    dia2 CursoDia
+
+    profesorUserId Int // TODO: FK
+    ayudanteUserId Int // TODO: FK
+
+    anioDeCarrera Int
+    activo        Boolean
+    ac            String
+
+    sedeId Int
+    sede   Sede @relation(fields: [sedeId], references: [id])
+
+    materiaId Int
+    materia   Materia @relation(fields: [materiaId], references: [id])
+
+    divisionId Int
+    division   Division @relation(fields: [divisionId], references: [id])
+
+    turnoId Int
+    turno   CursoTurno @relation(fields: [turnoId], references: [id])
+
+    reservaLaboratorioCerrado ReservaLaboratorioCerrado[]
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+}
+
+model Division {
+    id Int @id @default(autoincrement())
+
+    nombre String
+    anio   Int
+
+    cursos Curso[]
+}
+
+model CursoTurno {
+    id Int @id @default(autoincrement())
+
+    nombre String
+
+    cursos Curso[]
+}
+
+enum CursoDia {
+    LUNES
+    MARTES
+    MIERCOLES
+    JUEVES
+    VIERNES
+    SABADO
+    DOMINGO
+}

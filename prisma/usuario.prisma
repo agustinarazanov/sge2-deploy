@@ -1,0 +1,138 @@
+// Las propiedades que estan escritas en ingles, se utilizan por el adapter de NextAuth para el login. No cambiar el nombre de las propiedades.
+// Todas las propiedades que no esten en ingles, deben tener algun valor por defecto o aceptar nulo.
+// https://authjs.dev/getting-started/adapters/prisma#naming-conventions
+model User {
+    id            String    @id @default(cuid())
+    name          String?   @map("nombre")
+    email         String?   @unique
+    emailVerified DateTime? @map("email_verificado")
+    image         String?   @map("imagen")
+
+    apellido        String    @default("")
+    fechaNacimiento DateTime?
+    sexo            Boolean   @default(false)
+    direccion       String    @default("")
+    piso            String    @default("")
+    departamento    String    @default("")
+    ciudad          String    @default("")
+    codigoPostal    String    @default("")
+    telefonoCasa    String    @default("")
+    telefonoCelular String    @default("")
+    telefonoLaboral String    @default("")
+    documentoNumero String    @default("")
+    legajo          String    @unique @default("")
+    gitlab          String    @unique @default("")
+    penalizaciones  Int       @default(0)
+
+    fechaRegistro            DateTime @default(now())
+    fechaUltimoAcceso        DateTime @default(now())
+    fechaUltimaActualizacion DateTime @updatedAt
+
+    documentoTipoId Int
+    documentoTipo   DocumentoTipo @relation(fields: [documentoTipoId], references: [id])
+
+    provinciaIso String
+    provincia    Provincia @relation(fields: [provinciaIso], references: [iso])
+
+    paisIso String
+    pais    Pais   @relation(fields: [paisIso], references: [iso])
+
+    accounts   Account[]
+    sessions   Session[]
+    books      Biblioteca[]
+    usuarioRol UsuarioRol[]
+
+    @@map("usuario")
+}
+
+model UsuarioRol {
+    userId  String
+    usuario User   @relation(fields: [userId], references: [id])
+
+    rolId Int
+    rol   Rol @relation(fields: [rolId], references: [id])
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+
+    @@id([userId, rolId])
+}
+
+model Rol {
+    id Int @id @default(autoincrement())
+
+    nombre String
+
+    usuarios   UsuarioRol[]
+    rolPermiso RolPermiso[]
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+}
+
+model RolPermiso {
+    rolId Int
+    rol   Rol @relation(fields: [rolId], references: [id])
+
+    permisoId Int
+    permiso   Permiso @relation(fields: [permisoId], references: [id])
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+
+    @@id([rolId, permisoId])
+}
+
+model Permiso {
+    id Int @id @default(autoincrement())
+
+    nombre String
+
+    rolPermiso RolPermiso[]
+
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     Int // TODO: FK
+    usuarioModificadorId Int // TODO: FK
+}
+
+model Provincia {
+    iso    String @id
+    nombre String
+
+    paisIso String
+    pais    Pais   @relation(fields: [paisIso], references: [iso])
+
+    usuarios User[]
+
+    @@index([paisIso])
+    @@index([nombre])
+}
+
+model Pais {
+    iso            String @id
+    nombreEspanol  String
+    nombreIngles   String
+    iso3           String
+    codigoNumerico Int
+
+    usuarios   User[]
+    provincias Provincia[]
+
+    @@index([nombreEspanol, nombreIngles])
+    @@index([iso3])
+}
+
+model DocumentoTipo {
+    id Int @id @default(autoincrement())
+
+    nombre String
+
+    usuarios User[]
+}
