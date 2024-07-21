@@ -22,6 +22,7 @@ export const BibliotecaTable = ({ data, filters }: BibliotecaTableProps) => {
 
   const columns = getColumns();
 
+  // TODO: Implement resizing
   return (
     <>
       <DataTable

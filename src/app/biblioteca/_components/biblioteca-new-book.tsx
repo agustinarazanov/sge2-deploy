@@ -3,13 +3,14 @@
 import { Button } from "@/components/ui/button";
 import useNuevoLibroModal from "@/app/_hooks/use-nuevo-libro-modal";
 import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-type NuevoLibroModalProps = {
-  onSubmit: () => void;
-};
+export const BibliotecaNewLibro = () => {
+  const router = useRouter();
 
-export const BibliotecaNewLibro = ({ onSubmit }: NuevoLibroModalProps) => {
-  const nuevoLibroModal = useNuevoLibroModal({ onSubmit });
+  const handleCambioEnBiblioteca = () => router.refresh();
+
+  const nuevoLibroModal = useNuevoLibroModal({ onSubmit: handleCambioEnBiblioteca });
 
   return (
     <>
