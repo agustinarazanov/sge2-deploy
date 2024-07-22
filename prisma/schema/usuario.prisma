@@ -3,39 +3,39 @@
 // https://authjs.dev/getting-started/adapters/prisma#naming-conventions
 model User {
     id            String    @id @default(cuid())
-    name          String?   @map("nombre")
+    name          String?
     email         String?   @unique
-    emailVerified DateTime? @map("email_verificado")
-    image         String?   @map("imagen")
+    emailVerified DateTime?
+    image         String?
 
-    apellido        String    @default("")
+    apellido        String?
     fechaNacimiento DateTime?
     sexo            Boolean   @default(false)
-    direccion       String    @default("")
-    piso            String    @default("")
-    departamento    String    @default("")
-    ciudad          String    @default("")
-    codigoPostal    String    @default("")
-    telefonoCasa    String    @default("")
-    telefonoCelular String    @default("")
-    telefonoLaboral String    @default("")
-    documentoNumero String    @default("")
-    legajo          String    @unique @default("")
-    gitlab          String    @unique @default("")
+    direccion       String?
+    piso            String?
+    departamento    String?
+    ciudad          String?
+    codigoPostal    String?
+    telefonoCasa    String?
+    telefonoCelular String?
+    telefonoLaboral String?
+    documentoNumero String?
+    legajo          String?
+    gitlab          String?
     penalizaciones  Int       @default(0)
 
     fechaRegistro            DateTime @default(now())
     fechaUltimoAcceso        DateTime @default(now())
-    fechaUltimaActualizacion DateTime @updatedAt
+    fechaUltimaActualizacion DateTime @default(now()) @updatedAt
 
-    documentoTipoId Int
-    documentoTipo   DocumentoTipo @relation(fields: [documentoTipoId], references: [id])
+    documentoTipoId Int?
+    documentoTipo   DocumentoTipo? @relation(fields: [documentoTipoId], references: [id])
 
-    provinciaIso String
-    provincia    Provincia @relation(fields: [provinciaIso], references: [iso])
+    provinciaIso String?
+    provincia    Provincia? @relation(fields: [provinciaIso], references: [iso])
 
-    paisIso String
-    pais    Pais   @relation(fields: [paisIso], references: [iso])
+    paisIso String?
+    pais    Pais?   @relation(fields: [paisIso], references: [iso])
 
     accounts   Account[]
     sessions   Session[]
@@ -56,7 +56,6 @@ model User {
     @@index([email(sort: Asc)])
     @@index([legajo(sort: Asc)], map: "usuario_legajo_asc_idx")
     @@index([legajo], type: Hash, map: "usuario_legajo_hash_idx")
-    @@map("usuario")
 }
 
 model UsuarioRol {

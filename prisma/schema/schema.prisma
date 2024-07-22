@@ -13,41 +13,37 @@ generator client {
 // https://authjs.dev/getting-started/adapters/prisma#naming-conventions
 model Account {
     id                       String  @id @default(cuid())
-    userId                   String  @map("usuario_id")
-    type                     String  @map("tipo")
-    provider                 String  @map("proveedor")
-    providerAccountId        String  @map("proveedor_id")
-    refresh_token            String? @map("token_refreso")
-    access_token             String? @map("token_acceso")
-    expires_at               Int?    @map("expira")
-    token_type               String? @map("tipo_token")
+    userId                   String
+    type                     String
+    provider                 String
+    providerAccountId        String
+    refresh_token            String?
+    access_token             String?
+    expires_at               Int?
+    token_type               String?
     scope                    String?
-    id_token                 String? @map("token_id")
-    session_state            String? @map("estado_sesion")
+    id_token                 String?
+    session_state            String?
     user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-    refresh_token_expires_in Int?    @map("expira_refreso")
+    refresh_token_expires_in Int?
 
     @@unique([provider, providerAccountId])
-    @@map("cuenta_de_usuario")
 }
 
 model Session {
     id           String   @id @default(cuid())
-    sessionToken String   @unique @map("token_sesion")
-    userId       String   @map("usuario_id")
-    expires      DateTime @map("expira")
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@map("sesion")
 }
 
 model VerificationToken {
-    identifier String   @map("identificador")
+    identifier String
     token      String   @unique
-    expires    DateTime @map("expira")
+    expires    DateTime
 
     @@unique([identifier, token])
-    @@map("token_verificacion")
 }
 
 model Sede {
