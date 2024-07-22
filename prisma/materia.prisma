@@ -7,11 +7,6 @@ model Materia {
     duracion MateriaDuracion
     tipo     MateriaTipo
 
-    fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
-    usuarioCreadorId     String
-    usuarioModificadorId String
-
     directorUsuarioId String
     directorUsuario   User   @relation(fields: [directorUsuarioId], references: [id], name: "cursosProfesor")
 
@@ -23,8 +18,15 @@ model Materia {
     materiaPrerequisito MateriaCorrelativa[] @relation(name: "materiaPrerequisito")
     correlativa         MateriaCorrelativa[] @relation(name: "correlativa")
 
-    @@index([codigo])
-    @@index([nombre])
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
+    usuarioCreadorId     String
+    usuarioModificadorId String
+
+    @@index([nombre(sort: Asc)])
+    @@index([anio(sort: Asc)])
+    @@index([duracion])
+    @@index([tipo])
 }
 
 model MateriaCorrelativa {

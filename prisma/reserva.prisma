@@ -13,6 +13,9 @@ model Reserva {
     usuarioModificadorId String
     usuarioModificador   User   @relation(fields: [usuarioModificadorId], references: [id], name: "reservasModificadas")
 
+    usuarioTutorId String
+    usuarioTutor   User   @relation(fields: [usuarioTutorId], references: [id], name: "reservaTutor")
+
     reservaEquipo             ReservaEquipo?
     reservaLibro              ReservaLibro?
     reservaLaboratorioCerrado ReservaLaboratorioCerrado?
@@ -22,11 +25,10 @@ model Reserva {
     fechaModificacion DateTime  @updatedAt
     fechaAprobacion   DateTime?
 
-    @@index([usuarioCreadorId])
-    @@index([tipo])
     @@index([estatus])
-    @@index([fechaHoraInicio])
-    @@index([fechaHoraFin])
+    @@index([fechaHoraInicio(sort: Asc)])
+    @@index([fechaHoraFin(sort: Asc)])
+    @@index([tipo])
 }
 
 model ReservaEquipo {
@@ -45,6 +47,8 @@ model ReservaEquipo {
     fechaModificacion    DateTime @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
+
+    @@index([fechaEntregado(sort: Asc)])
 }
 
 model ReservaLibro {
@@ -62,6 +66,8 @@ model ReservaLibro {
     fechaModificacion    DateTime @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
+
+    @@index([fechaEntregado(sort: Asc)])
 }
 
 model ReservaLaboratorioCerrado {
@@ -104,25 +110,27 @@ model ReservaLaboratorioCerradoEquipo {
 model ReservaLaboratorioAbierto {
     id Int @id @default(autoincrement())
 
+    especialidad   String
+    descripcion    String
+    numeroReserva  Int // TODO: QUE ES?
+    mailConfirmado Boolean
+
     reservaId Int     @unique
     reserva   Reserva @relation(fields: [reservaId], references: [id])
 
     laboratorioId Int
     laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id])
 
-    asignadoTutorId Int // TODO: FK
-
     equipoReservado ReservaLaboratorioAbiertoEquipo[]
-
-    especialidad   String
-    descripcion    String
-    numeroReserva  Int // TODO: QUE ES?
-    mailConfirmado Boolean
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
+
+    @@index([especialidad(sort: Asc)])
+    @@index([numeroReserva(sort: Asc)])
+    @@index([mailConfirmado], type: Hash)
 }
 
 model ReservaLaboratorioAbiertoEquipo {

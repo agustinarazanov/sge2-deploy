@@ -1,10 +1,8 @@
 model Libro {
-    // PK
     id Int @id @default(autoincrement())
 
-    // Identidad
-    bibliotecaId String @unique // TODO: FK
-    inventarioId String @unique // TODO: FK
+    bibliotecaId String @unique
+    inventarioId String @unique
 
     titulo String
 
@@ -43,6 +41,8 @@ model Libro {
 
     @@index([bibliotecaId])
     @@index([inventarioId])
+    @@index([titulo(sort: Asc)])
+    @@index([anio(sort: Desc)])
 }
 
 model LibroMateria {
@@ -68,7 +68,7 @@ model LibroAutor {
     fechaCreacion    DateTime @default(now())
     usuarioCreadorId String
 
-    @@index([autorNombre])
+    @@index([autorNombre(sort: Asc)])
 }
 
 model LibroIdioma {
@@ -81,7 +81,7 @@ model LibroIdioma {
     fechaCreacion    DateTime @default(now())
     usuarioCreadorId String
 
-    @@index([idioma])
+    @@index([idioma(sort: Asc)])
 }
 
 model LibroEditorial {
@@ -94,5 +94,5 @@ model LibroEditorial {
     fechaCreacion    DateTime @default(now())
     usuarioCreadorId String
 
-    @@index([editorial])
+    @@index([editorial(sort: Asc)])
 }

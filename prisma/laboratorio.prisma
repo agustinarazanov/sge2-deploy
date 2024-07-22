@@ -21,6 +21,11 @@ model Laboratorio {
     fechaModificacion    DateTime @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
+
+    @@index([nombre(sort: Asc)])
+    @@index([tienePc], type: Hash)
+    @@index([esAbierto], type: Hash)
+    @@index([laboratorioAbiertoTipo])
 }
 
 model Armario {

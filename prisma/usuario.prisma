@@ -43,6 +43,7 @@ model User {
 
     reservasCreadas   Reserva[] @relation(name: "reservasCreadas")
     reservasAprobadas Reserva[] @relation(name: "reservasModificadas")
+    reservasComoTutor Reserva[] @relation(name: "reservaTutor")
 
     cursosProfesor Curso[] @relation(name: "cursosProfesor")
     cursosAyudante Curso[] @relation(name: "cursosAyudante")
@@ -50,6 +51,11 @@ model User {
     materiasDirector            Materia[] @relation(name: "cursosProfesor")
     materiasJefeTrabajoPractico Materia[] @relation(name: "cursosAyudante")
 
+    @@index([name(sort: Asc)])
+    @@index([apellido(sort: Asc)])
+    @@index([email(sort: Asc)])
+    @@index([legajo(sort: Asc)], map: "usuario_legajo_asc_idx")
+    @@index([legajo], type: Hash, map: "usuario_legajo_hash_idx")
     @@map("usuario")
 }
 
@@ -69,7 +75,7 @@ model UsuarioRol {
 model Rol {
     id Int @id @default(autoincrement())
 
-    nombre String
+    nombre String @unique
 
     usuarios   UsuarioRol[]
     rolPermiso RolPermiso[]
@@ -78,6 +84,8 @@ model Rol {
     fechaModificacion    DateTime @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
+
+    @@index([nombre(sort: Asc)])
 }
 
 model RolPermiso {
@@ -96,7 +104,7 @@ model RolPermiso {
 model Permiso {
     id Int @id @default(autoincrement())
 
-    nombre String
+    nombre String @unique
 
     rolPermiso RolPermiso[]
 
@@ -104,6 +112,8 @@ model Permiso {
     fechaModificacion    DateTime @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
+
+    @@index([nombre(sort: Asc)])
 }
 
 model Provincia {
@@ -115,7 +125,6 @@ model Provincia {
 
     usuarios User[]
 
-    @@index([paisIso])
     @@index([nombre])
 }
 
@@ -129,8 +138,9 @@ model Pais {
     usuarios   User[]
     provincias Provincia[]
 
-    @@index([nombreEspanol, nombreIngles])
+    @@index([nombreEspanol(sort: Asc)])
     @@index([iso3])
+    @@index([codigoNumerico])
 }
 
 model DocumentoTipo {

@@ -37,6 +37,9 @@ model Curso {
     fechaModificacion    DateTime @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
+
+    @@index([anioDeCarrera(sort: Asc)])
+    @@index([activo], type: Hash)
 }
 
 model Division {
@@ -49,6 +52,9 @@ model Division {
     usuarioCreadorId String
 
     cursos Curso[]
+
+    @@index([anio(sort: Asc)])
+    @@index([nombre(sort: Asc)])
 }
 
 model CursoTurno {
@@ -60,6 +66,8 @@ model CursoTurno {
     usuarioCreadorId String
 
     cursos Curso[]
+
+    @@index([nombre(sort: Asc)])
 }
 
 enum CursoDia {
