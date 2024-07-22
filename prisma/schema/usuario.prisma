@@ -80,7 +80,7 @@ model Rol {
     rolPermiso RolPermiso[]
 
     fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
 
@@ -108,7 +108,7 @@ model Permiso {
     rolPermiso RolPermiso[]
 
     fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
 

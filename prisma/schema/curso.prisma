@@ -34,7 +34,7 @@ model Curso {
     reservaLaboratorioCerrado ReservaLaboratorioCerrado[]
 
     fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
 

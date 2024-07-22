@@ -44,7 +44,7 @@ model ReservaEquipo {
     equipo   Equipo @relation(fields: [equipoId], references: [id])
 
     fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
 
@@ -63,7 +63,7 @@ model ReservaLibro {
     libro   Libro @relation(fields: [libroId], references: [id])
 
     fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
 
@@ -85,7 +85,7 @@ model ReservaLaboratorioCerrado {
     equipoReservado ReservaLaboratorioCerradoEquipo[]
 
     fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
 }
@@ -102,7 +102,7 @@ model ReservaLaboratorioCerradoEquipo {
     equipo   Equipo @relation(fields: [equipoId], references: [id])
 
     fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
 }
@@ -124,7 +124,7 @@ model ReservaLaboratorioAbierto {
     equipoReservado ReservaLaboratorioAbiertoEquipo[]
 
     fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
 
@@ -145,7 +145,7 @@ model ReservaLaboratorioAbiertoEquipo {
     equipo   Equipo @relation(fields: [equipoId], references: [id])
 
     fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
 }

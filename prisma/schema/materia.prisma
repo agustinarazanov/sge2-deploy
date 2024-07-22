@@ -19,7 +19,7 @@ model Materia {
     correlativa         MateriaCorrelativa[] @relation(name: "correlativa")
 
     fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
 
@@ -39,7 +39,7 @@ model MateriaCorrelativa {
     correlativa         Materia @relation("correlativa", fields: [correlativaId], references: [id])
 
     fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
 

@@ -7,13 +7,32 @@ export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll
   const { pageIndex, pageSize, searchText, orderBy, orderDirection } = input;
 
   const [count, libros] = await ctx.db.$transaction([
-    ctx.db.biblioteca.count(),
-    ctx.db.biblioteca.findMany({
+    ctx.db.libro.count({
+      where: {
+        OR: [
+          {
+            titulo: {
+              contains: searchText,
+            },
+          },
+          {
+            autor: {
+              autorNombre: {
+                contains: searchText,
+              },
+            },
+          },
+        ],
+      },
+    }),
+    ctx.db.libro.findMany({
       where: {
         OR: [
           {
             autor: {
-              contains: searchText,
+              autorNombre: {
+                contains: searchText,
+              },
             },
           },
           {
@@ -40,18 +59,27 @@ export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll
 type InputAddLibro = z.infer<typeof inputAddBooks>;
 export const addLibro = async (ctx: { db: PrismaClient }, input: InputAddLibro, userId: string) => {
   try {
-    const libro = await ctx.db.biblioteca.create({
+    const libro = await ctx.db.libro.create({
       data: {
         anio: input.anio,
-        autor: input.autor,
-        editorial: input.editorial,
-        idioma: input.idioma,
-        inventario: input.inventario,
         isbn: input.isbn,
         titulo: input.titulo,
-        estado: input.estado,
+
+        // TODO: Generar inventarioId y bibliotecaId
+        inventarioId: input.inventario,
         bibliotecaId: Math.random().toString(),
-        createdById: userId,
+
+        usuarioCreadorId: userId,
+        usuarioModificadorId: userId,
+
+        // TODO: Obtener los ids de las entidades
+        laboratorioId: 2,
+        armarioId: 2,
+        estanteId: 1,
+        autorId: 1,
+        idiomaId: 1,
+        editorialId: 1,
+        sedeId: 1,
       },
     });
 
@@ -70,7 +98,7 @@ export const addLibro = async (ctx: { db: PrismaClient }, input: InputAddLibro, 
 type InputDeleteLibro = z.infer<typeof inputEliminarLibro>;
 export const deleteLibro = async (ctx: { db: PrismaClient }, input: InputDeleteLibro) => {
   try {
-    const libro = await ctx.db.biblioteca.delete({
+    const libro = await ctx.db.libro.delete({
       where: {
         id: input.libroId,
       },
@@ -83,7 +111,7 @@ export const deleteLibro = async (ctx: { db: PrismaClient }, input: InputDeleteL
 };
 
 export const countAllLibros = async (ctx: { db: PrismaClient }) => {
-  const count = await ctx.db.biblioteca.count();
+  const count = await ctx.db.libro.count();
 
   return count;
 };
@@ -91,17 +119,19 @@ export const countAllLibros = async (ctx: { db: PrismaClient }) => {
 export const countLibros = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
   const { searchText } = input;
 
-  const count = await ctx.db.biblioteca.count({
+  const count = await ctx.db.libro.count({
     where: {
       OR: [
         {
-          autor: {
+          titulo: {
             contains: searchText,
           },
         },
         {
-          titulo: {
-            contains: searchText,
+          autor: {
+            autorNombre: {
+              contains: searchText,
+            },
           },
         },
       ],

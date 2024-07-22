@@ -58,7 +58,7 @@ const NuevoLibroModal = ({ onSubmit, onCancel }: NuevoLibroModalProps) => {
   const formHook = useForm<FormNuevoLibroType>({
     mode: "onChange",
     defaultValues: {
-      anio: new Date().getFullYear().toString(),
+      anio: new Date().getFullYear(),
       autor: "",
       editorial: "",
       idioma: "",
@@ -94,7 +94,7 @@ const NuevoLibroModal = ({ onSubmit, onCancel }: NuevoLibroModalProps) => {
               </div>
 
               <div className="mt-4 basis-1/3">
-                <FormInput label={"Año"} control={control} name="anio" type={"text"} className="mt-2" />
+                <FormInput label={"Año"} control={control} name="anio" type={"number"} className="mt-2" />
               </div>
 
               <div className="mt-4 basis-1/3">

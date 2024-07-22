@@ -2,10 +2,10 @@ model Laboratorio {
     id Int @id @default(autoincrement())
 
     nombre  String
-    tienePc Boolean
+    tienePc Boolean @default(false)
 
-    esAbierto              Boolean
-    laboratorioAbiertoTipo LaboratorioAbiertoTipo
+    esAbierto              Boolean                 @default(false)
+    laboratorioAbiertoTipo LaboratorioAbiertoTipo?
 
     sedeId Int
     sede   Sede @relation(fields: [sedeId], references: [id])
@@ -18,7 +18,7 @@ model Laboratorio {
     reservaLaboratorioAbierto ReservaLaboratorioAbierto[]
 
     fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
 
@@ -41,7 +41,7 @@ model Armario {
     libros   Libro[]
 
     fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
 }
@@ -51,14 +51,14 @@ model Estante {
 
     nombre String
 
-    estanteId Int
-    estante   Armario @relation(fields: [estanteId], references: [id])
+    armarioId Int
+    armario   Armario @relation(fields: [armarioId], references: [id])
 
     equipos Equipo[]
     libros  Libro[]
 
     fechaCreacion        DateTime @default(now())
-    fechaModificacion    DateTime @updatedAt
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
 }
