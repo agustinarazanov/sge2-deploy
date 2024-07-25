@@ -4,7 +4,7 @@ import { type z } from "zod";
 
 type InputGetAll = z.infer<typeof inputGetBooks>;
 export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText, orderBy, orderDirection } = input;
+  const { pageIndex, pageSize, searchText, orderBy, orderDirection, materia } = input;
 
   const [count, libros] = await ctx.db.$transaction([
     ctx.db.libro.count({
@@ -26,8 +26,28 @@ export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll
       },
     }),
     ctx.db.libro.findMany({
+      include: {
+        autor: true,
+        editorial: true,
+        idioma: true,
+        materias: {
+          include: {
+            materia: true,
+          },
+        },
+      },
       where: {
+        materias: {
+          some: {
+            materiaId: materia ? parseInt(materia) : undefined,
+          },
+        },
         OR: [
+          {
+            titulo: {
+              contains: searchText,
+            },
+          },
           {
             autor: {
               autorNombre: {
@@ -36,7 +56,36 @@ export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll
             },
           },
           {
-            titulo: {
+            inventarioId: {
+              contains: searchText,
+            },
+          },
+          {
+            bibliotecaId: {
+              contains: searchText,
+            },
+          },
+          {
+            anio: {
+              equals: isNaN(parseInt(searchText)) ? undefined : parseInt(searchText),
+            },
+          },
+          {
+            editorial: {
+              editorial: {
+                contains: searchText,
+              },
+            },
+          },
+          {
+            idioma: {
+              idioma: {
+                contains: searchText,
+              },
+            },
+          },
+          {
+            isbn: {
               contains: searchText,
             },
           },

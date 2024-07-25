@@ -43,6 +43,11 @@ export const inputGetBooks = z.object({
     .catch("titulo"),
   orderDirection: z.enum(["asc", "desc"]).default("asc").catch("asc"),
   searchText: z.string().default(""),
+  materia: z
+    .string()
+    .optional()
+    .refine((value) => value && parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
+    .catch(""),
 });
 
 export const inputEliminarLibro = z.object({

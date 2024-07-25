@@ -1,3 +1,4 @@
+import { BibliotecaFilterMateria } from "./biblioteca-filter-materia";
 import { BibliotecaFilterText } from "./biblioteca-filter-text";
 import { BibliotecaNewLibro } from "./biblioteca-new-book";
 
@@ -8,8 +9,13 @@ export const ActionButtons = () => {
         <BibliotecaNewLibro />
       </div>
 
-      <div className="w-full md:basis-1/3">
-        <BibliotecaFilterText />
+      <div className="flex w-full flex-row space-x-3 md:basis-1/3">
+        <div className="md:basis-1/2">
+          <BibliotecaFilterText />
+        </div>
+        <div className="md:basis-1/2">
+          <BibliotecaFilterMateria />
+        </div>
       </div>
     </div>
   );

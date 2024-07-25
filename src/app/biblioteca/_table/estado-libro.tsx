@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { type RouterOutputs } from "@/trpc/react";
 
-type EstadoType = RouterOutputs["biblioteca"]["getAll"]["libros"][number]["estado"];
+type EstadoType = RouterOutputs["biblioteca"]["getAll"]["libros"][number]["disponible"];
 
 type RemoveLibroModalProps = {
   libroId: number;
@@ -9,9 +9,7 @@ type RemoveLibroModalProps = {
 };
 
 export default function EstadoLibro({ libroId, estado }: RemoveLibroModalProps) {
-  // TODO: Modify state onClick
-
-  if (estado === "prestado") {
+  if (!estado) {
     return (
       <Badge variant={"default"} color={"danger"}>
         Prestado

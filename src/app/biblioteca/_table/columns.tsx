@@ -8,6 +8,9 @@ export const getColumns = () => {
   const colHelper = createColumnHelper<LibroData>();
 
   return [
+    colHelper.accessor("inventarioId", {
+      header: "Inventario",
+    }),
     colHelper.accessor("id", {
       header: "Biblioteca ID",
       cell: ({ getValue }) => {
@@ -15,33 +18,48 @@ export const getColumns = () => {
         return `#${id}`;
       },
     }),
-    colHelper.accessor("inventario", {
-      header: "Inventario",
-    }),
     colHelper.accessor("titulo", {
       header: "Titulo",
     }),
-    colHelper.accessor("autor", {
+    colHelper.accessor("autor.autorNombre", {
       header: "Autor",
     }),
     colHelper.accessor("anio", {
       header: "Año",
     }),
-    colHelper.accessor("editorial", {
+    colHelper.display({
       header: "Editorial",
+      cell: (info) => {
+        const editorial = info.row.original.editorial;
+        return editorial.editorial ?? "";
+      },
     }),
-    colHelper.accessor("idioma", {
+    colHelper.display({
       header: "Idioma",
+      cell: (info) => {
+        const idioma = info.row.original.idioma;
+        return idioma.idioma ?? "";
+      },
     }),
     colHelper.accessor("isbn", {
       header: "ISBN",
     }),
-    colHelper.accessor("estado", {
-      header: "Estado",
-      cell: ({ row }) => {
-        const { estado, id } = row.original;
+    colHelper.display({
+      header: "Materias",
+      cell: (info) => {
+        const materiasLibro = info.row.original.materias;
 
-        return <EstadoLibro estado={estado} libroId={id} />;
+        if (!materiasLibro.length) return <span className="hidden">Sin materias</span>;
+
+        return materiasLibro.map((materia) => materia.materia.nombre).join(", ");
+      },
+    }),
+    colHelper.accessor("disponible", {
+      header: "Estado prestamo",
+      cell: ({ row }) => {
+        const { disponible, id } = row.original;
+
+        return <EstadoLibro estado={disponible} libroId={id} />;
       },
     }),
   ] as ColumnDef<LibroData>[];

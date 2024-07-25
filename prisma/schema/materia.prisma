@@ -7,11 +7,11 @@ model Materia {
     duracion MateriaDuracion
     tipo     MateriaTipo
 
-    directorUsuarioId String
-    directorUsuario   User   @relation(fields: [directorUsuarioId], references: [id], name: "cursosProfesor")
+    directorUsuarioId String?
+    directorUsuario   User?   @relation(fields: [directorUsuarioId], references: [id], name: "cursosProfesor")
 
-    jefeTrabajoPracticoUsuarioId String
-    jefeTrabajoPracticoUsuario   User   @relation(fields: [jefeTrabajoPracticoUsuarioId], references: [id], name: "cursosAyudante")
+    jefeTrabajoPracticoUsuarioId String?
+    jefeTrabajoPracticoUsuario   User?   @relation(fields: [jefeTrabajoPracticoUsuarioId], references: [id], name: "cursosAyudante")
 
     cursos              Curso[]
     libros              LibroMateria[]

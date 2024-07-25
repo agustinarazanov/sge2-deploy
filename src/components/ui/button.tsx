@@ -38,6 +38,7 @@ const buttonVariants = cva(
       size: {
         default: cn("px-4 py-2"),
         sm: cn("px-3 py-2 text-xs h-8"),
+        md: cn("px-1 py-3 text-base h-12"),
         lg: cn("px-6 py-3 h-12 text-base"),
       },
     },
@@ -51,6 +52,11 @@ const buttonVariants = cva(
         variant: "icon",
         size: "sm",
         className: cn("p-2 w-8 h-8"),
+      },
+      {
+        variant: "icon",
+        size: "md",
+        className: cn("py-2.5 w-8 h-14"),
       },
     ],
     defaultVariants: {
