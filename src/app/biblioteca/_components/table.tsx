@@ -8,6 +8,7 @@ import { type z } from "zod";
 import { type inputGetBooks } from "@/shared/biblioteca-filter.schema";
 import { useBibliotecaQueryParam } from "../_hooks/use-biblioteca-query-param";
 import { DataTablePaginationStandalone } from "@/components/ui/table/table-pagination-standalone";
+import { EditLibroModal } from "../_table/edit-libro";
 
 type LibroData = RouterOutputs["biblioteca"]["getAll"];
 type BibliotecaFilters = z.infer<typeof inputGetBooks>;
@@ -36,8 +37,14 @@ export const BibliotecaTable = ({ data, filters }: BibliotecaTableProps) => {
           onSortingChange,
         }}
         action={{
+          header: "Acciones",
           cell({ original }) {
-            return <RemoveLibroModal libroId={original.id} nombre={original.titulo} onSubmit={refresh} />;
+            return (
+              <>
+                <EditLibroModal libroId={original.id} />
+                <RemoveLibroModal libroId={original.id} nombre={original.titulo} onSubmit={refresh} />
+              </>
+            );
           },
         }}
       />

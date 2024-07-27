@@ -6,3 +6,4 @@ export * from "./Toast";
 export * from "./Select";
 export * from "./table";
 export * from "./button";
+export * from "./drawer";

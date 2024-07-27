@@ -12,13 +12,13 @@ export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll
         OR: [
           {
             titulo: {
-              contains: searchText,
+              contains: searchText ?? undefined,
             },
           },
           {
             autor: {
               autorNombre: {
-                contains: searchText,
+                contains: searchText ?? undefined,
               },
             },
           },
@@ -45,24 +45,28 @@ export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll
         OR: [
           {
             titulo: {
-              contains: searchText,
+              contains: searchText ?? undefined,
+              mode: "insensitive",
             },
           },
           {
             autor: {
               autorNombre: {
-                contains: searchText,
+                contains: searchText ?? undefined,
+                mode: "insensitive",
               },
             },
           },
           {
             inventarioId: {
-              contains: searchText,
+              contains: searchText ?? undefined,
+              mode: "insensitive",
             },
           },
           {
             bibliotecaId: {
-              contains: searchText,
+              contains: searchText ?? undefined,
+              mode: "insensitive",
             },
           },
           {
@@ -73,20 +77,23 @@ export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll
           {
             editorial: {
               editorial: {
-                contains: searchText,
+                contains: searchText ?? undefined,
+                mode: "insensitive",
               },
             },
           },
           {
             idioma: {
               idioma: {
-                contains: searchText,
+                contains: searchText ?? undefined,
+                mode: "insensitive",
               },
             },
           },
           {
             isbn: {
-              contains: searchText,
+              contains: searchText ?? undefined,
+              mode: "insensitive",
             },
           },
         ],

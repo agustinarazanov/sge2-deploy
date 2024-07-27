@@ -6,9 +6,10 @@ import { INICIO_ROUTE } from "@/shared/server-routes";
 
 type LayoutProps = {
   children: React.ReactNode;
+  modal: React.ReactNode;
 };
 
-export default async function Layout({ children }: LayoutProps) {
+export default async function RootLayout({ children, modal }: LayoutProps) {
   const session = await getServerAuthSession();
 
   if (!session) {
@@ -21,6 +22,8 @@ export default async function Layout({ children }: LayoutProps) {
       <div className="flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">Biblioteca</h3>
         {children}
+        {modal}
+        <div id="modal-root-biblioteca" />
       </div>
     </main>
   );

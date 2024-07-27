@@ -35,6 +35,7 @@ export const BibliotecaFilterMateria = () => {
   const handleFormSubmit = useCallback(
     (newMateriaId: string) => {
       const newParams = new URLSearchParams(searchParams);
+
       newParams.set("materia", newMateriaId);
 
       router.push(`${pathname}?${newParams.toString()}`);
