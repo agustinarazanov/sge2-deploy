@@ -7,3 +7,4 @@ export * from "./Select";
 export * from "./table";
 export * from "./button";
 export * from "./drawer";
+export * from "./dialog";

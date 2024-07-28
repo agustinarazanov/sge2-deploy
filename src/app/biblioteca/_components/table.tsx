@@ -9,6 +9,7 @@ import { type inputGetBooks } from "@/shared/biblioteca-filter.schema";
 import { useBibliotecaQueryParam } from "../_hooks/use-biblioteca-query-param";
 import { DataTablePaginationStandalone } from "@/components/ui/table/table-pagination-standalone";
 import { EditLibroModal } from "../_table/edit-libro";
+import { type Updater, type SortingState } from "@tanstack/react-table";
 
 type LibroData = RouterOutputs["biblioteca"]["getAll"];
 type BibliotecaFilters = z.infer<typeof inputGetBooks>;
@@ -34,7 +35,8 @@ export const BibliotecaTable = ({ data, filters }: BibliotecaTableProps) => {
         pageIndex={pagination.pageIndex}
         config={{
           sorting,
-          onSortingChange,
+          onSortingChange: (updaterOrValue: SortingState | ((prevState: SortingState) => SortingState)) =>
+            onSortingChange(typeof updaterOrValue === "function" ? updaterOrValue([]) : updaterOrValue),
         }}
         action={{
           header: "Acciones",

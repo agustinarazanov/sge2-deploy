@@ -2,7 +2,7 @@ import { inputGetBooks } from "@/shared/biblioteca-filter.schema";
 import { usePathname, useRouter } from "next/navigation";
 import { type z } from "zod";
 import { type PaginationState, type SortingState } from "@tanstack/react-table";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 type BibliotecaFilters = z.infer<typeof inputGetBooks>;
 type OrderByType = z.infer<typeof inputGetBooks>["orderBy"];
@@ -55,8 +55,8 @@ export const useBibliotecaQueryParam = (filters: BibliotecaFilters) => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const [sorting, setSorting] = useState<SortingState>(getSorting(filters));
-  const [pagination, setPagination] = useState<PaginationState>(getPagination(filters));
+  const sorting = getSorting(filters);
+  const pagination = getPagination(filters);
 
   const changeQueryParams = useCallback(
     (filters: BibliotecaFilters) => {
@@ -65,23 +65,32 @@ export const useBibliotecaQueryParam = (filters: BibliotecaFilters) => {
     [pathname, router],
   );
 
-  useEffect(() => {
-    const newFilters = changeSorting(filters, sorting);
+  const onSortingChange = useCallback(
+    (sorting: SortingState) => {
+      console.log("onSortingChange", sorting);
 
-    changeQueryParams({ ...newFilters, pageIndex: "0" });
-  }, [changeQueryParams, filters, sorting]);
+      const newFilters = changeSorting(filters, sorting);
 
-  useEffect(() => {
-    const newFilters = changePagination(filters, pagination);
+      changeQueryParams({ ...newFilters });
+    },
+    [filters, changeQueryParams],
+  );
 
-    changeQueryParams(newFilters);
-  }, [changeQueryParams, filters, pagination]);
+  const onPaginationChange = useCallback(
+    (pagination: PaginationState) => {
+      console.log("onPaginationChange", pagination);
+      const newFilters = changePagination(filters, pagination);
+
+      changeQueryParams({ ...newFilters });
+    },
+    [filters, changeQueryParams],
+  );
 
   return {
     refresh: () => router.refresh(),
     pagination,
     sorting,
-    onSortingChange: setSorting,
-    onPaginationChange: setPagination,
+    onSortingChange,
+    onPaginationChange,
   };
 };
