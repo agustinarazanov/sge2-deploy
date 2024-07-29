@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useMemo } from "react";
+import React from "react";
 import {
   Button,
   Select,
@@ -11,37 +11,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { api } from "@/trpc/react";
 import { XIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { type z } from "zod";
+import { type inputGetBooks } from "@/shared/biblioteca-filter.schema";
+import { useBibliotecaQueryParam } from "../_hooks/use-biblioteca-query-param";
 
-const getMateriaId = (searchParamMateria: string | null | undefined) => {
-  if (!searchParamMateria) return "";
+type BibliotecaFilters = z.infer<typeof inputGetBooks>;
 
-  const materiaId = parseInt(searchParamMateria, 10);
-  return isNaN(materiaId) || materiaId < 1 ? "" : String(materiaId);
+type Props = {
+  filters: BibliotecaFilters;
 };
 
-export const BibliotecaFilterMateria = () => {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const materia = useMemo(() => getMateriaId(searchParams.get("materia")), [searchParams]);
+export const BibliotecaFilterMateria = ({ filters }: Props) => {
+  const { materia, onMateriaChange } = useBibliotecaQueryParam(filters);
 
   const { data: materias, isLoading, isError } = api.materia.getAll.useQuery();
-
-  const handleFormSubmit = useCallback(
-    (newMateriaId: string) => {
-      const newParams = new URLSearchParams(searchParams);
-
-      newParams.set("materia", newMateriaId);
-
-      router.push(`${pathname}?${newParams.toString()}`);
-    },
-    [pathname, router, searchParams],
-  );
 
   if (isLoading) {
     return (
@@ -74,7 +60,7 @@ export const BibliotecaFilterMateria = () => {
 
   return (
     <div className="w-full">
-      <Select onValueChange={(value) => handleFormSubmit(value)} value={materia}>
+      <Select onValueChange={(value) => onMateriaChange(value)} value={materia}>
         <div className="flex flex-row items-center space-x-2">
           <SelectGroup className="w-full">
             <SelectLabel className="sr-only">Selecciona una materia</SelectLabel>
@@ -94,6 +80,7 @@ export const BibliotecaFilterMateria = () => {
           </SelectGroup>
           <Button
             className="h-full"
+            disabled={!materia}
             variant="icon"
             color="outline"
             icon={XIcon}
@@ -101,7 +88,7 @@ export const BibliotecaFilterMateria = () => {
             size="md"
             onClick={(e) => {
               e.preventDefault();
-              handleFormSubmit("");
+              onMateriaChange("");
             }}
           />
         </div>

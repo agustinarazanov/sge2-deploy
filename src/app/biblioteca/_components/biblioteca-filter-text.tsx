@@ -2,37 +2,39 @@
 
 import { Input } from "@/components/ui";
 import { SearchIcon } from "lucide-react";
-import { useDebouncedCallback } from "use-debounce";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useDebounceCallback } from "usehooks-ts";
 import { useEffect, useState } from "react";
+import { useBibliotecaQueryParam } from "../_hooks/use-biblioteca-query-param";
+import { type inputGetBooks } from "@/shared/biblioteca-filter.schema";
+import { type z } from "zod";
 
 const DEBOUNCE_TIME = 300;
 
-export const BibliotecaFilterText = () => {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
+type BibliotecaFilters = z.infer<typeof inputGetBooks>;
 
-  const [searchText, setSearchText] = useState(searchParams.get("searchText")?.toString() ?? "");
+type Props = {
+  filters: BibliotecaFilters;
+};
 
-  const handleFormSubmit = useDebouncedCallback(async () => {
-    const params = searchParams.toString();
-    const newParams = new URLSearchParams(params);
+export const BibliotecaFilterText = ({ filters }: Props) => {
+  const { searchText, onSearchTextChange } = useBibliotecaQueryParam(filters);
 
-    newParams.set("searchText", searchText);
+  // Estado actual del campo de búsqueda
+  const [currentSearchText, setCurrentSearchText] = useState(searchText);
 
-    router.push(pathname + "?" + newParams.toString());
-  }, DEBOUNCE_TIME);
+  // Debounce para evitar que se envíe cada vez que se escribe
+  const handleFormSubmit = useDebounceCallback(async () => onSearchTextChange(currentSearchText), DEBOUNCE_TIME);
 
   useEffect(() => {
     void handleFormSubmit();
 
     return () => handleFormSubmit.cancel();
-  }, [handleFormSubmit, searchText]);
+  }, [handleFormSubmit, currentSearchText]);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setSearchText(e.target.value);
+
+    setCurrentSearchText(e.target.value);
   };
 
   return (
@@ -42,11 +44,9 @@ export const BibliotecaFilterText = () => {
         name="searchText"
         unit={<SearchIcon className="relative top-0.5 h-4 w-4 text-sub" />}
         type={"text"}
-        value={searchText}
+        value={currentSearchText}
         onChange={handleTextChange}
-        onKeyUp={(e) => {
-          if (e.key === "Escape") setSearchText("");
-        }}
+        onKeyUp={(e) => e.key === "Escape" && onSearchTextChange("")}
         autoFocus
       />
     </form>

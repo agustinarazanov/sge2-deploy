@@ -2,7 +2,7 @@ import { inputGetBooks } from "@/shared/biblioteca-filter.schema";
 import { usePathname, useRouter } from "next/navigation";
 import { type z } from "zod";
 import { type PaginationState, type SortingState } from "@tanstack/react-table";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 type BibliotecaFilters = z.infer<typeof inputGetBooks>;
 type OrderByType = z.infer<typeof inputGetBooks>["orderBy"];
@@ -39,6 +39,28 @@ const changePagination = (filters: BibliotecaFilters, newPagination: PaginationS
   return filtersTyped;
 };
 
+const changeSearchText = (filters: BibliotecaFilters, searchText: string): BibliotecaFilters => {
+  const newFilters: BibliotecaFilters = {
+    ...filters,
+    searchText,
+  };
+
+  const filtersTyped = inputGetBooks.parse(newFilters);
+
+  return filtersTyped;
+};
+
+const changeMateria = (filters: BibliotecaFilters, materia: string): BibliotecaFilters => {
+  const newFilters: BibliotecaFilters = {
+    ...filters,
+    materia,
+  };
+
+  const filtersTyped = inputGetBooks.parse(newFilters);
+
+  return filtersTyped;
+};
+
 const getPagination = (filters: BibliotecaFilters): { pageSize: number; pageIndex: number } => {
   const { pageIndex, pageSize } = filters;
 
@@ -57,6 +79,8 @@ export const useBibliotecaQueryParam = (filters: BibliotecaFilters) => {
 
   const sorting = getSorting(filters);
   const pagination = getPagination(filters);
+  const searchText = filters.searchText;
+  const materia = filters.materia;
 
   const changeQueryParams = useCallback(
     (filters: BibliotecaFilters) => {
@@ -67,8 +91,6 @@ export const useBibliotecaQueryParam = (filters: BibliotecaFilters) => {
 
   const onSortingChange = useCallback(
     (sorting: SortingState) => {
-      console.log("onSortingChange", sorting);
-
       const newFilters = changeSorting(filters, sorting);
 
       changeQueryParams({ ...newFilters });
@@ -78,8 +100,25 @@ export const useBibliotecaQueryParam = (filters: BibliotecaFilters) => {
 
   const onPaginationChange = useCallback(
     (pagination: PaginationState) => {
-      console.log("onPaginationChange", pagination);
       const newFilters = changePagination(filters, pagination);
+
+      changeQueryParams({ ...newFilters });
+    },
+    [filters, changeQueryParams],
+  );
+
+  const onSearchTextChange = useCallback(
+    (searchText: string) => {
+      const newFilters = changeSearchText(filters, searchText);
+
+      changeQueryParams({ ...newFilters });
+    },
+    [filters, changeQueryParams],
+  );
+
+  const onMateriaChange = useCallback(
+    (materia: string) => {
+      const newFilters = changeMateria(filters, materia);
 
       changeQueryParams({ ...newFilters });
     },
@@ -90,7 +129,11 @@ export const useBibliotecaQueryParam = (filters: BibliotecaFilters) => {
     refresh: () => router.refresh(),
     pagination,
     sorting,
+    searchText,
+    materia,
     onSortingChange,
     onPaginationChange,
+    onSearchTextChange,
+    onMateriaChange,
   };
 };
