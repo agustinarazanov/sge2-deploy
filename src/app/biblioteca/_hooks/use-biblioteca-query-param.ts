@@ -43,6 +43,7 @@ const changeSearchText = (filters: BibliotecaFilters, searchText: string): Bibli
   const newFilters: BibliotecaFilters = {
     ...filters,
     searchText,
+    pageIndex: "0",
   };
 
   const filtersTyped = inputGetBooks.parse(newFilters);
@@ -54,6 +55,7 @@ const changeMateria = (filters: BibliotecaFilters, materia: string): BibliotecaF
   const newFilters: BibliotecaFilters = {
     ...filters,
     materia,
+    pageIndex: "0",
   };
 
   const filtersTyped = inputGetBooks.parse(newFilters);
