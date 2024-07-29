@@ -37,6 +37,16 @@ export const BibliotecaFilterText = ({ filters }: Props) => {
     setCurrentSearchText(e.target.value);
   };
 
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Escape") {
+      onSearchTextChange("");
+    }
+
+    if (e.key === "Enter") {
+      onSearchTextChange(currentSearchText);
+    }
+  };
+
   return (
     <form onSubmit={() => handleFormSubmit.flush()} className="w-full">
       <Input
@@ -46,7 +56,7 @@ export const BibliotecaFilterText = ({ filters }: Props) => {
         type={"text"}
         value={currentSearchText}
         onChange={handleTextChange}
-        onKeyUp={(e) => e.key === "Escape" && onSearchTextChange("")}
+        onKeyUp={handleKeyUp}
         autoFocus
       />
     </form>
