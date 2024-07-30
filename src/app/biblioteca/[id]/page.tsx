@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { LibroForm } from "./libro-form";
-import { LibroFormButtons } from "./libro-form-buttons";
 
 type PageProps = {
   params: { id?: string };
@@ -11,18 +10,13 @@ type PageProps = {
 export default function PageLibroDetails({ params: { id } }: PageProps) {
   const router = useRouter();
 
-  const handleClickCancel = () => {
-    router.back();
-  };
+  const handleClickCancel = () => router.back();
 
-  const handleClickSave = () => {
-    router.push("/biblioteca");
-  };
+  const handleClickSave = () => router.push("/biblioteca");
 
   return (
     <>
-      <LibroForm id={id} />
-      <LibroFormButtons handleClickCancel={handleClickCancel} handleClickSave={handleClickSave} />
+      <LibroForm id={id} onCancel={handleClickCancel} onSubmit={handleClickSave} />
     </>
   );
 }

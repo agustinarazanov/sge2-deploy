@@ -3,6 +3,7 @@ import {
   type inputAddBooks,
   type inputGetBooks,
   type inputGetLibro,
+  type inputEditBooks,
 } from "@/shared/biblioteca-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
@@ -10,6 +11,68 @@ import { type z } from "zod";
 type InputGetAll = z.infer<typeof inputGetBooks>;
 export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
   const { pageIndex, pageSize, searchText, orderBy, orderDirection, materia } = input;
+
+  const filtrosWhereLibro: Prisma.LibroWhereInput = {
+    ...(searchText
+      ? {
+          OR: [
+            {
+              titulo: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
+            {
+              autor: {
+                autorNombre: {
+                  contains: searchText ?? undefined,
+                  mode: "insensitive",
+                },
+              },
+            },
+            {
+              inventarioId: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
+            {
+              bibliotecaId: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
+            {
+              anio: {
+                equals: isNaN(parseInt(searchText)) ? undefined : parseInt(searchText),
+              },
+            },
+            {
+              isbn: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
+            {
+              editorial: {
+                editorial: {
+                  contains: searchText ?? undefined,
+                  mode: "insensitive",
+                },
+              },
+            },
+            {
+              idioma: {
+                idioma: {
+                  contains: searchText ?? undefined,
+                  mode: "insensitive",
+                },
+              },
+            },
+          ],
+        }
+      : {}),
+  };
 
   const [count, libros] = await ctx.db.$transaction([
     ctx.db.libro.count({
@@ -42,66 +105,16 @@ export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll
         },
       },
       where: {
-        materias: {
-          some: {
-            materiaId: materia ? parseInt(materia) : undefined,
-          },
-        },
-        OR: [
-          {
-            titulo: {
-              contains: searchText ?? undefined,
-              mode: "insensitive",
-            },
-          },
-          {
-            autor: {
-              autorNombre: {
-                contains: searchText ?? undefined,
-                mode: "insensitive",
+        ...(materia
+          ? {
+              materias: {
+                some: {
+                  materiaId: parseInt(materia),
+                },
               },
-            },
-          },
-          {
-            inventarioId: {
-              contains: searchText ?? undefined,
-              mode: "insensitive",
-            },
-          },
-          {
-            bibliotecaId: {
-              contains: searchText ?? undefined,
-              mode: "insensitive",
-            },
-          },
-          {
-            anio: {
-              equals: isNaN(parseInt(searchText)) ? undefined : parseInt(searchText),
-            },
-          },
-          {
-            editorial: {
-              editorial: {
-                contains: searchText ?? undefined,
-                mode: "insensitive",
-              },
-            },
-          },
-          {
-            idioma: {
-              idioma: {
-                contains: searchText ?? undefined,
-                mode: "insensitive",
-              },
-            },
-          },
-          {
-            isbn: {
-              contains: searchText ?? undefined,
-              mode: "insensitive",
-            },
-          },
-        ],
+            }
+          : {}),
+        ...filtrosWhereLibro,
       },
       orderBy: {
         [orderBy]: orderDirection,
@@ -194,33 +207,43 @@ export const deleteLibro = async (ctx: { db: PrismaClient }, input: InputDeleteL
   }
 };
 
-export const countAllLibros = async (ctx: { db: PrismaClient }) => {
-  const count = await ctx.db.libro.count();
+type InputEditLibro = z.infer<typeof inputEditBooks>;
+export const editLibro = async (ctx: { db: PrismaClient }, input: InputEditLibro, userId: string) => {
+  try {
+    const libro = await ctx.db.libro.update({
+      data: {
+        anio: input.anio,
+        isbn: input.isbn,
+        titulo: input.titulo,
 
-  return count;
+        // TODO: Generar inventarioId y bibliotecaId
+        inventarioId: input.inventario,
+        bibliotecaId: Math.random().toString(),
+
+        usuarioModificadorId: userId,
+
+        // TODO: Obtener los ids de las entidades
+        laboratorioId: 2,
+        armarioId: 2,
+        estanteId: 1,
+        autorId: 1,
+        idiomaId: 1,
+        editorialId: 1,
+        sedeId: 1,
+      },
+      where: {
+        id: input.id,
+      },
+    });
+
+    return libro;
+  } catch (error) {
+    throw new Error(`Error modificando libro ${input.id}`);
+  }
 };
 
-export const countLibros = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { searchText } = input;
-
-  const count = await ctx.db.libro.count({
-    where: {
-      OR: [
-        {
-          titulo: {
-            contains: searchText,
-          },
-        },
-        {
-          autor: {
-            autorNombre: {
-              contains: searchText,
-            },
-          },
-        },
-      ],
-    },
-  });
+export const countAllLibros = async (ctx: { db: PrismaClient }) => {
+  const count = await ctx.db.libro.count();
 
   return count;
 };
