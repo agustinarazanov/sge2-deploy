@@ -1,6 +1,10 @@
 "use client";
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui";
+import ModalDrawer from "@/app/_components/modal/modal-drawer";
+import { LibroForm } from "@/app/biblioteca/[id]/libro-form";
+import { LibroFormButtons } from "@/app/biblioteca/[id]/libro-form-buttons";
+import PageLibroDetails from "@/app/biblioteca/[id]/page";
+import { ScrollArea } from "@/components/ui";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -12,25 +16,37 @@ export default function PageDetails({ params: { id } }: PageProps) {
   const [open, setOpen] = useState(true);
   const router = useRouter();
 
-  const closeModal = () => {
-    setOpen(false);
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      setOpen(false);
+      router.back();
+    }
+  };
+
+  const handleClickSave = () => {
     router.back();
   };
 
+  const handleClickCancel = () => {
+    handleOpenChange(false);
+  };
+
   return (
-    <>
-      <Dialog open={open} onOpenChange={(open) => !open && closeModal()}>
-        <DialogTrigger></DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>PAGE MODAL {id}</DialogTitle>
-            <DialogDescription>
-              This action cannot be undone. This will permanently delete your account and remove your data from our
-              servers.
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    </>
+    <ModalDrawer
+      titulo={"Detalle"}
+      description={"Esta es la página de detalles del libro."}
+      open={open}
+      onOpenChange={handleOpenChange}
+      trigger={<></>}
+      className={"max-h-[calc(100vh_-_10%)]"}
+    >
+      <div className="flex max-h-max w-full flex-col  gap-4">
+        <ScrollArea className="max-h-[calc(100vh_-_30%)] w-full overflow-auto px-2">
+          <LibroForm id={id} />
+        </ScrollArea>
+
+        <LibroFormButtons handleClickCancel={handleClickCancel} handleClickSave={handleClickSave} />
+      </div>
+    </ModalDrawer>
   );
 }

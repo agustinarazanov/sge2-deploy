@@ -1,15 +1,15 @@
 "use client";
 
 import { DataTable } from "@/components/ui";
-import { getColumns } from "../_table/columns";
-import RemoveLibroModal from "../_table/remove-libro";
+import RemoveLibroModal from "./remove-libro";
 import { type RouterOutputs } from "@/trpc/react";
 import { type z } from "zod";
 import { type inputGetBooks } from "@/shared/biblioteca-filter.schema";
 import { useBibliotecaQueryParam } from "../_hooks/use-biblioteca-query-param";
 import { DataTablePaginationStandalone } from "@/components/ui/table/table-pagination-standalone";
-import { EditLibroModal } from "../_table/edit-libro";
+import { EditLibroModal } from "./edit-libro";
 import { type SortingState } from "@tanstack/react-table";
+import { getColumns } from "./columns";
 
 type LibroData = RouterOutputs["biblioteca"]["getAll"];
 type BibliotecaFilters = z.infer<typeof inputGetBooks>;

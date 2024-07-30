@@ -53,3 +53,7 @@ export const inputGetBooks = z.object({
 export const inputEliminarLibro = z.object({
   libroId: z.number(),
 });
+
+export const inputGetLibro = z.object({
+  libroId: z.number(),
+});

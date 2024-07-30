@@ -7,10 +7,8 @@ type EditLibroModalProps = {
 
 export const EditLibroModal = (props: EditLibroModalProps) => {
   return (
-    <>
-      <Link key={props.libroId} href={`/biblioteca/${props.libroId}`} passHref prefetch={false}>
-        <EditIcon />
-      </Link>
-    </>
+    <Link key={props.libroId} href={`/biblioteca/${props.libroId}`} passHref prefetch={false}>
+      <EditIcon />
+    </Link>
   );
 };

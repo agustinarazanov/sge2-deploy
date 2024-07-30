@@ -5,6 +5,7 @@ import { SearchIcon } from "lucide-react";
 import { useBibliotecaQueryParam } from "../_hooks/use-biblioteca-query-param";
 import { type inputGetBooks } from "@/shared/biblioteca-filter.schema";
 import { type z } from "zod";
+import { useState } from "react";
 
 type BibliotecaFilters = z.infer<typeof inputGetBooks>;
 
@@ -15,15 +16,21 @@ type Props = {
 export const BibliotecaFilterText = ({ filters }: Props) => {
   const { searchText, onSearchTextChange } = useBibliotecaQueryParam(filters);
 
+  const [currentSearchText, setCurrentSearchText] = useState(searchText);
+
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-    onSearchTextChange(e.target.value);
+    setCurrentSearchText(e.target.value);
   };
 
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Escape") {
       onSearchTextChange("");
+    }
+
+    if (e.key === "Enter") {
+      onSearchTextChange(currentSearchText);
     }
   };
 
@@ -33,8 +40,8 @@ export const BibliotecaFilterText = ({ filters }: Props) => {
         placeholder={"Buscar por título o por autor"}
         name="searchText"
         unit={<SearchIcon className="relative top-0.5 h-4 w-4 text-sub" />}
-        type={"text"}
-        value={searchText}
+        type={"search"}
+        value={currentSearchText}
         onChange={handleTextChange}
         onKeyUp={handleKeyUp}
         autoFocus

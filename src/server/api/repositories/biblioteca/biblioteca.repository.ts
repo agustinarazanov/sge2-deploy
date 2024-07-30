@@ -1,4 +1,9 @@
-import { type inputEliminarLibro, type inputAddBooks, type inputGetBooks } from "@/shared/biblioteca-filter.schema";
+import {
+  type inputEliminarLibro,
+  type inputAddBooks,
+  type inputGetBooks,
+  type inputGetLibro,
+} from "@/shared/biblioteca-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 
@@ -110,6 +115,29 @@ export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll
     count,
     libros,
   };
+};
+
+type InputGetLibroPorId = z.infer<typeof inputGetLibro>;
+export const getLibroPorId = async (ctx: { db: PrismaClient }, input: InputGetLibroPorId) => {
+  const { libroId } = input;
+
+  const libro = await ctx.db.libro.findUnique({
+    include: {
+      autor: true,
+      editorial: true,
+      idioma: true,
+      materias: {
+        include: {
+          materia: true,
+        },
+      },
+    },
+    where: {
+      id: libroId,
+    },
+  });
+
+  return libro;
 };
 
 type InputAddLibro = z.infer<typeof inputAddBooks>;

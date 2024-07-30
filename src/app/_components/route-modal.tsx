@@ -1,6 +1,15 @@
 "use client";
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -26,9 +35,14 @@ export default function RouteModal({ title, children, description }: ModalProps)
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
-            <DialogContent>{children}</DialogContent>
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
+          {children}
+          <DialogFooter>
+            <Button title="Cancelar" variant="default" color="outline" onClick={closeModal}>
+              Cancelar
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>

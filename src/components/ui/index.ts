@@ -8,3 +8,5 @@ export * from "./table";
 export * from "./button";
 export * from "./drawer";
 export * from "./dialog";
+export * from "./alert-dialog";
+export * from "./scroll-area";
