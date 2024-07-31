@@ -10,3 +10,4 @@ export * from "./drawer";
 export * from "./dialog";
 export * from "./alert-dialog";
 export * from "./scroll-area";
+export * from "./autocomplete/autocomplete";

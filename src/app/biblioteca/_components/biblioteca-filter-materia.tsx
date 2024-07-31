@@ -1,22 +1,13 @@
 "use client";
 
-import React from "react";
-import {
-  Button,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui";
+import React, { useMemo, useState } from "react";
+import { Autocomplete, Select, SelectTrigger, SelectValue } from "@/components/ui";
 import { api } from "@/trpc/react";
-import { XIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { type z } from "zod";
 import { type inputGetBooks } from "@/shared/biblioteca-filter.schema";
 import { useBibliotecaQueryParam } from "../_hooks/use-biblioteca-query-param";
+import { estaDentroDe } from "@/shared/string-compare";
 
 type BibliotecaFilters = z.infer<typeof inputGetBooks>;
 
@@ -27,14 +18,36 @@ type Props = {
 export const BibliotecaFilterMateria = ({ filters }: Props) => {
   const { materia, onMateriaChange } = useBibliotecaQueryParam(filters);
 
-  const { data: materias, isLoading, isError } = api.materia.getAll.useQuery();
+  const [query, setQuery] = useState("");
+
+  const { data, isLoading, isError } = api.materia.getAll.useQuery();
+
+  const materias = useMemo(() => {
+    if (!data) return [];
+
+    return data
+      .map((item) => {
+        const { id, nombre, codigo } = item;
+        return {
+          id: id,
+          label: `${nombre} (${codigo})`,
+          data: item,
+        };
+      })
+      .filter((item) => !query || estaDentroDe(query, item.label));
+  }, [data, query]);
+
+  const currentMateria = useMemo(() => {
+    if (!materias) return null;
+
+    return materias.find((item) => String(item.id) === materia);
+  }, [materias, materia]);
 
   if (isLoading) {
     return (
       <div className="w-full">
         <div className="flex flex-row items-center space-x-2">
           <Skeleton className="h-10 w-full" />
-          <Skeleton className="h-10 w-10" />
         </div>
       </div>
     );
@@ -60,39 +73,46 @@ export const BibliotecaFilterMateria = ({ filters }: Props) => {
 
   return (
     <div className="w-full">
-      <Select onValueChange={(value) => onMateriaChange(value)} value={materia}>
-        <div className="flex flex-row items-center space-x-2">
-          <SelectGroup className="w-full">
-            <SelectLabel className="sr-only">Selecciona una materia</SelectLabel>
-            <SelectTrigger
-              id="selectMateria"
-              className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
-            >
-              <SelectValue placeholder="Selecciona una materia" />
-            </SelectTrigger>
-            <SelectContent>
-              {materias?.map((option) => (
-                <SelectItem key={option.id} value={String(option.id)}>
-                  {option.nombre} ({option.codigo})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectGroup>
-          <Button
-            className="h-full"
-            disabled={!materia}
-            variant="icon"
-            color="outline"
-            icon={XIcon}
-            type="button"
-            size="md"
-            onClick={(e) => {
-              e.preventDefault();
-              onMateriaChange("");
-            }}
-          />
-        </div>
-      </Select>
+      <Autocomplete
+        async
+        items={materias}
+        noOptionsComponent={
+          <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm">
+            <span>No se encontró la materia</span>
+          </div>
+        }
+        className={""}
+        onQueryChange={setQuery}
+        isLoading={isLoading}
+        placeholder="Buscar por nombre de materia"
+        clearable
+        debounceTime={0}
+        value={currentMateria}
+        onChange={(value) => onMateriaChange(value?.id ? String(value.id) : "")}
+      />
     </div>
   );
 };
+
+// {
+//   /* <Select onValueChange={(value) => onMateriaChange(value)} value={materia}>
+//         <div className="flex flex-row items-center space-x-2">
+//           <SelectGroup className="w-full">
+//             <SelectLabel className="sr-only">Selecciona una materia</SelectLabel>
+//             <SelectTrigger
+//               id="selectMateria"
+//               className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
+//             >
+//               <SelectValue placeholder="Selecciona una materia" />
+//             </SelectTrigger>
+//             <SelectContent>
+//               {materias.map((option) => (
+//                 <SelectItem key={option.id} value={String(option.id)}>
+//                   {option.nombre} ({option.codigo})
+//                 </SelectItem>
+//               ))}
+//             </SelectContent>
+//           </SelectGroup>
+//         </div>
+//       </Select> */
+// }
