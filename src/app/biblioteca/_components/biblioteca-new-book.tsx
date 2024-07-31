@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
-import { LibroForm } from "../[id]/libro-form";
+import { LibroForm } from "../libros/[id]/libro-form";
 import { useState } from "react";
 
 export const BibliotecaNewLibro = () => {

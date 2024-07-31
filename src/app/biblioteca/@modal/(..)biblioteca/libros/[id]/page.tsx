@@ -1,7 +1,7 @@
 "use client";
 
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
-import { LibroForm } from "@/app/biblioteca/[id]/libro-form";
+import { LibroForm } from "@/app/biblioteca/libros/[id]/libro-form";
 // import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
