@@ -3,6 +3,7 @@ type AppRoute = {
   label: string;
   isPublic?: boolean;
   inConstruction?: boolean;
+  subRutas?: AppRoute[];
 };
 
 export const INICIO_ROUTE: AppRoute = {
@@ -15,6 +16,18 @@ export const BIBLIOTECA_ROUTE: AppRoute = {
   href: "/biblioteca",
   label: "Biblioteca",
   isPublic: false,
+  subRutas: [
+    {
+      href: "/biblioteca",
+      label: "Listado",
+      isPublic: false,
+    },
+    {
+      href: "/biblioteca/prestamos",
+      label: "Prestamos",
+      isPublic: false,
+    },
+  ],
 };
 
 const LABORATORIO_ROUTE: AppRoute = {
