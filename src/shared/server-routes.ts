@@ -44,11 +44,22 @@ const LABORATORIO_ABIERTO_ROUTE: AppRoute = {
   inConstruction: true,
 };
 
-const EQUIPOS_ROUTE: AppRoute = {
+export const EQUIPOS_ROUTE: AppRoute = {
   href: "/equipos",
   label: "Equipos",
   isPublic: false,
-  inConstruction: true,
+  subRutas: [
+    {
+      href: "/equipos",
+      label: "Listado",
+      isPublic: false,
+    },
+    {
+      href: "/equipos/prestamos",
+      label: "Prestamos",
+      isPublic: false,
+    },
+  ],
 };
 
 export const APP_ROUTES: AppRoute[] = [

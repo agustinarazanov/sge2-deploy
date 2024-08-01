@@ -6,7 +6,7 @@ import { api } from "@/trpc/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { type z } from "zod";
 import { type inputGetBooks } from "@/shared/biblioteca-filter.schema";
-import { useBibliotecaQueryParam } from "../_hooks/use-biblioteca-query-param";
+import { useBibliotecaQueryParam } from "../../_hooks/use-biblioteca-query-param";
 import { estaDentroDe } from "@/shared/string-compare";
 
 type BibliotecaFilters = z.infer<typeof inputGetBooks>;

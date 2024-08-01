@@ -2,19 +2,19 @@
 
 import { Input } from "@/components/ui";
 import { SearchIcon } from "lucide-react";
-import { useBibliotecaQueryParam } from "../_hooks/use-biblioteca-query-param";
-import { type inputGetBooks } from "@/shared/biblioteca-filter.schema";
+import { useEquiposQueryParam } from "../../_hooks/use-equipos-query-param";
 import { type z } from "zod";
 import { useState } from "react";
+import { type inputGetEquipos } from "@/shared/equipos-filter.schema";
 
-type BibliotecaFilters = z.infer<typeof inputGetBooks>;
+type EquiposFilters = z.infer<typeof inputGetEquipos>;
 
 type Props = {
-  filters: BibliotecaFilters;
+  filters: EquiposFilters;
 };
 
-export const BibliotecaFilterText = ({ filters }: Props) => {
-  const { searchText, onSearchTextChange } = useBibliotecaQueryParam(filters);
+export const EquiposFilterText = ({ filters }: Props) => {
+  const { searchText, onSearchTextChange } = useEquiposQueryParam(filters);
 
   const [currentSearchText, setCurrentSearchText] = useState(searchText);
 
@@ -37,7 +37,7 @@ export const BibliotecaFilterText = ({ filters }: Props) => {
   return (
     <form onSubmit={(e) => e.preventDefault()} className="w-full">
       <Input
-        placeholder={"Buscar por título o por autor"}
+        placeholder={"Texto a buscar"}
         name="searchText"
         unit={<SearchIcon className="relative top-0.5 h-4 w-4 text-sub" />}
         type={"search"}

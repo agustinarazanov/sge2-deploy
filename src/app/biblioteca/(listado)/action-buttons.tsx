@@ -1,6 +1,6 @@
 import { type z } from "zod";
-import { BibliotecaFilterMateria } from "./biblioteca-filter-materia";
-import { BibliotecaFilterText } from "./biblioteca-filter-text";
+import { BibliotecaFilterMateria } from "./filtros/biblioteca-filter-materia";
+import { BibliotecaFilterText } from "./filtros/biblioteca-filter-text";
 import { BibliotecaNewLibro } from "./biblioteca-new-book";
 import { type inputGetBooks } from "@/shared/biblioteca-filter.schema";
 import Link from "next/link";

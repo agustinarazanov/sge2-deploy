@@ -1,9 +1,9 @@
 import { type ReadonlyURLSearchParams } from "next/navigation";
-import { ActionButtons } from "./_components/action-buttons";
-import BibliotecaTableContainer from "./_components/biblioteca-table-container";
+import { ActionButtons } from "./(listado)/action-buttons";
+import BibliotecaTableContainer from "./(listado)/biblioteca-table-container";
 import { inputGetBooks } from "@/shared/biblioteca-filter.schema";
 import { Suspense, useMemo } from "react";
-import LoadingBibliotecaTable from "./_components/loading-biblioteca-table";
+import LoadingBibliotecaTable from "./(listado)/loading-biblioteca-table";
 
 type PageProps = {
   searchParams: ReadonlyURLSearchParams;
