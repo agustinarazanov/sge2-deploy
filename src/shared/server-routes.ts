@@ -62,12 +62,31 @@ export const EQUIPOS_ROUTE: AppRoute = {
   ],
 };
 
+export const CURSOS_ROUTE: AppRoute = {
+  href: "/cursos",
+  label: "Cursos",
+  isPublic: false,
+  subRutas: [
+    {
+      href: "/cursos",
+      label: "Listado",
+      isPublic: false,
+    },
+    {
+      href: "/cursos/prestamos",
+      label: "Prestamos",
+      isPublic: false,
+    },
+  ],
+};
+
 export const APP_ROUTES: AppRoute[] = [
   INICIO_ROUTE,
   BIBLIOTECA_ROUTE,
+  CURSOS_ROUTE,
+  EQUIPOS_ROUTE,
   LABORATORIO_ROUTE,
   LABORATORIO_ABIERTO_ROUTE,
-  EQUIPOS_ROUTE,
 ];
 
 export const APP_ROUTES_MAP = APP_ROUTES.reduce(

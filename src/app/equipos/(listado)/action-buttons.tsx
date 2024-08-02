@@ -1,7 +1,7 @@
 import { type z } from "zod";
 import { EquiposFilterLaboratorio } from "./filtros/equipos-filter-laboratorio";
 import { EquiposFilterText } from "./filtros/equipos-filter-text";
-import { EquiposNuevoEquipoModal } from "./equipos-nuevo-book";
+import { EquiposNuevoEquipoModal } from "./equipos-nuevo-equipo";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { EquiposFilterArmario } from "./filtros/equipos-filter-armario";

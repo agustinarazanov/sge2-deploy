@@ -3,15 +3,17 @@ model Curso {
 
     horaInicio1 String
     duracion1   String
-    horaInicio2 String
-    duracion2   String
+    horaInicio2 String?
+    duracion2   String?
 
     dia1 CursoDia
-    dia2 CursoDia
+    dia2 CursoDia?
 
+    // TODO: Convertir a many to many
     profesorUserId String
     profesorUser   User   @relation(fields: [profesorUserId], references: [id], name: "cursosProfesor")
 
+    // TODO: Convertir a many to many
     ayudanteUserId String
     ayudanteUser   User   @relation(fields: [ayudanteUserId], references: [id], name: "cursosAyudante")
 
@@ -28,8 +30,7 @@ model Curso {
     divisionId Int
     division   Division @relation(fields: [divisionId], references: [id])
 
-    turnoId Int
-    turno   CursoTurno @relation(fields: [turnoId], references: [id])
+    turno TurnoCurso
 
     reservaLaboratorioCerrado ReservaLaboratorioCerrado[]
 
@@ -40,6 +41,7 @@ model Curso {
 
     @@index([anioDeCarrera(sort: Asc)])
     @@index([activo], type: Hash)
+    @@index([turno], type: Hash)
 }
 
 model Division {
@@ -57,17 +59,10 @@ model Division {
     @@index([nombre(sort: Asc)])
 }
 
-model CursoTurno {
-    id Int @id @default(autoincrement())
-
-    nombre String
-
-    fechaCreacion    DateTime @default(now())
-    usuarioCreadorId String
-
-    cursos Curso[]
-
-    @@index([nombre(sort: Asc)])
+enum TurnoCurso {
+    MANANA
+    TARDE
+    NOCHE
 }
 
 enum CursoDia {
