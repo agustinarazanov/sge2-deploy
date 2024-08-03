@@ -8,10 +8,10 @@ model Materia {
     tipo     MateriaTipo
 
     directorUsuarioId String?
-    directorUsuario   User?   @relation(fields: [directorUsuarioId], references: [id], name: "cursosProfesor")
+    directorUsuario   User?   @relation(fields: [directorUsuarioId], references: [id], name: "materiasDirector")
 
     jefeTrabajoPracticoUsuarioId String?
-    jefeTrabajoPracticoUsuario   User?   @relation(fields: [jefeTrabajoPracticoUsuarioId], references: [id], name: "cursosAyudante")
+    jefeTrabajoPracticoUsuario   User?   @relation(fields: [jefeTrabajoPracticoUsuarioId], references: [id], name: "materiasJefeTrabajoPractico")
 
     cursos              Curso[]
     libros              LibroMateria[]

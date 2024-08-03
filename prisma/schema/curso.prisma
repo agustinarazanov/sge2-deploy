@@ -9,13 +9,8 @@ model Curso {
     dia1 CursoDia
     dia2 CursoDia?
 
-    // TODO: Convertir a many to many
-    profesorUserId String
-    profesorUser   User   @relation(fields: [profesorUserId], references: [id], name: "cursosProfesor")
-
-    // TODO: Convertir a many to many
-    ayudanteUserId String
-    ayudanteUser   User   @relation(fields: [ayudanteUserId], references: [id], name: "cursosAyudante")
+    ayudantes  CursoAyudante[]
+    profesores CursoProfesor[]
 
     anioDeCarrera Int
     activo        Boolean
@@ -42,6 +37,38 @@ model Curso {
     @@index([anioDeCarrera(sort: Asc)])
     @@index([activo], type: Hash)
     @@index([turno], type: Hash)
+}
+
+model CursoAyudante {
+    cursoId Int
+    userId  String
+
+    curso   Curso @relation(fields: [cursoId], references: [id])
+    usuario User  @relation(fields: [userId], references: [id])
+
+    fechaCreacion    DateTime @default(now())
+    usuarioCreadorId String
+
+    fechaModificacion    DateTime @default(now()) @updatedAt
+    usuarioModificadorId String
+
+    @@id([cursoId, userId])
+}
+
+model CursoProfesor {
+    cursoId Int
+    userId  String
+
+    curso   Curso @relation(fields: [cursoId], references: [id])
+    usuario User  @relation(fields: [userId], references: [id])
+
+    fechaCreacion    DateTime @default(now())
+    usuarioCreadorId String
+
+    fechaModificacion    DateTime @default(now()) @updatedAt
+    usuarioModificadorId String
+
+    @@id([cursoId, userId])
 }
 
 model Division {

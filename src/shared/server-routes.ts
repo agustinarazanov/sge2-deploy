@@ -73,8 +73,8 @@ export const CURSOS_ROUTE: AppRoute = {
       isPublic: false,
     },
     {
-      href: "/cursos/prestamos",
-      label: "Prestamos",
+      href: "/cursos/mis_cursos",
+      label: "Mis cursos",
       isPublic: false,
     },
   ],

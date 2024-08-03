@@ -46,11 +46,11 @@ model User {
     reservasAprobadas Reserva[] @relation(name: "reservasModificadas")
     reservasComoTutor Reserva[] @relation(name: "reservaTutor")
 
-    cursosProfesor Curso[] @relation(name: "cursosProfesor")
-    cursosAyudante Curso[] @relation(name: "cursosAyudante")
+    cursosComoAyudante CursoAyudante[]
+    cursosComoProfesor CursoProfesor[]
 
-    materiasDirector            Materia[] @relation(name: "cursosProfesor")
-    materiasJefeTrabajoPractico Materia[] @relation(name: "cursosAyudante")
+    materiasDirector            Materia[] @relation(name: "materiasDirector")
+    materiasJefeTrabajoPractico Materia[] @relation(name: "materiasJefeTrabajoPractico")
 
     @@index([name(sort: Asc)])
     @@index([apellido(sort: Asc)])
