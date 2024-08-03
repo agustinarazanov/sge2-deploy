@@ -17,10 +17,18 @@ export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll
     ctx.db.curso.findMany({
       include: {
         materia: true,
-        ayudanteUser: true,
-        profesorUser: true,
         division: true,
         sede: true,
+        ayudantes: {
+          include: {
+            usuario: true,
+          },
+        },
+        profesores: {
+          include: {
+            usuario: true,
+          },
+        },
       },
       where: {
         materiaId: materia ? parseInt(materia) : undefined,
@@ -49,10 +57,10 @@ export const getCursoPorId = async (ctx: { db: PrismaClient }, input: InputGetCu
   const curso = await ctx.db.curso.findUnique({
     include: {
       materia: true,
-      ayudanteUser: true,
-      profesorUser: true,
       division: true,
       sede: true,
+      ayudantes: true,
+      profesores: true,
     },
     where: {
       id,
@@ -68,8 +76,8 @@ export const agregarCurso = async (ctx: { db: PrismaClient }, input: InputAgrega
     const curso = await ctx.db.curso.create({
       data: {
         materiaId: parseInt(input.materiaId),
-        ayudanteUserId: userId,
-        profesorUserId: userId,
+        // ayudanteUserId: userId,
+        // profesorUserId: userId,
         sedeId: 1,
         ac: "A",
         dia1: "LUNES",
