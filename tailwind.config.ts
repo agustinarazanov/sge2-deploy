@@ -64,7 +64,7 @@ export const sgePlugin = plugin(
           "5xl": "2400px",
         },
         colors: {
-          ...colors,
+          //...colors,
           border: "hsl(var(--border))",
           input: "hsl(var(--input))",
           ring: "hsl(var(--ring))",
