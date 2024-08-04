@@ -16,6 +16,15 @@ const config = {
   images: {
     domains: ["avatars.githubusercontent.com", "cdn.discordapp.com", "lh3.googleusercontent.com"],
   },
+  redirects: async () => {
+    return [
+      {
+        source: "/admin",
+        destination: "/admin/roles",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default config;

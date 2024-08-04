@@ -9,29 +9,29 @@ import { toast } from "@/components/ui";
 import { api } from "@/trpc/react";
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
 
-type RemoveLibroModalProps = {
-  libroId: number;
+type RemoveRolModalProps = {
+  rolId: number;
   nombre?: string;
   onSubmit: () => void;
 };
 
-export default function RemoveLibroModal({ libroId, nombre, onSubmit }: RemoveLibroModalProps) {
-  const eliminarLibro = api.biblioteca.eliminarLibro.useMutation({
+export default function RemoverRolModal({ rolId, nombre, onSubmit }: RemoveRolModalProps) {
+  const eliminarRol = api.admin.roles.eliminarRol.useMutation({
     onSuccess: () => {
-      toast.success(`El libro ${nombre} se eliminó con éxito.`);
+      toast.success(`El rol ${nombre} se eliminó con éxito.`);
 
       onSubmit?.();
     },
 
     onError: (error) => {
-      toast.error(error?.message ?? `Error eliminando el libro ${nombre}`);
+      toast.error(error?.message ?? `Error eliminando el rol ${nombre}`);
     },
   });
 
   const [open, setOpen] = useState(false);
 
-  const handleRemoveMachine = async (libroId: number) => {
-    eliminarLibro.mutate({ libroId });
+  const handleRemoveMachine = async (rolId: number) => {
+    eliminarRol.mutate({ id: rolId });
 
     setOpen(false);
   };
@@ -41,19 +41,19 @@ export default function RemoveLibroModal({ libroId, nombre, onSubmit }: RemoveLi
   return (
     <ModalDrawer
       trigger={
-        <Button title="Eliminar libro" variant="icon" color="danger" className="h-8 w-8 px-2 py-2" icon={TrashIcon} />
+        <Button title="Eliminar rol" variant="icon" color="danger" className="h-8 w-8 px-2 py-2" icon={TrashIcon} />
       }
-      titulo={`Eliminar libro ${nombre ?? ""}`}
+      titulo={`Eliminar rol ${nombre ?? ""}`}
       cancelText="Cancelar"
       submitText="Si, eliminar"
       open={open}
       onOpenChange={setOpen}
       onCancel={handleCancel}
-      onSubmit={() => handleRemoveMachine(libroId)}
+      onSubmit={() => handleRemoveMachine(rolId)}
       isAlertDialog
     >
       <div>
-        Está seguro que desea eliminar <span className="font-bold">{nombre ?? "este libro"}</span>?
+        Está seguro que desea eliminar <span className="font-bold">{nombre ?? "este rol"}</span>?
       </div>
     </ModalDrawer>
   );

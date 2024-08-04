@@ -4,32 +4,30 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
-import { LibroForm } from "../libros/[id]/libro-form";
+import { LibroForm } from "../../../__libros/[id]/libro-form";
 import { useState } from "react";
 
-export const BibliotecaNewLibro = () => {
+export const AdminRolesNuevoRol = () => {
   const [open, setOpen] = useState(false);
 
   const router = useRouter();
 
   const handleSave = () => {
-    // void utils.biblioteca.getAll.refetch();
     router.refresh();
     setOpen(false);
-    // router.push("/biblioteca"); // ENVIAR AL USUARIO A LA PAGINA DE DETALLE DEL LIBRO NUEVO
   };
 
   const handleCancel = () => setOpen(false);
 
   return (
     <ModalDrawer
-      titulo={"Nuevo libro"}
-      description={"Creá un nuevo libro"}
+      titulo={"Nuevo rol"}
+      description={"Creá un nuevo rol"}
       open={open}
       onOpenChange={setOpen}
       trigger={
         <Button color={"primary"}>
-          Nuevo libro
+          Nuevo rol
           <Plus size={16} className="ml-2" />
         </Button>
       }

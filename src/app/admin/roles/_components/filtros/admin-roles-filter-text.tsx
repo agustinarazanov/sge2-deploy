@@ -2,19 +2,19 @@
 
 import { Input } from "@/components/ui";
 import { SearchIcon } from "lucide-react";
-import { useBibliotecaQueryParam } from "../../_hooks/use-biblioteca-query-param";
-import { type inputGetBooks } from "@/shared/filters/biblioteca-filter.schema";
+import { useAdminRolesQueryParam } from "../../_hooks/use-admin-roles-query-param";
 import { type z } from "zod";
 import { useState } from "react";
+import { type inputGetRoles } from "@/shared/filters/admin-roles-filter.schema";
 
-type BibliotecaFilters = z.infer<typeof inputGetBooks>;
+type AdminRolesFilters = z.infer<typeof inputGetRoles>;
 
 type Props = {
-  filters: BibliotecaFilters;
+  filters: AdminRolesFilters;
 };
 
-export const BibliotecaFilterText = ({ filters }: Props) => {
-  const { searchText, onSearchTextChange } = useBibliotecaQueryParam(filters);
+export const AdminRolesFilterText = ({ filters }: Props) => {
+  const { searchText, onSearchTextChange } = useAdminRolesQueryParam(filters);
 
   const [currentSearchText, setCurrentSearchText] = useState(searchText);
 
@@ -37,7 +37,7 @@ export const BibliotecaFilterText = ({ filters }: Props) => {
   return (
     <form onSubmit={(e) => e.preventDefault()} className="w-full">
       <Input
-        placeholder={"Buscar por título o por autor"}
+        placeholder={"Buscar por nombre"}
         name="searchText"
         unit={<SearchIcon className="relative top-0.5 h-4 w-4 text-sub" />}
         type={"search"}

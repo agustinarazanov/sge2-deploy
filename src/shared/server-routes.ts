@@ -86,6 +86,11 @@ export const ADMIN_ROUTE: AppRoute = {
   isPublic: false,
   subRutas: [
     {
+      href: "/admin/roles",
+      label: "Roles",
+      isPublic: false,
+    },
+    {
       href: "/admin/usuarios",
       label: "Usuarios",
       isPublic: false,

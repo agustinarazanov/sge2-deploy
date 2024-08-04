@@ -1,5 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import LoadingBibliotecaTable from "./(listado)/loading-biblioteca-table";
+import LoadingAdminTable from "./_components/table/loading-admin-table";
+import { adminRolesColumnas } from "./_components/table/columns";
 
 export default function BibliotecaLoading() {
   return (
@@ -16,7 +17,7 @@ export default function BibliotecaLoading() {
         </div>
       </div>
 
-      <LoadingBibliotecaTable />
+      <LoadingAdminTable columns={adminRolesColumnas} />
     </>
   );
 }

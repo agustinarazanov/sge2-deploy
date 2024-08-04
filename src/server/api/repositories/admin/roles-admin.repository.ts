@@ -1,4 +1,4 @@
-import { type inputGetRoles } from "@/shared/filters/admin-roles-filter.schema";
+import { type inputEliminarRol, type inputGetRoles } from "@/shared/filters/admin-roles-filter.schema";
 import { type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 
@@ -9,11 +9,23 @@ export const getAllRoles = async (ctx: { db: PrismaClient }, input: InputGetAll)
   const [count, roles] = await ctx.db.$transaction([
     ctx.db.rol.count(),
     ctx.db.rol.findMany({
-      include: {
-        usuarios: true,
+      select: {
+        id: true,
+        nombre: true,
+        fechaCreacion: true,
+        usuarios: {
+          select: {
+            userId: true,
+          },
+        },
         rolPermiso: {
-          include: {
-            permiso: true,
+          select: {
+            permisoId: true,
+            permiso: {
+              select: {
+                nombre: true,
+              },
+            },
           },
         },
       },
@@ -32,4 +44,29 @@ export const getAllRoles = async (ctx: { db: PrismaClient }, input: InputGetAll)
     count,
     roles,
   };
+};
+
+type InputEliminarRol = z.infer<typeof inputEliminarRol>;
+export const eliminarRol = async (ctx: { db: PrismaClient }, input: InputEliminarRol) => {
+  try {
+    const role = await ctx.db.rol.delete({
+      where: {
+        id: input.id,
+      },
+    });
+
+    return role;
+  } catch (error) {
+    throw new Error(`Error eliminando rol ${input.id}`);
+  }
+};
+
+export const getAllPermisos = async (ctx: { db: PrismaClient }) => {
+  const permisos = await ctx.db.permiso.findMany({
+    orderBy: {
+      nombre: "asc",
+    },
+  });
+
+  return permisos;
 };

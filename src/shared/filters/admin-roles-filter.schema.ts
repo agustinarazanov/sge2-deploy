@@ -7,4 +7,11 @@ export const inputGetRoles = z.object({
     .catch("titulo"),
   orderDirection: z.enum(["asc", "desc"]).default("asc").catch("asc"),
   searchText: z.string().default(""),
+  permiso: z
+    .string()
+    .optional()
+    .refine((value) => value && parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
+    .catch(""),
 });
+
+export const inputEliminarRol = z.object({ id: z.number() });
