@@ -10,7 +10,7 @@ const rutaAdmin = ADMIN_ROUTE;
 
 export const EditarRolModal = (props: EditLibroModalProps) => {
   return (
-    <Link key={props.rolId} href={`${rutaAdmin.href}/libros/${props.rolId}`} passHref prefetch={false}>
+    <Link key={props.rolId} href={`${rutaAdmin.href}/roles/${props.rolId}`} passHref prefetch={false}>
       <EditIcon />
     </Link>
   );

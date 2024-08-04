@@ -15,7 +15,7 @@ type Props = {
 
 type FormEditarLibroType = z.infer<typeof inputEditBooks>;
 
-export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
+export const AdminRolForm = ({ id, onSubmit, onCancel }: Props) => {
   const esNuevo = id === undefined;
   const libroId = parseInt(id ?? "");
 
