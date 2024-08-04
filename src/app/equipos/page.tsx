@@ -3,7 +3,7 @@ import { ActionButtons } from "./(listado)/action-buttons";
 import EquiposTableContainer from "./(listado)/equipos-table-container";
 import { Suspense, useMemo } from "react";
 import LoadingEquiposTable from "./(listado)/loading-equipos-table";
-import { inputGetEquipos } from "@/shared/equipos-filter.schema";
+import { inputGetEquipos } from "@/shared/filters/equipos-filter.schema";
 
 type PageProps = {
   searchParams: ReadonlyURLSearchParams;

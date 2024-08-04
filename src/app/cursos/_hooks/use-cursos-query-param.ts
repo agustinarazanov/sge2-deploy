@@ -2,7 +2,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { type z } from "zod";
 import { type PaginationState, type SortingState } from "@tanstack/react-table";
 import { useCallback } from "react";
-import { inputGetCursos } from "@/shared/cursos-filter.schema";
+import { inputGetCursos } from "@/shared/filters/cursos-filter.schema";
 
 type CursosFilters = z.infer<typeof inputGetCursos>;
 type OrderByType = z.infer<typeof inputGetCursos>["orderBy"];

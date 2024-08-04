@@ -12,7 +12,7 @@ import {
   inputEliminarLibro,
   inputGetBooks,
   inputGetLibro,
-} from "@/shared/biblioteca-filter.schema";
+} from "@/shared/filters/biblioteca-filter.schema";
 import { validarInput } from "../helper";
 
 export const getTodosLosLibrosProcedure = protectedProcedure.input(inputGetBooks).query(async ({ ctx, input }) => {

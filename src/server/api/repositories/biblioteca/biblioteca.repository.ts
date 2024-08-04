@@ -4,7 +4,7 @@ import {
   type inputGetBooks,
   type inputGetLibro,
   type inputEditBooks,
-} from "@/shared/biblioteca-filter.schema";
+} from "@/shared/filters/biblioteca-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 

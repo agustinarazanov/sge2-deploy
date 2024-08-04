@@ -1,7 +1,7 @@
 import { type ReadonlyURLSearchParams } from "next/navigation";
 import { ActionButtons } from "./(listado)/action-buttons";
 import BibliotecaTableContainer from "./(listado)/biblioteca-table-container";
-import { inputGetBooks } from "@/shared/biblioteca-filter.schema";
+import { inputGetBooks } from "@/shared/filters/biblioteca-filter.schema";
 import { Suspense, useMemo } from "react";
 import LoadingBibliotecaTable from "./(listado)/loading-biblioteca-table";
 

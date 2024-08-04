@@ -1,7 +1,7 @@
 import { api } from "@/trpc/server";
 import { EquiposTable } from "./table";
 import { type z } from "zod";
-import { type inputGetEquipos } from "@/shared/equipos-filter.schema";
+import { type inputGetEquipos } from "@/shared/filters/equipos-filter.schema";
 
 type EquiposFilters = z.infer<typeof inputGetEquipos>;
 

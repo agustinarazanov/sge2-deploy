@@ -5,7 +5,7 @@ import { SearchIcon } from "lucide-react";
 import { useCursosQueryParam } from "../../_hooks/use-cursos-query-param";
 import { type z } from "zod";
 import { useState } from "react";
-import { type inputGetCursos } from "@/shared/cursos-filter.schema";
+import { type inputGetCursos } from "@/shared/filters/cursos-filter.schema";
 
 type CursosFilters = z.infer<typeof inputGetCursos>;
 

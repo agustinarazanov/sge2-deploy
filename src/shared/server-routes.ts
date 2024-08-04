@@ -80,6 +80,24 @@ export const CURSOS_ROUTE: AppRoute = {
   ],
 };
 
+export const ADMIN_ROUTE: AppRoute = {
+  href: "/admin",
+  label: "Administración",
+  isPublic: false,
+  subRutas: [
+    {
+      href: "/admin/usuarios",
+      label: "Usuarios",
+      isPublic: false,
+    },
+    {
+      href: "/admin/laboratorios",
+      label: "Laboratorios",
+      isPublic: false,
+    },
+  ],
+};
+
 export const APP_ROUTES: AppRoute[] = [
   INICIO_ROUTE,
   BIBLIOTECA_ROUTE,
@@ -87,6 +105,7 @@ export const APP_ROUTES: AppRoute[] = [
   EQUIPOS_ROUTE,
   LABORATORIO_ROUTE,
   LABORATORIO_ABIERTO_ROUTE,
+  ADMIN_ROUTE,
 ];
 
 export const APP_ROUTES_MAP = APP_ROUTES.reduce(

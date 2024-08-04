@@ -13,7 +13,7 @@ import {
   inputEliminarCurso,
   inputGetCurso,
   inputGetCursos,
-} from "@/shared/cursos-filter.schema";
+} from "@/shared/filters/cursos-filter.schema";
 
 export const getTodosLosCursosProcedure = protectedProcedure.input(inputGetCursos).query(async ({ ctx, input }) => {
   validarInput(inputGetCursos, input);

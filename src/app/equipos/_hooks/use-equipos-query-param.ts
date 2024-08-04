@@ -2,7 +2,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { type z } from "zod";
 import { type PaginationState, type SortingState } from "@tanstack/react-table";
 import { useCallback } from "react";
-import { inputGetEquipos } from "@/shared/equipos-filter.schema";
+import { inputGetEquipos } from "@/shared/filters/equipos-filter.schema";
 
 type EquiposFilters = z.infer<typeof inputGetEquipos>;
 type OrderByType = z.infer<typeof inputGetEquipos>["orderBy"];

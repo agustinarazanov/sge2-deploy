@@ -14,7 +14,7 @@ import { api } from "@/trpc/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { type z } from "zod";
 import { useEquiposQueryParam } from "../../_hooks/use-equipos-query-param";
-import { type inputGetEquipos } from "@/shared/equipos-filter.schema";
+import { type inputGetEquipos } from "@/shared/filters/equipos-filter.schema";
 
 type EquiposFilters = z.infer<typeof inputGetEquipos>;
 

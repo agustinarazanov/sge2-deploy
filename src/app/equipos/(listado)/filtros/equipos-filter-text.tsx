@@ -5,7 +5,7 @@ import { SearchIcon } from "lucide-react";
 import { useEquiposQueryParam } from "../../_hooks/use-equipos-query-param";
 import { type z } from "zod";
 import { useState } from "react";
-import { type inputGetEquipos } from "@/shared/equipos-filter.schema";
+import { type inputGetEquipos } from "@/shared/filters/equipos-filter.schema";
 
 type EquiposFilters = z.infer<typeof inputGetEquipos>;
 

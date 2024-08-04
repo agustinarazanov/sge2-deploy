@@ -9,7 +9,7 @@ import { DataTablePaginationStandalone } from "@/components/ui/table/table-pagin
 import { EditarEquipoModal } from "./edit-equipo";
 import { type SortingState } from "@tanstack/react-table";
 import { getEquiposColumnas } from "./columns";
-import { type inputGetEquipos } from "@/shared/equipos-filter.schema";
+import { type inputGetEquipos } from "@/shared/filters/equipos-filter.schema";
 
 type EquiposData = RouterOutputs["equipos"]["getAll"];
 type EquiposFilters = z.infer<typeof inputGetEquipos>;

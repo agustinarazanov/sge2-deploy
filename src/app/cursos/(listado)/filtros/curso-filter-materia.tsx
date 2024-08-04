@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { type z } from "zod";
 import { useCursosQueryParam } from "../../_hooks/use-cursos-query-param";
 import { estaDentroDe } from "@/shared/string-compare";
-import { type inputGetCursos } from "@/shared/cursos-filter.schema";
+import { type inputGetCursos } from "@/shared/filters/cursos-filter.schema";
 
 type CursosFilters = z.infer<typeof inputGetCursos>;
 

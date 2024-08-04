@@ -13,7 +13,7 @@ import {
   inputEliminarEquipo,
   inputGetEquipo,
   inputGetEquipos,
-} from "@/shared/equipos-filter.schema";
+} from "@/shared/filters/equipos-filter.schema";
 
 export const getTodosLosEquiposProcedure = protectedProcedure.input(inputGetEquipos).query(async ({ ctx, input }) => {
   validarInput(inputGetEquipos, input);

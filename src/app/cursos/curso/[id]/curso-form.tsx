@@ -4,7 +4,7 @@ import { Button, FormInput, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { useEffect } from "react";
-import { inputEditarCurso } from "@/shared/cursos-filter.schema";
+import { inputEditarCurso } from "@/shared/filters/cursos-filter.schema";
 import { FormSelect } from "@/components/ui/autocomplete";
 
 type Props = {

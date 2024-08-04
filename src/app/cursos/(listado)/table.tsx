@@ -9,7 +9,7 @@ import { DataTablePaginationStandalone } from "@/components/ui/table/table-pagin
 import { EditCursoModal } from "./editar-curso";
 import { type SortingState } from "@tanstack/react-table";
 import { getColumns } from "./columns";
-import { type inputGetCursos } from "@/shared/cursos-filter.schema";
+import { type inputGetCursos } from "@/shared/filters/cursos-filter.schema";
 
 type CursoData = RouterOutputs["cursos"]["getAll"];
 type CursosFilters = z.infer<typeof inputGetCursos>;

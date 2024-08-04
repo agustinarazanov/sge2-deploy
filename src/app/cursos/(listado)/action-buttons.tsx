@@ -1,7 +1,7 @@
 import { type z } from "zod";
 import { CursosFilterMateria } from "./filtros/curso-filter-materia";
 import { CursosFilterText } from "./filtros/curso-filter-text";
-import { type inputGetCursos } from "@/shared/cursos-filter.schema";
+import { type inputGetCursos } from "@/shared/filters/cursos-filter.schema";
 import { CursosNuevoCurso } from "./cursos-new-curso";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";

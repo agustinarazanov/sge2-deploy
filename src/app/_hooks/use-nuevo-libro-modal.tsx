@@ -6,7 +6,7 @@ import { useCommonModal } from "./use-common-modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { FormInput, toast } from "@/components/ui";
-import { inputAddBooks } from "@/shared/biblioteca-filter.schema";
+import { inputAddBooks } from "@/shared/filters/biblioteca-filter.schema";
 
 import { api } from "@/trpc/react";
 

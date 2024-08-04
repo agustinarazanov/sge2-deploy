@@ -3,7 +3,7 @@ import { ActionButtons } from "./(listado)/action-buttons";
 import CursoTableContainer from "./(listado)/curso-table-container";
 import { Suspense, useMemo } from "react";
 import LoadingCursosTable from "./(listado)/loading-curso-table";
-import { inputGetCursos } from "@/shared/cursos-filter.schema";
+import { inputGetCursos } from "@/shared/filters/cursos-filter.schema";
 
 type PageProps = {
   searchParams: ReadonlyURLSearchParams;

@@ -4,7 +4,7 @@ import {
   type inputAgregarEquipo,
   type inputGetEquipo,
   type inputGetEquipos,
-} from "@/shared/equipos-filter.schema";
+} from "@/shared/filters/equipos-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 

@@ -4,7 +4,7 @@ import {
   type inputAgregarCurso,
   type inputGetCurso,
   type inputGetCursos,
-} from "@/shared/cursos-filter.schema";
+} from "@/shared/filters/cursos-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 

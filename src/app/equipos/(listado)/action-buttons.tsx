@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { EquiposFilterArmario } from "./filtros/equipos-filter-armario";
 import { EquiposFilterTipo } from "./filtros/equipos-filter-tipo";
-import { type inputGetEquipos } from "@/shared/equipos-filter.schema";
+import { type inputGetEquipos } from "@/shared/filters/equipos-filter.schema";
 
 type EquiposFilters = z.infer<typeof inputGetEquipos>;
 

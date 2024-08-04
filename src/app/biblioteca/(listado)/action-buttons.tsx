@@ -2,7 +2,7 @@ import { type z } from "zod";
 import { BibliotecaFilterMateria } from "./filtros/biblioteca-filter-materia";
 import { BibliotecaFilterText } from "./filtros/biblioteca-filter-text";
 import { BibliotecaNewLibro } from "./biblioteca-new-book";
-import { type inputGetBooks } from "@/shared/biblioteca-filter.schema";
+import { type inputGetBooks } from "@/shared/filters/biblioteca-filter.schema";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 

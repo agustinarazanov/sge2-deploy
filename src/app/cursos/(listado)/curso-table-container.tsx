@@ -1,7 +1,7 @@
 import { api } from "@/trpc/server";
 import { CursosTable } from "./table";
 import { type z } from "zod";
-import { type inputGetCursos } from "@/shared/cursos-filter.schema";
+import { type inputGetCursos } from "@/shared/filters/cursos-filter.schema";
 
 type CursosFilters = z.infer<typeof inputGetCursos>;
 
