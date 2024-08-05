@@ -15,3 +15,16 @@ export const inputGetRoles = z.object({
 });
 
 export const inputEliminarRol = z.object({ id: z.number() });
+
+export const inputGetRol = z.object({ id: z.number() });
+
+export const inputAgregarRol = z.object({
+  nombre: z.string().min(1, { message: "Requerido" }),
+  permisos: z.array(z.string()).default([]),
+});
+
+export const inputEditarRol = z
+  .object({
+    id: z.number().optional(), // Si viene significa que se va a usar para editar, si no significa que se va a usar para crear
+  })
+  .merge(inputAgregarRol);

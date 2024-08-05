@@ -90,10 +90,10 @@ model Rol {
 
 model RolPermiso {
     rolId Int
-    rol   Rol @relation(fields: [rolId], references: [id])
+    rol   Rol @relation(fields: [rolId], references: [id], onDelete: Cascade)
 
     permisoId Int
-    permiso   Permiso @relation(fields: [permisoId], references: [id])
+    permiso   Permiso @relation(fields: [permisoId], references: [id], onDelete: Cascade)
 
     fechaCreacion    DateTime @default(now())
     usuarioCreadorId String

@@ -117,6 +117,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
             )}
             <div ref={inputWrapperRef} className="relative w-full">
               <Combobox.Input
+                autoComplete="off"
                 id={id}
                 ref={inputRef}
                 onChange={(event) => {

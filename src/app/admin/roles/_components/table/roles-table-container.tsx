@@ -9,6 +9,7 @@ type LaboratoriosTableContainerProps = {
   filters: RolesFilters;
 };
 
+// TODO @Alex: Va a ser mejor convertir todos estos componentes de tablas en `use client` porque asi TRPC podrá invalidar los hooks y hacer queries desde los modals
 export default async function RolesTableContainer({ filters }: LaboratoriosTableContainerProps) {
   const roles = await api.admin.roles.getAll(filters);
 

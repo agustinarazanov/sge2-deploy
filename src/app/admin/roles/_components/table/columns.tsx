@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
@@ -39,7 +40,13 @@ export const getColumns = () => {
       cell: (info) => {
         const rolesPermiso = info.row.original.rolPermiso;
 
-        return rolesPermiso.map((rol) => rol.permiso.nombre).join(", ");
+        return (
+          <div className="flex flex-row space-x-2">
+            {rolesPermiso.map((rol) => (
+              <Badge key={rol.permisoId} color="aqua" label={rol.permiso.nombre} />
+            ))}
+          </div>
+        );
       },
     }),
   ] as ColumnDef<LibroData>[];
