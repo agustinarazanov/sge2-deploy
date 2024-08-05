@@ -4,7 +4,7 @@ import { type z } from "zod";
 
 type InputGetAll = z.infer<typeof inputGetRoles>;
 export const getAllRoles = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { searchText, orderBy, orderDirection } = input;
+  const { searchText, orderBy, orderDirection, permiso } = input;
 
   const [count, roles] = await ctx.db.$transaction([
     ctx.db.rol.count(),
@@ -33,6 +33,15 @@ export const getAllRoles = async (ctx: { db: PrismaClient }, input: InputGetAll)
         nombre: {
           contains: searchText ?? undefined,
         },
+        ...(!permiso
+          ? undefined
+          : {
+              rolPermiso: {
+                some: {
+                  permisoId: permiso ? parseInt(permiso) : undefined,
+                },
+              },
+            }),
       },
       orderBy: {
         nombre: orderDirection,
