@@ -122,9 +122,45 @@ export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
             <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
               <div className="mt-4 w-full">
                 <FormInput
-                  label={"Titulo"}
+                  label={"Nombre"}
                   control={control}
                   name="nombre"
+                  type={"text"}
+                  className="mt-2"
+                  autoComplete="off"
+                />
+              </div>
+              <div className="mt-4 w-full">
+                <FormInput
+                  label={"Apellido"}
+                  control={control}
+                  name="apellido"
+                  type={"text"}
+                  className="mt-2"
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+              <div className="mt-4 w-full">
+                <FormInput
+                  label={"Email"}
+                  control={control}
+                  name="email"
+                  type={"text"}
+                  className="mt-2"
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+              <div className="mt-4 w-full">
+                <FormInput
+                  label={"Legajo"}
+                  control={control}
+                  name="legajo"
                   type={"text"}
                   className="mt-2"
                   autoComplete="off"
