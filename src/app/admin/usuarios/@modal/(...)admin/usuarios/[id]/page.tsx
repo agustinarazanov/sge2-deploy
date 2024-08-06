@@ -1,7 +1,7 @@
 "use client";
 
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
-import { AdminUsuarioForm } from "@/app/admin/roles/[id]/admin-rol-form";
+import { AdminUsuarioForm } from "@/app/admin/usuarios/[id]/admin-usuario-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
-import { AdminUsuarioForm } from "@/app/admin/roles/[id]/admin-rol-form";
+import { AdminRolForm } from "@/app/admin/roles/[id]/admin-rol-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -38,7 +38,7 @@ export default function PageDetails({ params: { id } }: PageProps) {
       className={"max-h-[calc(100vh_-_10%)]"}
     >
       <div className="flex max-h-max w-full flex-col  gap-4">
-        <AdminUsuarioForm id={id} onCancel={handleClickCancel} onSubmit={handleClickSave} />
+        <AdminRolForm id={id} onCancel={handleClickCancel} onSubmit={handleClickSave} />
       </div>
     </ModalDrawer>
   );

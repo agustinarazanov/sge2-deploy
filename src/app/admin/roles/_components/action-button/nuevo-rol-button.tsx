@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
-import { AdminUsuarioForm } from "../../[id]/admin-rol-form";
 import { useState } from "react";
+import { AdminRolForm } from "../../[id]/admin-rol-form";
 
 export const AdminRolesNuevoRol = () => {
   const [open, setOpen] = useState(false);
@@ -34,7 +34,7 @@ export const AdminRolesNuevoRol = () => {
       className={"max-h-[calc(100vh_-_10%)]"}
     >
       <div className="flex max-h-max w-full flex-col  gap-4">
-        <AdminUsuarioForm onCancel={handleCancel} onSubmit={handleSave} />
+        <AdminRolForm onCancel={handleCancel} onSubmit={handleSave} />
       </div>
     </ModalDrawer>
   );

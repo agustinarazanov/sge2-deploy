@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { AdminUsuarioForm } from "./admin-rol-form";
 import { ADMIN_ROUTE } from "@/shared/server-routes";
+import { AdminRolForm } from "./admin-rol-form";
 
 type PageProps = {
   params: { id?: string };
@@ -19,7 +19,7 @@ export default function PageAdminRolDetails({ params: { id } }: PageProps) {
 
   return (
     <>
-      <AdminUsuarioForm id={id} onCancel={handleClickCancel} onSubmit={handleClickSave} />
+      <AdminRolForm id={id} onCancel={handleClickCancel} onSubmit={handleClickSave} />
     </>
   );
 }

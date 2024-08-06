@@ -121,8 +121,8 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
                   name="sedeId"
                   className="mt-2"
                   items={[
-                    { id: 1, label: "Medrano" },
-                    { id: 2, label: "Lugano" },
+                    { id: "1", label: "Medrano" },
+                    { id: "2", label: "Lugano" },
                   ]}
                 />
               </div>
