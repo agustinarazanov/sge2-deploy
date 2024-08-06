@@ -99,8 +99,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 <FormSelect
                   label={"Modelo"}
                   control={control}
-                  name="anio"
-                  type={"number"}
+                  name="modelo"
                   className="mt-2"
                   items={[
                     { id: 1, label: "Modelo 1" },
