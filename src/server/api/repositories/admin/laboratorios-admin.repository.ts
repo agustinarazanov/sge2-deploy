@@ -1,8 +1,8 @@
 import {
-  inputAgregarLaboratorio,
-  inputEditarLaboratorio,
-  inputEliminarLaboratorio,
-  inputGetLaboratorio,
+  type inputAgregarLaboratorio,
+  type inputEditarLaboratorio,
+  type inputEliminarLaboratorio,
+  type inputGetLaboratorio,
   type inputGetLaboratorios,
 } from "@/shared/filters/admin-laboratorios-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
@@ -41,6 +41,14 @@ export const getLaboratorioPorId = async (ctx: { db: PrismaClient }, input: Inpu
   const { id } = input;
 
   const laboratorio = await ctx.db.laboratorio.findUnique({
+    include: {
+      armarios: {
+        include: {
+          estantes: true,
+        },
+      },
+      sede: true,
+    },
     where: {
       id,
     },
@@ -70,7 +78,7 @@ export const editarLaboratorio = async (ctx: { db: PrismaClient }, input: InputE
     const laboratorio = await ctx.db.laboratorio.update({
       data: {
         nombre: input.nombre,
-        sedeId: parseInt(input.sede),
+        sedeId: parseInt(input.sedeId),
         esAbierto: input.esAbierto,
 
         usuarioModificadorId: userId,
@@ -92,7 +100,7 @@ export const agregarLaboratorio = async (ctx: { db: PrismaClient }, input: Input
     const laboratorio = await ctx.db.laboratorio.create({
       data: {
         nombre: input.nombre,
-        sedeId: parseInt(input.sede),
+        sedeId: parseInt(input.sedeId),
         esAbierto: input.esAbierto,
 
         usuarioCreadorId: userId,

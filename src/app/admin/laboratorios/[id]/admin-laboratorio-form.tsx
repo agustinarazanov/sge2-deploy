@@ -1,9 +1,9 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { Button, FormInput, toast } from "@/components/ui";
+import { Button, FormInput, Input, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { inputEditarLaboratorio } from "@/shared/filters/admin-laboratorios-filter.schema";
 import { FormSelect } from "@/components/ui/autocomplete";
 
@@ -18,6 +18,10 @@ type FormEditarLaboratorioType = z.infer<typeof inputEditarLaboratorio>;
 export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
   const esNuevo = id === undefined;
   const laboratorioId = parseInt(id ?? "");
+
+  const [armarios, setArmarios] = useState<
+    { id: number; nombre: string; estantes: { id: number; nombre: string }[] }[]
+  >([]);
 
   const {
     data: laboratorio,
@@ -50,6 +54,18 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
         esAbierto: laboratorio.esAbierto,
         sedeId: String(laboratorio.sedeId),
       });
+
+      // Transform the `armarios` data to match the expected type
+      const transformedArmarios = laboratorio.armarios.map((armario) => ({
+        id: armario.id,
+        nombre: armario.nombre,
+        estantes: armario.estantes.map((estante) => ({
+          id: estante.id,
+          nombre: estante.nombre,
+        })),
+      }));
+
+      setArmarios(transformedArmarios);
     }
   }, [formHook, laboratorio]);
 
@@ -134,6 +150,57 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
                   name="esAbierto"
                   className="mt-2"
                 />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+              <div className="mt-4 w-full">
+                {armarios?.map((armario, indexArmario) => (
+                  <div key={armario.id} className="flex w-full flex-col space-y-2">
+                    <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+                      <div className="mt-4 w-full">
+                        <Input
+                          label={"Nombre de armario"}
+                          type={"text"}
+                          className="mt-2"
+                          autoComplete="off"
+                          value={armario.nombre}
+                          onChange={(event) => {
+                            const newArmarios = [...armarios];
+
+                            newArmarios[indexArmario].nombre = event.target.value;
+
+                            setArmarios(newArmarios);
+                          }}
+                        />
+                      </div>
+                      <div className="mt-4 flex w-full flex-row gap-2">
+                        {armario.estantes?.map((estante, indexEstante) => (
+                          <div key={estante.id} className="flex w-full flex-col space-y-2">
+                            <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+                              <div className="mt-4 w-full">
+                                <Input
+                                  label={"Nombre de estante"}
+                                  type={"text"}
+                                  className="mt-2"
+                                  autoComplete="off"
+                                  value={estante.nombre}
+                                  onChange={(event) => {
+                                    const newArmarios = [...armarios];
+
+                                    newArmarios[indexArmario].estantes[indexEstante].nombre = event.target.value;
+
+                                    setArmarios(newArmarios);
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
