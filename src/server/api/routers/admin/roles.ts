@@ -9,7 +9,7 @@ import {
 } from "../../services/admin/roles-admin.service";
 
 export const rolesRouter = createTRPCRouter({
-  getAll: getTodosLosRolesProcedure,
+  getAllRoles: getTodosLosRolesProcedure,
   getRolById: getRolByIdProcedure,
   eliminarRol: eliminarRolProcedure,
   editarRol: editarRolProcedure,

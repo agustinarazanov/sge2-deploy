@@ -47,8 +47,6 @@ export const getRolById = async (ctx: { db: PrismaClient }, input: InputGetById)
 
 type InputGetAll = z.infer<typeof inputGetRoles>;
 export const getAllRoles = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { searchText, orderBy, orderDirection, permiso } = input;
-
   const [count, roles] = await ctx.db.$transaction([
     ctx.db.rol.count(),
     ctx.db.rol.findMany({
@@ -74,21 +72,21 @@ export const getAllRoles = async (ctx: { db: PrismaClient }, input: InputGetAll)
       },
       where: {
         nombre: {
-          contains: searchText ?? undefined,
+          contains: input?.searchText ?? undefined,
           mode: "insensitive",
         },
-        ...(!permiso
+        ...(!input?.permiso
           ? undefined
           : {
               rolPermiso: {
                 some: {
-                  permisoId: permiso ? parseInt(permiso) : undefined,
+                  permisoId: input?.permiso ? parseInt(input?.permiso) : undefined,
                 },
               },
             }),
       },
       orderBy: {
-        nombre: orderDirection,
+        nombre: input?.orderDirection,
       },
     }),
   ]);

@@ -4,70 +4,72 @@ import { Button, FormInput, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { useEffect, useState } from "react";
+import { inputEditarRol } from "@/shared/filters/admin-roles-filter.schema";
+import { RolesSelector } from "../_components/filtros/roles-selector";
 import { Badge } from "@/components/ui/badge";
 import { XIcon } from "lucide-react";
-import { inputEditarUsuario } from "@/shared/filters/admin-usuarios-filter.schema";
-import { RolesSelector } from "../../usuarios/_components/filtros/roles-selector";
 
 type Props = {
-  id: string;
+  id?: string;
   onSubmit: () => void;
   onCancel: () => void;
 };
 
-type RolType = RouterOutputs["admin"]["roles"]["getAllRoles"]["roles"][number];
-type FormEditarUsuarioType = z.infer<typeof inputEditarUsuario>;
+type PermisoType = RouterOutputs["admin"]["roles"]["getAllPermisos"][number];
+type FormEditarRolType = z.infer<typeof inputEditarRol>;
 
-export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
-  const [rolesDiccionario, setRolesDiccionario] = useState<Record<string, RolType>>({});
+export const AdminRolForm = ({ id, onSubmit, onCancel }: Props) => {
+  const esNuevo = id === undefined;
+  const rolId = parseInt(id ?? "");
 
-  const { data: todosLosRoles } = api.admin.roles.getAllRoles.useQuery();
-  const { data: usuario, isLoading, isError } = api.admin.usuarios.getUsuarioPorId.useQuery({ id }, { enabled: !!id });
+  const [permisosDictionario, setPermisosDictionario] = useState<Record<string, PermisoType>>({});
 
-  const editarUsuario = api.admin.usuarios.editarUsuario.useMutation(); // Se llama si existe rolId
+  const { data: todosLosPermisos } = api.admin.roles.getAllPermisos.useQuery();
+  const { data: rol, isLoading, isError } = api.admin.roles.getRolById.useQuery({ id: rolId }, { enabled: !!id });
 
-  const formHook = useForm<FormEditarUsuarioType>({
+  const editarRol = api.admin.roles.editarRol.useMutation(); // Se llama si existe rolId
+  const agregarRol = api.admin.roles.nuevoRol.useMutation(); // Se llama si no existe rolId
+
+  const formHook = useForm<FormEditarRolType>({
     mode: "onChange",
     defaultValues: {
-      id: usuario?.id ?? undefined,
-      nombre: usuario?.nombre ?? "",
-      apellido: usuario?.apellido ?? "",
-      email: usuario?.email ?? "",
-      legajo: usuario?.legajo ?? "",
-      // roles: usuario?.rolPermiso.map((permiso) => String(permiso.permisoId)) ?? [],
+      id: rol?.id ?? undefined,
+      nombre: rol?.nombre ?? "",
+      permisos: rol?.rolPermiso.map((permiso) => String(permiso.permisoId)) ?? [],
     },
-    resolver: zodResolver(inputEditarUsuario),
+    resolver: zodResolver(inputEditarRol),
   });
 
   const { handleSubmit, control, setValue, getValues, watch } = formHook;
 
-  const currentRoles = watch("roles");
+  const currentPermisos = watch("permisos");
 
   // TODO: Separar componente de formulario y logica de carga y actualización de rol
   useEffect(() => {
-    if (usuario) {
+    if (rol) {
       formHook.reset({
-        id: usuario.id,
-        nombre: usuario?.nombre ?? "",
-        apellido: usuario?.apellido ?? "",
-        email: usuario?.email ?? "",
-        legajo: usuario?.legajo ?? "",
-        // roles: usuario.rolPermiso.map((permiso) => String(permiso.permisoId)),
+        id: rol.id,
+        nombre: rol.nombre,
+        permisos: rol.rolPermiso.map((permiso) => String(permiso.permisoId)),
       });
     }
-  }, [formHook, usuario]);
+  }, [formHook, rol]);
 
   useEffect(() => {
-    if (todosLosRoles?.roles) {
-      const newRoles: Record<string, RolType> = {};
+    if (todosLosPermisos) {
+      const newPermisos: Record<string, PermisoType> = {};
 
-      todosLosRoles.roles.forEach((rol) => {
-        newRoles[String(rol.id)] = rol;
+      todosLosPermisos.forEach((permiso) => {
+        newPermisos[String(permiso.id)] = permiso;
       });
 
-      setRolesDiccionario(newRoles);
+      setPermisosDictionario(newPermisos);
     }
-  }, [todosLosRoles]);
+  }, [todosLosPermisos]);
+
+  if (!esNuevo && isNaN(rolId)) {
+    return <div>Error al cargar...</div>;
+  }
 
   if (isLoading) {
     return <div>Cargando...</div>;
@@ -77,14 +79,27 @@ export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
     return <div>Error al cargar...</div>;
   }
 
-  const onFormSubmit = (formData: FormEditarUsuarioType) => {
-    editarUsuario.mutate(formData, {
+  const onFormSubmit = (formData: FormEditarRolType) => {
+    if (esNuevo) {
+      agregarRol.mutate(formData, {
+        onSuccess: () => {
+          toast.success("Rol agregado con éxito.");
+          onSubmit();
+        },
+        onError: (error) => {
+          toast.error(error?.message ?? "Error al agregar el rol");
+        },
+      });
+      return;
+    }
+
+    editarRol.mutate(formData, {
       onSuccess: () => {
-        toast.success("Usuario actualizado con éxito.");
+        toast.success("Rol actualizado con éxito.");
         onSubmit();
       },
       onError: (error) => {
-        toast.error(error?.message ?? "Error al actualizar el usuario");
+        toast.error(error?.message ?? "Error al actualizar el rol");
       },
     });
   };
@@ -94,23 +109,23 @@ export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
     onCancel();
   };
 
-  const onRolChange = (rol: string) => {
-    const roles = getValues("roles");
+  const onPermissionChange = (permiso: string) => {
+    const permisos = getValues("permisos");
 
-    if (roles.includes(rol)) {
+    if (permisos.includes(permiso)) {
       return;
     } else {
-      setValue("roles", [...roles, rol]);
+      setValue("permisos", [...permisos, permiso]);
       return;
     }
   };
 
-  const onRolDelete = (id: string) => {
-    const roles = getValues("roles");
+  const onRolPermisoDelete = (id: string) => {
+    const permisos = getValues("permisos");
 
     setValue(
-      "roles",
-      roles.filter((rolId) => rolId !== id),
+      "permisos",
+      permisos.filter((permiso) => permiso !== id),
     );
   };
 
@@ -135,20 +150,20 @@ export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
             <div className="flex w-full flex-col lg:justify-between">
               <div className="mt-4 w-full">
                 {/* TODO: Pasar permisos actuales para que elimine de la lista*/}
-                <RolesSelector onRolChange={onRolChange} label={"Roles actuales"} />
+                <RolesSelector onRolChange={onPermissionChange} label={"Permisos actuales"} />
               </div>
 
               <ScrollArea className="mt-4 max-h-80 w-full pr-4">
                 <div className="grid w-full grid-cols-2 gap-2">
-                  {currentRoles?.map((rol) => (
+                  {currentPermisos.map((permiso) => (
                     <Badge
-                      key={rol}
-                      label={rolesDiccionario[rol]?.nombre ?? "Error"}
+                      key={permiso}
+                      label={permisosDictionario[permiso]?.nombre ?? "Error"}
                       variant={"default"}
                       color={"aqua"}
                       className="cursor-pointer justify-between text-sm"
-                      onClick={() => onRolDelete(rol)}
-                      title={`Eliminar ${rolesDiccionario[rol]?.nombre ?? ""} rol`}
+                      onClick={() => onRolPermisoDelete(permiso)}
+                      title={`Eliminar ${permisosDictionario[permiso]?.nombre ?? ""} rol`}
                     >
                       <Button
                         title="Eliminar"

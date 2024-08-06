@@ -1,7 +1,17 @@
 import { protectedProcedure } from "../../trpc";
 import { validarInput } from "../helper";
-import { inputGetUsuarios } from "@/shared/filters/admin-usuarios-filter.schema";
-import { getAllUsuarios } from "../../repositories/admin/usuarios-admin.repository";
+import {
+  inputEditarUsuario,
+  inputEliminarUsuario,
+  inputGetUsuario,
+  inputGetUsuarios,
+} from "@/shared/filters/admin-usuarios-filter.schema";
+import {
+  editarUsuario,
+  eliminarUsuario,
+  getAllUsuarios,
+  getUsuarioPorId,
+} from "../../repositories/admin/usuarios-admin.repository";
 
 export const getTodosLosUsuariosProcedure = protectedProcedure.input(inputGetUsuarios).query(async ({ ctx, input }) => {
   validarInput(inputGetUsuarios, input);
@@ -9,4 +19,32 @@ export const getTodosLosUsuariosProcedure = protectedProcedure.input(inputGetUsu
   const usuarios = await getAllUsuarios(ctx, input);
 
   return usuarios;
+});
+
+export const getUsuarioPorIdProcedure = protectedProcedure.input(inputGetUsuario).query(async ({ ctx, input }) => {
+  validarInput(inputGetUsuario, input);
+
+  const usuario = await getUsuarioPorId(ctx, input);
+
+  return usuario;
+});
+
+export const eliminarUsuarioProcedure = protectedProcedure
+  .input(inputEliminarUsuario)
+  .mutation(async ({ ctx, input }) => {
+    validarInput(inputEliminarUsuario, input);
+
+    const usuario = await eliminarUsuario(ctx, input);
+
+    return usuario;
+  });
+
+export const editarUsuarioProcedure = protectedProcedure.input(inputEditarUsuario).mutation(async ({ ctx, input }) => {
+  validarInput(inputEditarUsuario, input);
+
+  const userId = ctx.session.user.id;
+
+  const usuario = await editarUsuario(ctx, input, userId);
+
+  return usuario;
 });

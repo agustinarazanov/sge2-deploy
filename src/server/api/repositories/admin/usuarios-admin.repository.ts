@@ -1,10 +1,49 @@
-import { type inputGetUsuarios } from "@/shared/filters/admin-usuarios-filter.schema";
-import { type PrismaClient } from "@prisma/client";
+import {
+  type inputGetUsuario,
+  type inputEliminarUsuario,
+  type inputGetUsuarios,
+  type inputEditarUsuario,
+} from "@/shared/filters/admin-usuarios-filter.schema";
+import { type Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 
+// TODO: Implementar filtro de rol para usuarios
 type InputGetAll = z.infer<typeof inputGetUsuarios>;
 export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText, orderBy, orderDirection } = input;
+  const { pageIndex, pageSize, searchText, orderBy, orderDirection, rol } = input;
+
+  const filtrosWhereUsuario: Prisma.UserWhereInput = {
+    ...(searchText
+      ? {
+          OR: [
+            {
+              nombre: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
+            {
+              apellido: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
+            {
+              email: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
+            {
+              legajo: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
+          ],
+        }
+      : {}),
+  };
 
   const [count, usuarios] = await ctx.db.$transaction([
     ctx.db.user.count(),
@@ -17,18 +56,7 @@ export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetA
         },
       },
       where: {
-        nombre: {
-          contains: searchText ?? undefined,
-        },
-        apellido: {
-          contains: searchText ?? undefined,
-        },
-        email: {
-          contains: searchText ?? undefined,
-        },
-        legajo: {
-          contains: searchText ?? undefined,
-        },
+        ...filtrosWhereUsuario,
       },
       orderBy: {
         nombre: orderDirection,
@@ -42,4 +70,69 @@ export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetA
     count,
     usuarios,
   };
+};
+
+type InputEliminarUsuario = z.infer<typeof inputEliminarUsuario>;
+export const eliminarUsuario = async (ctx: { db: PrismaClient }, input: InputEliminarUsuario) => {
+  try {
+    const usuario = await ctx.db.user.update({
+      where: {
+        id: input.id,
+      },
+      data: {
+        usuarioRol: {
+          set: [],
+        },
+      },
+    });
+
+    return usuario;
+  } catch (error) {
+    throw new Error(`Error eliminando usuario ${input.id}`);
+  }
+};
+
+type InputGetUsuarioPorId = z.infer<typeof inputGetUsuario>;
+export const getUsuarioPorId = async (ctx: { db: PrismaClient }, input: InputGetUsuarioPorId) => {
+  const { id } = input;
+
+  const usuario = await ctx.db.user.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return usuario;
+};
+
+type InputEditarUsuario = z.infer<typeof inputEditarUsuario>;
+export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEditarUsuario, userId: string) => {
+  try {
+    const usuario = await ctx.db.user.update({
+      data: {
+        nombre: input.nombre,
+        apellido: input.apellido,
+        email: input.email,
+        legajo: input.legajo,
+        usuarioRol: {
+          deleteMany: {
+            userId: input.id,
+          },
+          createMany: {
+            data: input.roles.map((rolId) => ({
+              rolId: parseInt(rolId),
+              usuarioCreadorId: userId,
+            })),
+          },
+        },
+      },
+      where: {
+        id: input.id,
+      },
+    });
+
+    return usuario;
+  } catch (error) {
+    throw new Error(`Error modificando usuario ${input.id}`);
+  }
 };
