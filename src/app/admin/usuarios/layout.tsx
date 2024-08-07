@@ -6,7 +6,7 @@ type LayoutProps = {
 export default async function Layout({ children, modal }: LayoutProps) {
   return (
     <>
-      <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">Roles</h3>
+      <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">Usuarios</h3>
       {children}
       {modal}
     </>

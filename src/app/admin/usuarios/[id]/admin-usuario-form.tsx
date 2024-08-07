@@ -34,7 +34,7 @@ export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
       apellido: usuario?.apellido ?? "",
       email: usuario?.email ?? "",
       legajo: usuario?.legajo ?? "",
-      // roles: usuario?.rolPermiso.map((permiso) => String(permiso.permisoId)) ?? [],
+      roles: usuario?.usuarioRol.map((rol) => String(rol.rolId)) ?? [],
     },
     resolver: zodResolver(inputEditarUsuario),
   });
@@ -52,7 +52,7 @@ export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
         apellido: usuario?.apellido ?? "",
         email: usuario?.email ?? "",
         legajo: usuario?.legajo ?? "",
-        // roles: usuario.rolPermiso.map((permiso) => String(permiso.permisoId)),
+        roles: usuario.usuarioRol.map((rol) => String(rol.rolId)),
       });
     }
   }, [formHook, usuario]);
@@ -97,7 +97,7 @@ export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
   const onRolChange = (rol: string) => {
     const roles = getValues("roles");
 
-    if (roles.includes(rol)) {
+    if (roles?.includes(rol)) {
       return;
     } else {
       setValue("roles", [...roles, rol]);

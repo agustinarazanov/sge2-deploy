@@ -97,6 +97,13 @@ export const getUsuarioPorId = async (ctx: { db: PrismaClient }, input: InputGet
   const { id } = input;
 
   const usuario = await ctx.db.user.findUnique({
+    include: {
+      usuarioRol: {
+        include: {
+          rol: true,
+        },
+      },
+    },
     where: {
       id,
     },
