@@ -8,6 +8,7 @@ import { inputEditarRol } from "@/shared/filters/admin-roles-filter.schema";
 import { Badge } from "@/components/ui/badge";
 import { XIcon } from "lucide-react";
 import { RolesSelector } from "../../usuarios/_components/filtros/roles-selector";
+import { PermisosSelector } from "../_components/filtros/permisos-selector";
 
 type Props = {
   id?: string;
@@ -150,7 +151,7 @@ export const AdminRolForm = ({ id, onSubmit, onCancel }: Props) => {
             <div className="flex w-full flex-col lg:justify-between">
               <div className="mt-4 w-full">
                 {/* TODO: Pasar permisos actuales para que elimine de la lista*/}
-                <RolesSelector onRolChange={onPermissionChange} label={"Permisos"} />
+                <PermisosSelector onPermisoChange={onPermissionChange} label={"Permisos"} />
               </div>
 
               <ScrollArea className="mt-4 max-h-80 w-full pr-4">

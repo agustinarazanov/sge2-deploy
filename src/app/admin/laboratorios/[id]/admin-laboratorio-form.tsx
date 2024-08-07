@@ -1,6 +1,6 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { Button, FormInput, Input, toast } from "@/components/ui";
+import { Button, FormInput, Input, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { useEffect, useState } from "react";
@@ -153,56 +153,58 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
               </div>
             </div>
 
-            <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
-              <div className="mt-4 w-full">
-                {armarios?.map((armario, indexArmario) => (
-                  <div key={armario.id} className="flex w-full flex-col space-y-2">
-                    <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
-                      <div className="mt-4 w-full">
-                        <Input
-                          label={"Nombre de armario"}
-                          type={"text"}
-                          className="mt-2"
-                          autoComplete="off"
-                          value={armario.nombre}
-                          onChange={(event) => {
-                            const newArmarios = [...armarios];
+            <ScrollArea className="mt-4 h-80 max-h-80 w-full pr-4">
+              <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+                <div className="mt-4 w-full">
+                  {armarios?.map((armario, indexArmario) => (
+                    <div key={armario.id} className="flex w-full flex-col space-y-2">
+                      <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+                        <div className="mt-4 w-full">
+                          <Input
+                            label={"Nombre de armario"}
+                            type={"text"}
+                            className="mt-2"
+                            autoComplete="off"
+                            value={armario.nombre}
+                            onChange={(event) => {
+                              const newArmarios = [...armarios];
 
-                            newArmarios[indexArmario].nombre = event.target.value;
+                              newArmarios[indexArmario].nombre = event.target.value;
 
-                            setArmarios(newArmarios);
-                          }}
-                        />
-                      </div>
-                      <div className="mt-4 flex w-full flex-row gap-2">
-                        {armario.estantes?.map((estante, indexEstante) => (
-                          <div key={estante.id} className="flex w-full flex-col space-y-2">
-                            <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
-                              <div className="mt-4 w-full">
-                                <Input
-                                  label={"Nombre de estante"}
-                                  type={"text"}
-                                  className="mt-2"
-                                  autoComplete="off"
-                                  value={estante.nombre}
-                                  onChange={(event) => {
-                                    const newArmarios = [...armarios];
+                              setArmarios(newArmarios);
+                            }}
+                          />
+                        </div>
+                        <div className="mt-4 flex w-full flex-col gap-2">
+                          {armario.estantes?.map((estante, indexEstante) => (
+                            <div key={estante.id} className="flex w-full flex-col space-y-2">
+                              <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+                                <div className="w-full">
+                                  <Input
+                                    label={"Nombre de estante"}
+                                    type={"text"}
+                                    className="mt-2"
+                                    autoComplete="off"
+                                    value={estante.nombre}
+                                    onChange={(event) => {
+                                      const newArmarios = [...armarios];
 
-                                    newArmarios[indexArmario].estantes[indexEstante].nombre = event.target.value;
+                                      newArmarios[indexArmario].estantes[indexEstante].nombre = event.target.value;
 
-                                    setArmarios(newArmarios);
-                                  }}
-                                />
+                                      setArmarios(newArmarios);
+                                    }}
+                                  />
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            </ScrollArea>
           </div>
         </div>
         <div className="flex w-full flex-row items-end justify-end space-x-4">
