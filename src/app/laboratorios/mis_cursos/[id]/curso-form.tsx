@@ -234,9 +234,9 @@ export const LaboratorioCerradoForm = ({ cursoId, onSubmit, onCancel }: Props) =
                           value={
                             todosLosEquiposTipo?.find((equipo) => String(equipo.id) === equipoTipo.idTipo)?.nombre ?? ""
                           }
-                          className="mt-2 grow"
+                          className="mt-2 grow basis-2/3"
                         />
-                        <Input readOnly value={equipoTipo.cantidad} type="number" className="mt-2 grow" />
+                        <Input readOnly value={equipoTipo.cantidad} type="number" className="mt-2 grow basis-1/3" />
                         <Button
                           type="button"
                           variant={"icon"}
