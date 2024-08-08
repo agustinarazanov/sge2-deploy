@@ -21,18 +21,27 @@ export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll
         sede: true,
         ayudantes: {
           include: {
-            usuario: true,
+            usuario: {
+              select: {
+                nombre: true,
+                apellido: true,
+              },
+            },
           },
         },
         profesores: {
           include: {
-            usuario: true,
+            usuario: {
+              select: {
+                nombre: true,
+                apellido: true,
+              },
+            },
           },
         },
       },
       where: {
         materiaId: materia ? parseInt(materia) : undefined,
-        activo: true,
       },
       orderBy: {
         division: {

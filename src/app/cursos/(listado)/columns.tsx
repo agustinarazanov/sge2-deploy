@@ -74,15 +74,21 @@ export const getColumns = () => {
     colHelper.display({
       header: "Profesor",
       cell: (info) => {
-        const profesorUser = info.row.original.profesorUser;
-        return `${profesorUser.apellido} ${profesorUser.name}`;
+        const profesores = info.row.original.profesores;
+
+        if (!profesores.length) return <span className="hidden">Sin profesores</span>;
+
+        return profesores.map((profesor) => `${profesor.usuario.apellido} ${profesor.usuario.nombre}`).join(", ");
       },
     }),
     colHelper.display({
       header: "Ayudante/s",
       cell: (info) => {
-        const ayudanteUser = info.row.original.ayudanteUser;
-        return `${ayudanteUser.apellido} ${ayudanteUser.name}`;
+        const ayudantes = info.row.original.ayudantes;
+
+        if (!ayudantes.length) return <span className="hidden">Sin ayudantes</span>;
+
+        return ayudantes.map((ayudante) => `${ayudante.usuario.apellido} ${ayudante.usuario.nombre}`).join(", ");
       },
     }),
   ] as ColumnDef<CursosData>[];
@@ -107,11 +113,11 @@ export const getColumnsNames = () => {
 
 type HoraDiaProps = {
   dia1: string;
-  dia2: string;
+  dia2?: string | null;
   horaInicio1: string | number;
-  horaInicio2: string | number;
+  horaInicio2?: string | number | null;
   duracion1: string | number;
-  duracion2: string | number;
+  duracion2?: string | number | null;
   diaDeHoy: string;
 };
 const HoraDia = ({ dia1, dia2, horaInicio1, horaInicio2, duracion1, duracion2, diaDeHoy }: HoraDiaProps) => {
@@ -125,23 +131,30 @@ const HoraDia = ({ dia1, dia2, horaInicio1, horaInicio2, duracion1, duracion2, d
   const esHoyDia1 = dia1 === diaDeHoy;
   const esHoyDia2 = dia2 === diaDeHoy;
 
+  const finClase1 = esHoyDia1 ? horaInicio1 + duracion1 : 0;
+  const finClase2 = esHoyDia2 ? horaInicio2 + duracion2 : 0;
+
   return (
     <div className="flex flex-row space-x-0">
       {horas.map((hora) => {
-        if (esHoyDia1 && horaInicio1 >= hora && horaInicio1 < hora + duracion1) {
-          return (
-            <div key={hora} className="flex h-4 w-4 justify-center rounded-full bg-primary">
-              {hora}
-            </div>
-          );
+        if (esHoyDia1) {
+          if (horaInicio1 >= hora || hora < finClase1) {
+            return (
+              <div key={hora} className="flex h-4 w-4 justify-center rounded-full bg-primary">
+                {hora}
+              </div>
+            );
+          }
         }
 
-        if (esHoyDia2 && horaInicio2 >= hora && horaInicio2 < hora + duracion2) {
-          return (
-            <div key={hora} className="flex h-4 w-4 justify-center rounded-full bg-primary">
-              {hora}
-            </div>
-          );
+        if (esHoyDia2) {
+          if (horaInicio2 >= hora || hora < finClase2) {
+            return (
+              <div key={hora} className="flex h-4 w-4 justify-center rounded-full bg-primary">
+                {hora}
+              </div>
+            );
+          }
         }
 
         return (
