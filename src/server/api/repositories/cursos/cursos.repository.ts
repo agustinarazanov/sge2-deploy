@@ -68,8 +68,26 @@ export const getCursoPorId = async (ctx: { db: PrismaClient }, input: InputGetCu
       materia: true,
       division: true,
       sede: true,
-      ayudantes: true,
-      profesores: true,
+      ayudantes: {
+        select: {
+          usuario: {
+            select: {
+              apellido: true,
+              nombre: true,
+            },
+          },
+        },
+      },
+      profesores: {
+        select: {
+          usuario: {
+            select: {
+              apellido: true,
+              nombre: true,
+            },
+          },
+        },
+      },
     },
     where: {
       id,

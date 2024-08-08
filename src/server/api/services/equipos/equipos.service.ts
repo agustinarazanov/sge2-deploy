@@ -3,6 +3,7 @@ import {
   editarEquipo,
   eliminarEquipo,
   getAllEquipos,
+  getAllTipos,
   getEquipoPorId,
 } from "../../repositories/equipos/equipos.repository";
 import { protectedProcedure } from "../../trpc";
@@ -60,3 +61,9 @@ export const eliminarEquipoProcedure = protectedProcedure
 
     return libro;
   });
+
+export const getTodosLosTiposProcedure = protectedProcedure.query(async ({ ctx }) => {
+  const tipos = await getAllTipos(ctx);
+
+  return tipos;
+});

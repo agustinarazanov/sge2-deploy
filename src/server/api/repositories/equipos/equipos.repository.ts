@@ -159,3 +159,17 @@ export const editarEquipo = async (ctx: { db: PrismaClient }, input: InputEditar
     throw new Error(`Error modificando equipo ${input.id}`);
   }
 };
+
+export const getAllTipos = async (ctx: { db: PrismaClient }) => {
+  const tipos = await ctx.db.equipoTipo.findMany({
+    orderBy: {
+      nombre: "asc",
+    },
+    select: {
+      id: true,
+      nombre: true,
+    },
+  });
+
+  return tipos;
+};

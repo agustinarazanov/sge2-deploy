@@ -23,6 +23,11 @@ const config = {
         destination: "/admin/roles",
         permanent: true,
       },
+      {
+        source: "/laboratorios",
+        destination: "/laboratorios/mis_cursos",
+        permanent: true,
+      },
     ];
   },
 };

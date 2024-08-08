@@ -30,11 +30,22 @@ export const BIBLIOTECA_ROUTE: AppRoute = {
   ],
 };
 
-const LABORATORIO_ROUTE: AppRoute = {
-  href: "/laboratorio",
-  label: "Laboratorio",
+export const LABORATORIO_ROUTE: AppRoute = {
+  href: "/laboratorios",
+  label: "Laboratorios",
   isPublic: false,
-  inConstruction: true,
+  subRutas: [
+    {
+      href: "/laboratorios/mis_cursos",
+      label: "Mis cursos",
+      isPublic: false,
+    },
+    {
+      href: "/laboratorios/catedra",
+      label: "Cátedra",
+      isPublic: false,
+    },
+  ],
 };
 
 const LABORATORIO_ABIERTO_ROUTE: AppRoute = {

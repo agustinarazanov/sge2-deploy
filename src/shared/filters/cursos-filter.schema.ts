@@ -38,6 +38,8 @@ export const inputGetCursos = z.object({
     .catch(""),
 });
 
+export const inputGetCursosParaReserva = z.object({});
+
 export const inputGetCurso = z.object({
   id: z.number(),
 });
