@@ -36,7 +36,7 @@ export const Input = memo(
         if (input instanceof HTMLInputElement && "showPicker" in input) {
           // TODO: weird error happening here. tsc is failing for some reason
           // error TS2339: Property 'showPicker' does not exist on type 'never'.
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
           (input as any).showPicker();
         }
       };

@@ -10,7 +10,7 @@ import { type z } from "zod";
 
 type InputGetAll = z.infer<typeof inputGetEquipos>;
 export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText, orderBy, orderDirection, armario, tipo, laboratorio } = input;
+  const { pageIndex, pageSize, searchText } = input;
 
   const [count, equipos] = await ctx.db.$transaction([
     ctx.db.equipo.count({

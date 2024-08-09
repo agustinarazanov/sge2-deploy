@@ -10,7 +10,7 @@ import { getColumns } from "./columns";
 import { useAdminRolesQueryParam } from "../../_hooks/use-admin-roles-query-param";
 import { type inputGetRoles } from "@/shared/filters/admin-roles-filter.schema";
 
-type RolesData = RouterOutputs["admin"]["roles"]["getAll"];
+type RolesData = RouterOutputs["admin"]["roles"]["getAllRoles"];
 type AdminRolesFilters = z.infer<typeof inputGetRoles>;
 
 type BibliotecaTableProps = {

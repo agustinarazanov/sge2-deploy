@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
-type LibroData = RouterOutputs["admin"]["roles"]["getAll"]["roles"][number];
+type LibroData = RouterOutputs["admin"]["roles"]["getAllRoles"]["roles"][number];
 
 export const getColumns = () => {
   const colHelper = createColumnHelper<LibroData>();

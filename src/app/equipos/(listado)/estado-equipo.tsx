@@ -8,7 +8,7 @@ type RemoveEquipoModalProps = {
   estado: EstadoType;
 };
 
-export default function EstadoEquipo({ equipoId, estado }: RemoveEquipoModalProps) {
+export default function EstadoEquipo({ estado }: RemoveEquipoModalProps) {
   if (!estado) {
     return (
       <Badge variant={"default"} color={"danger"}>

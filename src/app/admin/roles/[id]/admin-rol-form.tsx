@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { inputEditarRol } from "@/shared/filters/admin-roles-filter.schema";
 import { Badge } from "@/components/ui/badge";
 import { XIcon } from "lucide-react";
-import { RolesSelector } from "../../usuarios/_components/filtros/roles-selector";
 import { PermisosSelector } from "../_components/filtros/permisos-selector";
 
 type Props = {

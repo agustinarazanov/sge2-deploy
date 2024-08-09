@@ -8,7 +8,7 @@ type RemoveCursoModalProps = {
   estado: EstadoType;
 };
 
-export default function EstadoCurso({ cursoId, estado }: RemoveCursoModalProps) {
+export default function EstadoCurso({ estado }: RemoveCursoModalProps) {
   if (!estado) {
     return (
       <Badge variant={"default"} color={"danger"}>

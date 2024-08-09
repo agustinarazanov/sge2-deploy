@@ -52,7 +52,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
   const [query, setQuery] = useState("");
 
   const filteredList = useMemo(() => {
-    if (async || !query) return items;
+    if (async ?? !query) return items;
     const filtered = items.filter((v) => {
       const val = typeof v === "string" ? v : v.label;
       return val.toLowerCase().includes(query.toLowerCase());
@@ -186,7 +186,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
                   const id = typeof item === "string" ? item : item.id;
                   const label = typeof item === "string" ? item : item.label;
                   const icon = typeof item === "string" ? null : item.icon;
-                  const disabled = props.disabled || typeof item === "string" ? false : item.disabled;
+                  const disabled = props.disabled ?? typeof item === "string" ? false : item.disabled;
                   return (
                     <Combobox.Option
                       key={`autocomplete-option-${id}`}
@@ -205,7 +205,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
                   );
                 })}
                 {!filteredList.length &&
-                  (noOptionsComponent || (
+                  (noOptionsComponent ?? (
                     <span className={cn("flex w-full items-center justify-center px-4 py-3 text-sm text-menu-item")}>
                       No options
                     </span>

@@ -102,7 +102,7 @@ export const Select = <TType extends SelectItem | string, TMulti extends IsMulti
                 "text-input-placeholder": !valueLabel,
               })}
             >
-              {valueLabel || placeholder || <>&nbsp;</>}
+              {valueLabel ?? placeholder ?? <>&nbsp;</>}
               {canClear && (
                 <XIcon
                   onClick={onClear}
@@ -149,7 +149,7 @@ export const Select = <TType extends SelectItem | string, TMulti extends IsMulti
                     <Listbox.Option
                       key={`select-item-${typeof item === "string" ? item : item.id}`}
                       value={item}
-                      disabled={props.disabled || typeof item === "string" ? false : item.disabled}
+                      disabled={props.disabled ?? typeof item === "string" ? false : item.disabled}
                       className={({ active }) =>
                         cn(
                           "group flex w-full items-center space-x-2 px-4 py-3 text-sm",

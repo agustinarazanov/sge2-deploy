@@ -4,7 +4,6 @@ import { Button, FormInput, Input, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { useEffect } from "react";
-import { FormSelect } from "@/components/ui/autocomplete";
 import { inputReservaLaboratorioCerrado } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { FormTextarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -18,8 +17,6 @@ type Props = {
 };
 
 type FormReservarLaboratorioType = z.infer<typeof inputReservaLaboratorioCerrado>;
-
-const limiteMaximoReserva = 30;
 
 export const LaboratorioCerradoForm = ({ cursoId, onSubmit, onCancel }: Props) => {
   const {

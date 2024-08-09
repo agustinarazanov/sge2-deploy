@@ -10,7 +10,7 @@ import { type z } from "zod";
 // TODO: Implementar filtro de rol para usuarios
 type InputGetAll = z.infer<typeof inputGetUsuarios>;
 export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText, orderBy, orderDirection, rol } = input;
+  const { pageIndex, pageSize, searchText, orderDirection } = input;
 
   const filtrosWhereUsuario: Prisma.UserWhereInput = {
     ...(searchText
