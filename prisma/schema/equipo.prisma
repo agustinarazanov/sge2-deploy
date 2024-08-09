@@ -1,12 +1,12 @@
 model Equipo {
     id Int @id @default(autoincrement())
 
-    inventarioId  Int    @unique
-    modelo        String
-    numeroSerie   String
-    observaciones String
-    palabrasClave String
-    imagen        String
+    inventarioId  Int     @unique
+    modelo        String?
+    numeroSerie   String?
+    observaciones String?
+    palabrasClave String?
+    imagen        String?
 
     tipoId Int
     tipo   EquipoTipo @relation(fields: [tipoId], references: [id])

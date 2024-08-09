@@ -169,7 +169,11 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
                             onChange={(event) => {
                               const newArmarios = [...armarios];
 
-                              newArmarios[indexArmario].nombre = event.target.value;
+                              const newArmario = newArmarios[indexArmario];
+
+                              if (newArmario) {
+                                newArmario.nombre = event.target.value;
+                              }
 
                               setArmarios(newArmarios);
                             }}
@@ -189,7 +193,15 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
                                     onChange={(event) => {
                                       const newArmarios = [...armarios];
 
-                                      newArmarios[indexArmario].estantes[indexEstante].nombre = event.target.value;
+                                      const newArmario = newArmarios[indexArmario];
+
+                                      if (newArmario) {
+                                        const newEstante = newArmario.estantes[indexEstante];
+
+                                        if (newEstante) {
+                                          newEstante.nombre = event.target.value;
+                                        }
+                                      }
 
                                       setArmarios(newArmarios);
                                     }}

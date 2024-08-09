@@ -25,7 +25,9 @@ type Props = {
 export const EquiposFilterLaboratorio = ({ filters }: Props) => {
   const { laboratorio, onLaboratorioChange } = useEquiposQueryParam(filters);
 
-  const { data: laboratorios, isLoading, isError } = api.materia.getAll.useQuery();
+  const { data, isLoading, isError } = api.admin.laboratorios.getAll.useQuery({});
+
+  const laboratorios = data?.laboratorios;
 
   if (isLoading) {
     return (
@@ -70,7 +72,7 @@ export const EquiposFilterLaboratorio = ({ filters }: Props) => {
             <SelectContent>
               {(laboratorios ?? []).map((option) => (
                 <SelectItem key={option.id} value={String(option.id)}>
-                  {option.nombre} ({option.codigo})
+                  {option.nombre} ({option.esAbierto ? "Abierto" : "Cerrado"})
                 </SelectItem>
               ))}
             </SelectContent>
