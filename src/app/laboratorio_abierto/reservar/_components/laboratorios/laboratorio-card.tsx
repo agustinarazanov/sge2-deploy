@@ -1,25 +1,8 @@
-import { AlertCircleIcon, BellRing, CalendarIcon, Check } from "lucide-react";
-
+import { AlertCircleIcon, CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/components/utils";
-import { Switch } from "@/components/ui/switch";
 import { type ReservaLaboratorioAbiertoType } from "./constants";
-
-const notifications = [
-  {
-    title: "Your call has been confirmed.",
-    description: "1 hour ago",
-  },
-  {
-    title: "You have a new message!",
-    description: "1 hour ago",
-  },
-  {
-    title: "Your subscription is expiring soon!",
-    description: "2 hours ago",
-  },
-];
 
 type CardProps = React.ComponentProps<typeof Card>;
 
@@ -29,31 +12,21 @@ type LaboratorioAbiertoType = {
 
 export function LaboratorioCard({ className, ...props }: CardProps & LaboratorioAbiertoType) {
   const { laboratorio } = props;
-  const { titulo, descripcion, alerta } = laboratorio ?? {};
+  const { titulo, descripcion, alerta, contenido } = laboratorio ?? {};
 
   return (
-    <Card className={cn("w-[380px]", className)} {...props}>
+    <Card className={cn("flex flex-col justify-between text-center", className)} {...props}>
       <CardHeader>
-        <CardTitle>{titulo}</CardTitle>
+        <CardTitle className="py-4">{titulo}</CardTitle>
         {descripcion.map((descripcion, index) => (
           <CardDescription key={index}>{descripcion}</CardDescription>
         ))}
       </CardHeader>
       <CardContent className="grid gap-4">
-        {alerta && <AlertaLaboratorio alerta={alerta} />}
-        <div>
-          {notifications.map((notification, index) => (
-            <div key={index} className="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
-              <span className="bg-sky-500 flex h-2 w-2 translate-y-1 rounded-full" />
-              <div className="space-y-1">
-                <p className="text-sm font-medium leading-none">{notification.title}</p>
-                <p className="text-sm text-muted-foreground">{notification.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        <div className="text-left" dangerouslySetInnerHTML={{ __html: contenido ?? "" }} />
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex flex-col gap-4">
+        {alerta && <AlertaLaboratorio alerta={alerta} />}
         <Button className="w-full">
           <CalendarIcon className="mr-2 h-4 w-4" /> Reservar
         </Button>
@@ -64,7 +37,7 @@ export function LaboratorioCard({ className, ...props }: CardProps & Laboratorio
 
 const AlertaLaboratorio = ({ alerta }: { alerta: string }) => {
   return (
-    <div className=" flex items-center space-x-4 rounded-md border p-4">
+    <div className=" flex items-center space-x-4 rounded-md border border-warn p-4">
       <AlertCircleIcon />
       <div className="flex-1 space-y-1">
         <p className="text-sm font-medium leading-none underline">Importante</p>

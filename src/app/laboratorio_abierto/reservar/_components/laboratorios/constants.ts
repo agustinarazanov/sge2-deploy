@@ -9,6 +9,7 @@ export type ReservaLaboratorioAbiertoType = {
   titulo: string;
   descripcion: string[];
   alerta?: string;
+  contenido?: string;
 };
 
 export const tiposReserva = [
@@ -21,6 +22,11 @@ export const tiposReserva = [
       "No incluye apoyo alguno, y el usuario es responsable por el buen uso de los bienes del departamento.",
       "Para acceder al LA debe realizar una reserva, y aguardar la conformidad por correo electrónico. Concurrir a recepción en la fecha y hora acordadas. Al retirarse, dar aviso.",
     ],
+    contenido: `
+      <p><b>Horarios:</b></p>
+      <p><b>Sede Medrano:</b> Lunes a Viernes de 9 a 23 hs, Sábado de 9 a 18 hs.</p>
+      <p><b>Sede Campus:</b> Lunes a Viernes de 19 a 22:30 hs.</p>
+    `,
   },
   {
     tipo: "TLA_BASICA",
@@ -32,6 +38,8 @@ export const tiposReserva = [
     ],
     alerta:
       "Asegurarse por medio de la grilla horaria la disponibilidad de un Tutor en el horario deseado; si no, no se podrá cursar el pedido.",
+    contenido:
+      "Para acceder a la TLA debe hacer la reserva, <b>indicando en observaciones que solicita tutoria básica</b>. Aguardar la conformidad por correo electrónico. Concurrir a recepción en la fecha y hora acordadas. Al retirarse, dar aviso.",
   },
   {
     tipo: "TLA",
