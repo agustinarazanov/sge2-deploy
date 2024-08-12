@@ -28,6 +28,11 @@ const config = {
         destination: "/laboratorios/mis_cursos",
         permanent: true,
       },
+      {
+        source: "/laboratorio_abierto",
+        destination: "/laboratorio_abierto/reservar",
+        permanent: true,
+      },
     ];
   },
 };

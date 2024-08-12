@@ -48,11 +48,22 @@ export const LABORATORIO_ROUTE: AppRoute = {
   ],
 };
 
-const LABORATORIO_ABIERTO_ROUTE: AppRoute = {
-  href: "/laboratorio-abierto",
+export const LABORATORIO_ABIERTO_ROUTE: AppRoute = {
+  href: "/laboratorio_abierto",
   label: "Laboratorio Abierto",
   isPublic: false,
-  inConstruction: true,
+  subRutas: [
+    {
+      href: "/laboratorio_abierto/reservar",
+      label: "Reservar",
+      isPublic: false,
+    },
+    {
+      href: "/laboratorio_abierto/mis_reservas",
+      label: "Mis reservas",
+      isPublic: false,
+    },
+  ],
 };
 
 export const EQUIPOS_ROUTE: AppRoute = {

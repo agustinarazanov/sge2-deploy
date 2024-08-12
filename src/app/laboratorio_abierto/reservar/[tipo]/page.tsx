@@ -1,16 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { LaboratorioCerradoForm } from "./reserva-form";
+import { LaboratorioAbiertoForm } from "./reserva-form";
 import { LABORATORIO_ROUTE } from "@/shared/server-routes";
+import { type LaboratorioAbiertoType } from "../_components/laboratorios";
 
 type PageProps = {
-  params: { id: string };
+  params: { tipo: LaboratorioAbiertoType };
 };
 
 const laboratorioRuta = LABORATORIO_ROUTE;
 
-export default function PageCursosDetails({ params: { id } }: PageProps) {
+export default function PageCursosDetails({ params: { tipo } }: PageProps) {
   const router = useRouter();
 
   const handleClickCancel = () => router.back();
@@ -19,7 +20,7 @@ export default function PageCursosDetails({ params: { id } }: PageProps) {
 
   return (
     <>
-      <LaboratorioCerradoForm cursoId={id} onCancel={handleClickCancel} onSubmit={handleClickSave} />
+      <LaboratorioAbiertoForm cursoId={tipo} onCancel={handleClickCancel} onSubmit={handleClickSave} />
     </>
   );
 }
