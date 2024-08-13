@@ -7,6 +7,8 @@ import { useFormContext, type Control, type FieldError, type FieldValues, type P
 import { cn } from "@/components/utils";
 import { Calendar, Clock } from "lucide-react";
 
+import "./input.css";
+
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "placeholder"> {
   label?: string | null;
   placeholder?: string | null;

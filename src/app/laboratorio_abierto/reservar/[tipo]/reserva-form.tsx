@@ -10,6 +10,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { MinusIcon } from "lucide-react";
 import { EquipoTipoSelector } from "@/app/laboratorios/mis_cursos/_components/filtros/equipo-tipo-selector";
 import { type LaboratorioAbiertoType } from "../_components/laboratorios";
+import { Slider } from "@/components/ui/slider";
+import { FormSelect } from "@/components/ui/autocomplete";
 
 type Props = {
   tipo: LaboratorioAbiertoType;
@@ -101,34 +103,72 @@ export const LaboratorioAbiertoForm = ({ tipo, onSubmit, onCancel }: Props) => {
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
         <div className="flex w-full flex-col items-center justify-center">
-          <div className="flex flex-col space-y-4 px-0 md:px-6">
+          <div className="flex flex-col space-y-4 px-0">
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-              <div className="mt-4 basis-1/3">
-                {/* TODO: Habilitar fecha de reserva a los días de curso */}
+              <div className="mt-4 basis-1/2">
+                <FormInput
+                  label={"Tipo de laboratorio"}
+                  control={control}
+                  name="tipo"
+                  className="mt-2"
+                  type={"text"}
+                  readOnly
+                />
+              </div>
+              <div className="mt-4 basis-1/2">
                 <FormInput
                   label={"Fecha de reserva"}
                   control={control}
                   name="fechaReserva"
                   className="mt-2"
-                  type={"datetime-local"}
+                  type={"date"}
                   required
                 />
               </div>
             </div>
 
+            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="mt-4 basis-1/2">
+                <FormInput
+                  label={"Hora de inicio"}
+                  control={control}
+                  name="fechaReserva"
+                  className="mt-2"
+                  type={"time"}
+                  required
+                />
+              </div>
+              <div className="mt-4 basis-1/2">
+                <FormInput
+                  label={"Hora de fin"}
+                  control={control}
+                  name="fechaReserva"
+                  className="mt-2"
+                  type={"time"}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="mt-4 w-full">
+                <label htmlFor="">¿Cuántas personas concurrirán al Laboratorio?</label>
+                <Slider defaultValue={[1]} min={0} max={8} step={1} className={"w-full"} />
+              </div>
+            </div>
+
             <div className="flex w-full flex-col justify-end gap-y-4 lg:justify-between">
               <div className="items-top flex space-x-2">
-                <Checkbox id="requierePc" name="requierePc" />
-                <div className="grid gap-1.5 leading-none">
-                  <label htmlFor="requierePc">Requiere PCs para los alumnos</label>
-                </div>
-              </div>
-
-              <div className="items-top flex space-x-2">
-                <Checkbox id="requiereProyector" name="requiereProyector" />
-                <div className="grid gap-1.5 leading-none">
-                  <label htmlFor="requiereProyector">Requiere proyector</label>
-                </div>
+                <FormSelect
+                  label={"Sede"}
+                  name="sedeId"
+                  className="mt-2 basis-1/2"
+                  control={control}
+                  items={[
+                    { id: "1", label: "Medrano" },
+                    { id: "2", label: "Lugano" },
+                  ]}
+                />
               </div>
             </div>
 
