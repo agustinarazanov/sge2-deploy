@@ -4,66 +4,59 @@ import { Button, FormInput, Input, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { useEffect } from "react";
-import { inputReservaLaboratorioCerrado } from "@/shared/filters/reserva-laboratorio-filter.schema";
+import { inputReservaLaboratorioAbierto } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { FormTextarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MinusIcon } from "lucide-react";
 import { EquipoTipoSelector } from "@/app/laboratorios/mis_cursos/_components/filtros/equipo-tipo-selector";
+import { type LaboratorioAbiertoType } from "../_components/laboratorios";
 
 type Props = {
-  cursoId: string;
+  tipo: LaboratorioAbiertoType;
   onSubmit: () => void;
   onCancel: () => void;
 };
 
-type FormReservarLaboratorioType = z.infer<typeof inputReservaLaboratorioCerrado>;
+type FormReservarLaboratorioAbiertoType = z.infer<typeof inputReservaLaboratorioAbierto>;
 
-export const LaboratorioAbiertoForm = ({ cursoId, onSubmit, onCancel }: Props) => {
-  const {
-    data: curso,
-    isLoading,
-    isError,
-  } = api.cursos.cursoPorId.useQuery({ id: Number(cursoId) }, { enabled: !!cursoId });
-
+export const LaboratorioAbiertoForm = ({ tipo, onSubmit, onCancel }: Props) => {
   const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery();
 
   const editarCurso = api.cursos.editarCurso.useMutation();
 
-  const formHook = useForm<FormReservarLaboratorioType>({
+  const formHook = useForm<FormReservarLaboratorioAbiertoType>({
     mode: "onChange",
     defaultValues: {
-      cursoId: Number(cursoId),
+      tipo: tipo!,
       aceptoTerminos: false,
+      concurrentes: 1,
       equipoRequerido: [],
       fechaReserva: undefined,
-      requierePc: false,
-      requiereProyecto: false,
+      horaInicio: undefined,
+      horaFin: undefined,
+      observaciones: "",
+      sedeId: 1,
     },
-    resolver: zodResolver(inputReservaLaboratorioCerrado),
+    resolver: zodResolver(inputReservaLaboratorioAbierto),
   });
 
   const { handleSubmit, control } = formHook;
 
   useEffect(() => {
     formHook.reset({
-      cursoId: Number(cursoId),
+      tipo: tipo!,
       aceptoTerminos: false,
+      concurrentes: 1,
       equipoRequerido: [],
       fechaReserva: undefined,
-      requierePc: false,
-      requiereProyecto: false,
+      horaInicio: undefined,
+      horaFin: undefined,
+      observaciones: "",
+      sedeId: 1,
     });
-  }, [formHook, cursoId]);
+  }, [formHook, tipo]);
 
-  if (isLoading) {
-    return <div>Cargando...</div>;
-  }
-
-  if (isError) {
-    return <div>Error al cargar...</div>;
-  }
-
-  const onFormSubmit = (formData: FormReservarLaboratorioType) => {
+  const onFormSubmit = (formData: FormReservarLaboratorioAbiertoType) => {
     editarCurso.mutate(formData, {
       onSuccess: () => {
         toast.success("Reserva creada con éxito.");
@@ -110,75 +103,6 @@ export const LaboratorioAbiertoForm = ({ cursoId, onSubmit, onCancel }: Props) =
         <div className="flex w-full flex-col items-center justify-center">
           <div className="flex flex-col space-y-4 px-0 md:px-6">
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-              <div className="mt-4 w-full">
-                <Input
-                  label={"Materia"}
-                  name="materia"
-                  type={"text"}
-                  className="mt-2"
-                  value={curso?.materia.nombre ?? ""}
-                  readOnly
-                />
-              </div>
-              <div className="mt-4 w-full">
-                <Input
-                  label={"División"}
-                  name="division"
-                  type={"text"}
-                  className="mt-2"
-                  value={curso?.division.nombre ?? ""}
-                  readOnly
-                />
-              </div>
-            </div>
-
-            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-              <div className="mt-4 w-full">
-                <Input
-                  label={"Turno"}
-                  name="turno"
-                  type={"text"}
-                  className="mt-2"
-                  value={curso?.turno ?? ""}
-                  readOnly
-                />
-              </div>
-              <div className="mt-4 w-full">
-                <Input
-                  label={"Sede"}
-                  name="sede"
-                  type={"text"}
-                  className="mt-2"
-                  value={curso?.sede.nombre ?? ""}
-                  readOnly
-                />
-              </div>
-            </div>
-
-            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-              <div className="mt-4 w-full">
-                <Input
-                  label={"Profesor"}
-                  name="profesor"
-                  type={"text"}
-                  className="mt-2"
-                  value={curso?.profesores.map((profesor) => profesor.usuario.apellido).join(", ") ?? ""}
-                  readOnly
-                />
-              </div>
-              <div className="mt-4 w-full">
-                <Input
-                  label={"Ayudante/s"}
-                  name="ayudante"
-                  type={"text"}
-                  className="mt-2"
-                  value={curso?.ayudantes.map((ayudante) => ayudante.usuario.apellido).join(", ") ?? ""}
-                  readOnly
-                />
-              </div>
-            </div>
-
-            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4 basis-1/3">
                 {/* TODO: Habilitar fecha de reserva a los días de curso */}
                 <FormInput
@@ -186,7 +110,7 @@ export const LaboratorioAbiertoForm = ({ cursoId, onSubmit, onCancel }: Props) =
                   control={control}
                   name="fechaReserva"
                   className="mt-2"
-                  type={"date"}
+                  type={"datetime-local"}
                   required
                 />
               </div>

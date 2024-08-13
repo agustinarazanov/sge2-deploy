@@ -17,9 +17,7 @@ export default function CursoLoading() {
           ))}
         </div>
 
-        <div className="w-full md:basis-1/3">
-          <Skeleton className="h-10 w-full" />
-        </div>
+        <div className="w-full md:basis-1/3"></div>
       </div>
 
       <LoadingLaboratorioAbiertoReserva />

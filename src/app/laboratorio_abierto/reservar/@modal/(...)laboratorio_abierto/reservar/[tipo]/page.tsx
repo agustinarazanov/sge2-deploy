@@ -2,15 +2,16 @@
 
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
 import { LaboratorioAbiertoForm } from "@/app/laboratorio_abierto/reservar/[tipo]/reserva-form";
+import { type LaboratorioAbiertoType } from "@/app/laboratorio_abierto/reservar/_components/laboratorios";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type PageProps = {
-  params: { id: string };
+  params: { tipo: LaboratorioAbiertoType };
 };
 
-export default function PageDetails({ params: { id } }: PageProps) {
+export default function PageDetails({ params: { tipo } }: PageProps) {
   const [open, setOpen] = useState(true);
 
   const router = useRouter();
@@ -38,7 +39,7 @@ export default function PageDetails({ params: { id } }: PageProps) {
       className={"max-h-[calc(100vh_-_10%)]"}
     >
       <div className="flex max-h-max w-full flex-col  gap-4">
-        <LaboratorioAbiertoForm cursoId={id} onCancel={handleClickCancel} onSubmit={handleClickSave} />
+        <LaboratorioAbiertoForm tipo={tipo} onCancel={handleClickCancel} onSubmit={handleClickSave} />
       </div>
     </ModalDrawer>
   );

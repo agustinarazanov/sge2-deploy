@@ -1,7 +1,8 @@
 "use client";
 
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
-import { LaboratorioCerradoForm } from "@/app/laboratorios/mis_cursos/[id]/curso-form";
+import { LaboratorioCerradoForm } from "@/app/laboratorios/mis_cursos/[id]/reserva-form";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

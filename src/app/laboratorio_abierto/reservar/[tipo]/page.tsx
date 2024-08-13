@@ -20,7 +20,7 @@ export default function PageCursosDetails({ params: { tipo } }: PageProps) {
 
   return (
     <>
-      <LaboratorioAbiertoForm cursoId={tipo} onCancel={handleClickCancel} onSubmit={handleClickSave} />
+      <LaboratorioAbiertoForm tipo={tipo} onCancel={handleClickCancel} onSubmit={handleClickSave} />
     </>
   );
 }
