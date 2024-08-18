@@ -13,7 +13,7 @@ type Props = {
 };
 
 export const AdminUsuariosFilterRol = ({ filters }: Props) => {
-  const { rol, onRolChange } = useAdminUsuariosQueryParam(filters!);
+  const { rol, onRolChange } = useAdminUsuariosQueryParam(filters);
 
   return (
     <>

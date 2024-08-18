@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { type TutorType } from "./constants";
 import { cn } from "@/components/utils";
 import Image from "next/image";
@@ -10,7 +10,7 @@ type TutorData = {
 
 export function TutorCard({ className, ...props }: CardProps & TutorData) {
   const { tutor } = props;
-  const { id, nombre, apellido, email, image } = tutor;
+  const { nombre, apellido, email, image } = tutor;
 
   return (
     <Card
