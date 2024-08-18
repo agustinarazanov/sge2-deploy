@@ -1,6 +1,6 @@
 import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import EstadoLibro from "./estado-libro";
+// import EstadoLibro from "./estado-libro";
 
 type LibroData = RouterOutputs["biblioteca"]["getAll"]["libros"][number];
 
@@ -54,14 +54,14 @@ export const getColumns = () => {
         return materiasLibro.map((materia) => materia.materia.nombre).join(", ");
       },
     }),
-    colHelper.accessor("disponible", {
-      header: "Estado prestamo",
-      cell: ({ row }) => {
-        const { disponible, id } = row.original;
+    // colHelper.accessor("disponible", {
+    //   header: "Estado prestamo",
+    //   cell: ({ row }) => {
+    //     const { disponible, id } = row.original;
 
-        return <EstadoLibro estado={disponible} libroId={id} />;
-      },
-    }),
+    //     return <EstadoLibro estado={disponible} libroId={id} />;
+    //   },
+    // }),
   ] as ColumnDef<LibroData>[];
 };
 

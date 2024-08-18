@@ -1,12 +1,14 @@
 import { z } from "zod";
 
+const diaEnum = z.enum(["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO"]).default("LUNES").catch("LUNES");
+
 export const inputAgregarCurso = z.object({
   horaInicio1: z.string().min(1, { message: "Requerido" }),
   duracion1: z.string().min(1, { message: "Requerido" }),
   horaInicio2: z.string().min(1, { message: "Requerido" }),
   duracion2: z.string().min(1, { message: "Requerido" }),
-  dia1: z.enum(["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO"]).default("LUNES").catch("LUNES"),
-  dia2: z.enum(["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO"]).default("LUNES").catch("LUNES"),
+  dia1: diaEnum,
+  dia2: diaEnum,
   profesorUserId: z.string().min(1, { message: "Requerido" }),
   ayudanteUserId: z.string().min(1, { message: "Requerido" }),
   anioDeCarrera: z.number().min(1, { message: "Requerido" }),

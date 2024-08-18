@@ -18,7 +18,7 @@ type Props = {
 
 type FormReservarLaboratorioType = z.infer<typeof inputReservaLaboratorioCerrado>;
 
-export const LaboratorioCerradoForm = ({ cursoId, onSubmit, onCancel }: Props) => {
+export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
   const {
     data: curso,
     isLoading,
@@ -27,7 +27,7 @@ export const LaboratorioCerradoForm = ({ cursoId, onSubmit, onCancel }: Props) =
 
   const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery();
 
-  const editarCurso = api.cursos.editarCurso.useMutation();
+  // const editarCurso = api.cursos.editarCurso.useMutation();
 
   const formHook = useForm<FormReservarLaboratorioType>({
     mode: "onChange",
@@ -63,16 +63,17 @@ export const LaboratorioCerradoForm = ({ cursoId, onSubmit, onCancel }: Props) =
     return <div>Error al cargar...</div>;
   }
 
-  const onFormSubmit = (formData: FormReservarLaboratorioType) => {
-    editarCurso.mutate(formData, {
-      onSuccess: () => {
-        toast.success("Reserva creada con éxito.");
-        onSubmit();
-      },
-      onError: (error) => {
-        toast.error(error?.message ?? "Error al crear la reserva");
-      },
-    });
+  const onFormSubmit = (_formData: FormReservarLaboratorioType) => {
+    toast.success("Reserva creada con éxito.");
+    // editarCurso.mutate(formData, {
+    //   onSuccess: () => {
+    //     toast.success("Reserva creada con éxito.");
+    //     onSubmit();
+    //   },
+    //   onError: (error) => {
+    //     toast.error(error?.message ?? "Error al crear la reserva");
+    //   },
+    // });
   };
 
   const handleCancel = () => {

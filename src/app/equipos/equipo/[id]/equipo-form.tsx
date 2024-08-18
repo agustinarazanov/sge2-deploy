@@ -92,7 +92,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
           <div className="flex flex-col space-y-4 px-0 md:px-6">
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4 basis-1/3">
-                <FormInput label={"Inventario"} control={control} name="inventario" type={"text"} className="mt-2" />
+                <FormInput label={"Inventario"} control={control} name="inventarioId" type={"text"} className="mt-2" />
               </div>
 
               <div className="mt-4 basis-1/3">
@@ -109,21 +109,33 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
               </div>
 
               <div className="mt-4 basis-1/3">
-                <FormInput label={"Numero de serie"} control={control} name="autor" type={"text"} className="mt-2" />
+                <FormInput
+                  label={"Numero de serie"}
+                  control={control}
+                  name="numeroSerie"
+                  type={"text"}
+                  className="mt-2"
+                />
               </div>
             </div>
 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4 basis-1/3">
-                <FormInput label={"Palabras clave"} control={control} name="editorial" type={"text"} className="mt-2" />
+                <FormInput
+                  label={"Palabras clave"}
+                  control={control}
+                  name="palabrasClave"
+                  type={"text"}
+                  className="mt-2"
+                />
               </div>
 
               <div className="mt-4 basis-1/3">
-                <FormInput label={"Imagen"} id="idioma" control={control} name="idioma" type={"url"} className="mt-2" />
+                <FormInput label={"Imagen"} id="idioma" control={control} name="imagen" type={"url"} className="mt-2" />
               </div>
 
               <div className="mt-4 basis-1/3">
-                <FormInput label={"ISBN"} control={control} name="isbn" type={"text"} className="mt-2" />
+                <FormInput label={"Marca"} control={control} name="marcaId" type={"text"} className="mt-2" />
               </div>
             </div>
 
@@ -132,8 +144,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 <FormSelect
                   label={"Tipo"}
                   control={control}
-                  name="editorial"
-                  type={"text"}
+                  name="tipoId"
                   className="mt-2"
                   items={[
                     { id: 1, label: "Tipo 1" },
@@ -145,10 +156,8 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
               <div className="mt-4 basis-1/3">
                 <FormSelect
                   label={"Marca"}
-                  id="idioma"
                   control={control}
-                  name="idioma"
-                  type={"url"}
+                  name="marcaId"
                   className="mt-2"
                   items={[
                     { id: 1, label: "Marca 1" },
@@ -161,8 +170,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 <FormSelect
                   label={"Sede"}
                   control={control}
-                  name="isbn"
-                  type={"text"}
+                  name="sedeId"
                   className="mt-2"
                   items={[
                     { id: 1, label: "Medrano" },
@@ -177,8 +185,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 <FormSelect
                   label={"Laboratorio"}
                   control={control}
-                  name="editorial"
-                  type={"text"}
+                  name="laboratorioId"
                   className="mt-2"
                   items={[
                     { id: 1, label: "Laboratorio 1" },
@@ -190,10 +197,8 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
               <div className="mt-4 basis-1/3">
                 <FormSelect
                   label={"Armario"}
-                  id="idioma"
                   control={control}
-                  name="idioma"
-                  type={"url"}
+                  name="armarioId"
                   className="mt-2"
                   items={[
                     { id: 1, label: "Armario 1" },
@@ -206,8 +211,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 <FormSelect
                   label={"Estado"}
                   control={control}
-                  name="isbn"
-                  type={"text"}
+                  name="estadoId"
                   className="mt-2"
                   items={[
                     { id: 1, label: "Estado 1" },

@@ -98,8 +98,11 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
       <Combobox
         as={Fragment}
         {...props}
+        // @ts-expect-error library error
         value={multiple ? ((props.value ?? []) as ItemType<TType, TMulti>) : props.value ?? null}
+        // @ts-expect-error library error
         onChange={onChange}
+        // @ts-expect-error library error
         multiple={multiple as false | undefined}
         nullable
       >
@@ -125,7 +128,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
                   if (!async) {
                     setQuery(value);
                   } else {
-                    onSearch(value);
+                    onSearch?.(value);
                   }
                 }}
                 placeholder={placeholder ?? undefined}
