@@ -143,3 +143,18 @@ export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEdita
     throw new Error(`Error modificando usuario ${input.id}`);
   }
 };
+
+export const getAllTutores = async (ctx: { db: PrismaClient }) => {
+  const tutores = await ctx.db.user.findMany({
+    select: {
+      id: true,
+      nombre: true,
+      apellido: true,
+      email: true,
+      legajo: true,
+      image: true,
+    },
+  });
+
+  return tutores;
+};

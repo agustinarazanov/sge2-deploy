@@ -9,6 +9,7 @@ import {
 import {
   editarUsuario,
   eliminarUsuario,
+  getAllTutores,
   getAllUsuarios,
   getUsuarioPorId,
 } from "../../repositories/admin/usuarios-admin.repository";
@@ -47,4 +48,10 @@ export const editarUsuarioProcedure = protectedProcedure.input(inputEditarUsuari
   const usuario = await editarUsuario(ctx, input, userId);
 
   return usuario;
+});
+
+export const getAllTutoresProcedure = protectedProcedure.query(async ({ ctx }) => {
+  const tutores = await getAllTutores(ctx);
+
+  return tutores;
 });

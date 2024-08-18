@@ -24,6 +24,7 @@ model User {
     legajo          String?
     gitlab          String?
     penalizaciones  Int       @default(0)
+    esDocente       Boolean   @default(false)
 
     fechaRegistro            DateTime @default(now())
     fechaUltimoAcceso        DateTime @default(now())
@@ -51,12 +52,28 @@ model User {
 
     materiasDirector            Materia[] @relation(name: "materiasDirector")
     materiasJefeTrabajoPractico Materia[] @relation(name: "materiasJefeTrabajoPractico")
+    tutor                       Tutor? // 1 tutor por 1 usuario maximo
 
     @@index([name(sort: Asc)])
     @@index([apellido(sort: Asc)])
     @@index([email(sort: Asc)])
     @@index([legajo(sort: Asc)], map: "usuario_legajo_asc_idx")
     @@index([legajo], type: Hash, map: "usuario_legajo_hash_idx")
+}
+
+model Tutor {
+    userId  String @unique
+    usuario User   @relation(fields: [userId], references: [id])
+
+    diasHorarios String
+    sede         String
+
+    especialidad String
+
+    fechaCreacion    DateTime @default(now())
+    usuarioCreadorId String
+
+    @@id([userId])
 }
 
 model UsuarioRol {

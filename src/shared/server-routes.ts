@@ -63,6 +63,11 @@ export const LABORATORIO_ABIERTO_ROUTE: AppRoute = {
       label: "Mis reservas",
       isPublic: false,
     },
+    {
+      href: "/laboratorio_abierto/tutores",
+      label: "Tutores",
+      isPublic: false,
+    },
   ],
 };
 

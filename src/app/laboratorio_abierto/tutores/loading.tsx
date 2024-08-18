@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui";
-import LoadingLaboratorioAbiertoReserva from "./_components/table/loading-reserva-laboratorio-abierto";
 import { LABORATORIO_ABIERTO_ROUTE } from "@/shared/server-routes";
 
 const subRutas = LABORATORIO_ABIERTO_ROUTE.subRutas ?? [];
@@ -18,8 +17,6 @@ export default function CursoLoading() {
 
         <div className="w-full md:basis-1/3"></div>
       </div>
-
-      <LoadingLaboratorioAbiertoReserva />
     </>
   );
 }
