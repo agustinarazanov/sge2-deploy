@@ -46,7 +46,7 @@ export const getRolById = async (ctx: { db: PrismaClient }, input: InputGetById)
 };
 
 type InputGetAll = z.infer<typeof inputGetRoles>;
-export const getAllRoles = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
+export const getAllRoles = async (ctx: { db: PrismaClient }, input?: InputGetAll) => {
   const [count, roles] = await ctx.db.$transaction([
     ctx.db.rol.count(),
     ctx.db.rol.findMany({

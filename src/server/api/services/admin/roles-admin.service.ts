@@ -17,13 +17,15 @@ import {
 } from "../../repositories/admin/roles-admin.repository";
 import { Prisma } from "@prisma/client";
 
-export const getTodosLosRolesProcedure = protectedProcedure.input(inputGetRoles).query(async ({ ctx, input }) => {
-  validarInput(inputGetRoles, input);
+export const getTodosLosRolesProcedure = protectedProcedure
+  .input(inputGetRoles.optional())
+  .query(async ({ ctx, input }) => {
+    validarInput(inputGetRoles.optional(), input);
 
-  const roles = await getAllRoles(ctx, input);
+    const roles = await getAllRoles(ctx, input);
 
-  return roles;
-});
+    return roles;
+  });
 
 export const getRolByIdProcedure = protectedProcedure.input(inputGetRol).query(async ({ ctx, input }) => {
   validarInput(inputGetRol, input);
