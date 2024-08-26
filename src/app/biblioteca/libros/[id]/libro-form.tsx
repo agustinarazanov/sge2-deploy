@@ -51,7 +51,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
         editorial: libro.editorial.editorial,
         idioma: libro.idioma.idioma,
         inventario: libro.inventarioId,
-        isbn: libro.isbn,
+        isbn: libro.isbn ?? "",
         materias: libro.materias.map((materia) => materia.materia.nombre),
         titulo: libro.titulo,
       });
