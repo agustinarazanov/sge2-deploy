@@ -14,7 +14,7 @@ export default async function Navbar() {
   const isLogged = user !== undefined;
 
   return (
-    <nav className="bg-gray-500">
+    <nav className="bg-gray-50 dark:bg-gray-500">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           {/* Left side of the navbar - Mobile Links Controls (only mobile) */}

@@ -64,22 +64,28 @@ export const sgePlugin = plugin(
           "5xl": "2400px",
         },
         colors: {
-          //...colors,
+          ...colors,
           border: "hsl(var(--border))",
           input: "hsl(var(--input))",
           ring: "hsl(var(--ring))",
-          foreground: colors.white,
-          "gray-100": "hsl(var(--gray-100))",
-          "gray-200": "hsl(var(--gray-200))",
-          "gray-300": "hsl(var(--gray-300))",
-          "gray-400": "hsl(var(--gray-400))",
-          "gray-500": "hsl(var(--gray-500))",
-          "gray-600": "hsl(var(--gray-600))",
-          "gray-700": "hsl(var(--gray-700))",
-          "gray-800": "hsl(var(--gray-800))",
-          "gray-900": "hsl(var(--gray-900))",
+          foreground: {
+            DEFAULT: colors.black,
+            dark: colors.white,
+          },
+          gray: {
+            100: "hsl(var(--gray-100))",
+            200: "hsl(var(--gray-200))",
+            300: "hsl(var(--gray-300))",
+            400: "hsl(var(--gray-400))",
+            500: "hsl(var(--gray-500))",
+            600: "hsl(var(--gray-600))",
+            700: "hsl(var(--gray-700))",
+            800: "hsl(var(--gray-800))",
+            900: "hsl(var(--gray-900))",
+          },
           background: {
-            DEFAULT: "hsl(var(--gray-700))",
+            DEFAULT: "bg-white",
+            dark: "hsl(var(--gray-700))",
             secondary: "hsl(var(--charcoal))",
           },
           primary: {
@@ -110,7 +116,6 @@ export const sgePlugin = plugin(
             DEFAULT: "hsl(var(--info))",
             dark: "hsl(var(--info-dark))",
           },
-
           muted: {
             DEFAULT: "hsl(var(--muted))",
             foreground: colors.white,
@@ -147,16 +152,6 @@ export const sgePlugin = plugin(
     },
   },
 );
-
-const sgePeset = {
-  content: [],
-  plugins: [
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/forms"),
-    require("tailwindcss-animate"),
-    sgePlugin,
-  ],
-} satisfies Config;
 
 export const rfqPlugin = plugin(
   function ({ addBase }) {
@@ -237,6 +232,7 @@ export const rfqPlugin = plugin(
   {
     theme: {
       colors: {
+        ...colors,
         sub: "hsl(var(--sub))",
         divider: "hsl(var(--divider))",
         danger: "hsl(var(--danger))",
@@ -322,12 +318,12 @@ export const rfqPlugin = plugin(
 );
 
 export default {
-  presets: [sgePeset],
   content: ["./src/**/*.{js,ts,jsx,tsx}", "../../packages/shared/ui/**/*.{js,ts,jsx,tsx}"],
   plugins: [
     require("@tailwindcss/typography"),
     require("@tailwindcss/forms"),
     require("tailwindcss-animate"),
+    sgePlugin,
     rfqPlugin,
   ],
 } satisfies Config;

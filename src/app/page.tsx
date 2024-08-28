@@ -10,7 +10,7 @@ export default async function Home() {
     <main className="flex flex-col items-center justify-center">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          SGE <span className="text-[hsl(280,100%,70%)]">2.0</span>
+          SGE <span className="text-blue-500 dark:text-[hsl(280,100%,70%)]">2.0</span>
         </h1>
         <div className="flex flex-col items-center gap-2">
           <div className="flex flex-col items-center justify-center gap-4">
@@ -18,10 +18,9 @@ export default async function Home() {
               {session && (
                 <>
                   <p>
-                    Hola <code>{session.user?.name}</code>!
+                    ¡Hola <code>{session.user?.name}</code>!
                   </p>
-                  <br></br>
-                  <div>
+                  <div className="pt-5">
                     <Image
                       alt="Imagen de perfil"
                       src={session.user.image!}
@@ -35,10 +34,27 @@ export default async function Home() {
             </div>
             <Link
               href={session ? "/api/auth/signout" : "/api/auth/signin"}
-              className="bg-white/10 hover:bg-white/20 rounded-full px-10 py-3 font-semibold no-underline transition"
+              className="bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 rounded-full px-10 py-3 font-semibold no-underline transition"
             >
               {session ? "Sign out" : "Sign in"}
             </Link>
+            <div className="w-2/3 pt-5 text-center text-xl">
+              <p>
+                Bienvenido al sistema de gestión electrónica del departamento de Ingeniería Electrónica de la Facultad
+                Regional de Buenos Aires.
+              </p>
+              <br></br>
+              <p>
+                Estar registrado en el SGE le servirá para poder utilizar los servicios que brinda el departamento,
+                algunos de ellos son:
+              </p>
+              <br></br>
+              <ul className="list-inside list-disc">
+                <li>Reserva de Laboratorio abierto para Alumnos</li>
+                <li>Reserva de Laboratorio para Docentes</li>
+                <li>Requerir prestamos de Instrumental y/o Libro</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
