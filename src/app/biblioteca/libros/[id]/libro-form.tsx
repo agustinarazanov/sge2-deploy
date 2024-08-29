@@ -1,10 +1,13 @@
-import { FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm, useFormContext } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { Button, FormInput, toast } from "@/components/ui";
+import { Button, FormInput, Select, SelectTrigger, SelectValue, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { inputEditBooks } from "@/shared/filters/biblioteca-filter.schema";
 import { type z } from "zod";
-import { useEffect } from "react";
+import { type ReactElement, useEffect, useMemo } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { MultiSelectFormField } from "@/components/ui/multi-select";
+import { cn } from "@/components/utils";
 
 type Props = {
   id?: string;
@@ -23,40 +26,34 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   const editarLibro = api.biblioteca.editarLibro.useMutation(); // Se llama si existe libroId
   const agregarlibro = api.biblioteca.nuevoLibro.useMutation(); // Se llama si no existe libroId
 
+  const libroBase: Partial<FormEditarLibroType> = useMemo(() => {
+    if (!libro) return {};
+    return {
+      titulo: libro.titulo,
+      isbn: libro.isbn,
+      bibliotecaId: libro.bibliotecaId,
+      inventarioId: libro.inventarioId,
+      editorialId: libro.editorialId,
+      idiomaId: libro.idiomaId,
+      laboratorioId: libro.laboratorioId,
+      armarioId: libro.armarioId,
+      estanteId: libro.estanteId,
+      sedeId: libro.sedeId,
+      autorId: libro.autorId,
+      anio: libro.anio,
+      materias: libro.materias.map((materia) => String(materia.materia.id)),
+    };
+  }, [libro]);
+
   const formHook = useForm<FormEditarLibroType>({
     mode: "onChange",
-    defaultValues: {
-      id: libro?.id ?? undefined,
-      anio: libro?.anio ?? new Date().getFullYear(),
-      autor: libro?.autor?.autorNombre ?? "",
-      editorial: libro?.editorial?.editorial ?? "",
-      idioma: libro?.idioma?.idioma ?? "",
-      inventario: libro?.inventarioId ?? "",
-      isbn: libro?.isbn ?? "",
-      materias: libro?.materias.map((materia) => materia.materia.nombre) ?? [],
-      titulo: libro?.titulo ?? "",
-    },
+    defaultValues: libroBase,
     resolver: zodResolver(inputEditBooks),
   });
 
   const { handleSubmit, control } = formHook;
 
-  // TODO: Separar componente de formulario y logica de carga y actualización de libro
-  useEffect(() => {
-    if (libro) {
-      formHook.reset({
-        id: libro.id,
-        anio: libro.anio,
-        autor: libro.autor.autorNombre,
-        editorial: libro.editorial.editorial,
-        idioma: libro.idioma.idioma,
-        inventario: libro.inventarioId,
-        isbn: libro.isbn,
-        materias: libro.materias.map((materia) => materia.materia.nombre),
-        titulo: libro.titulo,
-      });
-    }
-  }, [formHook, libro]);
+  useEffect(() => formHook.reset(libroBase), [formHook, libroBase]);
 
   if (!esNuevo && isNaN(libroId)) {
     return <div>Error al cargar...</div>;
@@ -112,37 +109,81 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
             </div>
 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-              <div className="mt-4 basis-1/3">
-                <FormInput label={"Inventario"} control={control} name="inventario" type={"text"} className="mt-2" />
-              </div>
-
-              <div className="mt-4 basis-1/3">
-                <FormInput label={"Año"} control={control} name="anio" type={"number"} className="mt-2" />
-              </div>
-
-              <div className="mt-4 basis-1/3">
-                <FormInput label={"Autor"} control={control} name="autor" type={"text"} className="mt-2" />
-              </div>
-            </div>
-
-            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-              <div className="mt-4 basis-1/3">
-                <FormInput label={"Editorial"} control={control} name="editorial" type={"text"} className="mt-2" />
-              </div>
-
-              <div className="mt-4 basis-1/3">
+              <div className="mt-4 basis-1/2">
                 <FormInput
-                  label={"Idioma"}
-                  id="idioma"
+                  label={"Inventario ID"}
                   control={control}
-                  name="idioma"
+                  name="inventarioId"
                   type={"text"}
                   className="mt-2"
                 />
               </div>
 
-              <div className="mt-4 basis-1/3">
+              <div className="mt-4 basis-1/2">
+                <FormInput
+                  label={"Biblioteca ID"}
+                  control={control}
+                  name="bibliotecaId"
+                  type={"text"}
+                  className="mt-2"
+                />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="mt-4 basis-1/2">
                 <FormInput label={"ISBN"} control={control} name="isbn" type={"text"} className="mt-2" />
+              </div>
+
+              <div className="mt-4 basis-1/2">
+                <FormInput label={"Año"} control={control} name="anio" type={"number"} className="mt-2" />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="mt-4 basis-1/4">
+                <FormInput label={"Sede"} control={control} name="sedeId" type={"number"} className="mt-2" />
+              </div>
+
+              <div className="mt-4 basis-1/4">
+                <FormInput
+                  label={"Laboratorio"}
+                  control={control}
+                  name="laboratorioId"
+                  type={"number"}
+                  className="mt-2"
+                />
+              </div>
+
+              <div className="mt-4 basis-1/4">
+                <FormInput label={"Armario"} control={control} name="armarioId" type={"number"} className="mt-2" />
+              </div>
+
+              <div className="mt-4 basis-1/4">
+                <FormInput label={"Estante"} control={control} name="estanteId" type={"number"} className="mt-2" />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="mt-4 basis-1/2">
+                <FormInput label={"Editorial"} control={control} name="editorialId" type={"number"} className="mt-2" />
+              </div>
+
+              <div className="mt-4 basis-1/2">
+                <FormInput
+                  label={"Idioma"}
+                  id="idioma"
+                  control={control}
+                  name="idiomaId"
+                  type={"number"}
+                  className="mt-2"
+                />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="mt-4 w-full">
+                <MateriaDropdownMultiple />
               </div>
             </div>
           </div>
@@ -157,5 +198,71 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
         </div>
       </form>
     </FormProvider>
+  );
+};
+
+const MateriaDropdownMultiple = (props: { className?: string }): ReactElement => {
+  const { control } = useFormContext<FormEditarLibroType>();
+
+  const { data, isLoading, isError } = api.materia.getAll.useQuery();
+
+  const materias = useMemo(() => {
+    if (!data) return [];
+
+    return data.map((materia) => {
+      const { id, nombre } = materia;
+
+      return {
+        label: nombre,
+        value: String(id),
+      };
+    });
+  }, [data]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-row items-center space-x-2">
+        <Skeleton className="h-10 w-full" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Select>
+        <div className="flex flex-row items-center space-x-2">
+          <SelectTrigger
+            disabled
+            id="selectMateria"
+            className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
+          >
+            <SelectValue placeholder="Error cargando materias" />
+          </SelectTrigger>
+        </div>
+      </Select>
+    );
+  }
+
+  return (
+    <Controller
+      name="materias"
+      control={control}
+      render={({ field, fieldState: { error } }) => {
+        return (
+          <>
+            <MultiSelectFormField
+              className={props.className}
+              options={materias}
+              disabled={isLoading}
+              defaultValue={field.value || []}
+              onValueChange={field.onChange}
+              placeholder="All"
+              variant="secondary"
+            />
+            {error?.message && <span className={cn("ml-1 mt-2 block text-xs text-danger")}>{error.message}</span>}
+          </>
+        );
+      }}
+    ></Controller>
   );
 };

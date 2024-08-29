@@ -93,26 +93,3 @@ export const BibliotecaFilterMateria = ({ filters }: Props) => {
     </div>
   );
 };
-
-// {
-//   /* <Select onValueChange={(value) => onMateriaChange(value)} value={materia}>
-//         <div className="flex flex-row items-center space-x-2">
-//           <SelectGroup className="w-full">
-//             <SelectLabel className="sr-only">Selecciona una materia</SelectLabel>
-//             <SelectTrigger
-//               id="selectMateria"
-//               className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
-//             >
-//               <SelectValue placeholder="Selecciona una materia" />
-//             </SelectTrigger>
-//             <SelectContent>
-//               {materias.map((option) => (
-//                 <SelectItem key={option.id} value={String(option.id)}>
-//                   {option.nombre} ({option.codigo})
-//                 </SelectItem>
-//               ))}
-//             </SelectContent>
-//           </SelectGroup>
-//         </div>
-//       </Select> */
-// }
