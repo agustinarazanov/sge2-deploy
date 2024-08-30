@@ -1,9 +1,11 @@
-import { useMemo, type ReactElement } from "react";
+import { useMemo, useState, type ReactElement } from "react";
 import { type FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { FormSelect, type FormSelectProps, type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
+import { type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Select, SelectTrigger, SelectValue } from "@/components/ui";
+import { FormAutocomplete, type FormAutocompleteProps, Select, SelectTrigger, SelectValue } from "@/components/ui";
+import { estaDentroDe } from "@/shared/string-compare";
+import Link from "next/link";
 
 export const SelectAutoresForm = <
   T extends FieldValues,
@@ -14,21 +16,25 @@ export const SelectAutoresForm = <
   control,
   className,
   ...props
-}: Omit<FormSelectProps<T, TType, TMulti>, "items">): ReactElement => {
+}: Omit<FormAutocompleteProps<T, TType, TMulti>, "items">): ReactElement => {
   const { data, isLoading, isError } = api.biblioteca.getAllAutores.useQuery();
+
+  const [query, setQuery] = useState("");
 
   const autores = useMemo(() => {
     if (!data) return [];
 
-    return data.map((autor) => {
-      const { id, autorNombre: label } = autor;
+    return data
+      .map((autor) => {
+        const { id, autorNombre: label } = autor;
 
-      return {
-        label,
-        id,
-      };
-    });
-  }, [data]);
+        return {
+          label,
+          id,
+        };
+      })
+      .filter((item) => !query || estaDentroDe(query, item.label));
+  }, [data, query]);
 
   if (isLoading) {
     return (
@@ -54,6 +60,27 @@ export const SelectAutoresForm = <
     );
   }
 
-  // @ts-expect-error - The expected type comes from property 'items' which is declared on type 'FormSelectProps<...>'
-  return <FormSelect className={className} name={name} control={control} items={autores} {...props} />;
+  return (
+    <FormAutocomplete
+      async
+      items={autores}
+      noOptionsComponent={
+        <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm">
+          <span>No se encontró al autor</span>
+          <Link href="href" className="text-primary">
+            Crear nuevo autor
+          </Link>
+        </div>
+      }
+      className={className}
+      onQueryChange={setQuery}
+      isLoading={isLoading}
+      placeholder="Buscar por nombre de autor"
+      clearable
+      debounceTime={0}
+      control={control}
+      name={name}
+      {...props}
+    />
+  );
 };

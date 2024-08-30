@@ -106,6 +106,7 @@ export const MateriaDropdownMultipleForm = <T extends FieldValues>(props: FormAu
             defaultValue={field.value}
             onValueChange={field.onChange}
             error={error?.message}
+            {...props}
           />
         );
       }}
