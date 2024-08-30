@@ -1,13 +1,13 @@
-import { Controller, FormProvider, useForm, useFormContext } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { Button, FormInput, Select, SelectTrigger, SelectValue, toast } from "@/components/ui";
+import { Button, FormInput, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { inputEditBooks } from "@/shared/filters/biblioteca-filter.schema";
 import { type z } from "zod";
-import { type ReactElement, useEffect, useMemo } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { MultiSelectFormField } from "@/components/ui/multi-select";
-import { cn } from "@/components/utils";
+import { useEffect, useMemo } from "react";
+import { MateriaDropdownMultipleForm } from "@/app/_components/form/materias-dropdown-multiple";
+import { SelectEditorialForm } from "../../_components/select-editorial";
+import { SelectIdiomasForm } from "../../_components/select-idiomas";
 
 type Props = {
   id?: string;
@@ -166,24 +166,17 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4 basis-1/2">
-                <FormInput label={"Editorial"} control={control} name="editorialId" type={"number"} className="mt-2" />
+                <SelectEditorialForm name="editorialId" control={control} className="mt-2" label={"Editorial"} />
               </div>
 
               <div className="mt-4 basis-1/2">
-                <FormInput
-                  label={"Idioma"}
-                  id="idioma"
-                  control={control}
-                  name="idiomaId"
-                  type={"number"}
-                  className="mt-2"
-                />
+                <SelectIdiomasForm name="idiomaId" control={control} className="mt-2" label={"Idioma"} />
               </div>
             </div>
 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4 w-full">
-                <MateriaDropdownMultiple />
+                <MateriaDropdownMultipleForm name="materias" control={control} />
               </div>
             </div>
           </div>
@@ -198,71 +191,5 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
         </div>
       </form>
     </FormProvider>
-  );
-};
-
-const MateriaDropdownMultiple = (props: { className?: string }): ReactElement => {
-  const { control } = useFormContext<FormEditarLibroType>();
-
-  const { data, isLoading, isError } = api.materia.getAll.useQuery();
-
-  const materias = useMemo(() => {
-    if (!data) return [];
-
-    return data.map((materia) => {
-      const { id, nombre } = materia;
-
-      return {
-        label: nombre,
-        value: String(id),
-      };
-    });
-  }, [data]);
-
-  if (isLoading) {
-    return (
-      <div className="flex flex-row items-center space-x-2">
-        <Skeleton className="h-10 w-full" />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <Select>
-        <div className="flex flex-row items-center space-x-2">
-          <SelectTrigger
-            disabled
-            id="selectMateria"
-            className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
-          >
-            <SelectValue placeholder="Error cargando materias" />
-          </SelectTrigger>
-        </div>
-      </Select>
-    );
-  }
-
-  return (
-    <Controller
-      name="materias"
-      control={control}
-      render={({ field, fieldState: { error } }) => {
-        return (
-          <>
-            <MultiSelectFormField
-              className={props.className}
-              options={materias}
-              disabled={isLoading}
-              defaultValue={field.value || []}
-              onValueChange={field.onChange}
-              placeholder="All"
-              variant="secondary"
-            />
-            {error?.message && <span className={cn("ml-1 mt-2 block text-xs text-danger")}>{error.message}</span>}
-          </>
-        );
-      }}
-    ></Controller>
   );
 };

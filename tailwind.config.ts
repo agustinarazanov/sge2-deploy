@@ -69,6 +69,7 @@ export const sgePlugin = plugin(
           input: "hsl(var(--input))",
           ring: "hsl(var(--ring))",
           foreground: colors.white,
+          transparent: colors.transparent,
           "gray-100": "hsl(var(--gray-100))",
           "gray-200": "hsl(var(--gray-200))",
           "gray-300": "hsl(var(--gray-300))",

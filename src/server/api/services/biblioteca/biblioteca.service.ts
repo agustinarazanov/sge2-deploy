@@ -5,6 +5,8 @@ import {
   editLibro,
   deleteLibro,
   getLibroPorId,
+  getAllEditorial,
+  getAllIdiomas,
 } from "../../repositories/biblioteca/biblioteca.repository";
 import {
   inputAddBooks,
@@ -21,6 +23,18 @@ export const getTodosLosLibrosProcedure = protectedProcedure.input(inputGetBooks
   const libros = await getAllLibros(ctx, input);
 
   return libros;
+});
+
+export const getTodosLosEditorialProcedure = protectedProcedure.query(async ({ ctx }) => {
+  const editorial = await getAllEditorial(ctx);
+
+  return editorial;
+});
+
+export const getTodosLosIdiomasProcedure = protectedProcedure.query(async ({ ctx }) => {
+  const idiomas = await getAllIdiomas(ctx);
+
+  return idiomas;
 });
 
 export const libroPorIdProcedure = protectedProcedure.input(inputGetLibro).query(async ({ ctx, input }) => {

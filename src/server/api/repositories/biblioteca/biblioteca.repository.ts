@@ -249,3 +249,31 @@ export const countAllLibros = async (ctx: { db: PrismaClient }) => {
 
   return count;
 };
+
+export const getAllEditorial = async (ctx: { db: PrismaClient }) => {
+  const editoriales = await ctx.db.libroEditorial.findMany({
+    select: {
+      id: true,
+      editorial: true,
+    },
+    orderBy: {
+      editorial: "asc",
+    },
+  });
+
+  return editoriales;
+};
+
+export const getAllIdiomas = async (ctx: { db: PrismaClient }) => {
+  const idiomas = await ctx.db.libroIdioma.findMany({
+    select: {
+      id: true,
+      idioma: true,
+    },
+    orderBy: {
+      idioma: "asc",
+    },
+  });
+
+  return idiomas;
+};
