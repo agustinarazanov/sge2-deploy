@@ -1,9 +1,11 @@
-import { useMemo, type ReactElement } from "react";
+import { useMemo, useState, type ReactElement } from "react";
 import { type FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { FormSelect, type FormSelectProps, type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
+import { type FormSelectProps, type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Select, SelectTrigger, SelectValue } from "@/components/ui";
+import { FormAutocomplete, Select, SelectTrigger, SelectValue } from "@/components/ui";
+import { estaDentroDe } from "@/shared/string-compare";
+import Link from "next/link";
 
 export const SelectEditorialForm = <
   T extends FieldValues,
@@ -17,18 +19,22 @@ export const SelectEditorialForm = <
 }: Omit<FormSelectProps<T, TType, TMulti>, "items">): ReactElement => {
   const { data, isLoading, isError } = api.biblioteca.getAllEditorial.useQuery();
 
+  const [query, setQuery] = useState("");
+
   const editoriales = useMemo(() => {
     if (!data) return [];
 
-    return data.map((editorial) => {
-      const { id, editorial: label } = editorial;
+    return data
+      .map((editorial) => {
+        const { id, editorial: label } = editorial;
 
-      return {
-        label,
-        id,
-      };
-    });
-  }, [data]);
+        return {
+          label,
+          id,
+        };
+      })
+      .filter((item) => !query || estaDentroDe(query, item.label));
+  }, [data, query]);
 
   if (isLoading) {
     return (
@@ -54,6 +60,27 @@ export const SelectEditorialForm = <
     );
   }
 
-  // @ts-expect-error - The expected type comes from property 'items' which is declared on type 'FormSelectProps<...>'
-  return <FormSelect className={className} name={name} control={control} items={editoriales} {...props} />;
+  return (
+    <FormAutocomplete
+      async
+      items={editoriales}
+      noOptionsComponent={
+        <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm">
+          <span>No se encontró la editorial</span>
+          <Link href="href" className="text-primary">
+            Crear nueva editorial
+          </Link>
+        </div>
+      }
+      className={className}
+      onQueryChange={setQuery}
+      isLoading={isLoading}
+      placeholder="Buscar por nombre de editorial"
+      clearable
+      debounceTime={0}
+      control={control}
+      name={name}
+      {...props}
+    />
+  );
 };
