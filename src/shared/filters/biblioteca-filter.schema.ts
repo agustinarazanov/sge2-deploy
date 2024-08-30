@@ -1,15 +1,24 @@
 import { z } from "zod";
 
 export const inputAddBooks = z.object({
-  inventario: z.string().min(1, { message: "Requerido" }),
   titulo: z.string().min(1, { message: "Requerido" }),
-  autor: z.string().min(1, { message: "Requerido" }),
-  anio: z.number().min(1, { message: "Requerido" }),
-  editorial: z.string().min(1, { message: "Requerido" }),
-  idioma: z.string().min(1, { message: "Requerido" }),
   isbn: z.string().min(1, { message: "Requerido" }),
+  anio: z.number().min(1, { message: "Requerido" }),
+
+  bibliotecaId: z.string().optional(),
+  inventarioId: z.string().optional(),
+
+  laboratorioId: z.number().min(1, { message: "Requerido" }),
+  armarioId: z.number().min(1, { message: "Requerido" }),
+  estanteId: z.number().min(1, { message: "Requerido" }),
+
+  editorialId: z.number().min(1, { message: "Requerido" }),
+  idiomaId: z.number().min(1, { message: "Requerido" }),
+
+  sedeId: z.number().min(1, { message: "Requerido" }),
+  autorId: z.number().min(1, { message: "Requerido" }),
+
   materias: z.array(z.string()).default([]),
-  estado: z.enum(["disponible", "prestado"]).default("disponible"),
 });
 
 export const inputGetBooks = z.object({
