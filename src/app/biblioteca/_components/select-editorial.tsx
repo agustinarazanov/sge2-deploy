@@ -54,5 +54,5 @@ export const SelectEditorialForm = <
     );
   }
 
-  return <FormSelect className={className} name={name} control={control} items={editoriales} {...props} />;
+  return <FormSelect className={className} name={name} control={control} items={editoriales as TType[]} {...props} />;
 };

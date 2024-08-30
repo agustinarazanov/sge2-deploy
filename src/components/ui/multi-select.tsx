@@ -55,13 +55,13 @@ interface MultiSelectFormFieldProps
 
 const MultiSelectFormField = React.forwardRef<HTMLButtonElement, MultiSelectFormFieldProps>(
   ({ className, variant, options, defaultValue, onValueChange, placeholder, animation = 0, ...props }, ref) => {
-    const [selectedValues, setSelectedValues] = React.useState<string[]>(defaultValue || []);
+    const [selectedValues, setSelectedValues] = React.useState<string[]>(defaultValue ?? []);
     const selectedValuesSet = React.useRef(new Set(selectedValues));
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
     const [isAnimating, setIsAnimating] = React.useState(animation > 0);
 
     React.useEffect(() => {
-      setSelectedValues(defaultValue || []);
+      setSelectedValues(defaultValue ?? []);
       selectedValuesSet.current = new Set(defaultValue);
     }, [defaultValue]);
 
@@ -94,7 +94,7 @@ const MultiSelectFormField = React.forwardRef<HTMLButtonElement, MultiSelectForm
             ref={ref}
             {...props}
             onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-            className="bg-inherit hover:bg-card mt-2 flex h-fit min-h-12 w-full items-center justify-between rounded-md border p-2"
+            className="hover:bg-card mt-2 flex h-fit min-h-12 w-full items-center justify-between rounded-md border bg-inherit p-2"
             color={"secondary"}
           >
             {selectedValues.length > 0 ? (

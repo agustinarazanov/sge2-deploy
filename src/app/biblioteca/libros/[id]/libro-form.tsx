@@ -30,8 +30,8 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
     if (!libro) return {};
     return {
       titulo: libro.titulo,
-      isbn: libro.isbn,
-      bibliotecaId: libro.bibliotecaId,
+      isbn: libro.isbn ?? "",
+      bibliotecaId: libro.bibliotecaId ?? "",
       inventarioId: libro.inventarioId,
       editorialId: libro.editorialId,
       idiomaId: libro.idiomaId,

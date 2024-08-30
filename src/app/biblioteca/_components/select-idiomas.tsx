@@ -54,5 +54,5 @@ export const SelectIdiomasForm = <
     );
   }
 
-  return <FormSelect className={className} name={name} control={control} items={idiomas} {...props} />;
+  return <FormSelect className={className} name={name} control={control} items={idiomas as TType[]} {...props} />;
 };
