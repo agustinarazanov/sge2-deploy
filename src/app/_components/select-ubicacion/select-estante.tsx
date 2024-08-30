@@ -5,7 +5,7 @@ import { FormSelect, type FormSelectProps, type IsMulti, type SelectItem } from 
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui";
 
-export const SelectIdiomasForm = <
+export const SelectEstanteForm = <
   T extends FieldValues,
   TType extends SelectItem | string,
   TMulti extends IsMulti = undefined,
@@ -14,14 +14,17 @@ export const SelectIdiomasForm = <
   control,
   className,
   ...props
-}: Omit<FormSelectProps<T, TType, TMulti>, "items">): ReactElement => {
-  const { data, isLoading, isError } = api.biblioteca.getAllIdiomas.useQuery();
+}: Omit<FormSelectProps<T, TType, TMulti>, "items"> & { armarioId?: number }): ReactElement => {
+  const { data, isLoading, isError } = api.admin.laboratorios.getAllEstantes.useQuery(
+    { armarioId: props.armarioId! },
+    { enabled: !!props.armarioId },
+  );
 
-  const idiomas = useMemo(() => {
+  const estantes = useMemo(() => {
     if (!data) return [];
 
-    return data.map((idioma) => {
-      const { id, idioma: label } = idioma;
+    return data.map((estante) => {
+      const { id, nombre: label } = estante;
 
       return {
         label,
@@ -44,16 +47,25 @@ export const SelectIdiomasForm = <
         <div className="flex flex-row items-center space-x-2">
           <SelectTrigger
             disabled
-            id="selectIdioma"
+            id="selectEstante"
             className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
           >
-            <SelectValue placeholder="Error cargando idiomas" />
+            <SelectValue placeholder="Error cargando estantes" />
           </SelectTrigger>
         </div>
       </Select>
     );
   }
 
-  // @ts-expect-error - The expected type comes from property 'items' which is declared on type 'FormSelectProps<...>'
-  return <FormSelect className={className} name={name} control={control} items={idiomas} {...props} />;
+  return (
+    <FormSelect
+      className={className}
+      name={name}
+      control={control}
+      // @ts-expect-error - The expected type comes from property 'items' which is declared on type 'FormSelectProps<...>'
+      items={estantes}
+      {...props}
+      disabled={!props.armarioId || props.disabled}
+    />
+  );
 };

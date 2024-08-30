@@ -5,7 +5,7 @@ import { FormSelect, type FormSelectProps, type IsMulti, type SelectItem } from 
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui";
 
-export const SelectIdiomasForm = <
+export const SelectSedeForm = <
   T extends FieldValues,
   TType extends SelectItem | string,
   TMulti extends IsMulti = undefined,
@@ -15,13 +15,13 @@ export const SelectIdiomasForm = <
   className,
   ...props
 }: Omit<FormSelectProps<T, TType, TMulti>, "items">): ReactElement => {
-  const { data, isLoading, isError } = api.biblioteca.getAllIdiomas.useQuery();
+  const { data, isLoading, isError } = api.admin.laboratorios.getAllSedes.useQuery();
 
-  const idiomas = useMemo(() => {
+  const sedes = useMemo(() => {
     if (!data) return [];
 
-    return data.map((idioma) => {
-      const { id, idioma: label } = idioma;
+    return data.map((sede) => {
+      const { id, nombre: label } = sede;
 
       return {
         label,
@@ -44,10 +44,10 @@ export const SelectIdiomasForm = <
         <div className="flex flex-row items-center space-x-2">
           <SelectTrigger
             disabled
-            id="selectIdioma"
+            id="selectSede"
             className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
           >
-            <SelectValue placeholder="Error cargando idiomas" />
+            <SelectValue placeholder="Error cargando sedes" />
           </SelectTrigger>
         </div>
       </Select>
@@ -55,5 +55,5 @@ export const SelectIdiomasForm = <
   }
 
   // @ts-expect-error - The expected type comes from property 'items' which is declared on type 'FormSelectProps<...>'
-  return <FormSelect className={className} name={name} control={control} items={idiomas} {...props} />;
+  return <FormSelect className={className} name={name} control={control} items={sedes} {...props} />;
 };

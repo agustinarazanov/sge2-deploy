@@ -2,10 +2,19 @@ import { z } from "zod";
 
 export const inputGetLaboratorios = z.object({
   searchText: z.string().default(""),
+  sedeId: z.number().optional(),
 });
 
 export const inputGetLaboratorio = z.object({
   id: z.number(),
+});
+
+export const inputGetArmarios = z.object({
+  laboratorioId: z.number(),
+});
+
+export const inputGetEstantes = z.object({
+  armarioId: z.number(),
 });
 
 export const inputEliminarLaboratorio = inputGetLaboratorio;
