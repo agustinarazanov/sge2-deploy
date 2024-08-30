@@ -50,7 +50,7 @@ export const sgePlugin = plugin(
     });
     addBase({
       "html, body": {
-        "@apply text-foreground bg-background": {},
+        "@apply dark:text-foreground dark:bg-background": {},
       },
     });
   },
@@ -67,10 +67,7 @@ export const sgePlugin = plugin(
           border: "hsl(var(--border))",
           input: "hsl(var(--input))",
           ring: "hsl(var(--ring))",
-          foreground: {
-            DEFAULT: colors.black,
-            dark: colors.white,
-          },
+          foreground: colors.white,
           transparent: colors.transparent,
           "gray-100": "hsl(var(--gray-100))",
           "gray-200": "hsl(var(--gray-200))",
@@ -82,8 +79,7 @@ export const sgePlugin = plugin(
           "gray-800": "hsl(var(--gray-800))",
           "gray-900": "hsl(var(--gray-900))",
           background: {
-            DEFAULT: "bg-white",
-            dark: "hsl(var(--gray-700))",
+            DEFAULT: "hsl(var(--gray-700))",
             secondary: "hsl(var(--charcoal))",
           },
           primary: {
@@ -220,10 +216,10 @@ export const rfqPlugin = plugin(
     });
     addBase({
       "main.sge": {
-        "@apply bg-layout": {},
+        "@apply dark:bg-layout": {},
       },
       body: {
-        "@apply text-default": {},
+        "@apply dark:text-default": {},
       },
     });
   },
