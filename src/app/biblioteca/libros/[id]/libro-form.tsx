@@ -4,7 +4,10 @@ import { Button, FormInput, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { inputEditBooks } from "@/shared/filters/biblioteca-filter.schema";
 import { type z } from "zod";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { MateriaDropdownMultipleForm } from "@/app/_components/form/materias-dropdown-multiple";
+import { SelectEditorialForm } from "../../_components/select-editorial";
+import { SelectIdiomasForm } from "../../_components/select-idiomas";
 
 type Props = {
   id?: string;
@@ -23,40 +26,34 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   const editarLibro = api.biblioteca.editarLibro.useMutation(); // Se llama si existe libroId
   const agregarlibro = api.biblioteca.nuevoLibro.useMutation(); // Se llama si no existe libroId
 
+  const libroBase: Partial<FormEditarLibroType> = useMemo(() => {
+    if (!libro) return {};
+    return {
+      titulo: libro.titulo,
+      isbn: libro.isbn,
+      bibliotecaId: libro.bibliotecaId,
+      inventarioId: libro.inventarioId,
+      editorialId: libro.editorialId,
+      idiomaId: libro.idiomaId,
+      laboratorioId: libro.laboratorioId,
+      armarioId: libro.armarioId,
+      estanteId: libro.estanteId,
+      sedeId: libro.sedeId,
+      autorId: libro.autorId,
+      anio: libro.anio,
+      materias: libro.materias.map((materia) => String(materia.materia.id)),
+    };
+  }, [libro]);
+
   const formHook = useForm<FormEditarLibroType>({
     mode: "onChange",
-    defaultValues: {
-      id: libro?.id ?? undefined,
-      anio: libro?.anio ?? new Date().getFullYear(),
-      autor: libro?.autor?.autorNombre ?? "",
-      editorial: libro?.editorial?.editorial ?? "",
-      idioma: libro?.idioma?.idioma ?? "",
-      inventario: libro?.inventarioId ?? "",
-      isbn: libro?.isbn ?? "",
-      materias: libro?.materias.map((materia) => materia.materia.nombre) ?? [],
-      titulo: libro?.titulo ?? "",
-    },
+    defaultValues: libroBase,
     resolver: zodResolver(inputEditBooks),
   });
 
   const { handleSubmit, control } = formHook;
 
-  // TODO: Separar componente de formulario y logica de carga y actualización de libro
-  useEffect(() => {
-    if (libro) {
-      formHook.reset({
-        id: libro.id,
-        anio: libro.anio,
-        autor: libro.autor.autorNombre,
-        editorial: libro.editorial.editorial,
-        idioma: libro.idioma.idioma,
-        inventario: libro.inventarioId,
-        isbn: libro.isbn ?? "",
-        materias: libro.materias.map((materia) => materia.materia.nombre),
-        titulo: libro.titulo,
-      });
-    }
-  }, [formHook, libro]);
+  useEffect(() => formHook.reset(libroBase), [formHook, libroBase]);
 
   if (!esNuevo && isNaN(libroId)) {
     return <div>Error al cargar...</div>;
@@ -112,37 +109,74 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
             </div>
 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-              <div className="mt-4 basis-1/3">
-                <FormInput label={"Inventario"} control={control} name="inventario" type={"text"} className="mt-2" />
-              </div>
-
-              <div className="mt-4 basis-1/3">
-                <FormInput label={"Año"} control={control} name="anio" type={"number"} className="mt-2" />
-              </div>
-
-              <div className="mt-4 basis-1/3">
-                <FormInput label={"Autor"} control={control} name="autor" type={"text"} className="mt-2" />
-              </div>
-            </div>
-
-            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-              <div className="mt-4 basis-1/3">
-                <FormInput label={"Editorial"} control={control} name="editorial" type={"text"} className="mt-2" />
-              </div>
-
-              <div className="mt-4 basis-1/3">
+              <div className="mt-4 basis-1/2">
                 <FormInput
-                  label={"Idioma"}
-                  id="idioma"
+                  label={"Inventario ID"}
                   control={control}
-                  name="idioma"
+                  name="inventarioId"
                   type={"text"}
                   className="mt-2"
                 />
               </div>
 
-              <div className="mt-4 basis-1/3">
+              <div className="mt-4 basis-1/2">
+                <FormInput
+                  label={"Biblioteca ID"}
+                  control={control}
+                  name="bibliotecaId"
+                  type={"text"}
+                  className="mt-2"
+                />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="mt-4 basis-1/2">
                 <FormInput label={"ISBN"} control={control} name="isbn" type={"text"} className="mt-2" />
+              </div>
+
+              <div className="mt-4 basis-1/2">
+                <FormInput label={"Año"} control={control} name="anio" type={"number"} className="mt-2" />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="mt-4 basis-1/4">
+                <FormInput label={"Sede"} control={control} name="sedeId" type={"number"} className="mt-2" />
+              </div>
+
+              <div className="mt-4 basis-1/4">
+                <FormInput
+                  label={"Laboratorio"}
+                  control={control}
+                  name="laboratorioId"
+                  type={"number"}
+                  className="mt-2"
+                />
+              </div>
+
+              <div className="mt-4 basis-1/4">
+                <FormInput label={"Armario"} control={control} name="armarioId" type={"number"} className="mt-2" />
+              </div>
+
+              <div className="mt-4 basis-1/4">
+                <FormInput label={"Estante"} control={control} name="estanteId" type={"number"} className="mt-2" />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="mt-4 basis-1/2">
+                <SelectEditorialForm name="editorialId" control={control} className="mt-2" label={"Editorial"} />
+              </div>
+
+              <div className="mt-4 basis-1/2">
+                <SelectIdiomasForm name="idiomaId" control={control} className="mt-2" label={"Idioma"} />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="mt-4 w-full">
+                <MateriaDropdownMultipleForm name="materias" control={control} />
               </div>
             </div>
           </div>
