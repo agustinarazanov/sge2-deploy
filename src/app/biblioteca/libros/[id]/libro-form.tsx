@@ -8,6 +8,11 @@ import { useEffect, useMemo } from "react";
 import { MateriaDropdownMultipleForm } from "@/app/_components/form/materias-dropdown-multiple";
 import { SelectEditorialForm } from "../../_components/select-editorial";
 import { SelectIdiomasForm } from "../../_components/select-idiomas";
+import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
+import { SelectLaboratorioForm } from "@/app/_components/select-ubicacion/select-laboratorio";
+import { SelectArmarioForm } from "@/app/_components/select-ubicacion/select-armario";
+import { SelectEstanteForm } from "@/app/_components/select-ubicacion/select-estante";
+import { SelectAutoresForm } from "../../_components/select-autor";
 
 type Props = {
   id?: string;
@@ -55,18 +60,6 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
 
   useEffect(() => formHook.reset(libroBase), [formHook, libroBase]);
 
-  if (!esNuevo && isNaN(libroId)) {
-    return <div>Error al cargar...</div>;
-  }
-
-  if (isLoading) {
-    return <div>Cargando...</div>;
-  }
-
-  if (isError) {
-    return <div>Error al cargar...</div>;
-  }
-
   const onFormSubmit = (formData: FormEditarLibroType) => {
     if (esNuevo) {
       agregarlibro.mutate(formData, {
@@ -97,6 +90,26 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
     onCancel();
   };
 
+  const sedeId = formHook.watch("sedeId");
+  const laboratorioId = formHook.watch("laboratorioId");
+  const armarioId = formHook.watch("armarioId");
+
+  useEffect(() => void sedeId && formHook.setValue("laboratorioId", undefined), [formHook, sedeId]);
+  useEffect(() => void laboratorioId && formHook.setValue("sedeId", undefined), [formHook, laboratorioId]);
+  useEffect(() => void armarioId && formHook.setValue("estanteId", undefined), [formHook, armarioId]);
+
+  if (!esNuevo && isNaN(libroId)) {
+    return <div>Error al cargar...</div>;
+  }
+
+  if (isLoading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (isError) {
+    return <div>Error al cargar...</div>;
+  }
+
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
@@ -105,6 +118,12 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
             <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
               <div className="mt-4 w-full">
                 <FormInput label={"Titulo"} control={control} name="titulo" type={"text"} className="mt-2" />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+              <div className="mt-4 w-full">
+                <SelectAutoresForm name="autorId" control={control} className="mt-2" label={"Autor"} />
               </div>
             </div>
 
@@ -136,31 +155,55 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
               </div>
 
               <div className="mt-4 basis-1/2">
-                <FormInput label={"Año"} control={control} name="anio" type={"number"} className="mt-2" />
+                <FormInput label={"Año"} control={control} name="anio" type={"number"} className="mt-2" maxLength={4} />
               </div>
             </div>
 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-              <div className="mt-4 basis-1/4">
-                <FormInput label={"Sede"} control={control} name="sedeId" type={"number"} className="mt-2" />
-              </div>
-
-              <div className="mt-4 basis-1/4">
-                <FormInput
-                  label={"Laboratorio"}
+              <div className="mt-4 basis-1/2">
+                <SelectSedeForm
+                  name="sedeId"
                   control={control}
-                  name="laboratorioId"
-                  type={"number"}
                   className="mt-2"
+                  label={"Sede"}
+                  placeholder={"Selecciona una sede"}
                 />
               </div>
 
-              <div className="mt-4 basis-1/4">
-                <FormInput label={"Armario"} control={control} name="armarioId" type={"number"} className="mt-2" />
+              <div className="mt-4 basis-1/2">
+                <SelectLaboratorioForm
+                  name="laboratorioId"
+                  control={control}
+                  className="mt-2"
+                  label={"Laboratorio"}
+                  sedeId={sedeId}
+                  disabled={!sedeId}
+                  placeholder={!sedeId ? "Selecciona una sede" : "Selecciona un laboratorio"}
+                />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="mt-4 basis-1/2">
+                <SelectArmarioForm
+                  name="armarioId"
+                  control={control}
+                  className="mt-2"
+                  label={"Armario"}
+                  laboratorioId={laboratorioId}
+                  placeholder={!laboratorioId ? "Selecciona un laboratorio" : "Selecciona un armario"}
+                />
               </div>
 
-              <div className="mt-4 basis-1/4">
-                <FormInput label={"Estante"} control={control} name="estanteId" type={"number"} className="mt-2" />
+              <div className="mt-4 basis-1/2">
+                <SelectEstanteForm
+                  name="estanteId"
+                  control={control}
+                  className="mt-2"
+                  label={"Estante"}
+                  armarioId={armarioId}
+                  placeholder={!armarioId ? "Selecciona un armario" : "Selecciona una estante"}
+                />
               </div>
             </div>
 

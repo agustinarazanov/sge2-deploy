@@ -54,5 +54,6 @@ export const SelectEditorialForm = <
     );
   }
 
+  // @ts-expect-error - The expected type comes from property 'items' which is declared on type 'FormSelectProps<...>'
   return <FormSelect className={className} name={name} control={control} items={editoriales} {...props} />;
 };

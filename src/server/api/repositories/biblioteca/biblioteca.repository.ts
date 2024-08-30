@@ -277,3 +277,17 @@ export const getAllIdiomas = async (ctx: { db: PrismaClient }) => {
 
   return idiomas;
 };
+
+export const getAllAutores = async (ctx: { db: PrismaClient }) => {
+  const autores = await ctx.db.libroAutor.findMany({
+    select: {
+      id: true,
+      autorNombre: true,
+    },
+    orderBy: {
+      autorNombre: "asc",
+    },
+  });
+
+  return autores;
+};
