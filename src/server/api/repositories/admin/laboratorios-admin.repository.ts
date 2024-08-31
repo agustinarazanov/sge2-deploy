@@ -1,11 +1,11 @@
-import {
+import type {
   inputGetArmarios,
   inputGetEstantes,
-  type inputAgregarLaboratorio,
-  type inputEditarLaboratorio,
-  type inputEliminarLaboratorio,
-  type inputGetLaboratorio,
-  type inputGetLaboratorios,
+  inputAgregarLaboratorio,
+  inputEditarLaboratorio,
+  inputEliminarLaboratorio,
+  inputGetLaboratorio,
+  inputGetLaboratorios,
 } from "@/shared/filters/admin-laboratorios-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
@@ -28,7 +28,7 @@ export const getAllLaboratorios = async (ctx: { db: PrismaClient }, input: Input
           contains: searchText ?? undefined,
           mode: "insensitive",
         },
-        sedeId: sedeId,
+        sedeId: sedeId ? parseInt(sedeId) : undefined,
       },
     }),
   ]);

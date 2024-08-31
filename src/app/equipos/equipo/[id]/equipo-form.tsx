@@ -224,7 +224,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
             <div className="flex w-full flex-row lg:flex-row">
               <Label htmlFor={id} className="mb-3 flex w-full flex-col text-sm text-input-label">
                 Observaciones
-                <textarea name="" id="" className="w-full"></textarea>
+                <textarea name="" id="" className="w-full bg-background"></textarea>
               </Label>
             </div>
           </div>

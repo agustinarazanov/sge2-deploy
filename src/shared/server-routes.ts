@@ -31,15 +31,15 @@ export const BIBLIOTECA_ROUTE: AppRoute = {
 };
 
 export const LABORATORIO_ROUTE: AppRoute = {
-  href: "/laboratorios",
+  href: "/laboratorios/mis_cursos",
   label: "Laboratorios",
   isPublic: false,
   subRutas: [
-    {
-      href: "/laboratorios/mis_cursos",
-      label: "Mis cursos",
-      isPublic: false,
-    },
+    // {
+    //   href: "/laboratorios/mis_cursos",
+    //   label: "Mis cursos",
+    //   isPublic: false,
+    // },
     {
       href: "/laboratorios/catedra",
       label: "Cátedra",
@@ -49,15 +49,15 @@ export const LABORATORIO_ROUTE: AppRoute = {
 };
 
 export const LABORATORIO_ABIERTO_ROUTE: AppRoute = {
-  href: "/laboratorio_abierto",
-  label: "Laboratorio Abierto",
+  href: "/laboratorio_abierto/reservar",
+  label: "Laboratorio abierto",
   isPublic: false,
   subRutas: [
-    {
-      href: "/laboratorio_abierto/reservar",
-      label: "Reservar",
-      isPublic: false,
-    },
+    // {
+    //   href: "/laboratorio_abierto/reservar",
+    //   label: "Reservar",
+    //   isPublic: false,
+    // },
     {
       href: "/laboratorio_abierto/mis_reservas",
       label: "Mis reservas",
@@ -108,15 +108,15 @@ export const CURSOS_ROUTE: AppRoute = {
 };
 
 export const ADMIN_ROUTE: AppRoute = {
-  href: "/admin",
+  href: "/admin/roles",
   label: "Administración",
   isPublic: false,
   subRutas: [
-    {
-      href: "/admin/roles",
-      label: "Roles",
-      isPublic: false,
-    },
+    // {
+    //   href: "/admin/roles",
+    //   label: "Roles",
+    //   isPublic: false,
+    // },
     {
       href: "/admin/usuarios",
       label: "Usuarios",
