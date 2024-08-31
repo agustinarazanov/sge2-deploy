@@ -28,7 +28,7 @@ export default function NavbarViewLinks({ user, isMobile }: MobileViewProps) {
         <NavbarLink
           key={link.href}
           href={link.inConstruction ? "/en_construccion" : link.href}
-          isActive={link.href === pathname}
+          isActive={link.href.split("/")[1] === pathname.split("/")[1]}
           isMobile={isMobile}
         >
           {link.label}
