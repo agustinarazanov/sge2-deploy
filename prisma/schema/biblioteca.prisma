@@ -1,13 +1,13 @@
 model Libro {
     id Int @id @default(autoincrement())
 
-    bibliotecaId String @unique
-    inventarioId String @unique
+    bibliotecaId String?
+    inventarioId String  @unique
 
     titulo String
 
     anio Int
-    isbn String @unique
+    isbn String?
 
     materias LibroMateria[]
 
@@ -39,8 +39,6 @@ model Libro {
     usuarioCreadorId     String
     usuarioModificadorId String
 
-    @@index([bibliotecaId])
-    @@index([inventarioId])
     @@index([titulo(sort: Asc)])
     @@index([anio(sort: Desc)])
 }

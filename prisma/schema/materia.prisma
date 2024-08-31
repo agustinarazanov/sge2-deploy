@@ -43,7 +43,7 @@ model MateriaCorrelativa {
     usuarioCreadorId     String
     usuarioModificadorId String
 
-    @@id([materiaPrerequisitoId, correlativaId])
+    @@id([estatusCorrelativa, materiaPrerequisitoId, correlativaId])
 }
 
 enum MateriaDuracion {

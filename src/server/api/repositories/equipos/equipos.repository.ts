@@ -82,7 +82,7 @@ export const agregarEquipo = async (ctx: { db: PrismaClient }, input: InputAgreg
         palabrasClave: input.palabrasClave,
         imagen: input.imagen,
 
-        inventarioId: parseInt(input.inventarioId),
+        inventarioId: input.inventarioId,
 
         modelo: input.modelo,
         numeroSerie: input.numeroSerie,
@@ -135,7 +135,7 @@ export const editarEquipo = async (ctx: { db: PrismaClient }, input: InputEditar
         palabrasClave: input.palabrasClave,
         imagen: input.imagen,
 
-        inventarioId: parseInt(input.inventarioId),
+        inventarioId: input.inventarioId,
 
         modelo: input.modelo,
         numeroSerie: input.numeroSerie,

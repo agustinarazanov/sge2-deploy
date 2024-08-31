@@ -50,7 +50,7 @@ export const sgePlugin = plugin(
     });
     addBase({
       "html, body": {
-        "@apply text-foreground bg-background": {},
+        "@apply dark:text-foreground dark:bg-background": {},
       },
     });
   },
@@ -64,7 +64,6 @@ export const sgePlugin = plugin(
           "5xl": "2400px",
         },
         colors: {
-          //...colors,
           border: "hsl(var(--border))",
           input: "hsl(var(--input))",
           ring: "hsl(var(--ring))",
@@ -111,7 +110,6 @@ export const sgePlugin = plugin(
             DEFAULT: "hsl(var(--info))",
             dark: "hsl(var(--info-dark))",
           },
-
           muted: {
             DEFAULT: "hsl(var(--muted))",
             foreground: colors.white,
@@ -148,16 +146,6 @@ export const sgePlugin = plugin(
     },
   },
 );
-
-const sgePeset = {
-  content: [],
-  plugins: [
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/forms"),
-    require("tailwindcss-animate"),
-    sgePlugin,
-  ],
-} satisfies Config;
 
 export const rfqPlugin = plugin(
   function ({ addBase }) {
@@ -228,31 +216,31 @@ export const rfqPlugin = plugin(
     });
     addBase({
       "main.sge": {
-        "@apply bg-layout": {},
+        "@apply dark:bg-layout": {},
       },
       body: {
-        "@apply text-default": {},
+        "@apply dark:text-default": {},
       },
     });
   },
   {
     theme: {
-      colors: {
-        sub: "hsl(var(--sub))",
-        divider: "hsl(var(--divider))",
-        danger: "hsl(var(--danger))",
-        warn: "hsl(var(--warn))",
-        success: "hsl(var(--success))",
-        info: "hsl(var(--info))",
-        disabled: "hsl(var(--disabled))",
-        aqua: "hsl(var(--aqua))",
-        midnight: "hsl(var(--midnight))",
-        nocturne: "hsl(var(--nocturne))",
-        onyx: "hsl(var(--onyx))",
-      },
       extend: {
         fontWeight: {
           btn: "700",
+        },
+        colors: {
+          sub: "hsl(var(--sub))",
+          divider: "hsl(var(--divider))",
+          danger: "hsl(var(--danger))",
+          warn: "hsl(var(--warn))",
+          success: "hsl(var(--success))",
+          info: "hsl(var(--info))",
+          disabled: "hsl(var(--disabled))",
+          aqua: "hsl(var(--aqua))",
+          midnight: "hsl(var(--midnight))",
+          nocturne: "hsl(var(--nocturne))",
+          onyx: "hsl(var(--onyx))",
         },
         textColor: {
           default: "hsl(var(--text-default))",
@@ -323,12 +311,12 @@ export const rfqPlugin = plugin(
 );
 
 export default {
-  presets: [sgePeset],
   content: ["./src/**/*.{js,ts,jsx,tsx}", "../../packages/shared/ui/**/*.{js,ts,jsx,tsx}"],
   plugins: [
     require("@tailwindcss/typography"),
     require("@tailwindcss/forms"),
     require("tailwindcss-animate"),
+    sgePlugin,
     rfqPlugin,
   ],
 } satisfies Config;

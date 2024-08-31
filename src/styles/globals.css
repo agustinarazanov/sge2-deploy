@@ -7,9 +7,9 @@
   html {
     font-family: "Inter", sans-serif;
   }
-  body * {
+  /* body * {
     font-size: 14px;
-  }
+  } */
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -78,6 +78,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-black dark:bg-background dark:text-foreground;
   }
 }

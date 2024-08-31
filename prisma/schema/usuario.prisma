@@ -34,7 +34,7 @@ model User {
     documentoTipo   DocumentoTipo? @relation(fields: [documentoTipoId], references: [id])
 
     provinciaIso String?
-    provincia    Provincia? @relation(fields: [provinciaIso], references: [iso])
+    provincia    Provincia? @relation(fields: [provinciaIso, paisIso], references: [iso, paisIso])
 
     paisIso String?
     pais    Pais?   @relation(fields: [paisIso], references: [iso])
@@ -134,7 +134,7 @@ model Permiso {
 }
 
 model Provincia {
-    iso    String @id
+    iso    String
     nombre String
 
     paisIso String
@@ -142,6 +142,7 @@ model Provincia {
 
     usuarios User[]
 
+    @@id([iso, paisIso])
     @@index([nombre])
 }
 

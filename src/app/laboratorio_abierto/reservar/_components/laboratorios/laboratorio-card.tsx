@@ -46,7 +46,7 @@ const AlertaLaboratorio = ({ alerta }: { alerta: string }) => {
       <AlertCircleIcon />
       <div className="flex-1 space-y-1">
         <p className="text-sm font-medium leading-none underline">Importante</p>
-        <p className="text-sm text-muted-foreground">{alerta}</p>
+        <p className="text-sm dark:text-muted-foreground">{alerta}</p>
       </div>
     </div>
   );

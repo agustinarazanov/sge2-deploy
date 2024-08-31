@@ -165,7 +165,7 @@ export const addLibro = async (ctx: { db: PrismaClient }, input: InputAddLibro, 
         titulo: input.titulo,
 
         // TODO: Generar inventarioId y bibliotecaId
-        inventarioId: input.inventario,
+        inventarioId: input.inventarioId ?? "",
         bibliotecaId: Math.random().toString(),
 
         usuarioCreadorId: userId,
@@ -219,7 +219,7 @@ export const editLibro = async (ctx: { db: PrismaClient }, input: InputEditLibro
         titulo: input.titulo,
 
         // TODO: Generar inventarioId y bibliotecaId
-        inventarioId: input.inventario,
+        inventarioId: input.inventarioId,
         bibliotecaId: Math.random().toString(),
 
         usuarioModificadorId: userId,
