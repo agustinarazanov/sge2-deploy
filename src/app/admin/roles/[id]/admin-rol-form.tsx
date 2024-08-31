@@ -141,7 +141,7 @@ export const AdminRolForm = ({ id, onSubmit, onCancel }: Props) => {
                   control={control}
                   name="nombre"
                   type={"text"}
-                  className="mt-2"
+                  className="mt-2 text-white"
                   autoComplete="off"
                 />
               </div>
@@ -161,7 +161,7 @@ export const AdminRolForm = ({ id, onSubmit, onCancel }: Props) => {
                       label={permisosDictionario[permiso]?.nombre ?? "Error"}
                       variant={"default"}
                       color={"aqua"}
-                      className="cursor-pointer justify-between text-sm"
+                      className="cursor-pointer justify-between text-sm text-white"
                       onClick={() => onRolPermisoDelete(permiso)}
                       title={`Eliminar ${permisosDictionario[permiso]?.nombre ?? ""} rol`}
                     >
