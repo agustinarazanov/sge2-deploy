@@ -127,7 +127,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                   control={control}
                   name="divisionId"
                   type={"text"}
-                  className="mt-2"
+                  className="mt-2 text-white"
                   required
                 />
               </div>
@@ -139,7 +139,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                   label={"Duración"}
                   control={control}
                   name="ac"
-                  className="mt-2"
+                  className="mt-2 text-white"
                   items={[
                     { id: "A", label: "Anual" },
                     { id: "C", label: "Cuatrimestral" },
@@ -152,7 +152,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                   label={"Turno"}
                   control={control}
                   name="turnoId"
-                  className="mt-2"
+                  className="mt-2 text-white"
                   items={[
                     { id: "MANANA", label: "Mañana" },
                     { id: "TARDE", label: "Tarde" },
@@ -166,7 +166,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                   label={"Sede"}
                   control={control}
                   name="sedeId"
-                  className="mt-2"
+                  className="mt-2 text-white"
                   items={[
                     { id: "1", label: "Medrano" },
                     { id: "2", label: "Lugano" },
@@ -181,7 +181,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                   label={"Día 1"}
                   control={control}
                   name="dia1"
-                  className="mt-2"
+                  className="mt-2 text-white"
                   items={[
                     { id: "LUNES", label: "Lunes" },
                     { id: "MARTES", label: "Martes" },
@@ -200,12 +200,18 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                   control={control}
                   name="horaInicio1"
                   type={"string"}
-                  className="mt-2"
+                  className="mt-2 text-white"
                 />
               </div>
 
               <div className="mt-4 basis-1/3">
-                <FormInput label={"Duración 1"} control={control} name="duracion1" type={"string"} className="mt-2" />
+                <FormInput
+                  label={"Duración 1"}
+                  control={control}
+                  name="duracion1"
+                  type={"string"}
+                  className="mt-2 text-white"
+                />
               </div>
             </div>
 
@@ -215,7 +221,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                   label={"Día 2"}
                   control={control}
                   name="dia2"
-                  className="mt-2"
+                  className="mt-2 text-white"
                   items={[
                     { id: "LUNES", label: "Lunes" },
                     { id: "MARTES", label: "Martes" },
@@ -234,12 +240,18 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                   control={control}
                   name="horaInicio2"
                   type={"string"}
-                  className="mt-2"
+                  className="mt-2 text-white"
                 />
               </div>
 
               <div className="mt-4 basis-1/3">
-                <FormInput label={"Duración 2"} control={control} name="duracion2" type={"string"} className="mt-2" />
+                <FormInput
+                  label={"Duración 2"}
+                  control={control}
+                  name="duracion2"
+                  type={"string"}
+                  className="mt-2 text-white"
+                />
               </div>
             </div>
 
@@ -249,7 +261,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                   label={"Profesor"}
                   control={control}
                   name="profesorUserId"
-                  className="mt-2"
+                  className="mt-2 text-white"
                   items={[{ id: "1", label: "Alexander Armua" }]}
                 />
               </div>
@@ -259,7 +271,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                   label={"Ayudante/s"}
                   control={control}
                   name="ayudanteUserId"
-                  className="mt-2"
+                  className="mt-2 text-white"
                   items={[{ id: "1", label: "Alexander Armua" }]}
                 />
               </div>

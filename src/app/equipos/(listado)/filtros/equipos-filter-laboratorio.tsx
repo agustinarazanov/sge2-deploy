@@ -25,7 +25,7 @@ type Props = {
 export const EquiposFilterLaboratorio = ({ filters }: Props) => {
   const { laboratorio, onLaboratorioChange } = useEquiposQueryParam(filters);
 
-  const { data, isLoading, isError } = api.admin.laboratorios.getAll.useQuery({});
+  const { data, isLoading, isError } = api.admin.laboratorios.getAll.useQuery({ sedeId: "4" });
 
   const laboratorios = data?.laboratorios;
 
