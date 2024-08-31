@@ -1,4 +1,6 @@
 import {
+  inputGetArmarios,
+  inputGetEstantes,
   type inputAgregarLaboratorio,
   type inputEditarLaboratorio,
   type inputEliminarLaboratorio,
@@ -10,7 +12,7 @@ import { type z } from "zod";
 
 type InputGetAll = z.infer<typeof inputGetLaboratorios>;
 export const getAllLaboratorios = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { searchText } = input;
+  const { searchText, sedeId } = input;
 
   const [count, laboratorios] = await ctx.db.$transaction([
     ctx.db.laboratorio.count(),
@@ -26,6 +28,7 @@ export const getAllLaboratorios = async (ctx: { db: PrismaClient }, input: Input
           contains: searchText ?? undefined,
           mode: "insensitive",
         },
+        sedeId: sedeId,
       },
     }),
   ]);
@@ -118,4 +121,58 @@ export const agregarLaboratorio = async (ctx: { db: PrismaClient }, input: Input
 
     throw new Error("Error agregando laboratorio");
   }
+};
+
+export const getAllSedes = async (ctx: { db: PrismaClient }) => {
+  const sedes = await ctx.db.sede.findMany({
+    select: {
+      id: true,
+      nombre: true,
+    },
+    orderBy: {
+      nombre: "asc",
+    },
+  });
+
+  return sedes;
+};
+
+type InputGetAllArmarios = z.infer<typeof inputGetArmarios>;
+export const getAllArmarios = async (ctx: { db: PrismaClient }, input: InputGetAllArmarios) => {
+  const { laboratorioId } = input;
+
+  const armarios = await ctx.db.armario.findMany({
+    select: {
+      id: true,
+      nombre: true,
+    },
+    where: {
+      laboratorioId,
+    },
+    orderBy: {
+      nombre: "asc",
+    },
+  });
+
+  return armarios;
+};
+
+type InputGetAllEstantes = z.infer<typeof inputGetEstantes>;
+export const getAllEstantes = async (ctx: { db: PrismaClient }, input: InputGetAllEstantes) => {
+  const { armarioId } = input;
+
+  const estantes = await ctx.db.estante.findMany({
+    select: {
+      id: true,
+      nombre: true,
+    },
+    where: {
+      armarioId,
+    },
+    orderBy: {
+      nombre: "asc",
+    },
+  });
+
+  return estantes;
 };

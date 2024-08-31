@@ -99,7 +99,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
         as={Fragment}
         {...props}
         // @ts-expect-error library error
-        value={multiple ? ((props.value ?? []) as ItemType<TType, TMulti>) : props.value ?? null}
+        value={multiple ? ((props.value ?? []) as ItemType<TType, TMulti>) : (props.value ?? null)}
         // @ts-expect-error library error
         onChange={onChange}
         // @ts-expect-error library error
@@ -189,7 +189,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
                   const id = typeof item === "string" ? item : item.id;
                   const label = typeof item === "string" ? item : item.label;
                   const icon = typeof item === "string" ? null : item.icon;
-                  const disabled = props.disabled ?? typeof item === "string" ? false : item.disabled;
+                  const disabled = (props.disabled ?? typeof item === "string") ? false : item.disabled;
                   return (
                     <Combobox.Option
                       key={`autocomplete-option-${id}`}

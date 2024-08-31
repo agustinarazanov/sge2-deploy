@@ -4,6 +4,8 @@ import {
   inputAgregarLaboratorio,
   inputEditarLaboratorio,
   inputEliminarLaboratorio,
+  inputGetArmarios,
+  inputGetEstantes,
   inputGetLaboratorio,
   inputGetLaboratorios,
 } from "@/shared/filters/admin-laboratorios-filter.schema";
@@ -12,7 +14,10 @@ import {
   editarLaboratorio,
   eliminarLaboratorio,
   getAllLaboratorios,
+  getAllSedes,
   getLaboratorioPorId,
+  getAllArmarios,
+  getAllEstantes,
 } from "../../repositories/admin/laboratorios-admin.repository";
 
 export const getTodosLosLaboratoriosProcedure = protectedProcedure
@@ -24,6 +29,28 @@ export const getTodosLosLaboratoriosProcedure = protectedProcedure
 
     return laboratorios;
   });
+
+export const getTodosLosSedesProcedure = protectedProcedure.query(async ({ ctx }) => {
+  const sedes = await getAllSedes(ctx);
+
+  return sedes;
+});
+
+export const getTodosLosArmariosProcedure = protectedProcedure.input(inputGetArmarios).query(async ({ ctx, input }) => {
+  validarInput(inputGetArmarios, input);
+
+  const armarios = await getAllArmarios(ctx, input);
+
+  return armarios;
+});
+
+export const getTodosLosEstantesProcedure = protectedProcedure.input(inputGetEstantes).query(async ({ ctx, input }) => {
+  validarInput(inputGetEstantes, input);
+
+  const estantes = await getAllEstantes(ctx, input);
+
+  return estantes;
+});
 
 export const getLaboratorioPorIdProcedure = protectedProcedure
   .input(inputGetLaboratorio)
