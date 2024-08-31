@@ -6,7 +6,8 @@ import { inputGetLaboratorios } from "@/shared/filters/admin-laboratorios-filter
 type AdminLaboratoriosFilters = z.infer<typeof inputGetLaboratorios>;
 
 const createQueryString = (filters: AdminLaboratoriosFilters) => {
-  const params = new URLSearchParams(filters);
+  // TODO @Alex: Validate that sedeId is a number
+  const params = new URLSearchParams({ searchText: filters.searchText, sedeId: String(filters.sedeId) });
 
   return params.toString();
 };
