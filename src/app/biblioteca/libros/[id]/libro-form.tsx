@@ -106,9 +106,13 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   const laboratorioId = formHook.watch("laboratorioId");
   const armarioId = formHook.watch("armarioId");
 
-  useEffect(() => void sedeId && formHook.setValue("sedeId", sedeId), [formHook, sedeId]);
-  useEffect(() => void laboratorioId && formHook.setValue("laboratorioId", laboratorioId), [formHook, laboratorioId]);
-  useEffect(() => void armarioId && formHook.setValue("armarioId", armarioId), [formHook, armarioId]);
+  // TODO @ALEX: Arreglar esto
+  // @ts-expect-error - undefined
+  useEffect(() => void sedeId && formHook.setValue("laboratorioId", undefined), [formHook, sedeId]);
+  // @ts-expect-error - undefined
+  useEffect(() => void laboratorioId && formHook.setValue("armarioId", undefined), [formHook, laboratorioId]);
+  // @ts-expect-error - undefined
+  useEffect(() => void armarioId && formHook.setValue("estanteId", undefined), [formHook, armarioId]);
 
   if (!esNuevo && isNaN(libroId)) {
     return <div>Error al cargar...</div>;
