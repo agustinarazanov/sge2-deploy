@@ -15,7 +15,7 @@ export const SelectLaboratorioForm = <
   className,
   ...props
 }: Omit<FormSelectProps<T, TType, TMulti>, "items"> & { sedeId?: number }): ReactElement => {
-  const { data, isLoading, isError } = api.admin.laboratorios.getAll.useQuery({ sedeId: props.sedeId });
+  const { data, isLoading, isError } = api.admin.laboratorios.getAll.useQuery({ sedeId: props.sedeId?.toString() });
 
   const laboratorios = useMemo(() => {
     if (!data) return [];

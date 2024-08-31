@@ -49,16 +49,16 @@ export const getColumns = () => {
         return tipoLaboratorio ?? "Normal";
       },
     }),
-    colHelper.accessor("sede.nombre", {
+    colHelper.accessor("nombre", {
       header: "Sede",
     }),
     colHelper.display({
       header: "Cantidad de armarios",
-      cell: (info) => {
-        const armarios = info.row.original.armarios;
+      // cell: (info) => {
+      //   const armarios = info.row.original.armarios;
 
-        return armarios.length;
-      },
+      //   return armarios.length;
+      // },
     }),
   ] as ColumnDef<LibroData>[];
 };
