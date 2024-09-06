@@ -14,7 +14,6 @@ export const inputAddBooks = z.object({
 
   editorialId: z.number().min(1, { message: "Requerido" }),
   idiomaId: z.number().min(1, { message: "Requerido" }),
-
   sedeId: z.number().min(1, { message: "Requerido" }),
   autorId: z.number().min(1, { message: "Requerido" }),
 

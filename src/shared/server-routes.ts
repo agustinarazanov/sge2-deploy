@@ -86,6 +86,11 @@ export const EQUIPOS_ROUTE: AppRoute = {
       label: "Prestamos",
       isPublic: false,
     },
+    {
+      href: "/equipos/tipos",
+      label: "Tipos",
+      isPublic: false,
+    },
   ],
 };
 

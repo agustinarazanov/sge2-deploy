@@ -138,12 +138,33 @@ export const getLibroPorId = async (ctx: { db: PrismaClient }, input: InputGetLi
 
   const libro = await ctx.db.libro.findUnique({
     include: {
-      autor: true,
-      editorial: true,
-      idioma: true,
+      autor: {
+        select: {
+          autorNombre: true,
+          id: true,
+        },
+      },
+      editorial: {
+        select: {
+          editorial: true,
+          id: true,
+        },
+      },
+      idioma: {
+        select: {
+          idioma: true,
+          id: true,
+        },
+      },
       materias: {
         include: {
-          materia: true,
+          materia: {
+            select: {
+              id: true,
+              nombre: true,
+              codigo: true,
+            },
+          },
         },
       },
     },

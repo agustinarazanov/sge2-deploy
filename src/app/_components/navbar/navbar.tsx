@@ -25,6 +25,7 @@ export default async function Navbar() {
             {/* UTN Logo */}
             <div className="flex flex-shrink-0">
               <div className="h-8 w-8">
+                {/* TODO FIX cuando esta en otra ruta que no es `/` */}
                 <Image src={"utn-logo.svg"} alt={"Logo UTN"} width={40} height={40} />
               </div>
             </div>

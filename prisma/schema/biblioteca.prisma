@@ -41,6 +41,8 @@ model Libro {
 
     @@index([titulo(sort: Asc)])
     @@index([anio(sort: Desc)])
+    @@index([bibliotecaId])
+    @@index([inventarioId])
 }
 
 model LibroMateria {

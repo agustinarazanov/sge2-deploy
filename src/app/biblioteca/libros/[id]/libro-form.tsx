@@ -20,7 +20,12 @@ type Props = {
   onCancel: () => void;
 };
 
-type FormEditarLibroType = z.infer<typeof inputEditBooks> & { autor: { id: number }; editorial: { id: number } };
+type FormHelperType = {
+  autor: { id: number; label: string };
+  editorial: { id: number; label: string };
+};
+
+type FormEditarLibroType = z.infer<typeof inputEditBooks> & FormHelperType;
 
 export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   const esNuevo = id === undefined;
@@ -31,24 +36,27 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   const editarLibro = api.biblioteca.editarLibro.useMutation(); // Se llama si existe libroId
   const agregarlibro = api.biblioteca.nuevoLibro.useMutation(); // Se llama si no existe libroId
 
-  const libroBase: Partial<FormEditarLibroType> = useMemo(() => {
-    if (!libro) return {};
+  const libroBase: FormEditarLibroType = useMemo(() => {
+    if (!libro) return {} as FormEditarLibroType;
     return {
       titulo: libro.titulo,
       isbn: libro.isbn ?? "",
       bibliotecaId: libro.bibliotecaId ?? "",
       inventarioId: libro.inventarioId,
-      editorialId: libro.editorialId,
       idiomaId: libro.idiomaId,
       laboratorioId: libro.laboratorioId,
       armarioId: libro.armarioId,
       estanteId: libro.estanteId,
       sedeId: libro.sedeId,
+      autorId: libro.autor.id,
       autor: {
-        id: libro.autorId,
+        id: libro.autor.id,
+        label: libro.autor.autorNombre,
       },
-      ediorial: {
-        id: libro.editorialId,
+      editorialId: libro.editorial.id,
+      editorial: {
+        id: libro.editorial.id,
+        label: libro.editorial.editorial,
       },
       anio: libro.anio,
       materias: libro.materias.map((materia) => String(materia.materia.id)),
@@ -66,27 +74,26 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   useEffect(() => formHook.reset(libroBase), [formHook, libroBase]);
 
   const onFormSubmit = (formData: FormEditarLibroType) => {
+    const data = {
+      ...formData,
+      autorId: formData.autor.id,
+      editorialId: formData.editorial.id,
+    };
+
     if (esNuevo) {
-      agregarlibro.mutate(
-        {
-          ...formData,
-          autorId: formData.autor.id,
-          editorialId: formData.editorial.id,
+      agregarlibro.mutate(data, {
+        onSuccess: () => {
+          toast.success("Libro agregado con éxito.");
+          onSubmit();
         },
-        {
-          onSuccess: () => {
-            toast.success("Libro agregado con éxito.");
-            onSubmit();
-          },
-          onError: (error) => {
-            toast.error(error?.message ?? "Error al agregar el libro");
-          },
+        onError: (error) => {
+          toast.error(error?.message ?? "Error al agregar el libro");
         },
-      );
+      });
       return;
     }
 
-    editarLibro.mutate(formData, {
+    editarLibro.mutate(data, {
       onSuccess: () => {
         toast.success("Libro actualizado con éxito.");
         onSubmit();
