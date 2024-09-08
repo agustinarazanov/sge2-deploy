@@ -20,7 +20,7 @@ const buttonVariants = cva(
           "bg-primary text-primary-foreground border-[#FFD057] hover:bg-[#FFD057] focus-visible:bg-primary/80 active:shadow-[inset_0px_4px_4px_0px_#0000004D,0px_1px_3px_0px_#00000040]",
         ),
         secondary: cn(
-          "bg-secondary text-secondary-foreground border-border/50 hover:bg-secondary/20 focus-visible:bg-secondary/80 disabled:border-border-secondary active:shadow-[inset_0px_4px_4px_0px_#0000004D,0px_1px_3px_0px_#00000040]",
+          "bg-transparent text-secondary-foreground dark:text-gray-50 border-border/50 hover:bg-secondary/20 focus-visible:bg-secondary/80 disabled:border-border-secondary active:shadow-[inset_0px_4px_4px_0px_#0000004D,0px_1px_3px_0px_#00000040]",
         ),
         white: cn(
           "bg-secondary text-white border-border/50 hover:bg-secondary/20 focus-visible:bg-secondary/80 disabled:border-border-secondary active:shadow-[inset_0px_4px_4px_0px_#0000004D,0px_1px_3px_0px_#00000040]",
