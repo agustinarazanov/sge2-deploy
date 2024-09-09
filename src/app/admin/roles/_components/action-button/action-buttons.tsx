@@ -13,14 +13,14 @@ type ActionButtonsProps = {
 
 export const AdminActionButtons = ({ filters }: ActionButtonsProps) => {
   return (
-    <div className="relative flex w-full flex-col items-center justify-between space-y-2 md:flex-row-reverse  md:space-x-1.5">
-      <div className="relative flex w-full flex-row justify-end space-x-2 sm:basis-1/2 md:w-auto md:basis-1/3">
+    <div className="relative flex w-full flex-col items-center justify-between space-y-3 sm:space-y-0 md:flex-row-reverse md:space-x-1.5">
+      <div className="relative flex w-full flex-col justify-end space-y-3 sm:basis-1/2 sm:flex-row sm:space-x-2 sm:space-y-0 md:w-auto md:basis-1/3">
         <AdminRolesNuevoRol />
-
-        <SubLinks />
+        <div className="flex flex-row justify-center">
+          <SubLinks />
+        </div>
       </div>
-
-      <div className="flex w-full flex-row space-x-3 md:basis-1/2">
+      <div className="w-full space-y-3 sm:flex sm:flex-row sm:space-x-3 sm:space-y-0 md:basis-1/2">
         <div className="md:basis-1/2">
           <AdminRolesFilterText filters={filters} />
         </div>
