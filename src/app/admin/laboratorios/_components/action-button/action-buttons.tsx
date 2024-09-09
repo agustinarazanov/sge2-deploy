@@ -15,7 +15,7 @@ export const AdminActionButtons = ({ filters }: ActionButtonsProps) => {
     <div className="relative flex w-full flex-col items-center justify-between space-y-3 sm:space-y-0 md:flex-row-reverse  md:space-x-1.5">
       <div className="relative flex w-full flex-col justify-end space-y-3 sm:basis-1/2 sm:flex-row sm:space-x-2 sm:space-y-0 md:w-auto md:basis-1/3">
         <AdminLaboratoriosNuevoLaboratorio />
-        <div className="flex flex-row justify-center">
+        <div className="flex flex-row justify-center gap-x-3">
           <SubLinks />
         </div>
       </div>

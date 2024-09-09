@@ -1,5 +1,5 @@
 import { Fragment, useId, useRef, useState, type FocusEventHandler, type ReactElement, type ReactNode } from "react";
-import { Listbox, Transition } from "@headlessui/react";
+import { Label, Listbox, ListboxButton, Transition } from "@headlessui/react";
 import { ChevronDownIcon, XIcon } from "lucide-react";
 import { get } from "lodash";
 import {
@@ -90,11 +90,11 @@ export const Select = <TType extends SelectItem | string, TMulti extends IsMulti
         {({ open }) => (
           <>
             {label && (
-              <Listbox.Label htmlFor={id} className="mb-3 block text-sm text-input-label">
+              <Label htmlFor={id} className="mb-3 block text-sm dark:text-input-label">
                 {label}
-              </Listbox.Label>
+              </Label>
             )}
-            <Listbox.Button
+            <ListboxButton
               ref={setTargetElement}
               id={id}
               className={cn(inputBaseStyle, "relative !w-full text-left", {
@@ -120,7 +120,7 @@ export const Select = <TType extends SelectItem | string, TMulti extends IsMulti
                   },
                 )}
               />
-            </Listbox.Button>
+            </ListboxButton>
             {error && <span className={cn("ml-1 mt-2 block text-xs text-danger")}>{error}</span>}
             <Transition
               show={open}
