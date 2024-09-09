@@ -20,7 +20,7 @@ export const ActionButtons = ({ filters }: ActionButtonsProps) => {
       <div className="relative flex w-full flex-row justify-end space-x-2 sm:basis-1/2 md:w-auto md:basis-1/3">
         <EquiposNuevoEquipoModal />
         <Link href="/equipos/prestamos" passHref>
-          <Button color={"ghost"}>Ir a prestamos</Button>
+          <Button color={"ghost"}>Ir a préstamos</Button>
         </Link>
       </div>
 

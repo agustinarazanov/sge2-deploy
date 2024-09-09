@@ -55,7 +55,7 @@ export const getColumns = () => {
       },
     }),
     // colHelper.accessor("disponible", {
-    //   header: "Estado prestamo",
+    //   header: "Estado préstamo",
     //   cell: ({ row }) => {
     //     const { disponible, id } = row.original;
 
