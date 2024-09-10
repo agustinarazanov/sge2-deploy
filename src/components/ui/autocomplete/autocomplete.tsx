@@ -1,7 +1,15 @@
 "use client";
 
 import { Fragment, useEffect, useId, useMemo, useRef, useState, type ReactElement } from "react";
-import { Combobox, Transition } from "@headlessui/react";
+import {
+  Combobox,
+  ComboboxInput,
+  Transition,
+  Label,
+  ComboboxOptions,
+  ComboboxOption,
+  ComboboxButton,
+} from "@headlessui/react";
 import { debounce, get } from "lodash";
 import { ChevronDownIcon, Loader2, XIcon } from "lucide-react";
 import {
@@ -99,7 +107,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
         as={Fragment}
         {...props}
         // @ts-expect-error library error
-        value={multiple ? ((props.value ?? []) as ItemType<TType, TMulti>) : (props.value ?? null)}
+        value={multiple ? ((props.value ?? []) as ItemType<TType, TMulti>) : props.value ?? null}
         // @ts-expect-error library error
         onChange={onChange}
         // @ts-expect-error library error
@@ -109,17 +117,17 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
         {({ open }) => (
           <>
             {!label ? null : !labelTooltip ? (
-              <Combobox.Label htmlFor={id} className="mb-3 block text-sm text-input-label">
+              <Label htmlFor={id} className="mb-3 block text-sm dark:text-input-label">
                 {label}
-              </Combobox.Label>
+              </Label>
             ) : (
-              <div className="mb-3 flex items-center gap-2 text-sm text-input-label">
+              <div className="mb-3 flex items-center gap-2 text-sm dark:text-input-label">
                 {label}
                 {labelTooltip}
               </div>
             )}
             <div ref={inputWrapperRef} className="relative w-full">
-              <Combobox.Input
+              <ComboboxInput
                 autoComplete="off"
                 id={id}
                 ref={inputRef}
@@ -159,14 +167,14 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
                 ) : (
                   canClear && <XIcon onClick={onClear} className="mr-1 h-5 cursor-pointer hover:text-primary" />
                 )}
-                <Combobox.Button className={cn({ "ml-2": isLoading })}>
+                <ComboboxButton className={cn({ "ml-2": isLoading })}>
                   <ChevronDownIcon
                     key={`autocomplete-indicator`}
                     className={cn("h-5 transition ease-in-out", {
                       "rotate-180": open,
                     })}
                   />
-                </Combobox.Button>
+                </ComboboxButton>
               </div>
             </div>
             {error && <span className={cn("ml-1 mt-2 block text-xs text-danger")}>{error}</span>}
@@ -179,7 +187,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Combobox.Options
+              <ComboboxOptions
                 style={{ top: `${top}px` }}
                 className={cn(
                   "ring-none custom-scrollbar absolute z-50 max-h-80 w-full overflow-y-auto rounded-b border border-input bg-menu shadow-lg outline-none",
@@ -189,9 +197,9 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
                   const id = typeof item === "string" ? item : item.id;
                   const label = typeof item === "string" ? item : item.label;
                   const icon = typeof item === "string" ? null : item.icon;
-                  const disabled = (props.disabled ?? typeof item === "string") ? false : item.disabled;
+                  const disabled = props.disabled ?? typeof item === "string" ? false : item.disabled;
                   return (
-                    <Combobox.Option
+                    <ComboboxOption
                       key={`autocomplete-option-${id}`}
                       value={item}
                       disabled={disabled}
@@ -204,7 +212,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
                     >
                       {icon && <span className="mr-3">{icon}</span>}
                       {label}
-                    </Combobox.Option>
+                    </ComboboxOption>
                   );
                 })}
                 {!filteredList.length &&
@@ -213,7 +221,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
                       No options
                     </span>
                   ))}
-              </Combobox.Options>
+              </ComboboxOptions>
             </Transition>
           </>
         )}

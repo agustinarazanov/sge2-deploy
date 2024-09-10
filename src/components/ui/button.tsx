@@ -20,13 +20,13 @@ const buttonVariants = cva(
           "bg-primary text-primary-foreground border-[#FFD057] hover:bg-[#FFD057] focus-visible:bg-primary/80 active:shadow-[inset_0px_4px_4px_0px_#0000004D,0px_1px_3px_0px_#00000040]",
         ),
         secondary: cn(
-          "bg-secondary text-secondary-foreground border-border/50 hover:bg-secondary/20 focus-visible:bg-secondary/80 disabled:border-border-secondary active:shadow-[inset_0px_4px_4px_0px_#0000004D,0px_1px_3px_0px_#00000040]",
+          "bg-transparent text-secondary-foreground dark:text-gray-50 border-border/50 hover:bg-secondary/20 focus-visible:bg-secondary/80 disabled:border-border-secondary active:shadow-[inset_0px_4px_4px_0px_#0000004D,0px_1px_3px_0px_#00000040]",
         ),
         white: cn(
           "bg-secondary text-white border-border/50 hover:bg-secondary/20 focus-visible:bg-secondary/80 disabled:border-border-secondary active:shadow-[inset_0px_4px_4px_0px_#0000004D,0px_1px_3px_0px_#00000040]",
         ),
         ghost: cn(
-          "bg-transparent hover:bg-slate-100 dark:hover:bg-[#393A3B] border-transparent focus-visible:text-secondary-foreground active:bg-[#393A3B] shadow-none active:shadow-[inset_0px_4px_4px_0px_#0000004D]",
+          "bg-transparent hover:bg-slate-100 dark:hover:bg-[#393A3B] focus-visible:text-secondary-foreground active:bg-[#393A3B] shadow-none active:shadow-[inset_0px_4px_4px_0px_#0000004D]",
         ),
         danger: cn(
           "bg-danger border-none hover:bg-danger/90 text-white focus-visible:bg-danger/80 active:shadow-[inset_0px_4px_4px_0px_#0000004D,0px_1px_3px_0px_#00000040]",

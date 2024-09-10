@@ -31,7 +31,7 @@ export const EquiposNuevoEquipoModal = () => {
           <Plus size={16} className="ml-2" />
         </Button>
       }
-      className={"max-h-[calc(100vh_-_10%)] text-white"}
+      className={"max-h-[calc(100vh_-_10%)]"}
     >
       <div className="flex max-h-max w-full flex-col  gap-4">
         <EquipoForm onCancel={handleCancel} onSubmit={handleSave} />

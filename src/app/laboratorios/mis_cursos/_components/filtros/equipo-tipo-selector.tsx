@@ -64,7 +64,7 @@ export const EquipoTipoSelector = ({ onEquipoTipoChange, label }: Props) => {
         async
         items={equiposTipo}
         noOptionsComponent={
-          <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm">
+          <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm text-white">
             <span>No se encontraron equipos</span>
           </div>
         }

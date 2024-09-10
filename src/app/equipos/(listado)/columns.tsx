@@ -35,7 +35,7 @@ export const getEquiposColumnas = () => {
       },
     }),
     // colHelper.accessor("disponible", {
-    //   header: "Estado prestamo",
+    //   header: "Estado préstamo",
     //   cell: ({ row }) => {
     //     const { disponible, id } = row.original;
 
@@ -46,5 +46,5 @@ export const getEquiposColumnas = () => {
 };
 
 export const getColumnsNames = () => {
-  return ["Inventario", "Tipo", "Marca", "Modelo", "Número de serie", "Estado", "Estado prestamo"];
+  return ["Inventario", "Tipo", "Marca", "Modelo", "Número de serie", "Estado", "Estado préstamo"];
 };

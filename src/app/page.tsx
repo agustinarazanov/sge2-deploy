@@ -34,7 +34,7 @@ export default async function Home() {
             </div>
             <Link
               href={session ? "/api/auth/signout" : "/api/auth/signin"}
-              className="bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 rounded-full px-10 py-3 font-semibold no-underline transition"
+              className="rounded-full bg-slate-100 px-10 py-3 font-semibold no-underline transition hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20"
             >
               {session ? "Sign out" : "Sign in"}
             </Link>
@@ -52,7 +52,7 @@ export default async function Home() {
               <ul className="list-inside list-disc">
                 <li>Reserva de Laboratorio abierto para Alumnos</li>
                 <li>Reserva de Laboratorio para Docentes</li>
-                <li>Requerir prestamos de Instrumental y/o Libro</li>
+                <li>Requerir préstamos de Instrumental y/o Libro</li>
               </ul>
             </div>
           </div>

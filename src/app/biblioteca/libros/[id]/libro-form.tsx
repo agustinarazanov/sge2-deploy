@@ -141,19 +141,13 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
             <div className="flex flex-col space-y-4 px-0 md:px-6">
               <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
                 <div className="mt-4 w-full">
-                  <FormInput
-                    label={"Titulo"}
-                    control={control}
-                    name="titulo"
-                    type={"text"}
-                    className="mt-2 text-white"
-                  />
+                  <FormInput label={"Titulo"} control={control} name="titulo" type={"text"} className="mt-2" />
                 </div>
               </div>
 
               <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
                 <div className="mt-4 w-full">
-                  <SelectAutoresForm name="autor" control={control} className="mt-2 text-white" label={"Autor"} />
+                  <SelectAutoresForm name="autor" control={control} className="mt-2" label={"Autor"} />
                 </div>
               </div>
 
@@ -164,7 +158,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     name="inventarioId"
                     type={"text"}
-                    className="mt-2 text-white"
+                    className="mt-2"
                     readOnly
                   />
                 </div>
@@ -175,14 +169,14 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     name="bibliotecaId"
                     type={"text"}
-                    className="mt-2 text-white"
+                    className="mt-2"
                   />
                 </div>
               </div>
 
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
-                  <FormInput label={"ISBN"} control={control} name="isbn" type={"text"} className="mt-2 text-white" />
+                  <FormInput label={"ISBN"} control={control} name="isbn" type={"text"} className="mt-2" />
                 </div>
 
                 <div className="mt-4 basis-1/2">
@@ -191,7 +185,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     name="anio"
                     type={"number"}
-                    className="mt-2 text-white"
+                    className="mt-2"
                     maxLength={4}
                   />
                 </div>
@@ -202,7 +196,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                   <SelectSedeForm
                     name="sedeId"
                     control={control}
-                    className="mt-2 text-white"
+                    className="mt-2"
                     label={"Sede"}
                     placeholder={"Selecciona una sede"}
                   />
@@ -212,7 +206,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                   <SelectLaboratorioForm
                     name="laboratorioId"
                     control={control}
-                    className="mt-2 text-white"
+                    className="mt-2"
                     label={"Laboratorio"}
                     sedeId={sedeId}
                     disabled={!sedeId}
@@ -226,7 +220,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                   <SelectArmarioForm
                     name="armarioId"
                     control={control}
-                    className="mt-2 text-white"
+                    className="mt-2"
                     label={"Armario"}
                     laboratorioId={laboratorioId}
                     placeholder={!laboratorioId ? "Selecciona un laboratorio" : "Selecciona un armario"}
@@ -237,7 +231,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                   <SelectEstanteForm
                     name="estanteId"
                     control={control}
-                    className="mt-2 text-white"
+                    className="mt-2"
                     label={"Estante"}
                     armarioId={armarioId}
                     placeholder={!armarioId ? "Selecciona un armario" : "Selecciona una estante"}
@@ -247,19 +241,14 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
 
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
-                  <SelectEditorialForm
-                    name="editorial"
-                    control={control}
-                    className="mt-2 text-white"
-                    label={"Editorial"}
-                  />
+                  <SelectEditorialForm name="editorial" control={control} className="mt-2" label={"Editorial"} />
                 </div>
 
                 <div className="mt-4 basis-1/2">
                   <SelectIdiomasForm
                     name="idiomaId"
                     control={control}
-                    className="mt-2 text-white"
+                    className="mt-2"
                     label={"Idioma"}
                     placeholder={"Selecciona un idioma"}
                   />
@@ -267,7 +256,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
               </div>
 
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-                <div className="mt-4 w-full text-white">
+                <div className="mt-4 w-full">
                   <label>
                     Materias
                     <MateriaDropdownMultipleForm name="materias" control={control} />
