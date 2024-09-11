@@ -1,7 +1,8 @@
 model Equipo {
     id Int @id @default(autoincrement())
 
-    inventarioId  String  @unique
+    inventarioId String @unique
+
     modelo        String?
     numeroSerie   String?
     observaciones String?
@@ -28,6 +29,8 @@ model Equipo {
 
     estadoId Int
     estado   EquipoEstado @relation(fields: [estadoId], references: [id])
+
+    disponible Boolean @default(true)
 
     reservas                        ReservaEquipo[]
     reservaLaboratorioCerradoEquipo ReservaLaboratorioCerradoEquipo[]
