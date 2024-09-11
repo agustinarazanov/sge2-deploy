@@ -1,4 +1,4 @@
-import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { Button, FormInput, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -187,9 +187,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     onChange={() => {
                       // @ts-expect-error - undefined
                       formHook.setValue("laboratorioId", undefined);
-                      // @ts-expect-error - undefined
                       formHook.setValue("armarioId", undefined);
-                      // @ts-expect-error - undefined
                       formHook.setValue("estanteId", undefined);
                     }}
                   />
@@ -205,9 +203,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     disabled={!sedeId}
                     placeholder={!sedeId ? "Selecciona una sede" : "Selecciona un laboratorio"}
                     onChange={() => {
-                      // @ts-expect-error - undefined
                       formHook.setValue("armarioId", undefined);
-                      // @ts-expect-error - undefined
                       formHook.setValue("estanteId", undefined);
                     }}
                   />
@@ -224,7 +220,6 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     laboratorioId={laboratorioId}
                     placeholder={!laboratorioId ? "Selecciona un laboratorio" : "Selecciona un armario"}
                     onChange={() => {
-                      // @ts-expect-error - undefined
                       formHook.setValue("estanteId", undefined);
                     }}
                   />
