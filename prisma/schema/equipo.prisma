@@ -30,6 +30,8 @@ model Equipo {
     estadoId Int
     estado   EquipoEstado @relation(fields: [estadoId], references: [id])
 
+    disponible Boolean @default(true)
+
     reservas                        ReservaEquipo[]
     reservaLaboratorioCerradoEquipo ReservaLaboratorioCerradoEquipo[]
     reservaLaboratorioAbiertoEquipo ReservaLaboratorioAbiertoEquipo[]

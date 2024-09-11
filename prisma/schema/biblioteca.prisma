@@ -32,6 +32,8 @@ model Libro {
     sedeId Int
     sede   Sede @relation(fields: [sedeId], references: [id])
 
+    disponible Boolean @default(true)
+
     reservas ReservaLibro[]
 
     fechaCreacion        DateTime @default(now())
