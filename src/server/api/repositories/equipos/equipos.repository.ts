@@ -142,8 +142,6 @@ export const editarEquipo = async (ctx: { db: PrismaClient }, input: InputEditar
         palabrasClave: input.palabrasClave,
         imagen: input.imagen,
 
-        inventarioId: input.inventarioId,
-
         modelo: input.modelo,
         numeroSerie: input.numeroSerie,
         usuarioModificadorId: userId,
