@@ -7,7 +7,7 @@ import {
 } from "@/shared/filters/equipos-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
-import { generarInventarioId, getUltimoInventarioId } from "./generador-inventario-id";
+import { generarEquipoInventarioId, getUltimoEquipoInventarioId } from "./generador-inventario-id";
 
 type InputGetAll = z.infer<typeof inputGetEquipos>;
 export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
@@ -78,7 +78,7 @@ type InputAgregarEquipo = z.infer<typeof inputAgregarEquipo>;
 export const agregarEquipo = async (ctx: { db: PrismaClient }, input: InputAgregarEquipo, userId: string) => {
   try {
     const nuevoEquipo = await ctx.db.$transaction(async (tx) => {
-      const ultimoInventarioId = await getUltimoInventarioId({ db: tx });
+      const ultimoInventarioId = await getUltimoEquipoInventarioId({ db: tx });
 
       const equipo = await tx.equipo.create({
         data: {
@@ -86,7 +86,7 @@ export const agregarEquipo = async (ctx: { db: PrismaClient }, input: InputAgreg
           palabrasClave: input.palabrasClave,
           imagen: input.imagen,
 
-          inventarioId: generarInventarioId(ultimoInventarioId + 1),
+          inventarioId: generarEquipoInventarioId(ultimoInventarioId + 1),
 
           modelo: input.modelo,
           numeroSerie: input.numeroSerie,

@@ -1,4 +1,4 @@
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { Button, FormInput, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -39,6 +39,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   const libroBase: FormEditarLibroType = useMemo(() => {
     if (!libro) return {} as FormEditarLibroType;
     return {
+      id: libro.id,
       titulo: libro.titulo,
       isbn: libro.isbn ?? "",
       bibliotecaId: libro.bibliotecaId ?? "",
@@ -69,19 +70,16 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
     resolver: zodResolver(inputEditBooks),
   });
 
-  const { handleSubmit, control } = formHook;
+  const { handleSubmit, control, watch } = formHook;
+
+  const [sedeId, laboratorioId, armarioId, estanteId] = watch(["sedeId", "laboratorioId", "armarioId", "estanteId"]);
+  const [autor, editorial] = watch(["autor", "editorial"]);
 
   useEffect(() => formHook.reset(libroBase), [formHook, libroBase]);
 
   const onFormSubmit = (formData: FormEditarLibroType) => {
-    const data = {
-      ...formData,
-      autorId: formData.autor.id,
-      editorialId: formData.editorial.id,
-    };
-
     if (esNuevo) {
-      agregarlibro.mutate(data, {
+      agregarlibro.mutate(formData, {
         onSuccess: () => {
           toast.success("Libro agregado con éxito.");
           onSubmit();
@@ -93,7 +91,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
       return;
     }
 
-    editarLibro.mutate(data, {
+    editarLibro.mutate(formData, {
       onSuccess: () => {
         toast.success("Libro actualizado con éxito.");
         onSubmit();
@@ -109,17 +107,8 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
     onCancel();
   };
 
-  const sedeId = formHook.watch("sedeId");
-  const laboratorioId = formHook.watch("laboratorioId");
-  const armarioId = formHook.watch("armarioId");
-
-  // TODO @ALEX: Arreglar esto
-  // @ts-expect-error - undefined
-  useEffect(() => void sedeId && formHook.setValue("laboratorioId", undefined), [formHook, sedeId]);
-  // @ts-expect-error - undefined
-  useEffect(() => void laboratorioId && formHook.setValue("armarioId", undefined), [formHook, laboratorioId]);
-  // @ts-expect-error - undefined
-  useEffect(() => void armarioId && formHook.setValue("estanteId", undefined), [formHook, armarioId]);
+  useEffect(() => formHook.setValue("autorId", autor?.id), [formHook, autor]);
+  useEffect(() => formHook.setValue("editorialId", editorial?.id), [formHook, editorial]);
 
   if (!esNuevo && isNaN(libroId)) {
     return <div>Error al cargar...</div>;
@@ -135,6 +124,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
 
   return (
     <FormProvider {...formHook}>
+      <div>{JSON.stringify({ sedeId, laboratorioId, armarioId, estanteId })}</div>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
         <ScrollArea className="max-h-[calc(100vh_-_30%)] w-full pr-4">
           <div className="flex w-full flex-col items-center justify-center">
@@ -147,22 +137,17 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
 
               <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
                 <div className="mt-4 w-full">
-                  <SelectAutoresForm name="autor" control={control} className="mt-2" label={"Autor"} />
+                  <SelectAutoresForm
+                    name="autor"
+                    realNameId="autorId"
+                    control={control}
+                    className="mt-2"
+                    label={"Autor"}
+                  />
                 </div>
               </div>
 
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-                <div className="mt-4 basis-1/2">
-                  <FormInput
-                    label={"Inventario ID (solo lectura)"}
-                    control={control}
-                    name="inventarioId"
-                    type={"text"}
-                    className="mt-2"
-                    readOnly
-                  />
-                </div>
-
                 <div className="mt-4 basis-1/2">
                   <FormInput
                     label={"Biblioteca ID"}
@@ -199,6 +184,14 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     className="mt-2"
                     label={"Sede"}
                     placeholder={"Selecciona una sede"}
+                    onChange={() => {
+                      // @ts-expect-error - undefined
+                      formHook.setValue("laboratorioId", undefined);
+                      // @ts-expect-error - undefined
+                      formHook.setValue("armarioId", undefined);
+                      // @ts-expect-error - undefined
+                      formHook.setValue("estanteId", undefined);
+                    }}
                   />
                 </div>
 
@@ -211,6 +204,12 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     sedeId={sedeId}
                     disabled={!sedeId}
                     placeholder={!sedeId ? "Selecciona una sede" : "Selecciona un laboratorio"}
+                    onChange={() => {
+                      // @ts-expect-error - undefined
+                      formHook.setValue("armarioId", undefined);
+                      // @ts-expect-error - undefined
+                      formHook.setValue("estanteId", undefined);
+                    }}
                   />
                 </div>
               </div>
@@ -224,6 +223,10 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     label={"Armario"}
                     laboratorioId={laboratorioId}
                     placeholder={!laboratorioId ? "Selecciona un laboratorio" : "Selecciona un armario"}
+                    onChange={() => {
+                      // @ts-expect-error - undefined
+                      formHook.setValue("estanteId", undefined);
+                    }}
                   />
                 </div>
 
@@ -241,7 +244,13 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
 
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
-                  <SelectEditorialForm name="editorial" control={control} className="mt-2" label={"Editorial"} />
+                  <SelectEditorialForm
+                    name="editorial"
+                    realNameId="editorialId"
+                    control={control}
+                    className="mt-2"
+                    label={"Editorial"}
+                  />
                 </div>
 
                 <div className="mt-4 basis-1/2">

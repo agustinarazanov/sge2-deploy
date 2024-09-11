@@ -1,18 +1,18 @@
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type DefaultArgs } from "@prisma/client/runtime/library";
 
-const PREFIJO_INVENTARIO_ID = "NG";
+const PREFIJO_INVENTARIO_ID = "NB";
 
 /**
  * Durante el desarrollo de este módulo, detectamos que utilizan inventarioId de muchas formas distintas.
- * Primero eran solo numeros, luego numeros con sufijos, o parentesis. Y al final vimos que manejan un `NG<numero>` para nuevos inventarios.
- * Por lo tanto para no obligarlos a actualizar todos su inventario, decidimos mantener el nuevo formato de "NG<numero>".
+ * Primero eran solo numeros, luego numeros con sufijos, o parentesis. Y al final vimos que manejan un `NB<numero>` para nuevos inventarios.
+ * Por lo tanto para no obligarlos a actualizar todos su inventario, decidimos mantener el nuevo formato de "NB<numero>".
  *
- * @description Obtiene el último numero de `inventarioId` de cualquier equipo que tenga un `inventarioId` con el formato `NG<numero>`.
+ * @description Obtiene el último numero de `inventarioId` de cualquier equipo que tenga un `inventarioId` con el formato `NB<numero>`.
  * @param ctx viene de prisma por defecto, o una transccion de prisma si se quiere realizar una transaccion
- * @returns el ultimo numero de inventarioId de cualquier equipo que tenga un `inventarioId` con el formato `NG<numero>`
+ * @returns el ultimo numero de inventarioId de cualquier equipo que tenga un `inventarioId` con el formato `NB<numero>`
  */
-export const getUltimoEquipoInventarioId = async (ctx: {
+export const getUltimoBibliotecaInventarioId = async (ctx: {
   db: Omit<
     PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
     "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | "$extends"
@@ -20,7 +20,7 @@ export const getUltimoEquipoInventarioId = async (ctx: {
 }) => {
   validarNombresDeTablaYColumna();
 
-  const query = Prisma.sql`SELECT MAX(CAST(SUBSTRING("inventarioId" FROM 3) AS INTEGER)) as max FROM "Equipo" WHERE "inventarioId" LIKE CONCAT(${PREFIJO_INVENTARIO_ID}, '%')`;
+  const query = Prisma.sql`SELECT MAX(CAST(SUBSTRING("inventarioId" FROM 3) AS INTEGER)) as max FROM "Libro" WHERE "inventarioId" LIKE CONCAT(${PREFIJO_INVENTARIO_ID}, '%')`;
 
   const nuevoInventarioId = await ctx.db.$queryRaw<{ max: string }[]>(query);
 
@@ -35,7 +35,7 @@ export const getUltimoEquipoInventarioId = async (ctx: {
   return Number(nuevoInventarioId[0]?.max);
 };
 
-export const generarEquipoInventarioId = (inventarioId: number) => {
+export const generarBibliotecaInventarioId = (inventarioId: number) => {
   return `${PREFIJO_INVENTARIO_ID}${inventarioId}`;
 };
 
@@ -49,13 +49,13 @@ export const generarEquipoInventarioId = (inventarioId: number) => {
  * @description Si alguno de estos errores falla, significa que hay que cambiar el nombre 'Libro' o 'inventarioId' en la queryRaw
  */
 const validarNombresDeTablaYColumna = () => {
-  const laTablaTieneNombreCorrecto = Prisma.ModelName.Equipo === "Equipo";
+  const laTablaTieneNombreCorrecto = Prisma.ModelName.Libro === "Libro";
   if (!laTablaTieneNombreCorrecto) {
-    throw new Error("La tabla 'Equipo' cambió de nombre y no podemos obtener el último inventarioId");
+    throw new Error("La tabla 'Libro' cambió de nombre y no podemos obtener el último inventarioId");
   }
 
-  const laColumnaTieneNombreCorrecto = Prisma.EquipoScalarFieldEnum.inventarioId === "inventarioId";
+  const laColumnaTieneNombreCorrecto = Prisma.LibroScalarFieldEnum.inventarioId === "inventarioId";
   if (!laColumnaTieneNombreCorrecto) {
-    throw new Error("La columna 'inventarioId' de Equipo cambió de nombre y no podemos obtener el último inventarioId");
+    throw new Error("La columna 'inventarioId' de Libro cambió de nombre y no podemos obtener el último inventarioId");
   }
 };

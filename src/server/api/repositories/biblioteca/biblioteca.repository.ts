@@ -7,6 +7,7 @@ import {
 } from "@/shared/filters/biblioteca-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
+import { generarBibliotecaInventarioId, getUltimoBibliotecaInventarioId } from "./biblioteca-inventario-id";
 
 type InputGetAll = z.infer<typeof inputGetBooks>;
 export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
@@ -179,35 +180,47 @@ export const getLibroPorId = async (ctx: { db: PrismaClient }, input: InputGetLi
 type InputAddLibro = z.infer<typeof inputAddBooks>;
 export const addLibro = async (ctx: { db: PrismaClient }, input: InputAddLibro, userId: string) => {
   try {
-    const libro = await ctx.db.libro.create({
-      data: {
-        anio: input.anio,
-        isbn: input.isbn,
-        titulo: input.titulo,
+    const nuevoLibro = await ctx.db.$transaction(async (tx) => {
+      const ultimoInventarioId = await getUltimoBibliotecaInventarioId({ db: tx });
 
-        // TODO: Generar inventarioId y bibliotecaId
-        inventarioId: input.inventarioId ?? "",
-        bibliotecaId: Math.random().toString(),
+      const libro = await ctx.db.libro.create({
+        data: {
+          anio: input.anio,
+          isbn: input.isbn,
+          titulo: input.titulo,
 
-        usuarioCreadorId: userId,
-        usuarioModificadorId: userId,
+          inventarioId: generarBibliotecaInventarioId(ultimoInventarioId + 1),
+          bibliotecaId: input.bibliotecaId,
+          sedeId: input.sedeId,
+          editorialId: input.editorialId,
+          idiomaId: input.idiomaId,
+          laboratorioId: input.laboratorioId,
+          armarioId: input.armarioId,
+          estanteId: input.estanteId,
+          autorId: input.autorId,
 
-        // TODO: Obtener los ids de las entidades
-        laboratorioId: 2,
-        armarioId: 2,
-        estanteId: 1,
-        autorId: 1,
-        idiomaId: 1,
-        editorialId: 1,
-        sedeId: 1,
-      },
+          usuarioCreadorId: userId,
+          usuarioModificadorId: userId,
+
+          materias: {
+            createMany: {
+              data: input.materias.map((materiaId) => ({
+                materiaId: parseInt(materiaId),
+                usuarioCreadorId: userId,
+              })),
+            },
+          },
+        },
+      });
+
+      return libro;
     });
 
-    return libro;
+    return nuevoLibro;
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
-        throw new Error("El código de inventario ya existe");
+        throw new Error(`Ocurrió un error al agregar el libro, intente agregarlo de nuevo. Error: ${error.message}`);
       }
     }
 
@@ -239,20 +252,27 @@ export const editLibro = async (ctx: { db: PrismaClient }, input: InputEditLibro
         isbn: input.isbn,
         titulo: input.titulo,
 
-        // TODO: Generar inventarioId y bibliotecaId
-        inventarioId: input.inventarioId,
-        bibliotecaId: Math.random().toString(),
+        bibliotecaId: input.bibliotecaId,
+        sedeId: input.sedeId,
+        editorialId: input.editorialId,
+        idiomaId: input.idiomaId,
+        laboratorioId: input.laboratorioId,
+        armarioId: input.armarioId,
+        estanteId: input.estanteId,
+        autorId: input.autorId,
 
+        usuarioCreadorId: userId,
         usuarioModificadorId: userId,
 
-        // TODO: Obtener los ids de las entidades
-        laboratorioId: 2,
-        armarioId: 2,
-        estanteId: 1,
-        autorId: 1,
-        idiomaId: 1,
-        editorialId: 1,
-        sedeId: 1,
+        materias: {
+          deleteMany: {},
+          createMany: {
+            data: input.materias.map((materiaId) => ({
+              materiaId: parseInt(materiaId),
+              usuarioCreadorId: userId,
+            })),
+          },
+        },
       },
       where: {
         id: input.id,
