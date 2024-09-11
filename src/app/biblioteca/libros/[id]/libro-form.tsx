@@ -72,7 +72,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
 
   const { handleSubmit, control, watch } = formHook;
 
-  const [sedeId, laboratorioId, armarioId, estanteId] = watch(["sedeId", "laboratorioId", "armarioId", "estanteId"]);
+  const [sedeId, laboratorioId, armarioId] = watch(["sedeId", "laboratorioId", "armarioId"]);
   const [autor, editorial] = watch(["autor", "editorial"]);
 
   useEffect(() => formHook.reset(libroBase), [formHook, libroBase]);
@@ -124,7 +124,6 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
 
   return (
     <FormProvider {...formHook}>
-      <div>{JSON.stringify({ sedeId, laboratorioId, armarioId, estanteId })}</div>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
         <ScrollArea className="max-h-[calc(100vh_-_30%)] w-full pr-4">
           <div className="flex w-full flex-col items-center justify-center">
@@ -148,6 +147,18 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
               </div>
 
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+                {!esNuevo && (
+                  <div className="mt-4 basis-1/2">
+                    <FormInput
+                      label={"Inventario ID (solo lectura)"}
+                      control={control}
+                      name="inventarioId"
+                      type={"text"}
+                      className="mt-2"
+                      readOnly
+                    />
+                  </div>
+                )}
                 <div className="mt-4 basis-1/2">
                   <FormInput
                     label={"Biblioteca ID"}

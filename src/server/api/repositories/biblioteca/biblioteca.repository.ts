@@ -168,6 +168,30 @@ export const getLibroPorId = async (ctx: { db: PrismaClient }, input: InputGetLi
           },
         },
       },
+      sede: {
+        select: {
+          id: true,
+          nombre: true,
+        },
+      },
+      laboratorio: {
+        select: {
+          id: true,
+          nombre: true,
+        },
+      },
+      armario: {
+        select: {
+          id: true,
+          nombre: true,
+        },
+      },
+      estante: {
+        select: {
+          id: true,
+          nombre: true,
+        },
+      },
     },
     where: {
       id: libroId,

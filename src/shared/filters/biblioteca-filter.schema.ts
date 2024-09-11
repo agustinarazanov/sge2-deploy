@@ -6,6 +6,7 @@ export const inputAddBooks = z.object({
   anio: z.number().min(1, { message: "Requerido" }),
 
   bibliotecaId: z.string().optional(),
+  inventarioId: z.string().optional(),
 
   laboratorioId: z.number().min(1, { message: "Requerido" }),
   armarioId: z.number().positive().nullish(),
