@@ -3,5 +3,10 @@ type LayoutProps = {
 };
 
 export default async function Layout({ children }: LayoutProps) {
-  return <div className="flex flex-col items-center justify-center gap-12 px-4 ">{children}</div>;
+  return (
+    <>
+      <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">Editar - Libro</h3>
+      <div className="flex flex-col items-center justify-center gap-12 px-4 ">{children}</div>
+    </>
+  );
 }

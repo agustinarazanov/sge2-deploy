@@ -10,6 +10,7 @@ import { DataTablePaginationStandalone } from "@/components/ui/table/table-pagin
 import { EditLibroModal } from "./edit-libro";
 import { type SortingState } from "@tanstack/react-table";
 import { getColumns } from "./columns";
+import { VerLibroModal } from "./ver-libro";
 
 type LibroData = RouterOutputs["biblioteca"]["getAll"];
 type BibliotecaFilters = z.infer<typeof inputGetBooks>;
@@ -43,6 +44,7 @@ export const BibliotecaTable = ({ data, filters }: BibliotecaTableProps) => {
           cell({ original }) {
             return (
               <>
+                <VerLibroModal libroId={original.id} />
                 <EditLibroModal libroId={original.id} />
                 <RemoveLibroModal libroId={original.id} nombre={original.titulo} onSubmit={refresh} />
               </>
