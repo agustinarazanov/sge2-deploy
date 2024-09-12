@@ -12,6 +12,7 @@ import { SelectLaboratorioForm } from "@/app/_components/select-ubicacion/select
 import { SelectArmarioForm } from "@/app/_components/select-ubicacion/select-armario";
 import { SelectEstanteForm } from "@/app/_components/select-ubicacion/select-estante";
 import { SelectTipoForm } from "../../_components/select-tipo";
+import { SelectEstadoForm } from "../../_components/select-estado";
 
 type Props = {
   id?: string;
@@ -168,15 +169,12 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
 
                 <div className="mt-4 basis-1/2">
-                  <FormSelect
-                    label={"Estado"}
-                    control={control}
+                  <SelectEstadoForm
                     name="estadoId"
+                    control={control}
                     className="mt-2"
-                    items={[
-                      { id: 1, label: "Estado 1" },
-                      { id: 2, label: "Estado 2" },
-                    ]}
+                    label={"Estado"}
+                    placeholder={"Seleccioná un estado"}
                   />
                 </div>
               </div>
