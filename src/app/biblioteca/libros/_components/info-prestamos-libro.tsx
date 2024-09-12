@@ -1,4 +1,8 @@
-export const LibroInformacionPrestamos = ({ libroId }: { libroId: number }) => {
+type Props = {
+  libroId: number;
+};
+
+export const LibroInformacionPrestamos = (_props: Props) => {
   return (
     <>
       <div className="my-2 flex w-full flex-col space-y-4 px-0 text-left text-2xl md:px-6">Historial de Prestamos:</div>
