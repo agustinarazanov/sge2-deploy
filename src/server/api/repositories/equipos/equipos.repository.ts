@@ -192,3 +192,17 @@ export const getAllMarcas = async (ctx: { db: PrismaClient }) => {
 
   return marcas;
 };
+
+export const getAllEstados = async (ctx: { db: PrismaClient }) => {
+  const estados = await ctx.db.equipoEstado.findMany({
+    orderBy: {
+      nombre: "asc",
+    },
+    select: {
+      id: true,
+      nombre: true,
+    },
+  });
+
+  return estados;
+};
