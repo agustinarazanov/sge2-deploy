@@ -7,6 +7,7 @@ import {
 } from "@/shared/filters/equipos-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
+import { generarEquipoInventarioId, getUltimoEquipoInventarioId } from "./generador-inventario-id";
 
 type InputGetAll = z.infer<typeof inputGetEquipos>;
 export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
@@ -76,34 +77,40 @@ export const getEquipoPorId = async (ctx: { db: PrismaClient }, input: InputGetE
 type InputAgregarEquipo = z.infer<typeof inputAgregarEquipo>;
 export const agregarEquipo = async (ctx: { db: PrismaClient }, input: InputAgregarEquipo, userId: string) => {
   try {
-    const equipo = await ctx.db.equipo.create({
-      data: {
-        observaciones: input.observaciones,
-        palabrasClave: input.palabrasClave,
-        imagen: input.imagen,
+    const nuevoEquipo = await ctx.db.$transaction(async (tx) => {
+      const ultimoInventarioId = await getUltimoEquipoInventarioId({ db: tx });
 
-        inventarioId: input.inventarioId,
+      const equipo = await tx.equipo.create({
+        data: {
+          observaciones: input.observaciones,
+          palabrasClave: input.palabrasClave,
+          imagen: input.imagen,
 
-        modelo: input.modelo,
-        numeroSerie: input.numeroSerie,
-        usuarioCreadorId: userId,
-        usuarioModificadorId: userId,
+          inventarioId: generarEquipoInventarioId(ultimoInventarioId + 1),
 
-        tipoId: input.tipoId,
-        marcaId: input.marcaId,
-        sedeId: input.sedeId,
-        laboratorioId: input.laboratorioId,
-        armarioId: input.armarioId,
-        estanteId: input.estanteId,
-        estadoId: input.estadoId,
-      },
+          modelo: input.modelo,
+          numeroSerie: input.numeroSerie,
+          usuarioCreadorId: userId,
+          usuarioModificadorId: userId,
+
+          tipoId: input.tipoId,
+          marcaId: input.marcaId,
+          sedeId: input.sedeId,
+          laboratorioId: input.laboratorioId,
+          armarioId: input.armarioId,
+          estanteId: input.estanteId,
+          estadoId: input.estadoId,
+        },
+      });
+
+      return equipo;
     });
 
-    return equipo;
+    return nuevoEquipo;
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
-        throw new Error("El código de inventario ya existe");
+        throw new Error("Ocurrió un error al agregar el equipo, intente agregarlo de nuevo");
       }
     }
 
@@ -134,8 +141,6 @@ export const editarEquipo = async (ctx: { db: PrismaClient }, input: InputEditar
         observaciones: input.observaciones,
         palabrasClave: input.palabrasClave,
         imagen: input.imagen,
-
-        inventarioId: input.inventarioId,
 
         modelo: input.modelo,
         numeroSerie: input.numeroSerie,

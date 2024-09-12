@@ -9,8 +9,8 @@ export const inputAddBooks = z.object({
   inventarioId: z.string().optional(),
 
   laboratorioId: z.number().min(1, { message: "Requerido" }),
-  armarioId: z.number().min(1, { message: "Requerido" }),
-  estanteId: z.number().min(1, { message: "Requerido" }),
+  armarioId: z.number().positive().nullish(),
+  estanteId: z.number().positive().nullish(),
 
   editorialId: z.number().min(1, { message: "Requerido" }),
   idiomaId: z.number().min(1, { message: "Requerido" }),
