@@ -8,6 +8,9 @@ import { inputEditarEquipos } from "@/shared/filters/equipos-filter.schema";
 import { FormSelect } from "@/components/ui/autocomplete";
 import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
 import { SelectMarcasForm } from "../../_components/select-marca";
+import { SelectLaboratorioForm } from "@/app/_components/select-ubicacion/select-laboratorio";
+import { SelectArmarioForm } from "@/app/_components/select-ubicacion/select-armario";
+import { SelectEstanteForm } from "@/app/_components/select-ubicacion/select-estante";
 
 type Props = {
   id?: string;
@@ -34,7 +37,9 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
     resolver: zodResolver(inputEditarEquipos),
   });
 
-  const { handleSubmit, control } = formHook;
+  const { handleSubmit, control, watch } = formHook;
+
+  const [sedeId, laboratorioId, armarioId] = watch(["sedeId", "laboratorioId", "armarioId"]);
 
   // TODO: Separar componente de formulario y logica de carga y actualización de equipo
   useEffect(() => {
@@ -185,47 +190,56 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     className="mt-2"
                     label={"Sede"}
-                    placeholder={"Selecciona una sede"}
+                    placeholder={"Seleccioná una sede"}
+                    onChange={() => {
+                      // @ts-expect-error - undefined
+                      formHook.setValue("laboratorioId", undefined);
+                      formHook.setValue("armarioId", undefined);
+                      formHook.setValue("estanteId", undefined);
+                    }}
                   />
                 </div>
 
                 <div className="mt-4 basis-1/2">
-                  <FormSelect
-                    label={"Laboratorio"}
-                    control={control}
+                  <SelectLaboratorioForm
                     name="laboratorioId"
+                    control={control}
                     className="mt-2"
-                    items={[
-                      { id: 1, label: "Laboratorio 1" },
-                      { id: 2, label: "Laboratorio 2" },
-                    ]}
+                    label={"Laboratorio"}
+                    sedeId={sedeId}
+                    disabled={!sedeId}
+                    placeholder={!sedeId ? "Selecciona una sede" : "Selecciona un laboratorio"}
+                    onChange={() => {
+                      formHook.setValue("armarioId", undefined);
+                      formHook.setValue("estanteId", undefined);
+                    }}
                   />
                 </div>
               </div>
 
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
-                  <FormSelect
-                    label={"Armario"}
-                    control={control}
+                  <SelectArmarioForm
                     name="armarioId"
+                    control={control}
                     className="mt-2"
-                    items={[
-                      { id: 1, label: "Armario 1" },
-                      { id: 2, label: "Armario 2" },
-                    ]}
+                    label={"Armario"}
+                    laboratorioId={laboratorioId}
+                    placeholder={!laboratorioId ? "Selecciona un laboratorio" : "Selecciona un armario"}
+                    onChange={() => {
+                      formHook.setValue("estanteId", undefined);
+                    }}
                   />
                 </div>
+
                 <div className="mt-4 basis-1/2">
-                  <FormSelect
-                    label={"Estante"}
-                    control={control}
+                  <SelectEstanteForm
                     name="estanteId"
+                    control={control}
                     className="mt-2"
-                    items={[
-                      { id: 1, label: "Estante 1" },
-                      { id: 2, label: "Estante 2" },
-                    ]}
+                    label={"Estante"}
+                    armarioId={armarioId}
+                    placeholder={!armarioId ? "Selecciona un armario" : "Selecciona una estante"}
                   />
                 </div>
               </div>
