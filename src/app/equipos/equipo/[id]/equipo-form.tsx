@@ -3,7 +3,7 @@ import { api } from "@/trpc/react";
 import { Button, FormInput, Label, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { inputEditarEquipos } from "@/shared/filters/equipos-filter.schema";
 import { FormSelect } from "@/components/ui/autocomplete";
 import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
@@ -31,11 +31,29 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
   const editarEquipo = api.equipos.editarEquipo.useMutation();
   const agregarEquipo = api.equipos.nuevoEquipo.useMutation();
 
+  const equipoBase: FormEditarEquipoType = useMemo(() => {
+    if (!equipo) return {} as FormEditarEquipoType;
+    return {
+      id: equipo.id,
+      inventarioId: equipo.inventarioId,
+      marcaId: equipo.marcaId,
+      modelo: equipo.modelo ?? "",
+      numeroSerie: equipo.numeroSerie ?? "",
+      palabrasClave: equipo.palabrasClave ?? "",
+      tipoId: equipo.tipoId,
+      estadoId: equipo.estadoId,
+      sedeId: equipo.sedeId,
+      laboratorioId: equipo.laboratorioId,
+      armarioId: equipo.armarioId,
+      estanteId: equipo.estanteId,
+      observaciones: equipo.observaciones ?? "",
+      imagen: equipo.imagen ?? "",
+    };
+  }, [equipo]);
+
   const formHook = useForm<FormEditarEquipoType>({
     mode: "onChange",
-    defaultValues: {
-      id: equipo?.id ?? undefined,
-    },
+    defaultValues: equipoBase,
     resolver: zodResolver(inputEditarEquipos),
   });
 
@@ -43,14 +61,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
 
   const [sedeId, laboratorioId, armarioId] = watch(["sedeId", "laboratorioId", "armarioId"]);
 
-  // TODO: Separar componente de formulario y logica de carga y actualización de equipo
-  useEffect(() => {
-    if (equipo) {
-      formHook.reset({
-        id: equipo.id,
-      });
-    }
-  }, [formHook, equipo]);
+  useEffect(() => formHook.reset(equipoBase), [formHook, equipoBase]);
 
   if (!esNuevo && isNaN(equipoId)) {
     return <div>Error al cargar...</div>;
@@ -160,7 +171,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
                   <SelectTipoForm
-                    name="sedeId"
+                    name="tipoId"
                     control={control}
                     className="mt-2"
                     label={"Tipo"}
@@ -244,7 +255,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 <div className="w-full">
                   <FormInput
                     label={"Imagen"}
-                    id="idioma"
+                    id="imagen"
                     control={control}
                     name="imagen"
                     type={"url"}
@@ -256,7 +267,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
               <div className="flex w-full flex-row lg:flex-row">
                 <Label htmlFor={id} className="mb-3 flex w-full flex-col text-sm dark:text-input-label">
                   Observaciones
-                  <textarea name="" id="" className="w-full dark:bg-background"></textarea>
+                  <textarea name="observaciones" id="observaciones" className="w-full dark:bg-background"></textarea>
                 </Label>
               </div>
             </div>
