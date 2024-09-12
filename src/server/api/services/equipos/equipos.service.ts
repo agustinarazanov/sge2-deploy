@@ -3,6 +3,7 @@ import {
   editarEquipo,
   eliminarEquipo,
   getAllEquipos,
+  getAllMarcas,
   getAllTipos,
   getEquipoPorId,
 } from "../../repositories/equipos/equipos.repository";
@@ -66,4 +67,10 @@ export const getTodosLosTiposProcedure = protectedProcedure.query(async ({ ctx }
   const tipos = await getAllTipos(ctx);
 
   return tipos;
+});
+
+export const getTodasLasMarcasProcedure = protectedProcedure.query(async ({ ctx }) => {
+  const marcas = await getAllMarcas(ctx);
+
+  return marcas;
 });

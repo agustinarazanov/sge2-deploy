@@ -173,3 +173,17 @@ export const getAllTipos = async (ctx: { db: PrismaClient }) => {
 
   return tipos;
 };
+
+export const getAllMarcas = async (ctx: { db: PrismaClient }) => {
+  const marcas = await ctx.db.equipoMarca.findMany({
+    orderBy: {
+      nombre: "asc",
+    },
+    select: {
+      id: true,
+      nombre: true,
+    },
+  });
+
+  return marcas;
+};
