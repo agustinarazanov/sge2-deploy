@@ -1,10 +1,8 @@
 import { useMemo, useState, type ReactElement } from "react";
-import { type FieldValues } from "react-hook-form";
+import { Path, type FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { FormSelect, type FormSelectProps, type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
-import { Skeleton } from "@/components/ui/skeleton";
+import { type FormSelectProps, type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
 import { FormAutocomplete, Select, SelectTrigger, SelectValue } from "@/components/ui";
-import { estaDentroDe } from "@/shared/string-compare";
 
 export const SelectUsuarioForm = <
   T extends FieldValues,
@@ -15,7 +13,7 @@ export const SelectUsuarioForm = <
   control,
   className,
   ...props
-}: Omit<FormSelectProps<T, TType, TMulti>, "items">): ReactElement => {
+}: Omit<FormSelectProps<T, TType, TMulti>, "items"> & { realNameId?: Path<T> }): ReactElement => {
   const [query, setQuery] = useState("");
   const { data, isLoading, isError } = api.admin.usuarios.getAll.useQuery({
     searchText: query,

@@ -1,10 +1,11 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { Button, FormInput, ScrollArea, toast } from "@/components/ui";
+import { Button, FormInput, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { inputEditBooks } from "@/shared/filters/biblioteca-filter.schema";
 import { SelectUsuarioForm } from "@/app/_components/select-usuario";
-import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
+import { type z } from "zod";
+import { inputPrestarLibro } from "@/shared/filters/prestamo-libro.schema";
+import { useEffect } from "react";
 
 type Props = {
   libroId: number;
@@ -12,12 +13,11 @@ type Props = {
   onCancel: () => void;
 };
 
-type FormEditarLibroType = {
-  libroId: number;
-  usuarioSolicitanteId: string | undefined;
-  fechaInicio: string | undefined;
-  fechaFin: string | undefined;
+type FormHelperType = {
+  usuarioSolicitante: { id: string; label: string };
 };
+
+type FormPrestarLibroType = z.infer<typeof inputPrestarLibro> & FormHelperType;
 
 export const LibroFormPrestar = ({ libroId, onSubmit, onCancel }: Props) => {
   const prestarLibro = api.biblioteca.eliminarLibro.useMutation({
@@ -30,22 +30,26 @@ export const LibroFormPrestar = ({ libroId, onSubmit, onCancel }: Props) => {
     },
   });
 
-  const prestamoBase: FormEditarLibroType = {
+  const prestamoBase: FormPrestarLibroType = {
     libroId: libroId,
-    usuarioSolicitanteId: undefined,
-    fechaInicio: undefined,
-    fechaFin: undefined,
+    usuarioSolicitanteId: "",
+    usuarioSolicitante: {
+      id: "",
+      label: "",
+    },
+    fechaInicio: "",
+    fechaFin: "",
   };
 
-  const formHook = useForm<FormEditarLibroType>({
+  const formHook = useForm<FormPrestarLibroType>({
     mode: "onChange",
     defaultValues: prestamoBase,
-    resolver: zodResolver(inputEditBooks),
+    resolver: zodResolver(inputPrestarLibro),
   });
 
-  const { handleSubmit, control } = formHook;
+  const { handleSubmit, control, watch } = formHook;
 
-  const onFormSubmit = (formData: FormEditarLibroType) => {
+  const onFormSubmit = (formData: FormPrestarLibroType) => {
     prestarLibro.mutate(formData, {
       onSuccess: () => {
         toast.success("Libro prestado con éxito.");
@@ -61,6 +65,10 @@ export const LibroFormPrestar = ({ libroId, onSubmit, onCancel }: Props) => {
     formHook.reset();
     onCancel();
   };
+
+  const [usuarioSolicitante] = watch(["usuarioSolicitante"]);
+
+  useEffect(() => formHook.setValue("usuarioSolicitanteId", usuarioSolicitante?.id), [formHook, usuarioSolicitante]);
 
   return (
     <FormProvider {...formHook}>
@@ -92,9 +100,9 @@ export const LibroFormPrestar = ({ libroId, onSubmit, onCancel }: Props) => {
 
             <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
               <div className="mt-4 w-full">
-                {/* TODO: Implementar filtrado en el backend */}
                 <SelectUsuarioForm
-                  name="usuarioSolicitanteId"
+                  name="usuarioSolicitante"
+                  realNameId="usuarioSolicitanteId"
                   control={control}
                   className="mt-2"
                   label={"Usuario solicitante"}
