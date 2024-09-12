@@ -1,10 +1,10 @@
 import { type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
-import {inputGetReservaLibroPorUsuarioId} from "@/shared/filters/reservas-filter.schema";
+import { type inputGetReservaLibroPorUsuarioId } from "@/shared/filters/reservas-filter.schema";
 
 type InputGetPorUsuarioID = z.infer<typeof inputGetReservaLibroPorUsuarioId>;
 export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: InputGetPorUsuarioID) => {
-  const {id} = input;
+  const { id } = input;
   const reservas = await ctx.db.reservaLibro.findMany({
     include: {
       reserva: true,
@@ -16,6 +16,6 @@ export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: I
     orderBy: {
       fechaCreacion: "desc",
     },
-  })
+  });
   return reservas;
 };
