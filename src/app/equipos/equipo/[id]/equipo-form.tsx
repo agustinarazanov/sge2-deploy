@@ -11,6 +11,7 @@ import { SelectMarcasForm } from "../../_components/select-marca";
 import { SelectLaboratorioForm } from "@/app/_components/select-ubicacion/select-laboratorio";
 import { SelectArmarioForm } from "@/app/_components/select-ubicacion/select-armario";
 import { SelectEstanteForm } from "@/app/_components/select-ubicacion/select-estante";
+import { SelectTipoForm } from "../../_components/select-tipo";
 
 type Props = {
   id?: string;
@@ -157,15 +158,12 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
 
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
-                  <FormSelect
-                    label={"Tipo"}
+                  <SelectTipoForm
+                    name="sedeId"
                     control={control}
-                    name="tipoId"
                     className="mt-2"
-                    items={[
-                      { id: 1, label: "Tipo 1" },
-                      { id: 2, label: "Tipo 2" },
-                    ]}
+                    label={"Tipo"}
+                    placeholder={"Seleccioná un tipo"}
                   />
                 </div>
 
@@ -239,7 +237,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     className="mt-2"
                     label={"Estante"}
                     armarioId={armarioId}
-                    placeholder={!armarioId ? "Selecciona un armario" : "Selecciona una estante"}
+                    placeholder={!armarioId ? "Selecciona un armario" : "Selecciona un estante"}
                   />
                 </div>
               </div>
