@@ -1,28 +1,18 @@
 "use client";
 
-type MobileLinksControlsProps = {
-  handleClick?: () => void;
-}
+import { DisclosureButton } from "@headlessui/react";
 
-export default function MobileLinksControls({ handleClick }: MobileLinksControlsProps) {
-    const onClick = handleClick ?? (() => { console.log("MobileLinksControls clicked") });
-
-    return (
-      <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-        <button
-          type="button"
-          className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-          aria-controls="mobile-menu"
-          aria-expanded="false"
-          onClick={onClick}
-        >
-          <span className="absolute -inset-0.5"></span>
-          <span className="sr-only">Open main menu</span>
-
-          <HamburgerIcon />
-        </button>
-      </div>
-    );
+export default function MobileLinksControls() {
+  return (
+    <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+      {/* Mobile menu button*/}
+      <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-black hover:bg-slate-100 dark:hover:bg-gray-700 dark:hover:text-white">
+        <span className="absolute -inset-0.5"></span>
+        <span className="sr-only">Open main menu</span>
+        <HamburgerIcon />
+      </DisclosureButton>
+    </div>
+  );
 }
 
 const HamburgerIcon = () => {
@@ -36,11 +26,7 @@ const HamburgerIcon = () => {
         stroke="currentColor"
         aria-hidden="true"
       >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-        />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
       </svg>
 
       <svg
@@ -51,12 +37,8 @@ const HamburgerIcon = () => {
         stroke="currentColor"
         aria-hidden="true"
       >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M6 18L18 6M6 6l12 12"
-        />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </>
   );
-}
+};

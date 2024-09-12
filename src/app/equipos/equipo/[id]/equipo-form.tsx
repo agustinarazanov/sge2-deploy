@@ -92,10 +92,6 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
           <div className="flex flex-col space-y-4 px-0 md:px-6">
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4 basis-1/3">
-                <FormInput label={"Inventario"} control={control} name="inventarioId" type={"text"} className="mt-2" />
-              </div>
-
-              <div className="mt-4 basis-1/3">
                 <FormSelect
                   label={"Modelo"}
                   control={control}
@@ -222,9 +218,9 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
             </div>
 
             <div className="flex w-full flex-row lg:flex-row">
-              <Label htmlFor={id} className="mb-3 flex w-full flex-col text-sm text-input-label">
+              <Label htmlFor={id} className="mb-3 flex w-full flex-col text-sm dark:text-input-label">
                 Observaciones
-                <textarea name="" id="" className="w-full bg-background"></textarea>
+                <textarea name="" id="" className="w-full dark:bg-background"></textarea>
               </Label>
             </div>
           </div>

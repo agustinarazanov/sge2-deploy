@@ -46,7 +46,7 @@ export const Input = memo(
       return (
         <div className={cn("flex flex-col", className)}>
           {label && (
-            <label htmlFor={id} className="mb-3 text-sm text-input-label">
+            <label htmlFor={id} className="mb-3 text-sm dark:text-input-label">
               {label}
             </label>
           )}

@@ -9,7 +9,7 @@ import { type z } from "zod";
 
 type InputGetAll = z.infer<typeof inputGetUsuarios>;
 export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText, orderDirection } = input;
+  const { pageIndex, pageSize, searchText, orderDirection } = input ?? {};
 
   const filtrosWhereUsuario: Prisma.UserWhereInput = {
     ...(searchText
@@ -54,7 +54,9 @@ export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetA
   };
 
   const [count, usuarios] = await ctx.db.$transaction([
-    ctx.db.user.count(),
+    ctx.db.user.count({
+      where: filtrosWhereUsuario,
+    }),
     ctx.db.user.findMany({
       include: {
         usuarioRol: {
@@ -63,14 +65,16 @@ export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetA
           },
         },
       },
-      where: {
-        ...filtrosWhereUsuario,
-      },
+      where: filtrosWhereUsuario,
       orderBy: {
         nombre: orderDirection,
       },
-      skip: parseInt(pageIndex) * parseInt(pageSize),
-      take: parseInt(pageSize),
+      ...(pageIndex && pageSize
+        ? {
+            skip: parseInt(pageIndex) * parseInt(pageSize),
+            take: parseInt(pageSize),
+          }
+        : {}),
     }),
   ]);
 

@@ -10,9 +10,11 @@ export const SubLinks = () => {
   return (
     <>
       {adminRoute.subRutas.map((subRoute) => (
-        <Link key={subRoute.href} href={subRoute.href} passHref>
-          <Button color={"ghost"}>{subRoute.label}</Button>
-        </Link>
+        <Button key={subRoute.href} color={"ghost"} className="flex-1 flex-grow">
+          <Link key={subRoute.href} href={subRoute.href} passHref>
+            {subRoute.label}
+          </Link>
+        </Button>
       ))}
     </>
   );

@@ -14,7 +14,6 @@ export default async function RootLayout({ children, modal }: LayoutProps) {
 
   if (!session) {
     redirect(INICIO_ROUTE.href);
-    return null;
   }
 
   return (

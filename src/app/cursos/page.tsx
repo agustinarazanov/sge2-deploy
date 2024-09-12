@@ -16,7 +16,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <>
-      <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">Lista de Cursos</h3>
+      <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">Listado de cursos</h3>
       <ActionButtons filters={filters} />
       <Suspense key={filter_as_key} fallback={<LoadingCursosTable />}>
         <CursoTableContainer filters={filters} />

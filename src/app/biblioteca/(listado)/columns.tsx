@@ -1,6 +1,6 @@
 import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
-// import EstadoLibro from "./estado-libro";
+import EstadoLibro from "./estado-libro";
 
 type LibroData = RouterOutputs["biblioteca"]["getAll"]["libros"][number];
 
@@ -51,20 +51,30 @@ export const getColumns = () => {
 
         if (!materiasLibro.length) return <span className="hidden">Sin materias</span>;
 
-        return materiasLibro.map((materia) => materia.materia.nombre).join(", ");
+        return <MateriasColumnar materiasLibro={materiasLibro.map((materia) => materia.materia.nombre)} />;
       },
     }),
-    // colHelper.accessor("disponible", {
-    //   header: "Estado prestamo",
-    //   cell: ({ row }) => {
-    //     const { disponible, id } = row.original;
+    colHelper.accessor("disponible", {
+      header: "Estado préstamo",
+      cell: ({ row }) => {
+        const { disponible, id } = row.original;
 
-    //     return <EstadoLibro estado={disponible} libroId={id} />;
-    //   },
-    // }),
+        return <EstadoLibro disponible={disponible} id={id} />;
+      },
+    }),
   ] as ColumnDef<LibroData>[];
 };
 
 export const getColumnsNames = () => {
   return ["Biblioteca ID", "Inventario", "Titulo", "Autor", "Año", "Editorial", "Idioma", "ISBN", "Estado"];
+};
+
+const MateriasColumnar = ({ materiasLibro }: { materiasLibro: string[] }) => {
+  return (
+    <ul className="flex list-disc flex-col">
+      {materiasLibro.map((materia, index) => (
+        <li key={index}>{materia}</li>
+      ))}
+    </ul>
+  );
 };
