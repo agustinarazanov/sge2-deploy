@@ -1,4 +1,3 @@
-import { api } from "@/trpc/react";
 import { Button, ScrollArea } from "@/components/ui";
 import { Separator } from "@radix-ui/react-separator";
 import { UsuarioCreador } from "../../_components/usuario-creador-libro";
@@ -13,12 +12,6 @@ type Props = {
 
 export const LibroView = ({ id, onCancel }: Props) => {
   const libroId = parseInt(id ?? "");
-
-  const { data: libro, isLoading, isError } = api.biblioteca.libroPorId.useQuery({ libroId }, { enabled: !!id });
-
-  if (isError) {
-    return <div>Error al cargar...</div>;
-  }
 
   const handleCancel = () => onCancel();
 

@@ -26,6 +26,7 @@ import { cn } from "../../utils";
 
 import { inputBaseStyle } from "../Input";
 import { type IsMulti, type ItemType, type SelectItem, type SelectProps } from "./select";
+import { useInfiniteScroll } from "@/components/hooks/use-infinitescroll";
 
 interface AutocompleteProps<TType extends SelectItem | string, TMulti extends IsMulti = undefined>
   extends SelectProps<TType, TMulti> {
@@ -34,6 +35,7 @@ interface AutocompleteProps<TType extends SelectItem | string, TMulti extends Is
   labelTooltip?: React.ReactNode;
   noOptionsComponent?: React.ReactNode;
   debounceTime?: number;
+  fetchNextPage?: () => void;
 }
 
 export const Autocomplete = <TType extends SelectItem | string, TMulti extends IsMulti = undefined>({
@@ -49,6 +51,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
   isDirty: _isDirty,
   isLoading,
   clearable = false,
+  fetchNextPage,
   noOptionsComponent,
   debounceTime = 500,
   ...props
@@ -58,6 +61,8 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const [top, setTop] = useState(0);
   const [query, setQuery] = useState("");
+
+  const optionsRef = useInfiniteScroll<HTMLUListElement>(fetchNextPage);
 
   const filteredList = useMemo(() => {
     if (async ?? !query) return items;
@@ -188,6 +193,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
               leaveTo="transform opacity-0 scale-95"
             >
               <ComboboxOptions
+                ref={optionsRef}
                 style={{ top: `${top}px` }}
                 className={cn(
                   "ring-none custom-scrollbar absolute z-50 max-h-80 w-full overflow-y-auto rounded-b border border-input bg-menu shadow-lg outline-none",
@@ -239,6 +245,8 @@ export interface FormAutocompleteProps<
   name: Path<T>;
   labelTooltip?: React.ReactNode;
   noOptionsComponent?: React.ReactNode;
+  fetchNextPage?: () => void;
+  callback?: () => void;
 }
 
 export const FormAutocomplete = <
@@ -249,6 +257,7 @@ export const FormAutocomplete = <
   name,
   control,
   realNameId,
+  fetchNextPage,
   ...props
 }: FormAutocompleteProps<T, TType, TMulti> & { realNameId?: Path<T> }): ReactElement => {
   const { formState } = useFormContext<T>();
@@ -263,10 +272,17 @@ export const FormAutocomplete = <
         <Autocomplete
           {...props}
           value={field.value as PathValue<T, Path<T>>}
-          onChange={(value) => field.onChange(value as PathValue<T, Path<T>>)}
+          onChange={(value) => {
+            field.onChange(value as PathValue<T, Path<T>>);
+
+            if (props?.callback) {
+              props?.callback();
+            }
+          }}
           onBlur={field.onBlur}
           isDirty={fieldState.isDirty}
           error={error?.message ?? (errorId ? errorId?.message : "")}
+          fetchNextPage={fetchNextPage}
         />
       )}
     />

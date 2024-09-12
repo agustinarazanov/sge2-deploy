@@ -10,7 +10,7 @@ import { type z } from "zod";
 // TODO: Implementar filtro de rol para usuarios
 type InputGetAll = z.infer<typeof inputGetUsuarios>;
 export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText, orderDirection } = input;
+  const { pageIndex, pageSize, searchText, orderDirection } = input ?? {};
 
   const filtrosWhereUsuario: Prisma.UserWhereInput = {
     ...(searchText
@@ -46,6 +46,7 @@ export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetA
   };
 
   const [count, usuarios] = await ctx.db.$transaction([
+    // TODO @Alex: Fix count para que tenga los mismos filtros que el findaMany
     ctx.db.user.count(),
     ctx.db.user.findMany({
       include: {
@@ -61,8 +62,12 @@ export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetA
       orderBy: {
         nombre: orderDirection,
       },
-      skip: parseInt(pageIndex) * parseInt(pageSize),
-      take: parseInt(pageSize),
+      ...(pageIndex && pageSize
+        ? {
+            skip: parseInt(pageIndex) * parseInt(pageSize),
+            take: parseInt(pageSize),
+          }
+        : {}),
     }),
   ]);
 
