@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui";
 import { Badge } from "@/components/ui/badge";
 
 type RemoveLibroModalProps = {
@@ -5,12 +6,23 @@ type RemoveLibroModalProps = {
   disponible: boolean;
 };
 
-export default function EstadoInventario({ disponible }: RemoveLibroModalProps) {
+export default function EstadoLibro({ disponible }: RemoveLibroModalProps) {
   if (disponible) {
     return (
-      <Badge variant={"default"} color={"success"}>
-        Disponible
-      </Badge>
+      <div className="flex flex-col">
+        <Badge variant={"default"} color={"success"} className="w-full text-center">
+          <div className="w-full">Disponible</div>
+        </Badge>
+        <Button
+          title="Prestar"
+          variant="default"
+          color="outline"
+          size="sm"
+          className="mt-2 w-full rounded-full border-none"
+        >
+          Prestar
+        </Button>
+      </div>
     );
   }
 
