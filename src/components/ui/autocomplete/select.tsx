@@ -84,7 +84,7 @@ export const Select = <TType extends SelectItem | string, TMulti extends IsMulti
       <Listbox
         as={Fragment}
         {...props}
-        value={multiple ? ((props.value ?? []) as ItemType<TType, TMulti>) : props.value ?? null}
+        value={multiple ? ((props.value ?? []) as ItemType<TType, TMulti>) : (props.value ?? null)}
         multiple={multiple}
       >
         {({ open }) => (
@@ -149,7 +149,7 @@ export const Select = <TType extends SelectItem | string, TMulti extends IsMulti
                     <Listbox.Option
                       key={`select-item-${typeof item === "string" ? item : item.id}`}
                       value={item}
-                      disabled={props.disabled ?? typeof item === "string" ? false : item.disabled}
+                      disabled={(props.disabled ?? typeof item === "string") ? false : item.disabled}
                       className={({ active }) =>
                         cn(
                           "group flex w-full items-center space-x-2 px-4 py-3 text-sm",
@@ -212,6 +212,7 @@ export const FormSelect = <
             return item.id === selected;
           });
         }
+
         return (
           <Select
             {...props}
@@ -228,6 +229,8 @@ export const FormSelect = <
               } else {
                 field.onChange((typeof value === "string" ? value : value?.id) as PathValue<T, Path<T>>);
               }
+
+              props.onChange?.(value);
             }}
             onBlur={field.onBlur}
             isDirty={fieldState.isDirty}

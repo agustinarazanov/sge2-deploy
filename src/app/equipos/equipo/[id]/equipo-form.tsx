@@ -98,7 +98,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                   <FormInput
                     label={"Inventario"}
                     control={control}
-                    name="inventarioId"
+                    name="marcaId" // TODO: no permite inventarioId
                     type={"text"}
                     className="mt-2"
                   />
