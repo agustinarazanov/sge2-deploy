@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactElement } from "react";
-import { type FieldValues } from "react-hook-form";
+import { type Path, type FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,7 +16,7 @@ export const SelectMarcasForm = <
   control,
   className,
   ...props
-}: Omit<FormAutocompleteProps<T, TType, TMulti>, "items">): ReactElement => {
+}: Omit<FormAutocompleteProps<T, TType, TMulti>, "items"> & { realNameId?: Path<T> }): ReactElement => {
   const { data, isLoading, isError } = api.equipos.getAllMarcas.useQuery();
 
   const [query, setQuery] = useState("");
