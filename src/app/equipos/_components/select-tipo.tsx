@@ -44,7 +44,7 @@ export const SelectTipoForm = <
         <div className="flex flex-row items-center space-x-2">
           <SelectTrigger
             disabled
-            id="selectSede"
+            id="selectTipo"
             className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
           >
             <SelectValue placeholder="Error cargando tipos" />
