@@ -46,8 +46,9 @@ export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetA
   };
 
   const [count, usuarios] = await ctx.db.$transaction([
-    // TODO @Alex: Fix count para que tenga los mismos filtros que el findaMany
-    ctx.db.user.count(),
+    ctx.db.user.count({
+      where: filtrosWhereUsuario,
+    }),
     ctx.db.user.findMany({
       include: {
         usuarioRol: {
@@ -56,9 +57,7 @@ export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetA
           },
         },
       },
-      where: {
-        ...filtrosWhereUsuario,
-      },
+      where: filtrosWhereUsuario,
       orderBy: {
         nombre: orderDirection,
       },
