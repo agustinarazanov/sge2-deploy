@@ -20,10 +20,12 @@ export const SelectArmarioForm = <
     { enabled: !!props.laboratorioId },
   );
 
-  const armarios = useMemo(() => {
+  const armarios: { id: number | null; label: string }[] = useMemo(() => {
     if (!data) return [];
 
-    return data.map((armario) => {
+    const nullArmario = { id: null, label: "Vacío" };
+
+    const armarios = data.map((armario) => {
       const { id, nombre: label } = armario;
 
       return {
@@ -31,6 +33,8 @@ export const SelectArmarioForm = <
         id,
       };
     });
+
+    return [nullArmario, ...armarios];
   }, [data]);
 
   if (isLoading) {

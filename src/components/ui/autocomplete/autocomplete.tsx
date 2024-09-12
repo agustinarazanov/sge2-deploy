@@ -1,7 +1,15 @@
 "use client";
 
 import { Fragment, useEffect, useId, useMemo, useRef, useState, type ReactElement } from "react";
-import { Combobox, Transition } from "@headlessui/react";
+import {
+  Combobox,
+  ComboboxInput,
+  Transition,
+  Label,
+  ComboboxOptions,
+  ComboboxOption,
+  ComboboxButton,
+} from "@headlessui/react";
 import { debounce, get } from "lodash";
 import { ChevronDownIcon, Loader2, XIcon } from "lucide-react";
 import {
@@ -18,6 +26,7 @@ import { cn } from "../../utils";
 
 import { inputBaseStyle } from "../Input";
 import { type IsMulti, type ItemType, type SelectItem, type SelectProps } from "./select";
+import { useInfiniteScroll } from "@/components/hooks/use-infinitescroll";
 
 interface AutocompleteProps<TType extends SelectItem | string, TMulti extends IsMulti = undefined>
   extends SelectProps<TType, TMulti> {
@@ -26,6 +35,7 @@ interface AutocompleteProps<TType extends SelectItem | string, TMulti extends Is
   labelTooltip?: React.ReactNode;
   noOptionsComponent?: React.ReactNode;
   debounceTime?: number;
+  fetchNextPage?: () => void;
 }
 
 export const Autocomplete = <TType extends SelectItem | string, TMulti extends IsMulti = undefined>({
@@ -41,6 +51,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
   isDirty: _isDirty,
   isLoading,
   clearable = false,
+  fetchNextPage,
   noOptionsComponent,
   debounceTime = 500,
   ...props
@@ -50,6 +61,8 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const [top, setTop] = useState(0);
   const [query, setQuery] = useState("");
+
+  const optionsRef = useInfiniteScroll<HTMLUListElement>(fetchNextPage);
 
   const filteredList = useMemo(() => {
     if (async ?? !query) return items;
@@ -109,17 +122,17 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
         {({ open }) => (
           <>
             {!label ? null : !labelTooltip ? (
-              <Combobox.Label htmlFor={id} className="mb-3 block text-sm text-input-label">
+              <Label htmlFor={id} className="mb-3 block text-sm dark:text-input-label">
                 {label}
-              </Combobox.Label>
+              </Label>
             ) : (
-              <div className="mb-3 flex items-center gap-2 text-sm text-input-label">
+              <div className="mb-3 flex items-center gap-2 text-sm dark:text-input-label">
                 {label}
                 {labelTooltip}
               </div>
             )}
             <div ref={inputWrapperRef} className="relative w-full">
-              <Combobox.Input
+              <ComboboxInput
                 autoComplete="off"
                 id={id}
                 ref={inputRef}
@@ -159,14 +172,14 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
                 ) : (
                   canClear && <XIcon onClick={onClear} className="mr-1 h-5 cursor-pointer hover:text-primary" />
                 )}
-                <Combobox.Button className={cn({ "ml-2": isLoading })}>
+                <ComboboxButton className={cn({ "ml-2": isLoading })}>
                   <ChevronDownIcon
                     key={`autocomplete-indicator`}
                     className={cn("h-5 transition ease-in-out", {
                       "rotate-180": open,
                     })}
                   />
-                </Combobox.Button>
+                </ComboboxButton>
               </div>
             </div>
             {error && <span className={cn("ml-1 mt-2 block text-xs text-danger")}>{error}</span>}
@@ -179,7 +192,8 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Combobox.Options
+              <ComboboxOptions
+                ref={optionsRef}
                 style={{ top: `${top}px` }}
                 className={cn(
                   "ring-none custom-scrollbar absolute z-50 max-h-80 w-full overflow-y-auto rounded-b border border-input bg-menu shadow-lg outline-none",
@@ -191,7 +205,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
                   const icon = typeof item === "string" ? null : item.icon;
                   const disabled = (props.disabled ?? typeof item === "string") ? false : item.disabled;
                   return (
-                    <Combobox.Option
+                    <ComboboxOption
                       key={`autocomplete-option-${id}`}
                       value={item}
                       disabled={disabled}
@@ -204,7 +218,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
                     >
                       {icon && <span className="mr-3">{icon}</span>}
                       {label}
-                    </Combobox.Option>
+                    </ComboboxOption>
                   );
                 })}
                 {!filteredList.length &&
@@ -213,7 +227,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
                       No options
                     </span>
                   ))}
-              </Combobox.Options>
+              </ComboboxOptions>
             </Transition>
           </>
         )}
@@ -231,6 +245,8 @@ export interface FormAutocompleteProps<
   name: Path<T>;
   labelTooltip?: React.ReactNode;
   noOptionsComponent?: React.ReactNode;
+  fetchNextPage?: () => void;
+  callback?: () => void;
 }
 
 export const FormAutocomplete = <
@@ -240,10 +256,13 @@ export const FormAutocomplete = <
 >({
   name,
   control,
+  realNameId,
+  fetchNextPage,
   ...props
-}: FormAutocompleteProps<T, TType, TMulti>) => {
+}: FormAutocompleteProps<T, TType, TMulti> & { realNameId?: Path<T> }): ReactElement => {
   const { formState } = useFormContext<T>();
   const error = get(formState.errors, name, undefined) as FieldError | undefined;
+  const errorId = realNameId ? (get(formState.errors, realNameId, undefined) as FieldError | undefined) : "";
 
   return (
     <Controller
@@ -253,10 +272,17 @@ export const FormAutocomplete = <
         <Autocomplete
           {...props}
           value={field.value as PathValue<T, Path<T>>}
-          onChange={(value) => field.onChange(value as PathValue<T, Path<T>>)}
+          onChange={(value) => {
+            field.onChange(value as PathValue<T, Path<T>>);
+
+            if (props?.callback) {
+              props?.callback();
+            }
+          }}
           onBlur={field.onBlur}
           isDirty={fieldState.isDirty}
-          error={error?.message}
+          error={error?.message ?? (errorId ? errorId?.message : "")}
+          fetchNextPage={fetchNextPage}
         />
       )}
     />

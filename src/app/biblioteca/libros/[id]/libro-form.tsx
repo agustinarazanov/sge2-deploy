@@ -39,6 +39,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   const libroBase: FormEditarLibroType = useMemo(() => {
     if (!libro) return {} as FormEditarLibroType;
     return {
+      id: libro.id,
       titulo: libro.titulo,
       isbn: libro.isbn ?? "",
       bibliotecaId: libro.bibliotecaId ?? "",
@@ -69,19 +70,16 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
     resolver: zodResolver(inputEditBooks),
   });
 
-  const { handleSubmit, control } = formHook;
+  const { handleSubmit, control, watch } = formHook;
+
+  const [sedeId, laboratorioId, armarioId] = watch(["sedeId", "laboratorioId", "armarioId"]);
+  const [autor, editorial] = watch(["autor", "editorial"]);
 
   useEffect(() => formHook.reset(libroBase), [formHook, libroBase]);
 
   const onFormSubmit = (formData: FormEditarLibroType) => {
-    const data = {
-      ...formData,
-      autorId: formData.autor.id,
-      editorialId: formData.editorial.id,
-    };
-
     if (esNuevo) {
-      agregarlibro.mutate(data, {
+      agregarlibro.mutate(formData, {
         onSuccess: () => {
           toast.success("Libro agregado con éxito.");
           onSubmit();
@@ -93,7 +91,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
       return;
     }
 
-    editarLibro.mutate(data, {
+    editarLibro.mutate(formData, {
       onSuccess: () => {
         toast.success("Libro actualizado con éxito.");
         onSubmit();
@@ -109,17 +107,8 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
     onCancel();
   };
 
-  const sedeId = formHook.watch("sedeId");
-  const laboratorioId = formHook.watch("laboratorioId");
-  const armarioId = formHook.watch("armarioId");
-
-  // TODO @ALEX: Arreglar esto
-  // @ts-expect-error - undefined
-  useEffect(() => void sedeId && formHook.setValue("laboratorioId", undefined), [formHook, sedeId]);
-  // @ts-expect-error - undefined
-  useEffect(() => void laboratorioId && formHook.setValue("armarioId", undefined), [formHook, laboratorioId]);
-  // @ts-expect-error - undefined
-  useEffect(() => void armarioId && formHook.setValue("estanteId", undefined), [formHook, armarioId]);
+  useEffect(() => formHook.setValue("autorId", autor?.id), [formHook, autor]);
+  useEffect(() => formHook.setValue("editorialId", editorial?.id), [formHook, editorial]);
 
   if (!esNuevo && isNaN(libroId)) {
     return <div>Error al cargar...</div>;
@@ -141,48 +130,49 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
             <div className="flex flex-col space-y-4 px-0 md:px-6">
               <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
                 <div className="mt-4 w-full">
-                  <FormInput
-                    label={"Titulo"}
-                    control={control}
-                    name="titulo"
-                    type={"text"}
-                    className="mt-2 text-white"
-                  />
+                  <FormInput label={"Titulo"} control={control} name="titulo" type={"text"} className="mt-2" />
                 </div>
               </div>
 
               <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
                 <div className="mt-4 w-full">
-                  <SelectAutoresForm name="autor" control={control} className="mt-2 text-white" label={"Autor"} />
+                  <SelectAutoresForm
+                    name="autor"
+                    realNameId="autorId"
+                    control={control}
+                    className="mt-2"
+                    label={"Autor"}
+                  />
                 </div>
               </div>
 
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-                <div className="mt-4 basis-1/2">
-                  <FormInput
-                    label={"Inventario ID (solo lectura)"}
-                    control={control}
-                    name="inventarioId"
-                    type={"text"}
-                    className="mt-2 text-white"
-                    readOnly
-                  />
-                </div>
-
+                {!esNuevo && (
+                  <div className="mt-4 basis-1/2">
+                    <FormInput
+                      label={"Inventario ID (solo lectura)"}
+                      control={control}
+                      name="inventarioId"
+                      type={"text"}
+                      className="mt-2"
+                      readOnly
+                    />
+                  </div>
+                )}
                 <div className="mt-4 basis-1/2">
                   <FormInput
                     label={"Biblioteca ID"}
                     control={control}
                     name="bibliotecaId"
                     type={"text"}
-                    className="mt-2 text-white"
+                    className="mt-2"
                   />
                 </div>
               </div>
 
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
-                  <FormInput label={"ISBN"} control={control} name="isbn" type={"text"} className="mt-2 text-white" />
+                  <FormInput label={"ISBN"} control={control} name="isbn" type={"text"} className="mt-2" />
                 </div>
 
                 <div className="mt-4 basis-1/2">
@@ -191,7 +181,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     name="anio"
                     type={"number"}
-                    className="mt-2 text-white"
+                    className="mt-2"
                     maxLength={4}
                   />
                 </div>
@@ -202,9 +192,15 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                   <SelectSedeForm
                     name="sedeId"
                     control={control}
-                    className="mt-2 text-white"
+                    className="mt-2"
                     label={"Sede"}
                     placeholder={"Selecciona una sede"}
+                    onChange={() => {
+                      // @ts-expect-error - undefined
+                      formHook.setValue("laboratorioId", undefined);
+                      formHook.setValue("armarioId", undefined);
+                      formHook.setValue("estanteId", undefined);
+                    }}
                   />
                 </div>
 
@@ -212,11 +208,15 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                   <SelectLaboratorioForm
                     name="laboratorioId"
                     control={control}
-                    className="mt-2 text-white"
+                    className="mt-2"
                     label={"Laboratorio"}
                     sedeId={sedeId}
                     disabled={!sedeId}
                     placeholder={!sedeId ? "Selecciona una sede" : "Selecciona un laboratorio"}
+                    onChange={() => {
+                      formHook.setValue("armarioId", undefined);
+                      formHook.setValue("estanteId", undefined);
+                    }}
                   />
                 </div>
               </div>
@@ -226,10 +226,13 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                   <SelectArmarioForm
                     name="armarioId"
                     control={control}
-                    className="mt-2 text-white"
+                    className="mt-2"
                     label={"Armario"}
                     laboratorioId={laboratorioId}
                     placeholder={!laboratorioId ? "Selecciona un laboratorio" : "Selecciona un armario"}
+                    onChange={() => {
+                      formHook.setValue("estanteId", undefined);
+                    }}
                   />
                 </div>
 
@@ -237,7 +240,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                   <SelectEstanteForm
                     name="estanteId"
                     control={control}
-                    className="mt-2 text-white"
+                    className="mt-2"
                     label={"Estante"}
                     armarioId={armarioId}
                     placeholder={!armarioId ? "Selecciona un armario" : "Selecciona una estante"}
@@ -249,8 +252,9 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                 <div className="mt-4 basis-1/2">
                   <SelectEditorialForm
                     name="editorial"
+                    realNameId="editorialId"
                     control={control}
-                    className="mt-2 text-white"
+                    className="mt-2"
                     label={"Editorial"}
                   />
                 </div>
@@ -259,7 +263,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                   <SelectIdiomasForm
                     name="idiomaId"
                     control={control}
-                    className="mt-2 text-white"
+                    className="mt-2"
                     label={"Idioma"}
                     placeholder={"Selecciona un idioma"}
                   />
@@ -267,7 +271,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
               </div>
 
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-                <div className="mt-4 w-full text-white">
+                <div className="mt-4 w-full">
                   <label>
                     Materias
                     <MateriaDropdownMultipleForm name="materias" control={control} />

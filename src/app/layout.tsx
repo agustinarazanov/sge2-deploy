@@ -9,7 +9,7 @@ import { Toaster } from "@/components/ui";
 export const metadata = {
   title: "SGE",
   description: "Creado por el equipo de SGE con ❤️",
-  icons: "electrical-circuit.png",
+  icons: "/electrical-circuit.png",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

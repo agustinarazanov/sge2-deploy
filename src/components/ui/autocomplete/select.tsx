@@ -1,5 +1,5 @@
 import { Fragment, useId, useRef, useState, type FocusEventHandler, type ReactElement, type ReactNode } from "react";
-import { Listbox, Transition } from "@headlessui/react";
+import { Label, Listbox, ListboxButton, Transition } from "@headlessui/react";
 import { ChevronDownIcon, XIcon } from "lucide-react";
 import { get } from "lodash";
 import {
@@ -84,17 +84,17 @@ export const Select = <TType extends SelectItem | string, TMulti extends IsMulti
       <Listbox
         as={Fragment}
         {...props}
-        value={multiple ? ((props.value ?? []) as ItemType<TType, TMulti>) : props.value ?? null}
+        value={multiple ? ((props.value ?? []) as ItemType<TType, TMulti>) : (props.value ?? null)}
         multiple={multiple}
       >
         {({ open }) => (
           <>
             {label && (
-              <Listbox.Label htmlFor={id} className="mb-3 block text-sm text-input-label">
+              <Label htmlFor={id} className="mb-3 block text-sm dark:text-input-label">
                 {label}
-              </Listbox.Label>
+              </Label>
             )}
-            <Listbox.Button
+            <ListboxButton
               ref={setTargetElement}
               id={id}
               className={cn(inputBaseStyle, "relative !w-full text-left", {
@@ -120,7 +120,7 @@ export const Select = <TType extends SelectItem | string, TMulti extends IsMulti
                   },
                 )}
               />
-            </Listbox.Button>
+            </ListboxButton>
             {error && <span className={cn("ml-1 mt-2 block text-xs text-danger")}>{error}</span>}
             <Transition
               show={open}
@@ -149,7 +149,7 @@ export const Select = <TType extends SelectItem | string, TMulti extends IsMulti
                     <Listbox.Option
                       key={`select-item-${typeof item === "string" ? item : item.id}`}
                       value={item}
-                      disabled={props.disabled ?? typeof item === "string" ? false : item.disabled}
+                      disabled={(props.disabled ?? typeof item === "string") ? false : item.disabled}
                       className={({ active }) =>
                         cn(
                           "group flex w-full items-center space-x-2 px-4 py-3 text-sm",
@@ -212,6 +212,7 @@ export const FormSelect = <
             return item.id === selected;
           });
         }
+
         return (
           <Select
             {...props}
@@ -228,6 +229,8 @@ export const FormSelect = <
               } else {
                 field.onChange((typeof value === "string" ? value : value?.id) as PathValue<T, Path<T>>);
               }
+
+              props.onChange?.(value);
             }}
             onBlur={field.onBlur}
             isDirty={fieldState.isDirty}

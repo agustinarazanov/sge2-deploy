@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactElement } from "react";
-import { type FieldValues } from "react-hook-form";
+import { type Path, type FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,7 +16,7 @@ export const SelectAutoresForm = <
   control,
   className,
   ...props
-}: Omit<FormAutocompleteProps<T, TType, TMulti>, "items">): ReactElement => {
+}: Omit<FormAutocompleteProps<T, TType, TMulti>, "items"> & { realNameId?: Path<T> }): ReactElement => {
   const { data, isLoading, isError } = api.biblioteca.getAllAutores.useQuery();
 
   const [query, setQuery] = useState("");
@@ -65,7 +65,7 @@ export const SelectAutoresForm = <
       async
       items={autores}
       noOptionsComponent={
-        <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm">
+        <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm text-white">
           <span>No se encontró al autor</span>
           <Link href="href" className="text-primary">
             Crear nuevo autor

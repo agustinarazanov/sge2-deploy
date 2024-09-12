@@ -1,5 +1,6 @@
 import Link from "next/link";
 import cn from "classnames";
+import { DisclosureButton } from "@headlessui/react";
 
 type NavbarLinkProps = {
   href?: string;
@@ -20,9 +21,26 @@ export const NavbarLink = ({ href = "/", children, isActive, isMobile }: NavbarL
   const mobileClass = isMobile ? MOBILE_CLASS : DESKTOP_CLASS;
   const activeClass = isActive ? BASE_STYLE_ACTIVE : BASE_STYLE_NO_ACTIVE;
 
-  return (
-    <Link href={href} className={cn(BASE_CLASS, mobileClass, activeClass)} aria-current={isActive ? "page" : undefined}>
-      {children}
-    </Link>
-  );
+  if (isMobile) {
+    return (
+      <DisclosureButton
+        as="a"
+        href={href}
+        aria-current={isActive ? "page" : undefined}
+        className={cn(BASE_CLASS, mobileClass, activeClass)}
+      >
+        {children}
+      </DisclosureButton>
+    );
+  } else {
+    return (
+      <Link
+        href={href}
+        aria-current={isActive ? "page" : undefined}
+        className={cn(BASE_CLASS, mobileClass, activeClass)}
+      >
+        {children}
+      </Link>
+    );
+  }
 };
