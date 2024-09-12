@@ -1,13 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import { api } from "@/trpc/react";
-
 export const LibroInformacionPrestamos = ({ libroId }: { libroId: number }) => {
-  //   const { data: libro, isLoading, isError } = api.biblioteca.libroPorId.useQuery({ libroId });
-
-  //   if (isError) {
-  //     return <div>Error al cargar...</div>;
-  //   }
-
   return (
     <>
       <div className="my-2 flex w-full flex-col space-y-4 px-0 text-left text-2xl md:px-6">Historial de Prestamos:</div>

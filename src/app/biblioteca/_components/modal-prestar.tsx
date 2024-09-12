@@ -1,59 +1,48 @@
 "use client";
 
 import { useState } from "react";
-import { TrashIcon } from "lucide-react";
 
 import { Button } from "@/components/ui";
 
-import { toast } from "@/components/ui";
-import { api } from "@/trpc/react";
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
+import { LibroInformacionBasica } from "../libros/_components/info-basica-libro";
+import { Separator } from "@radix-ui/react-separator";
+import { LibroFormPrestar } from "./form-prestar";
 
 type PrestarLibroModalProps = {
   libroId: number;
-  nombre?: string;
-  onSubmit: () => void;
 };
 
-export default function PrestarLibroModal({ libroId, nombre, onSubmit }: PrestarLibroModalProps) {
-  const eliminarLibro = api.biblioteca.eliminarLibro.useMutation({
-    onSuccess: () => {
-      toast.success(`El libro ${nombre} se eliminó con éxito.`);
-
-      onSubmit?.();
-    },
-
-    onError: (error) => {
-      toast.error(error?.message ?? `Error eliminando el libro ${nombre}`);
-    },
-  });
-
+export default function PrestarLibroModal({ libroId }: PrestarLibroModalProps) {
   const [open, setOpen] = useState(false);
 
-  const handleRemoveMachine = async (libroId: number) => {
-    eliminarLibro.mutate({ libroId });
-
-    setOpen(false);
-  };
+  const handleSubmit = () => setOpen(false);
 
   const handleCancel = () => setOpen(false);
 
   return (
     <ModalDrawer
       trigger={
-        <Button title="Eliminar libro" variant="icon" color="danger" className="h-8 w-8 px-2 py-2" icon={TrashIcon} />
+        <Button
+          title="Prestar"
+          variant="default"
+          color="outline"
+          size="sm"
+          className="mt-2 w-full rounded-full border-none"
+        >
+          Prestar
+        </Button>
       }
-      titulo={`Eliminar libro ${nombre ?? ""}`}
-      cancelText="Cancelar"
-      submitText="Si, eliminar"
+      titulo={`Prestar libro`}
       open={open}
       onOpenChange={setOpen}
-      onCancel={handleCancel}
-      onSubmit={() => handleRemoveMachine(libroId)}
-      isAlertDialog
     >
-      <div>
-        Está seguro que desea eliminar <span className="font-bold">{nombre ?? "este libro"}</span>?
+      <div className="flex flex-col">
+        <LibroInformacionBasica libroId={libroId} />
+
+        <Separator className="my-8 border-2" />
+
+        <LibroFormPrestar libroId={libroId} onCancel={handleCancel} onSubmit={handleSubmit} />
       </div>
     </ModalDrawer>
   );
