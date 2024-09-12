@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactElement } from "react";
-import { Path, type FieldValues } from "react-hook-form";
+import { type Path, type FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { type FormSelectProps, type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
 import { FormAutocomplete, Select, SelectTrigger, SelectValue } from "@/components/ui";
