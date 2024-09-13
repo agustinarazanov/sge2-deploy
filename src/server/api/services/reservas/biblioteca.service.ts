@@ -1,7 +1,16 @@
 import { protectedProcedure } from "../../trpc";
-import { crearPrestamoLibro, getReservaPorUsuarioId } from "@/server/api/repositories/reservas/biblioteca.repository";
+import {
+  crearPrestamoLibro,
+  devolverLibro,
+  getReservaPorUsuarioId,
+  verReservasDeLibro,
+} from "@/server/api/repositories/reservas/biblioteca.repository";
 import { validarInput } from "@/server/api/services/helper";
-import { inputGetReservaLibroPorUsuarioId, inputPrestarLibro } from "@/shared/filters/reservas-filter.schema";
+import {
+  inputGetReservaLibroPorUsuarioId,
+  inputGetReservasLibroPorLibroId,
+  inputPrestarLibro,
+} from "@/shared/filters/reservas-filter.schema";
 
 export const getReservaLibroPorUserProcedure = protectedProcedure
   .input(inputGetReservaLibroPorUsuarioId)
@@ -21,6 +30,28 @@ export const crearPrestamoLibroProcedure = protectedProcedure
     const userId = ctx.session.user.id;
 
     const reserva = await crearPrestamoLibro(ctx, input, userId);
+
+    return reserva;
+  });
+
+export const verReservasProcedure = protectedProcedure
+  .input(inputGetReservasLibroPorLibroId)
+  .query(async ({ ctx, input }) => {
+    validarInput(inputGetReservasLibroPorLibroId, input);
+
+    const reservas = await verReservasDeLibro(ctx, input);
+
+    return reservas;
+  });
+
+export const devolverLibroProcedure = protectedProcedure
+  .input(inputGetReservasLibroPorLibroId)
+  .mutation(async ({ ctx, input }) => {
+    validarInput(inputGetReservasLibroPorLibroId, input);
+
+    const userId = ctx.session.user.id;
+
+    const reserva = await devolverLibro(ctx, input, userId);
 
     return reserva;
   });
