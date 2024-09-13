@@ -14,13 +14,13 @@ export const SelectTipoForm = <
   control,
   className,
   ...props
-}: Omit<FormSelectProps<T, TType, TMulti>, "items">): ReactElement => {
-  const { data, isLoading, isError } = api.equipos.getAllTipos.useQuery();
+}: Omit<FormSelectProps<T, TType, TMulti>, "items"> & { tipoId?: number }): ReactElement => {
+  const { data, isLoading, isError } = api.equipos.getAllTipos.useQuery({ tipoId: props.tipoId });
 
   const tipos = useMemo(() => {
     if (!data) return [];
 
-    return data.map((tipo) => {
+    return data.tipos.map((tipo) => {
       const { id, nombre: label } = tipo;
 
       return {
