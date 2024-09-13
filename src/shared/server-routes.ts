@@ -12,7 +12,7 @@ export const INICIO_ROUTE: AppRoute = {
   isPublic: true,
 };
 
-export const BIBLIOTECA_ROUTE: AppRoute = {
+export const BIBLIOTECA_ROUTE = {
   href: "/biblioteca",
   label: "Biblioteca",
   isPublic: false,

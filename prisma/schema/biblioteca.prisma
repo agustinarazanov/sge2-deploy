@@ -14,11 +14,11 @@ model Libro {
     laboratorioId Int
     laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id])
 
-    armarioId Int
-    armario   Armario @relation(fields: [armarioId], references: [id])
+    armarioId Int?
+    armario   Armario? @relation(fields: [armarioId], references: [id])
 
-    estanteId Int
-    estante   Estante @relation(fields: [estanteId], references: [id])
+    estanteId Int?
+    estante   Estante? @relation(fields: [estanteId], references: [id])
 
     autorId Int
     autor   LibroAutor @relation(fields: [autorId], references: [id])
@@ -31,6 +31,8 @@ model Libro {
 
     sedeId Int
     sede   Sede @relation(fields: [sedeId], references: [id])
+
+    disponible Boolean @default(true)
 
     reservas ReservaLibro[]
 
@@ -49,8 +51,8 @@ model LibroMateria {
     libroId   Int
     materiaId Int
 
-    libro   Libro   @relation(fields: [libroId], references: [id])
-    materia Materia @relation(fields: [materiaId], references: [id])
+    libro   Libro   @relation(fields: [libroId], references: [id], onDelete: Cascade)
+    materia Materia @relation(fields: [materiaId], references: [id], onDelete: Cascade)
 
     fechaCreacion    DateTime @default(now())
     usuarioCreadorId String
