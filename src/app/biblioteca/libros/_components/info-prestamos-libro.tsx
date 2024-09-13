@@ -1,17 +1,13 @@
+import { DatoUsuarioReserva } from "@/app/_components/datos-usuario";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getDateISOString } from "@/shared/get-date";
 import { api, type RouterOutputs } from "@/trpc/react";
-import Image from "next/image";
 
 type Props = {
   libroId: number;
 };
 
 type ReservaLibro = RouterOutputs["reservas"]["reservaBiblioteca"]["verReservas"][number];
-type UsuarioReserva =
-  | ReservaLibro["usuarioAprobador"]
-  | ReservaLibro["usuarioSolicito"]
-  | ReservaLibro["usuarioRecibio"];
 
 export const LibroInformacionPrestamos = (props: Props) => {
   const {
@@ -81,25 +77,5 @@ const ReservaDeLibro = ({ reserva }: { reserva: ReservaLibro }) => {
         )}
       </td>
     </tr>
-  );
-};
-
-const DatoUsuarioReserva = ({ usuario }: { usuario: UsuarioReserva }) => {
-  if (!usuario) {
-    return <span className="text-center">Sin información</span>;
-  }
-
-  const { nombre, name, apellido, legajo, email, image } = usuario;
-
-  const firstName = nombre ?? name ?? "";
-  const lastName = apellido ?? "";
-  const fullName = `${firstName}, ${lastName}`;
-
-  return (
-    <div title={`${fullName} - ${email}`} className="flex flex-row content-center items-center space-x-2 text-center">
-      <Image src={image ?? ""} alt="Imagen de perfil" width={32} height={32} className="rounded-full" />
-      <span className="ml-2">{fullName}</span>
-      <span className="ml-2">{legajo}</span>
-    </div>
   );
 };

@@ -6,23 +6,29 @@ model Reserva {
     fechaHoraFin    DateTime
     tipo            ReservaTipo
 
+    // Usuario que hace la reserva
     usuarioSolicitoId String
     usuarioSolicito   User   @relation(fields: [usuarioSolicitoId], references: [id], name: "reservasSolicitadas")
 
+    // Usuario que aprueba la reserva
     usuarioAprobadorId String
     usuarioAprobador   User   @relation(fields: [usuarioAprobadorId], references: [id], name: "reservasAprobadas")
 
+    // Usuario que rechaza la reserva
     usuarioRechazadoId String?
     usuarioRechazado   User?   @relation(fields: [usuarioRechazadoId], references: [id], name: "reservasRechazadas")
 
+    // Usuario que solicita renovar la reserva
     usuarioRenovoId String?
     usuarioRenovo   User?   @relation(fields: [usuarioRenovoId], references: [id], name: "reservasRenovadas")
 
-    usuarioTutorId String?
-    usuarioTutor   User?   @relation(fields: [usuarioTutorId], references: [id], name: "reservaTutor")
-
+    // Usuario que marca la reserva como terminada
     usuarioRecibioId String?
     usuarioRecibio   User?   @relation(fields: [usuarioRecibioId], references: [id], name: "reservasRecibidas")
+
+    // Tutor de la reserva (solo aplicable a reserva de laboratorio abierto)
+    usuarioTutorId String?
+    usuarioTutor   User?   @relation(fields: [usuarioTutorId], references: [id], name: "reservaTutor")
 
     reservaEquipo             ReservaEquipo?
     reservaLibro              ReservaLibro?

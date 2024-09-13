@@ -2,18 +2,20 @@
 
 import { useState } from "react";
 
-import { Button } from "@/components/ui";
+import { Button, toast } from "@/components/ui";
 
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
+import { api } from "@/trpc/react";
+import { useRouter } from "next/navigation";
 import { LibroInformacionBasica } from "../libros/_components/info-basica-libro";
 import { Separator } from "@radix-ui/react-separator";
 import { LibroFormPrestarORenovar } from "./form-prestar";
 
-type PrestarLibroModalProps = {
+type RenovarPrestamoLibroModalProps = {
   libroId: number;
 };
 
-export default function PrestarLibroModal({ libroId }: PrestarLibroModalProps) {
+export default function RenovarPrestamoLibroModal({ libroId }: RenovarPrestamoLibroModalProps) {
   const [open, setOpen] = useState(false);
 
   const handleSubmit = () => setOpen(false);
@@ -24,16 +26,16 @@ export default function PrestarLibroModal({ libroId }: PrestarLibroModalProps) {
     <ModalDrawer
       trigger={
         <Button
-          title="Prestar"
+          title="Renovar"
           variant="default"
           color="secondary"
           size="sm"
           className="mt-2 w-full rounded-full border-none"
         >
-          Prestar
+          Renovar
         </Button>
       }
-      titulo={`Prestar libro`}
+      titulo={`Renovar libro`}
       open={open}
       onOpenChange={setOpen}
     >
@@ -42,7 +44,7 @@ export default function PrestarLibroModal({ libroId }: PrestarLibroModalProps) {
 
         <Separator className="my-8 border-2" />
 
-        <LibroFormPrestarORenovar libroId={libroId} onCancel={handleCancel} onSubmit={handleSubmit} />
+        <LibroFormPrestarORenovar libroId={libroId} onCancel={handleCancel} onSubmit={handleSubmit} renovar />
       </div>
     </ModalDrawer>
   );
