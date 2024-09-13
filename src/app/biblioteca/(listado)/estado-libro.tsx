@@ -19,8 +19,10 @@ export default function EstadoLibro({ disponible, id }: RemoveLibroModalProps) {
   }
 
   return (
-    <Badge variant={"default"} color={"danger"}>
-      Prestado
-    </Badge>
+    <div className="flex flex-col">
+      <Badge variant={"default"} color={"danger"} className="w-full text-center">
+        <div className="w-full">Prestado</div>
+      </Badge>
+    </div>
   );
 }
