@@ -39,7 +39,7 @@ export const BibliotecaPrestamosTable = ({ data, filters }: BibliotecaTableProps
         }}
         action={{
           header: "Acciones",
-          cell({ original }) {
+          cell() {
             return (
               <>
                 <Button title="Ver" variant="icon" color="ghost" icon={PrinterIcon} />
