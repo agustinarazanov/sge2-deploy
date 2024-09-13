@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 export const inputAgregarEquipo = z.object({
-  inventarioId: z.string().min(1, { message: "Requerido" }),
   modelo: z.string().min(1, { message: "Requerido" }),
   numeroSerie: z.string().min(1, { message: "Requerido" }),
   observaciones: z.string().min(1, { message: "Requerido" }),

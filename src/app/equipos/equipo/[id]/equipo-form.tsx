@@ -92,10 +92,6 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
           <div className="flex flex-col space-y-4 px-0 md:px-6">
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4 basis-1/3">
-                <FormInput label={"Inventario"} control={control} name="inventarioId" type={"text"} className="mt-2" />
-              </div>
-
-              <div className="mt-4 basis-1/3">
                 <FormSelect
                   label={"Modelo"}
                   control={control}

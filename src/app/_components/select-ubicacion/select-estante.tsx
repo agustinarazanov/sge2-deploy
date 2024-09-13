@@ -14,16 +14,18 @@ export const SelectEstanteForm = <
   control,
   className,
   ...props
-}: Omit<FormSelectProps<T, TType, TMulti>, "items"> & { armarioId?: number }): ReactElement => {
+}: Omit<FormSelectProps<T, TType, TMulti>, "items"> & { armarioId?: number | null }): ReactElement => {
   const { data, isLoading, isError } = api.admin.laboratorios.getAllEstantes.useQuery(
     { armarioId: props.armarioId! },
     { enabled: !!props.armarioId },
   );
 
-  const estantes = useMemo(() => {
+  const estantes: { id: number | null; label: string }[] = useMemo(() => {
     if (!data) return [];
 
-    return data.map((estante) => {
+    const nullEstante = { id: null, label: "Vacío" };
+
+    const estantes = data.map((estante) => {
       const { id, nombre: label } = estante;
 
       return {
@@ -31,6 +33,8 @@ export const SelectEstanteForm = <
         id,
       };
     });
+
+    return [nullEstante, ...estantes];
   }, [data]);
 
   if (isLoading) {
