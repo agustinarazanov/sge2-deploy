@@ -4,7 +4,7 @@ import { Button } from "@/components/ui";
 
 const equiposRoute = EQUIPOS_ROUTE;
 
-export const SubLinks = () => {
+export const EquiposButtons = () => {
   if (!equiposRoute.subRutas) return null;
 
   return (
