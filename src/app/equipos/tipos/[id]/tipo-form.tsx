@@ -7,7 +7,7 @@ import { useEffect, useMemo } from "react";
 import { inputEditarTipo } from "@/shared/filters/equipos-tipos-filter.schema";
 
 type Props = {
-  id?: string;
+  id: string;
   onSubmit: () => void;
   onCancel: () => void;
 };

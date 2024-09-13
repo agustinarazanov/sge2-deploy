@@ -10,7 +10,7 @@ const rutaEquipos = EQUIPOS_ROUTE;
 
 export const EditarTipoModal = (props: EditTipoModalProps) => {
   return (
-    <Link key={props.tipoId} href={`${rutaEquipos.href}/usuarios/${props.tipoId}`} passHref prefetch={false}>
+    <Link key={props.tipoId} href={`${rutaEquipos.href}/tipos/${props.tipoId}`} passHref prefetch={false}>
       <EditIcon />
     </Link>
   );

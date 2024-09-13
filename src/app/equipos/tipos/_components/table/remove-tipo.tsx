@@ -40,7 +40,7 @@ export default function RemoverTipoModal({ tipoId, nombre, onSubmit }: RemoveTip
       trigger={
         <Button title="Eliminar tipo" variant="icon" color="danger" className="h-8 w-8 px-2 py-2" icon={TrashIcon} />
       }
-      titulo={`Eliminar usuario ${nombre ?? ""}`}
+      titulo={`Eliminar tipo ${nombre ?? ""}`}
       cancelText="Cancelar"
       submitText="Si, eliminar"
       open={open}
