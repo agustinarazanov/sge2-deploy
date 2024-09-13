@@ -49,11 +49,11 @@ function DetalleUsuario({ usuarioData }: DetalleContenedor) {
               <CardTitle className="mb-1 text-2xl">
                 {nombre} {apellido}
               </CardTitle>
-              <p className="mb-1 text-muted-foreground">{email}</p>
-              <p className="mb-2 text-sm text-muted-foreground">Legajo: {legajo}</p>
+              <p className="mb-1 ">{email}</p>
+              <p className="mb-2 text-sm ">Legajo: {legajo}</p>
               <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
                 {usuarioRol.map((rol) => (
-                  <Badge key={rol.rolId} variant="secondary">
+                  <Badge key={rol.rolId} color="primary">
                     {rol.rol.nombre}
                   </Badge>
                 ))}
