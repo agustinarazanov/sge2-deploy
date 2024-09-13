@@ -42,7 +42,7 @@ export default function DevolverLibroModal({ libroId }: DevolverLibroModalProps)
         <Button
           title="Devolver"
           variant="default"
-          color="outline"
+          color="secondary"
           size="sm"
           className="mt-2 w-full rounded-full border-none"
         >
