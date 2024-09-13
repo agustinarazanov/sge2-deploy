@@ -63,6 +63,18 @@ const changeMateria = (filters: CursosFilters, materia: string): CursosFilters =
   return filtersTyped;
 };
 
+const changeAño = (filters: CursosFilters, año: string): CursosFilters => {
+  const newFilters: CursosFilters = {
+    ...filters,
+    anioDeCarrera: año,
+    pageIndex: "0",
+  };
+
+  const filtersTyped = inputGetCursos.parse(newFilters);
+
+  return filtersTyped;
+};
+
 const getPagination = (filters: CursosFilters): { pageSize: number; pageIndex: number } => {
   const { pageIndex, pageSize } = filters;
 
@@ -71,7 +83,6 @@ const getPagination = (filters: CursosFilters): { pageSize: number; pageIndex: n
 
 const getSorting = (filters: CursosFilters): SortingState => {
   const { orderBy, orderDirection } = filters;
-
   return [{ id: orderBy, desc: orderDirection === "desc" }];
 };
 
@@ -83,6 +94,7 @@ export const useCursosQueryParam = (filters: CursosFilters) => {
   const pagination = getPagination(filters);
   const searchText = filters.searchText;
   const materia = filters.materia;
+  const año = filters.anioDeCarrera;
 
   const changeQueryParams = useCallback(
     (filters: CursosFilters) => {
@@ -127,15 +139,25 @@ export const useCursosQueryParam = (filters: CursosFilters) => {
     [filters, changeQueryParams],
   );
 
+  const onAñoChange = useCallback(
+    (año: string) => {
+      const newFilters = changeAño(filters, año);
+      changeQueryParams({ ...newFilters });
+    },
+    [filters, changeQueryParams],
+  );
+
   return {
     refresh: () => router.refresh(),
     pagination,
     sorting,
     searchText,
     materia,
+    año,
     onSortingChange,
     onPaginationChange,
     onSearchTextChange,
     onMateriaChange,
+    onAñoChange,
   };
 };

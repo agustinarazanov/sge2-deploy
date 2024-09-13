@@ -7,8 +7,14 @@ export const getColumns = () => {
   const colHelper = createColumnHelper<CursosData>();
 
   return [
-    colHelper.accessor("division.nombre", {
-      header: "División",
+    colHelper.accessor("anioDeCarrera", {
+      header: "Año",
+    }),
+    colHelper.accessor("materia.nombre", {
+      header: "Materia",
+    }),
+    colHelper.accessor("sede.nombre", {
+      header: "Sede",
     }),
     colHelper.display({
       header: "Duración",
@@ -32,8 +38,8 @@ export const getColumns = () => {
         return turno ?? "-";
       },
     }),
-    colHelper.accessor("sede.nombre", {
-      header: "Sede",
+    colHelper.accessor("division.nombre", {
+      header: "División",
     }),
     colHelper.display({
       header: "Lunes",
@@ -96,10 +102,12 @@ export const getColumns = () => {
 
 export const getColumnsNames = () => {
   return [
-    "Division",
+    "Año",
+    "Materia",
+    "Sede",
     "Duración",
     "Turno",
-    "Sede",
+    "Division",
     "Lunes",
     "Martes",
     "Miércoles",
@@ -164,7 +172,7 @@ const HoraDia = ({ dia1, dia2, horaInicio1, horaInicio2, duracion1, duracion2, d
         }
 
         return (
-          <div key={hora} className="bg-slate-300 flex h-5 w-5 justify-center rounded-full align-top dark:bg-gray-400">
+          <div key={hora} className="flex h-5 w-5 justify-center rounded-full bg-slate-300 align-top dark:bg-gray-400">
             {hora}
           </div>
         );
