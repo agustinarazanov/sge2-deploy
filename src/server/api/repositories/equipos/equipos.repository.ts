@@ -9,10 +9,10 @@ import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 import { generarEquipoInventarioId, getUltimoEquipoInventarioId } from "./generador-inventario-id";
 import {
-  inputAgregarTipo,
-  inputEditarTipo,
-  inputEliminarTipo,
-  inputGetTipo,
+  type inputAgregarTipo,
+  type inputEditarTipo,
+  type inputEliminarTipo,
+  type inputGetTipo,
   type inputGetTipos,
 } from "@/shared/filters/equipos-tipos-filter.schema";
 
