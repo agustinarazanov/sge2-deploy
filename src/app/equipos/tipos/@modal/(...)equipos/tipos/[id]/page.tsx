@@ -1,7 +1,7 @@
 "use client";
 
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
-import { AdminUsuarioForm } from "@/app/admin/usuarios/[id]/admin-usuario-form";
+import { TipoForm } from "@/app/equipos/tipos/[id]/tipo-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -23,7 +23,6 @@ export default function PageDetails({ params: { id } }: PageProps) {
 
   const handleClickSave = () => {
     router.refresh();
-    // handleOpenChange(false);
   };
 
   const handleClickCancel = () => handleOpenChange(false);
@@ -31,14 +30,14 @@ export default function PageDetails({ params: { id } }: PageProps) {
   return (
     <ModalDrawer
       titulo={"Detalle"}
-      description={"Esta es la página de detalles del usuario."}
+      description={"Esta es la página de detalles del tipo."}
       open={open}
       onOpenChange={handleOpenChange}
       trigger={<></>}
       className={"max-h-[calc(100vh_-_10%)]"}
     >
       <div className="flex max-h-max w-full flex-col  gap-4">
-        <AdminUsuarioForm id={id} onCancel={handleClickCancel} onSubmit={handleClickSave} />
+        <TipoForm id={id} onCancel={handleClickCancel} onSubmit={handleClickSave} />
       </div>
     </ModalDrawer>
   );
