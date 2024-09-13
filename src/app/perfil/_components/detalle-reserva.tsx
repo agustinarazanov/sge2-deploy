@@ -1,8 +1,7 @@
 import { api } from "@/trpc/server";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui";
-import cn from "classnames";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 type ReservaData = {
   idUsuario: string;
@@ -105,40 +104,37 @@ async function DetalleReserva({ idUsuario, titulo, descripcion }: ReservaData) {
   ];
 
   return (
-    <div className="flex w-full flex-col items-center justify-center">
-      <Card className={cn("w-full max-w-4xl text-center hover:border-primary/50")}>
-        <CardHeader>
-          <CardTitle className="py-4">Historial de Reservas</CardTitle>
-        </CardHeader>
-
-        <div className="overflow-x-auto">
-          <table className="min-w-full table-fixed divide-y">
-            <thead>
-              <tr>
-                <th className="w-1/12 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">ID</th>
-                <th className="w-2/12 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Fecha</th>
-                <th className="w-6/12 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Libro</th>
-                <th className="w-3/12 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Estado</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y">
-              {reservas.map((reserva) => (
-                <tr key={reserva.id}>
-                  <td className="px-6 py-4 text-sm font-medium">{reserva.id}</td>
-                  <td className="px-6 py-4 text-sm">{reserva.fechaCreacion.toLocaleDateString("es-ES")}</td>
-                  <td className="px-6 py-4 text-sm">{reserva.libro.titulo}</td>
-                  <td className="px-6 py-4 text-sm">
-                    <Badge color={reserva.reserva.estatus === "PENDIENTE" ? "warning" : "success"}>
-                      {reserva.reserva.estatus}
-                    </Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>{titulo}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">ID</TableHead>
+              <TableHead>Fecha</TableHead>
+              <TableHead>Libro</TableHead>
+              <TableHead className="text-right">Estado</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {reservas.map((reserva) => (
+              <TableRow key={reserva.id}>
+                <TableCell className="font-medium">{reserva.id}</TableCell>
+                <TableCell>{reserva.fechaCreacion.toLocaleDateString("es-ES")}</TableCell>
+                <TableCell>{reserva.libro.titulo}</TableCell>
+                <TableCell className="text-right">
+                  <Badge color={reserva.reserva.estatus === "PENDIENTE" ? "danger" : "success"}>
+                    {reserva.reserva.estatus}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   );
 }
 
