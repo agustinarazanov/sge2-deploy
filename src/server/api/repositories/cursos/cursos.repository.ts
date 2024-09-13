@@ -10,10 +10,30 @@ import { type z } from "zod";
 
 type InputGetAll = z.infer<typeof inputGetCursos>;
 export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, materia } = input;
+  const { pageIndex, pageSize, materia, anioDeCarrera, userId } = input;
 
-  const [count, cursos] = await ctx.db.$transaction([
-    ctx.db.curso.count(),
+  const where = {
+    materiaId: materia ? parseInt(materia) : undefined,
+    anioDeCarrera: anioDeCarrera ? parseInt(anioDeCarrera) : undefined,
+    OR: [
+      {
+        profesores: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+      {
+        ayudantes: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+    ],
+  };
+
+  const [cursos, count] = await ctx.db.$transaction([
     ctx.db.curso.findMany({
       include: {
         materia: true,
@@ -40,17 +60,19 @@ export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll
           },
         },
       },
-      where: {
-        materiaId: materia ? parseInt(materia) : undefined,
-      },
-      orderBy: {
-        division: {
-          nombre: "asc",
-        },
-      },
+      where: where,
+      orderBy: [
+        { anioDeCarrera: "asc" },
+        { materia: { nombre: "asc" } },
+        { sede: { nombre: "desc" } },
+        { ac: "asc" },
+        { turno: "asc" },
+        { division: { nombre: "asc" } },
+      ],
       skip: parseInt(pageIndex) * parseInt(pageSize),
       take: parseInt(pageSize),
     }),
+    ctx.db.curso.count({ where }),
   ]);
 
   return {
