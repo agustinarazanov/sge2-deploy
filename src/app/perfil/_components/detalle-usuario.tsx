@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import cn from "classnames";
 import { Label } from "@/components/ui";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 type UsuarioData = RouterOutputs["admin"]["usuarios"]["getUsuarioPorId"];
 type DetalleContenedor = {
@@ -27,45 +28,78 @@ function DetalleUsuario({ usuarioData }: DetalleContenedor) {
     sexo,
     fechaNacimiento,
     usuarioRol,
+    image,
   } = usuarioData;
 
   return (
-    <div className="flex w-full flex-col items-center justify-center">
-      <Card
-        className={cn("flex flex-col justify-between text-center hover:border-primary/50 hover:bg-[#75757533]/[.2]")}
-      >
-        <CardHeader>
-          <CardTitle className="py-4">
-            {nombre} - {legajo}{" "}
+    <Card className="mx-auto w-full max-w-6xl rounded-lg p-6 shadow-md">
+      <CardHeader className="flex items-start space-x-6">
+        {/* Imagen del usuario */}
+        <div className="w-full">
+          <Image
+            src={image ?? ""}
+            alt="Imagen de tutor"
+            className="rounded-lg"
+            blurDataURL=""
+            sizes="100vw"
+            style={{
+              width: "20%",
+              height: "auto",
+            }}
+            width={500}
+            height={300}
+          />
+        </div>
+        {/* Información del usuario */}
+        <div className="flex flex-col">
+          <CardTitle className="text-2xl font-semibold">
+            {nombre} {apellido}
           </CardTitle>
-        </CardHeader>
-        <CardContent className="grid gap-4">
-          <div className="text-left" />
-          <Label>Nombre: {nombre}</Label>
-          <Label>Apellido: {apellido}</Label>
-          <Label>Legajo: {legajo}</Label>
-          <Label>Correo: {email}</Label>
-          <Label>Telefono Casa: {telefonoCasa}</Label>
-          <Label>Telefono Celular: {telefonoCelular}</Label>
-          <Label>Telefono Laboral: {telefonoLaboral}</Label>
-          <Label>Direccion: {direccion}</Label>
-          <Label>Documento: {documentoNumero}</Label>
-          <Label>Sexo: {sexo}</Label>
-          <Label>Fecha de Nacimiento: {fechaNacimiento?.toLocaleDateString("es-ES")}</Label>
-        </CardContent>
+          <p className="text-sm">Legajo: {legajo}</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {usuarioRol.map((rol) => (
+              <Badge key={rol.rolId}>{rol.rol.nombre}</Badge>
+            ))}
+          </div>
+        </div>
+      </CardHeader>
 
-        <CardFooter className="flex flex-col gap-4">
-          {/* map all roles un usuario rol */}
-          {usuarioRol.map((rol) => {
-            return (
-              <Badge key={rol.rolId} color="aqua">
-                {rol.rol.nombre}
-              </Badge>
-            );
-          })}
-        </CardFooter>
-      </Card>
-    </div>
+      {/* Información adicional del usuario */}
+      <CardContent className="mt-6 space-y-4 border-t pt-4">
+        <div className="space-y-2">
+          <Label className="font-semibold ">Correo</Label>
+          <p>{email}</p>
+        </div>
+        <div className="space-y-2 border-t pt-4">
+          <Label className="font-semibold ">Teléfono (Casa)</Label>
+          <p>{telefonoCasa}</p>
+        </div>
+        <div className="space-y-2 border-t pt-4">
+          <Label className="font-semibold ">Teléfono (Celular)</Label>
+          <p>{telefonoCelular}</p>
+        </div>
+        <div className="space-y-2 border-t pt-4">
+          <Label className="font-semibold ">Teléfono (Laboral)</Label>
+          <p>{telefonoLaboral}</p>
+        </div>
+        <div className="space-y-2 border-t pt-4">
+          <Label className="font-semibold ">Dirección</Label>
+          <p>{direccion}</p>
+        </div>
+        <div className="space-y-2 border-t pt-4">
+          <Label className="font-semibold ">Documento</Label>
+          <p>{documentoNumero}</p>
+        </div>
+        <div className="space-y-2 border-t pt-4">
+          <Label className="font-semibold ">Sexo</Label>
+          <p>{sexo}</p>
+        </div>
+        <div className="space-y-2 border-t pt-4">
+          <Label className="font-semibold ">Fecha de Nacimiento</Label>
+          <p>{fechaNacimiento?.toLocaleDateString("es-ES")}</p>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
