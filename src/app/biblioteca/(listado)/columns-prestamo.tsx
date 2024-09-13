@@ -2,7 +2,6 @@ import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { DatoUsuarioReserva } from "@/app/_components/datos-usuario";
 import { getDateISOString } from "@/shared/get-date";
-import { Button } from "@/components/ui";
 import DevolverLibroModal from "../_components/modal-devolver";
 import RenovarPrestamoLibroModal from "../_components/modal-renovar";
 
