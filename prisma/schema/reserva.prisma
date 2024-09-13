@@ -4,7 +4,6 @@ model Reserva {
     estatus         ReservaEstatus
     fechaHoraInicio DateTime
     fechaHoraFin    DateTime
-    codigo          String         @unique // TODO: QUE ES?
     tipo            ReservaTipo
 
     usuarioCreadorId String
@@ -13,8 +12,8 @@ model Reserva {
     usuarioModificadorId String
     usuarioModificador   User   @relation(fields: [usuarioModificadorId], references: [id], name: "reservasModificadas")
 
-    usuarioTutorId String
-    usuarioTutor   User   @relation(fields: [usuarioTutorId], references: [id], name: "reservaTutor")
+    usuarioTutorId String?
+    usuarioTutor   User?   @relation(fields: [usuarioTutorId], references: [id], name: "reservaTutor")
 
     reservaEquipo             ReservaEquipo?
     reservaLibro              ReservaLibro?
