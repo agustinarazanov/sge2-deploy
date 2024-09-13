@@ -6,23 +6,39 @@ model Reserva {
     fechaHoraFin    DateTime
     tipo            ReservaTipo
 
-    usuarioCreadorId String
-    usuarioCreador   User   @relation(fields: [usuarioCreadorId], references: [id], name: "reservasCreadas")
+    usuarioSolicitoId String
+    usuarioSolicito   User   @relation(fields: [usuarioSolicitoId], references: [id], name: "reservasSolicitadas")
 
-    usuarioModificadorId String
-    usuarioModificador   User   @relation(fields: [usuarioModificadorId], references: [id], name: "reservasModificadas")
+    usuarioAprobadorId String
+    usuarioAprobador   User   @relation(fields: [usuarioAprobadorId], references: [id], name: "reservasAprobadas")
+
+    usuarioRechazadoId String?
+    usuarioRechazado   User?   @relation(fields: [usuarioRechazadoId], references: [id], name: "reservasRechazadas")
+
+    usuarioRenovoId String?
+    usuarioRenovo   User?   @relation(fields: [usuarioRenovoId], references: [id], name: "reservasRenovadas")
 
     usuarioTutorId String?
     usuarioTutor   User?   @relation(fields: [usuarioTutorId], references: [id], name: "reservaTutor")
+
+    usuarioRecibioId String?
+    usuarioRecibio   User?   @relation(fields: [usuarioRecibioId], references: [id], name: "reservasRecibidas")
 
     reservaEquipo             ReservaEquipo?
     reservaLibro              ReservaLibro?
     reservaLaboratorioCerrado ReservaLaboratorioCerrado?
     reservaLaboratorioAbierto ReservaLaboratorioAbierto?
 
-    fechaCreacion     DateTime  @default(now())
-    fechaModificacion DateTime  @updatedAt
-    fechaAprobacion   DateTime?
+    fechaRenovacion DateTime?
+    fechaAprobacion DateTime?
+    fechaRechazo    DateTime?
+    fechaRecibido   DateTime?
+
+    // Auditorias
+    usuarioCreadorId     String
+    usuarioModificadorId String
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @updatedAt
 
     @@index([estatus])
     @@index([fechaHoraInicio(sort: Asc)])

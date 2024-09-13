@@ -7,6 +7,7 @@ import { type z } from "zod";
 import { useEffect } from "react";
 import { inputPrestarLibro } from "@/shared/filters/reservas-filter.schema";
 import { useRouter } from "next/navigation";
+import { getDate } from "@/shared/get-date";
 
 type Props = {
   libroId: number;
@@ -31,8 +32,8 @@ export const LibroFormPrestar = ({ libroId, onSubmit, onCancel }: Props) => {
       id: "",
       label: "",
     },
-    fechaInicio: "",
-    fechaFin: "",
+    fechaInicio: getDate(),
+    fechaFin: getDate(7),
   };
 
   const formHook = useForm<FormPrestarLibroType>({
@@ -41,11 +42,12 @@ export const LibroFormPrestar = ({ libroId, onSubmit, onCancel }: Props) => {
     resolver: zodResolver(inputPrestarLibro),
   });
 
-  const { handleSubmit, control, watch } = formHook;
+  const { handleSubmit, control, watch, trigger } = formHook;
 
   const onFormSubmit = (formData: FormPrestarLibroType) => {
     prestarLibro.mutate(formData, {
       onSuccess: () => {
+        toast.success("Libro prestado con éxito.");
         router.refresh();
         onSubmit();
       },
@@ -60,9 +62,12 @@ export const LibroFormPrestar = ({ libroId, onSubmit, onCancel }: Props) => {
     onCancel();
   };
 
-  const [usuarioSolicitante] = watch(["usuarioSolicitante"]);
+  const [usuarioSolicitante, fechaFin] = watch(["usuarioSolicitante", "fechaFin"]);
 
   useEffect(() => formHook.setValue("usuarioSolicitanteId", usuarioSolicitante?.id), [formHook, usuarioSolicitante]);
+  useEffect(() => {
+    void trigger("fechaInicio");
+  }, [formHook, fechaFin, trigger]);
 
   return (
     <FormProvider {...formHook}>
