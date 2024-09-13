@@ -7,17 +7,12 @@ import {
 } from "@/shared/filters/equipos-tipos-filter.schema";
 import {
   agregarEquipo,
-  agregarTipo,
   editarEquipo,
-  editarTipo,
   eliminarEquipo,
-  eliminarTipo,
   getAllEquipos,
   getAllEstados,
   getAllMarcas,
-  getAllTipos,
   getEquipoPorId,
-  getTipoPorId,
 } from "../../repositories/equipos/equipos.repository";
 import { protectedProcedure } from "../../trpc";
 import { validarInput } from "../helper";
@@ -28,6 +23,13 @@ import {
   inputGetEquipo,
   inputGetEquipos,
 } from "@/shared/filters/equipos-filter.schema";
+import {
+  agregarTipo,
+  editarTipo,
+  eliminarTipo,
+  getAllTipos,
+  getTipoPorId,
+} from "../../repositories/equipos/equipos-tipos.repository";
 
 export const getTodosLosEquiposProcedure = protectedProcedure.input(inputGetEquipos).query(async ({ ctx, input }) => {
   validarInput(inputGetEquipos, input);
