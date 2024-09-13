@@ -84,7 +84,7 @@ export const eliminarTipoProcedure = protectedProcedure.input(inputEliminarTipo)
 });
 
 export const getTodosLosTiposProcedure = protectedProcedure.input(inputGetTipos).query(async ({ ctx, input }) => {
-  validarInput(inputGetEquipos, input);
+  validarInput(inputGetTipos, input);
 
   const tipos = await getAllTipos(ctx, input);
 
