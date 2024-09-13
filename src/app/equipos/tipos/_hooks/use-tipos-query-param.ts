@@ -51,10 +51,10 @@ const changeSearchText = (filters: TiposFilters, searchText: string): TiposFilte
   return filtersTyped;
 };
 
-const changeTipo = (filters: TiposFilters, tipo: string): TiposFilters => {
+const changeTipo = (filters: TiposFilters, tipoId: string): TiposFilters => {
   const newFilters: TiposFilters = {
     ...filters,
-    tipo,
+    tipoId,
   };
 
   const filtersTyped = inputGetTipos.parse(newFilters);
@@ -81,7 +81,7 @@ export const useTiposQueryParam = (filters: TiposFilters) => {
   const sorting = getSorting(filters);
   const pagination = getPagination(filters);
   const searchText = filters.searchText;
-  const tipo = filters.tipo;
+  const tipo = filters.tipoId;
 
   const changeQueryParams = useCallback(
     (filters: TiposFilters) => {

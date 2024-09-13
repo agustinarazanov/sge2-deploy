@@ -39,7 +39,7 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
     resolver: zodResolver(inputEditarTipo),
   });
 
-  const { handleSubmit, control, watch } = formHook;
+  const { handleSubmit, control } = formHook;
 
   useEffect(() => formHook.reset(tipoBase), [formHook, tipoBase]);
 
