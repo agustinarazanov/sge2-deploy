@@ -17,9 +17,7 @@ type Props = {
 
 export const CursosFilterMateria = ({ filters }: Props) => {
   const { materia, onMateriaChange } = useCursosQueryParam(filters);
-
   const [query, setQuery] = useState("");
-
   const { data, isLoading, isError } = api.materia.getAll.useQuery();
 
   const materias = useMemo(() => {
@@ -84,7 +82,7 @@ export const CursosFilterMateria = ({ filters }: Props) => {
         className={""}
         onQueryChange={setQuery}
         isLoading={isLoading}
-        placeholder="Buscar por nombre de materia"
+        placeholder="Materia"
         clearable
         debounceTime={0}
         value={currentMateria}
