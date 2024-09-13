@@ -25,7 +25,7 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
     isError,
   } = api.cursos.cursoPorId.useQuery({ id: Number(cursoId) }, { enabled: !!cursoId });
 
-  const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery();
+  const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery({ tipoId: undefined });
 
   // const editarCurso = api.cursos.editarCurso.useMutation();
 
@@ -230,7 +230,8 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
                         <Input
                           readOnly
                           value={
-                            todosLosEquiposTipo?.find((equipo) => String(equipo.id) === equipoTipo.idTipo)?.nombre ?? ""
+                            todosLosEquiposTipo?.tipos?.find((equipo) => String(equipo.id) === equipoTipo.idTipo)
+                              ?.nombre ?? ""
                           }
                           className="mt-2 grow basis-2/3"
                         />
