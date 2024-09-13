@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import PrestarLibroModal from "../_components/modal-prestar";
+import DevolverLibroModal from "../_components/modal-devolver";
 
 type RemoveLibroModalProps = {
   id: number;
@@ -19,8 +20,11 @@ export default function EstadoLibro({ disponible, id }: RemoveLibroModalProps) {
   }
 
   return (
-    <Badge variant={"default"} color={"danger"}>
-      Prestado
-    </Badge>
+    <div className="flex flex-col">
+      <Badge variant={"default"} color={"danger"} className="w-full text-center">
+        <div className="w-full">Prestado</div>
+      </Badge>
+      <DevolverLibroModal libroId={id} />
+    </div>
   );
 }

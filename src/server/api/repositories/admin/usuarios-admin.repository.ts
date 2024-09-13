@@ -7,7 +7,6 @@ import {
 import { type Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 
-// TODO: Implementar filtro de rol para usuarios
 type InputGetAll = z.infer<typeof inputGetUsuarios>;
 export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
   const { pageIndex, pageSize, searchText, orderDirection } = input ?? {};
@@ -43,6 +42,15 @@ export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetA
           ],
         }
       : {}),
+    ...(input?.rol
+        ? {
+          usuarioRol: {
+            some: {
+              rolId: parseInt(input?.rol),
+            },
+          },
+        }
+        : {}),
   };
 
   const [count, usuarios] = await ctx.db.$transaction([
