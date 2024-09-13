@@ -51,8 +51,8 @@ model LibroMateria {
     libroId   Int
     materiaId Int
 
-    libro   Libro   @relation(fields: [libroId], references: [id])
-    materia Materia @relation(fields: [materiaId], references: [id])
+    libro   Libro   @relation(fields: [libroId], references: [id], onDelete: Cascade)
+    materia Materia @relation(fields: [materiaId], references: [id], onDelete: Cascade)
 
     fechaCreacion    DateTime @default(now())
     usuarioCreadorId String
