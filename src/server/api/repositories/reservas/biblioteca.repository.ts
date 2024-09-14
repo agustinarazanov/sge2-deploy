@@ -11,7 +11,7 @@ import { informacionUsuario } from "../usuario-helper";
 
 type InputGetAll = z.infer<typeof inputGetAllPrestamosLibros>;
 export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText, orderDirection, orderBy } = input;
+  const { pageIndex, pageSize, searchText, orderDirection, orderBy, estatus } = input;
 
   const filtrosWhereReservaLibro: Prisma.ReservaLibroWhereInput = {
     ...(searchText
@@ -44,6 +44,13 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
           ],
         }
       : {}),
+    ...(estatus
+      ? {
+          reserva: {
+            estatus: estatus,
+          },
+        }
+      : {}),
   };
 
   const [count, reservas] = await ctx.db.$transaction([
@@ -71,9 +78,17 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
         libro: true,
       },
       where: filtrosWhereReservaLibro,
-      orderBy: {
-        [orderBy]: orderDirection,
-      },
+      orderBy: [
+        {
+          reserva: {
+            // Prisma ORM no soporta orderBy con CASE, por lo tanto ordenamos primero por estatus y justo pendiente queda primero
+            estatus: "asc",
+          },
+        },
+        {
+          [orderBy]: orderDirection,
+        },
+      ],
       skip: parseInt(pageIndex) * parseInt(pageSize),
       take: parseInt(pageSize),
     }),
