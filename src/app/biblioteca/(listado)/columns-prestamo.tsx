@@ -72,10 +72,10 @@ export const getColumnasPrestamo = () => {
         const fechaRenovacion = reserva.fechaRenovacion ? getDateISOString(reserva.fechaRenovacion) : "";
 
         return (
-          <>
+          <div className="flex flex-col space-y-2 text-center">
             <DatoUsuarioReserva usuario={usuarioRenovo} />
             <div>{fechaRenovacion}</div>
-          </>
+          </div>
         );
       },
     }),
@@ -110,10 +110,10 @@ export const getColumnasPrestamo = () => {
           const fechaRecibido = reserva.fechaRecibido ? getDateISOString(reserva.fechaRecibido) : "";
 
           return (
-            <>
+            <div className="flex flex-col space-y-2 text-center">
               <DatoUsuarioReserva usuario={usuarioRecibio} />
               <div>{fechaRecibido}</div>
-            </>
+            </div>
           );
         }
 
