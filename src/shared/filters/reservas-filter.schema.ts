@@ -18,6 +18,7 @@ export const inputGetAllPrestamosLibros = z.object({
   orderBy: z.enum(["id", "inventarioId"]).default("id").catch("id"),
   orderDirection: z.enum(["asc", "desc"]).default("desc").catch("desc"),
   searchText: z.string().default(""),
+  estatus: z.enum(["PENDIENTE", "FINALIZADA", "CANCELADA", ""]).default("").catch(""),
 });
 
 export const inputPrestarLibro = z

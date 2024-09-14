@@ -1,49 +1,55 @@
 "use client";
 
-import { Button, Input } from "@/components/ui";
-import { SearchIcon } from "lucide-react";
 import { type z } from "zod";
 import { useState } from "react";
 import { type inputGetAllPrestamosLibros } from "@/shared/filters/reservas-filter.schema";
 import { useBibliotecaPrestamosQueryParam } from "../../_hooks/use-biblioteca-prestamo-query-param";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { type RouterOutputs } from "@/trpc/react";
+import { cn } from "@/components/utils";
 
 type BibliotecaPrestamoFilters = z.infer<typeof inputGetAllPrestamosLibros>;
+type EstadoReservaType =
+  RouterOutputs["reservas"]["reservaBiblioteca"]["getAll"]["reservas"][number]["reserva"]["estatus"];
 
 type Props = {
   filters: BibliotecaPrestamoFilters;
 };
 
 export const BibliotecaPrestamoEstadoFilter = ({ filters }: Props) => {
-  const { searchText, onSearchTextChange } = useBibliotecaPrestamosQueryParam(filters);
+  const { reservaEstatus, onReservaEstatusChange } = useBibliotecaPrestamosQueryParam(filters);
 
-  const [currentSearchText, setCurrentSearchText] = useState(searchText);
+  const [currentEstatus, setCurrentEstatus] = useState<EstadoReservaType | "">(reservaEstatus);
 
-  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-
-    setCurrentSearchText(e.target.value);
-  };
-
-  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Escape") {
-      onSearchTextChange("");
-    }
-
-    if (e.key === "Enter") {
-      onSearchTextChange(currentSearchText);
-    }
+  const handleTextChange = (nuevoEstatus: EstadoReservaType | "") => {
+    onReservaEstatusChange(nuevoEstatus);
+    setCurrentEstatus(nuevoEstatus);
   };
 
   return (
     <ToggleGroup type="single" className="flex flex-row">
-      <ToggleGroupItem value="bold" aria-label="Toggle bold" className="basis-1/3 hover:bg-gray-500">
+      <ToggleGroupItem
+        value={"PENDIENTE" as EstadoReservaType}
+        aria-label="Cambiar a pendientes"
+        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstatus === "PENDIENTE" })}
+        onClick={() => handleTextChange("PENDIENTE")}
+      >
         Pendientes
       </ToggleGroupItem>
-      <ToggleGroupItem value="italic" aria-label="Toggle italic" className="basis-1/3 hover:bg-gray-500">
+      <ToggleGroupItem
+        value={"FINALIZADA" as EstadoReservaType}
+        aria-label="Cambiar a finalizadas"
+        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstatus === "FINALIZADA" })}
+        onClick={() => handleTextChange("FINALIZADA")}
+      >
         Finalizados
       </ToggleGroupItem>
-      <ToggleGroupItem value="underline" aria-label="Toggle underline" className="basis-1/3 hover:bg-gray-500">
+      <ToggleGroupItem
+        value={"" as EstadoReservaType}
+        aria-label="Cambiar a ambos"
+        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstatus === "" })}
+        onClick={() => handleTextChange("")}
+      >
         Ambos
       </ToggleGroupItem>
     </ToggleGroup>
