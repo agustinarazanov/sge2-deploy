@@ -41,3 +41,7 @@ export const inputPrestarLibro = z
       return z.NEVER;
     }
   });
+
+export const inputGetReservaPorUsuarioId = z.object({
+  id: z.string().min(1),
+});
