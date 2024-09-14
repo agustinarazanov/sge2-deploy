@@ -19,30 +19,24 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
           OR: [
             {
               reserva: {
-                usuarioSolicito: {
-                  nombre: {
-                    contains: searchText ?? undefined,
-                    mode: "insensitive",
+                reservaLibro: {
+                  libro: {
+                    titulo: {
+                      contains: searchText ?? undefined,
+                      mode: "insensitive",
+                    },
                   },
                 },
               },
             },
             {
               reserva: {
-                usuarioAprobador: {
-                  nombre: {
-                    contains: searchText ?? undefined,
-                    mode: "insensitive",
-                  },
-                },
-              },
-            },
-            {
-              reserva: {
-                usuarioRenovo: {
-                  nombre: {
-                    contains: searchText ?? undefined,
-                    mode: "insensitive",
+                reservaLibro: {
+                  libro: {
+                    inventarioId: {
+                      contains: searchText ?? undefined,
+                      mode: "insensitive",
+                    },
                   },
                 },
               },
