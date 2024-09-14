@@ -112,7 +112,7 @@ export const CURSOS_ROUTE: AppRoute = {
   ],
 };
 
-export const ADMIN_ROUTE: AppRoute = {
+export const ADMIN_ROUTE = {
   href: "/admin",
   label: "Administración",
   isPublic: false,
