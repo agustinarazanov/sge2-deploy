@@ -63,6 +63,9 @@ export const DatoUsuarioReserva = ({ usuario }: { usuario: UsuarioReserva | null
               <div className="ml-2">
                 <code>{name}</code>
               </div>
+              <div className="ml-2">
+                <code>{legajo}</code>
+              </div>
             </div>
             <div>
               <Link href={`${rutaUsuario}/${usuario.id}`} passHref>

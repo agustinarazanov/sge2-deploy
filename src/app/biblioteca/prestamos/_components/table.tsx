@@ -42,7 +42,7 @@ export const BibliotecaPrestamosTable = ({ data, filters }: BibliotecaTableProps
           cell() {
             return (
               <>
-                <Button title="Ver" variant="icon" color="ghost" icon={PrinterIcon} />
+                <Button title="Ver" variant="icon" color="ghost" icon={PrinterIcon} onClick={() => window.print()} />
                 {/* <VerLibroModal libroId={original.id} />
                 <EditLibroModal libroId={original.id} /> */}
               </>
