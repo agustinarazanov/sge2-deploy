@@ -11,9 +11,10 @@ export const inputAgregarEquipo = z.object({
   marcaId: z.number().min(1, { message: "Requerido" }),
   sedeId: z.number().min(1, { message: "Requerido" }),
   laboratorioId: z.number().min(1, { message: "Requerido" }),
-  armarioId: z.number().min(1, { message: "Requerido" }),
-  estanteId: z.number().min(1, { message: "Requerido" }),
+  armarioId: z.number().positive().nullish(),
+  estanteId: z.number().positive().nullish(),
   estadoId: z.number().min(1, { message: "Requerido" }),
+  inventarioId: z.string().min(1, { message: "Requerido" }),
 });
 
 export const inputGetEquipos = z.object({

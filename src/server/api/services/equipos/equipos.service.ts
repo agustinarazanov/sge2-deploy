@@ -1,9 +1,17 @@
 import {
+  inputAgregarTipo,
+  inputEditarTipo,
+  inputEliminarTipo,
+  inputGetTipo,
+  inputGetTipos,
+} from "@/shared/filters/equipos-tipos-filter.schema";
+import {
   agregarEquipo,
   editarEquipo,
   eliminarEquipo,
   getAllEquipos,
-  getAllTipos,
+  getAllEstados,
+  getAllMarcas,
   getEquipoPorId,
 } from "../../repositories/equipos/equipos.repository";
 import { protectedProcedure } from "../../trpc";
@@ -15,6 +23,13 @@ import {
   inputGetEquipo,
   inputGetEquipos,
 } from "@/shared/filters/equipos-filter.schema";
+import {
+  agregarTipo,
+  editarTipo,
+  eliminarTipo,
+  getAllTipos,
+  getTipoPorId,
+} from "../../repositories/equipos/equipos-tipos.repository";
 
 export const getTodosLosEquiposProcedure = protectedProcedure.input(inputGetEquipos).query(async ({ ctx, input }) => {
   validarInput(inputGetEquipos, input);
@@ -62,8 +77,58 @@ export const eliminarEquipoProcedure = protectedProcedure
     return libro;
   });
 
-export const getTodosLosTiposProcedure = protectedProcedure.query(async ({ ctx }) => {
-  const tipos = await getAllTipos(ctx);
+export const eliminarTipoProcedure = protectedProcedure.input(inputEliminarTipo).mutation(async ({ ctx, input }) => {
+  validarInput(inputEliminarEquipo, input);
+
+  const tipo = await eliminarTipo(ctx, input);
+
+  return tipo;
+});
+
+export const getTodosLosTiposProcedure = protectedProcedure.input(inputGetTipos).query(async ({ ctx, input }) => {
+  validarInput(inputGetTipos, input);
+
+  const tipos = await getAllTipos(ctx, input);
 
   return tipos;
+});
+
+export const tipoPorIdProcedure = protectedProcedure.input(inputGetTipo).query(async ({ ctx, input }) => {
+  validarInput(inputGetTipo, input);
+
+  const tipo = await getTipoPorId(ctx, input);
+
+  return tipo;
+});
+
+export const editarTipoProcedure = protectedProcedure.input(inputEditarTipo).mutation(async ({ ctx, input }) => {
+  validarInput(inputEditarTipo, input);
+
+  const userId = ctx.session.user.id;
+
+  const tipo = await editarTipo(ctx, input, userId);
+
+  return tipo;
+});
+
+export const nuevoTipoProcedure = protectedProcedure.input(inputAgregarTipo).mutation(async ({ ctx, input }) => {
+  validarInput(inputAgregarTipo, input);
+
+  const userId = ctx.session.user.id;
+
+  const libro = await agregarTipo(ctx, input, userId);
+
+  return libro;
+});
+
+export const getTodasLasMarcasProcedure = protectedProcedure.query(async ({ ctx }) => {
+  const marcas = await getAllMarcas(ctx);
+
+  return marcas;
+});
+
+export const getTodosLosEstadosProcedure = protectedProcedure.query(async ({ ctx }) => {
+  const marcas = await getAllEstados(ctx);
+
+  return marcas;
 });
