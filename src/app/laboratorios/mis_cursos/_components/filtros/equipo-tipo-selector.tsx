@@ -10,14 +10,14 @@ type Props = {
 };
 
 export const EquipoTipoSelector = ({ onEquipoTipoChange, label }: Props) => {
-  const { data, isLoading, isError } = api.equipos.getAllTipos.useQuery();
+  const { data, isLoading, isError } = api.equipos.getAllTipos.useQuery({ tipoId: undefined });
 
   const [query, setQuery] = useState("");
 
   const equiposTipo = useMemo(() => {
     if (!data) return [];
 
-    return data
+    return data.tipos
       .map((item) => {
         const { id, nombre } = item;
         return {

@@ -78,17 +78,17 @@ export const EQUIPOS_ROUTE: AppRoute = {
   subRutas: [
     {
       href: "/equipos",
-      label: "Listado",
-      isPublic: false,
-    },
-    {
-      href: "/equipos/prestamos",
-      label: "Prestamos",
+      label: "Equipos",
       isPublic: false,
     },
     {
       href: "/equipos/tipos",
       label: "Tipos",
+      isPublic: false,
+    },
+    {
+      href: "/equipos/prestamos",
+      label: "Prestamos",
       isPublic: false,
     },
   ],

@@ -165,8 +165,8 @@ export const editarEquipo = async (ctx: { db: PrismaClient }, input: InputEditar
   }
 };
 
-export const getAllTipos = async (ctx: { db: PrismaClient }) => {
-  const tipos = await ctx.db.equipoTipo.findMany({
+export const getAllMarcas = async (ctx: { db: PrismaClient }) => {
+  const marcas = await ctx.db.equipoMarca.findMany({
     orderBy: {
       nombre: "asc",
     },
@@ -176,5 +176,19 @@ export const getAllTipos = async (ctx: { db: PrismaClient }) => {
     },
   });
 
-  return tipos;
+  return marcas;
+};
+
+export const getAllEstados = async (ctx: { db: PrismaClient }) => {
+  const estados = await ctx.db.equipoEstado.findMany({
+    orderBy: {
+      nombre: "asc",
+    },
+    select: {
+      id: true,
+      nombre: true,
+    },
+  });
+
+  return estados;
 };
