@@ -271,7 +271,6 @@ export const devolverLibro = async (ctx: { db: PrismaClient }, input: InputGetRe
         },
         data: {
           usuarioRecibioId: userId,
-          usuarioRenovoId: null,
           estatus: "FINALIZADA",
 
           fechaRecibido: new Date(),
