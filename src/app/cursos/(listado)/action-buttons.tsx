@@ -6,6 +6,7 @@ import { CursosNuevoCurso } from "./cursos-new-curso";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CURSOS_ROUTE } from "@/shared/server-routes";
+import { CursosFilterAño } from "./filtros/curso-filter-anio";
 
 type CursosFilters = z.infer<typeof inputGetCursos>;
 
@@ -28,11 +29,14 @@ export const ActionButtons = ({ filters }: ActionButtonsProps) => {
         </Button>
       </div>
       <div className="w-full space-y-3 sm:flex sm:basis-1/2 sm:flex-row sm:space-x-3 sm:space-y-0">
-        <div className="md:basis-1/2">
+        <div className="md:basis-1/3">
           <CursosFilterText filters={filters} />
         </div>
-        <div className="md:basis-1/2">
+        <div className="md:basis-1/3">
           <CursosFilterMateria filters={filters} />
+        </div>
+        <div className="md:basis-1/3">
+          <CursosFilterAño filters={filters} />
         </div>
       </div>
     </div>

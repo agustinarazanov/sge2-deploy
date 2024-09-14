@@ -7,7 +7,7 @@ import { Button } from "@/components/ui";
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
 import { LibroInformacionBasica } from "../libros/_components/info-basica-libro";
 import { Separator } from "@radix-ui/react-separator";
-import { LibroFormPrestar } from "./form-prestar";
+import { LibroFormPrestarORenovar } from "./form-prestar";
 
 type PrestarLibroModalProps = {
   libroId: number;
@@ -26,7 +26,7 @@ export default function PrestarLibroModal({ libroId }: PrestarLibroModalProps) {
         <Button
           title="Prestar"
           variant="default"
-          color="outline"
+          color="secondary"
           size="sm"
           className="mt-2 w-full rounded-full border-none"
         >
@@ -42,7 +42,7 @@ export default function PrestarLibroModal({ libroId }: PrestarLibroModalProps) {
 
         <Separator className="my-8 border-2" />
 
-        <LibroFormPrestar libroId={libroId} onCancel={handleCancel} onSubmit={handleSubmit} />
+        <LibroFormPrestarORenovar libroId={libroId} onCancel={handleCancel} onSubmit={handleSubmit} />
       </div>
     </ModalDrawer>
   );

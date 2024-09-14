@@ -13,6 +13,7 @@ type Props = {
   libroId: number;
   onSubmit: () => void;
   onCancel: () => void;
+  renovar?: boolean;
 };
 
 type FormHelperType = {
@@ -21,8 +22,10 @@ type FormHelperType = {
 
 type FormPrestarLibroType = z.infer<typeof inputPrestarLibro> & FormHelperType;
 
-export const LibroFormPrestar = ({ libroId, onSubmit, onCancel }: Props) => {
-  const prestarLibro = api.reservas.reservaBiblioteca.crearReserva.useMutation();
+export const LibroFormPrestarORenovar = ({ libroId, onSubmit, onCancel, renovar }: Props) => {
+  const prestarLibro = api.reservas.reservaBiblioteca.crearReserva.useMutation(); // Se usa por efecto si `renovar=false`
+  const renovarLibro = api.reservas.reservaBiblioteca.renovarLibro.useMutation(); // Se usa por efecto si `renovar=true`
+
   const router = useRouter();
 
   const prestamoBase: FormPrestarLibroType = {
@@ -39,12 +42,40 @@ export const LibroFormPrestar = ({ libroId, onSubmit, onCancel }: Props) => {
   const formHook = useForm<FormPrestarLibroType>({
     mode: "onChange",
     defaultValues: prestamoBase,
-    resolver: zodResolver(inputPrestarLibro),
+    resolver: zodResolver(
+      inputPrestarLibro.refine(({ usuarioSolicitanteId }) => renovar ?? !!usuarioSolicitanteId, {
+        message: "Requerido",
+        path: ["usuarioSolicitanteId"],
+      }),
+    ),
   });
+
+  console.log({ errors: formHook.formState.errors, renovar });
 
   const { handleSubmit, control, watch, trigger } = formHook;
 
-  const onFormSubmit = (formData: FormPrestarLibroType) => {
+  const onFormSubmit = async (formData: FormPrestarLibroType) => {
+    if (renovar) {
+      await handleRenovarLibro(formData);
+    } else {
+      await handlePrestarLibro(formData);
+    }
+  };
+
+  const handleRenovarLibro = async (formData: FormPrestarLibroType) => {
+    renovarLibro.mutate(formData, {
+      onSuccess: () => {
+        toast.success("Libro renovado con éxito.");
+        router.refresh();
+        onSubmit();
+      },
+      onError: (error) => {
+        toast.error(error?.message ?? "Error al renovar el libro");
+      },
+    });
+  };
+
+  const handlePrestarLibro = async (formData: FormPrestarLibroType) => {
     prestarLibro.mutate(formData, {
       onSuccess: () => {
         toast.success("Libro prestado con éxito.");
@@ -97,26 +128,28 @@ export const LibroFormPrestar = ({ libroId, onSubmit, onCancel }: Props) => {
               </div>
             </div>
 
-            <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
-              <div className="mt-4 w-full">
-                <SelectUsuarioForm
-                  name="usuarioSolicitante"
-                  realNameId="usuarioSolicitanteId"
-                  control={control}
-                  className="mt-2"
-                  label={"Usuario solicitante"}
-                  placeholder={"Selecciona un usuario"}
-                />
+            {!renovar && (
+              <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+                <div className="mt-4 w-full">
+                  <SelectUsuarioForm
+                    name="usuarioSolicitante"
+                    realNameId="usuarioSolicitanteId"
+                    control={control}
+                    className="mt-2"
+                    label={"Usuario solicitante"}
+                    placeholder={"Selecciona un usuario"}
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <div className="flex w-full flex-row items-end justify-end space-x-4">
           <Button title="Cancelar" type="button" variant="default" color="secondary" onClick={handleCancel}>
             Cancelar
           </Button>
-          <Button title="Prestar" type="submit" variant="default" color="primary">
-            Prestar
+          <Button title={renovar ? "Renovar" : "Prestar"} type="submit" variant="default" color="primary">
+            {renovar ? "Renovar" : "Prestar"}
           </Button>
         </div>
       </form>

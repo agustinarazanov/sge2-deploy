@@ -37,7 +37,7 @@ export const CursosFilterText = ({ filters }: Props) => {
   return (
     <form onSubmit={(e) => e.preventDefault()} className="w-full">
       <Input
-        placeholder={"Buscar por division, profesor o ayudante"}
+        placeholder={"División, profesor o ayudante"}
         name="searchText"
         unit={<SearchIcon className="relative top-0.5 h-4 w-4 text-sub" />}
         type={"search"}
