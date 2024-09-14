@@ -1,9 +1,7 @@
 import { type RouterOutputs } from "@/trpc/react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import cn from "classnames";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui";
 import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CalendarIcon, IndentIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 
