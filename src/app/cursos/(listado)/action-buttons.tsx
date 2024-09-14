@@ -6,7 +6,7 @@ import { CursosNuevoCurso } from "./cursos-new-curso";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CURSOS_ROUTE } from "@/shared/server-routes";
-import { CursosFilterAño } from "./filtros/curso-filter-año";
+import { CursosFilterAño } from "./filtros/curso-filter-anio";
 
 type CursosFilters = z.infer<typeof inputGetCursos>;
 
