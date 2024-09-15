@@ -26,6 +26,14 @@ export const ActionButtonsPrestamos = ({ filters }: ActionButtonsProps) => {
         </Button>
         <Button color={"ghost"}>
           <Link
+            href={rutaBiblioteca?.subRutas && rutaBiblioteca.subRutas[1] ? rutaBiblioteca.subRutas[1].href : ""}
+            passHref
+          >
+            Ir a prestamos préstamos
+          </Link>
+        </Button>
+        <Button color={"ghost"}>
+          <Link
             href={rutaBiblioteca?.subRutas && rutaBiblioteca.subRutas[2] ? rutaBiblioteca.subRutas[2].href : ""}
             passHref
           >

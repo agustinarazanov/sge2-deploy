@@ -6,7 +6,7 @@ import {
   type inputEliminarRol,
   type inputGetRoles,
 } from "@/shared/filters/admin-roles-filter.schema";
-import { Prisma, type PrismaClient } from "@prisma/client";
+import { type Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 
 type InputGetById = z.infer<typeof inputGetRol>;
@@ -48,7 +48,7 @@ export const getRolById = async (ctx: { db: PrismaClient }, input: InputGetById)
 
 type InputGetAll = z.infer<typeof inputGetRoles>;
 export const getAllRoles = async (ctx: { db: PrismaClient }, input?: InputGetAll) => {
-  const { pageIndex, pageSize, searchText, orderDirection, orderBy } = input ?? {};
+  const { searchText, orderDirection, orderBy } = input ?? {};
 
   const ordenRol: Prisma.RolOrderByWithRelationInput = orderBy
     ? construirOrderByDinamico(orderBy ?? "", orderDirection ?? "")

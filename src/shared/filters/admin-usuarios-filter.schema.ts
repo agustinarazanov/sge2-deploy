@@ -7,7 +7,7 @@ export const inputGetUsuarios = z.object({
     .default("0")
     .refine((value) => parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
     .catch("0"),
-  orderBy: z.enum(["email", "legajo", "apellido"]).default("email").catch("email"),
+  orderBy: z.enum(["email", "legajo", "apellido", "nombre", "fechaCreacion"]).default("email").catch("email"),
   orderDirection: z.enum(["asc", "desc"]).default("asc").catch("asc"),
   searchText: z.string().default(""),
   rol: z
