@@ -156,9 +156,9 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
 
   return (
     <FormProvider {...formHook}>
-      <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
-        <div className="flex w-full flex-col items-center justify-center">
-          <div className="flex w-full flex-col space-y-4 px-0 md:px-6">
+      <form onSubmit={handleSubmit(onFormSubmit)} className="flex h-full flex-col">
+        <div className="flex flex-grow flex-col overflow-hidden">
+          <div className="space-y-4 px-0 md:px-6">
             <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
               <div className="mt-4 w-full">
                 <FormInput
@@ -195,17 +195,19 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
                 />
               </div>
             </div>
+          </div>
 
-            <div className="mt-6">
-              <div className="mb-2 flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Armarios</h3>
-                <Button onClick={agregarArmario} variant="outline" size="sm">
-                  <Plus size={16} className="mr-2" />
-                  Agregar Armario
-                </Button>
-              </div>
-              <ScrollArea className="h-80 max-h-80 w-full pr-4">
-                <div className="flex w-full flex-col space-y-4">
+          <div className="mt-4 flex flex-grow flex-col overflow-hidden">
+            <div className="mb-2 flex items-center justify-between">
+              <h3 className="text-lg font-semibold">Armarios</h3>
+              <Button onClick={agregarArmario} variant="outline" size="sm">
+                <Plus size={16} className="mr-2" />
+                Agregar Armario
+              </Button>
+            </div>
+            <div className="flex-grow overflow-hidden">
+              <ScrollArea className="h-[calc(89vh-450px)] max-h-[400px]">
+                <div className="space-y-4 pr-4">
                   {armarios.map((armario, armarioIndex) => (
                     <div key={armario.id ?? armarioIndex} className="rounded border p-4">
                       <div className="mb-2 flex items-center justify-between">
@@ -274,7 +276,7 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
             </div>
           </div>
         </div>
-        <div className="mt-4 flex w-full flex-row items-end justify-end space-x-4">
+        <div className="mt-4 flex justify-end space-x-4 border-t pt-4">
           <Button title="Cancelar" type="button" variant="default" color="secondary" onClick={handleCancel}>
             Cancelar
           </Button>
