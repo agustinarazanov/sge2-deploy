@@ -18,6 +18,11 @@ export const getColumns = () => {
           <Image src={imagen} alt="Imagen de perfil" width={32} height={32} className="rounded-full" />
         ) : null;
       },
+      meta: {
+        header: {
+          hideSort: true,
+        },
+      },
     }),
     colHelper.accessor("email", {
       header: "Email",
@@ -25,7 +30,7 @@ export const getColumns = () => {
     colHelper.accessor("legajo", {
       header: "Legajo",
     }),
-    colHelper.display({
+    colHelper.accessor("apellido", {
       header: "Nombre",
       cell: (info) => {
         const usuario = info.row.original;
@@ -49,6 +54,11 @@ export const getColumns = () => {
             ))}
           </div>
         );
+      },
+      meta: {
+        header: {
+          hideSort: true,
+        },
       },
     }),
   ] as ColumnDef<LibroData>[];
