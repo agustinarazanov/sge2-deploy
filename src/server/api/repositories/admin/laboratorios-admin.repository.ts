@@ -83,6 +83,7 @@ export const editarLaboratorio = async (ctx: { db: PrismaClient }, input: InputE
         nombre: input.nombre,
         sedeId: parseInt(input.sedeId),
         esReservable: input.esReservable,
+        tienePc: input.tienePc,
 
         usuarioModificadorId: userId,
       },
