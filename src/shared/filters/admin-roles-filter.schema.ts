@@ -7,10 +7,7 @@ export const inputGetRoles = z.object({
     .default("0")
     .refine((value) => parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
     .catch("0"),
-  orderBy: z
-    .enum(["inventario", "id", "titulo", "autor", "anio", "editorial", "idioma", "isbn", "materias", "estado"]) // todo: cambiar
-    .default("titulo")
-    .catch("titulo"),
+  orderBy: z.enum(["nombre", "fechaCreacion"]).default("nombre").catch("nombre"),
   orderDirection: z.enum(["asc", "desc"]).default("asc").catch("asc"),
   searchText: z.string().default(""),
   permiso: z
