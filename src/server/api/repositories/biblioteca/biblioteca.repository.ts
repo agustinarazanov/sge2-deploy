@@ -8,6 +8,7 @@ import {
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 import { generarBibliotecaInventarioId, getUltimoBibliotecaInventarioId } from "./biblioteca-inventario-id";
+import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 
 type InputGetAll = z.infer<typeof inputGetBooks>;
 export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
@@ -71,30 +72,25 @@ export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll
           ],
         }
       : {}),
+    ...(input?.materia
+      ? {
+          materias: {
+            some: {
+              materiaId: parseInt(input?.materia),
+            },
+          },
+        }
+      : {}),
   };
+
+  const ordenLibro: Prisma.LibroOrderByWithRelationInput = construirOrderByDinamico(
+    input?.orderBy ?? "",
+    input?.orderDirection ?? "",
+  );
 
   const [count, libros] = await ctx.db.$transaction([
     ctx.db.libro.count({
-      ...(input?.searchText
-        ? {
-            where: {
-              OR: [
-                {
-                  titulo: {
-                    contains: input?.searchText ?? undefined,
-                  },
-                },
-                {
-                  autor: {
-                    autorNombre: {
-                      contains: input?.searchText ?? undefined,
-                    },
-                  },
-                },
-              ],
-            },
-          }
-        : {}),
+      where: filtrosWhereLibro,
     }),
     ctx.db.libro.findMany({
       include: {
@@ -107,20 +103,9 @@ export const getAllLibros = async (ctx: { db: PrismaClient }, input: InputGetAll
           },
         },
       },
-      where: {
-        ...(input?.materia
-          ? {
-              materias: {
-                some: {
-                  materiaId: parseInt(input?.materia),
-                },
-              },
-            }
-          : {}),
-        ...filtrosWhereLibro,
-      },
+      where: filtrosWhereLibro,
       orderBy: {
-        ...(input?.orderBy ? { [input?.orderBy]: input?.orderDirection } : {}),
+        ...(input?.orderBy ? ordenLibro : {}),
       },
       ...(input?.pageIndex ? { skip: parseInt(input?.pageIndex) * parseInt(input?.pageSize) } : {}),
       ...(input?.pageSize ? { take: parseInt(input?.pageSize) } : {}),
