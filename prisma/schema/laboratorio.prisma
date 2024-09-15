@@ -4,7 +4,7 @@ model Laboratorio {
     nombre  String
     tienePc Boolean @default(false)
 
-    esAbierto              Boolean                 @default(false)
+    esReservable           Boolean                 @default(false)
     laboratorioAbiertoTipo LaboratorioAbiertoTipo?
 
     sedeId Int
@@ -24,7 +24,7 @@ model Laboratorio {
 
     @@index([nombre(sort: Asc)])
     @@index([tienePc], type: Hash)
-    @@index([esAbierto], type: Hash)
+    @@index([esReservable], type: Hash)
     @@index([laboratorioAbiertoTipo])
 }
 

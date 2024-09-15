@@ -72,7 +72,7 @@ export const EquiposFilterLaboratorio = ({ filters }: Props) => {
             <SelectContent>
               {(laboratorios ?? []).map((option) => (
                 <SelectItem key={option.id} value={String(option.id)}>
-                  {option.nombre} ({option.esAbierto ? "Abierto" : "Cerrado"})
+                  {option.nombre} ({option.esReservable ? "Abierto" : "Cerrado"})
                 </SelectItem>
               ))}
             </SelectContent>
