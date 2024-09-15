@@ -1,3 +1,4 @@
+import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 import {
   type inputEditarCurso,
   type inputEliminarCurso,
@@ -10,9 +11,20 @@ import { type z } from "zod";
 
 type InputGetAll = z.infer<typeof inputGetCursos>;
 export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, materia, anioDeCarrera, userId } = input;
+  const { pageIndex, pageSize, materia, anioDeCarrera, userId, orderBy, orderDirection, searchText } = input;
 
-  const where = {
+  const ordenCursos: Prisma.CursoOrderByWithRelationInput | Prisma.CursoOrderByWithRelationInput[] = orderBy
+    ? construirOrderByDinamico(orderBy ?? "", orderDirection ?? "")
+    : [
+        { anioDeCarrera: "asc" },
+        { materia: { nombre: "asc" } },
+        { sede: { nombre: "desc" } },
+        { ac: "asc" },
+        { turno: "asc" },
+        { division: { nombre: "asc" } },
+      ];
+
+  const where: Prisma.CursoWhereInput = {
     materiaId: materia ? parseInt(materia) : undefined,
     anioDeCarrera: anioDeCarrera ? parseInt(anioDeCarrera) : undefined,
     OR: [
@@ -31,6 +43,64 @@ export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll
         },
       },
     ],
+    ...(searchText
+      ? {
+          OR: [
+            {
+              division: {
+                nombre: {
+                  contains: searchText ?? undefined,
+                  mode: "insensitive",
+                },
+              },
+            },
+            {
+              profesores: {
+                some: {
+                  usuario: {
+                    OR: [
+                      {
+                        nombre: {
+                          contains: searchText ?? undefined,
+                          mode: "insensitive",
+                        },
+                      },
+                      {
+                        apellido: {
+                          contains: searchText ?? undefined,
+                          mode: "insensitive",
+                        },
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+            {
+              ayudantes: {
+                some: {
+                  usuario: {
+                    OR: [
+                      {
+                        nombre: {
+                          contains: searchText ?? undefined,
+                          mode: "insensitive",
+                        },
+                      },
+                      {
+                        apellido: {
+                          contains: searchText ?? undefined,
+                          mode: "insensitive",
+                        },
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          ],
+        }
+      : {}),
   };
 
   const [cursos, count] = await ctx.db.$transaction([
@@ -61,14 +131,7 @@ export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll
         },
       },
       where: where,
-      orderBy: [
-        { anioDeCarrera: "asc" },
-        { materia: { nombre: "asc" } },
-        { sede: { nombre: "desc" } },
-        { ac: "asc" },
-        { turno: "asc" },
-        { division: { nombre: "asc" } },
-      ],
+      orderBy: ordenCursos,
       skip: parseInt(pageIndex) * parseInt(pageSize),
       take: parseInt(pageSize),
     }),
