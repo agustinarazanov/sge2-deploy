@@ -26,6 +26,11 @@ export const getColumns = () => {
 
         return usuarios.length;
       },
+      meta: {
+        header: {
+          hideSort: true,
+        },
+      },
     }),
     colHelper.display({
       header: "Cantidad de permisos",
@@ -33,6 +38,11 @@ export const getColumns = () => {
         const permisos = info.row.original.rolPermiso;
 
         return permisos.length;
+      },
+      meta: {
+        header: {
+          hideSort: true,
+        },
       },
     }),
     colHelper.display({
@@ -47,6 +57,11 @@ export const getColumns = () => {
             ))}
           </div>
         );
+      },
+      meta: {
+        header: {
+          hideSort: true,
+        },
       },
     }),
   ] as ColumnDef<LibroData>[];
