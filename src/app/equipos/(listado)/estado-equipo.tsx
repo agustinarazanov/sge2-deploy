@@ -5,7 +5,7 @@ type EstadoEquipoProps = {
   disponible: boolean;
 };
 
-export default function EstadoEquipo({ id, disponible }: EstadoEquipoProps) {
+export default function EstadoEquipo({ disponible }: EstadoEquipoProps) {
   if (disponible) {
     return (
       <div className="flex flex-col">

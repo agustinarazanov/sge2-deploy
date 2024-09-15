@@ -15,6 +15,14 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
   const { pageIndex, pageSize, searchText, orderDirection, orderBy, estatus, userId } = input;
 
   const filtrosWhereReservaLibro: Prisma.ReservaLibroWhereInput = {
+    ...(userId ? { reserva: { usuarioSolicitoId: userId } } : {}),
+    ...(estatus
+      ? {
+          reserva: {
+            estatus: estatus,
+          },
+        }
+      : {}),
     ...(searchText
       ? {
           OR: [
@@ -45,14 +53,6 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
           ],
         }
       : {}),
-    ...(estatus
-      ? {
-          reserva: {
-            estatus: estatus,
-          },
-        }
-      : {}),
-    ...(userId ? { reserva: { usuarioSolicitoId: userId } } : {}),
   };
 
   const ordenLibro: Prisma.ReservaLibroOrderByWithRelationInput = construirOrderByDinamico(
