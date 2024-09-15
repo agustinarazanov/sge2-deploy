@@ -6,6 +6,7 @@ export const getAllMaterias = async (ctx: { db: PrismaClient }) => {
       id: true,
       nombre: true,
       codigo: true,
+      anio: true,
     },
     orderBy: [
       {

@@ -43,14 +43,14 @@ export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetA
         }
       : {}),
     ...(input?.rol
-        ? {
+      ? {
           usuarioRol: {
             some: {
               rolId: parseInt(input?.rol),
             },
           },
         }
-        : {}),
+      : {}),
   };
 
   const [count, usuarios] = await ctx.db.$transaction([
@@ -169,4 +169,17 @@ export const getAllTutores = async (ctx: { db: PrismaClient }) => {
   });
 
   return tutores;
+};
+
+export const getAllProfesores = async (ctx: { db: PrismaClient }) => {
+  return await ctx.db.user.findMany({
+    select: {
+      id: true,
+      nombre: true,
+      apellido: true,
+    },
+    where: {
+      esDocente: true,
+    },
+  });
 };
