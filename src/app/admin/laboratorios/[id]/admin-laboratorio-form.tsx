@@ -224,7 +224,7 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
                             <FormLabel className="text-base">Laboratorio abierto</FormLabel>
                           </div>
                           <FormControl>
-                            <Switch checked={field.esReservable} onCheckedChange={field.onChange} />
+                            <Switch checked={field.value} onCheckedChange={field.onChange} />
                           </FormControl>
                         </FormItem>
                       )}
@@ -240,7 +240,7 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
                             <FormLabel className="text-base">Tiene PC</FormLabel>
                           </div>
                           <FormControl>
-                            <Switch checked={field.tienePc} onCheckedChange={field.onChange} />
+                            <Switch checked={field.value} onCheckedChange={field.onChange} />
                           </FormControl>
                         </FormItem>
                       )}
