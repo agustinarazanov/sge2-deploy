@@ -8,6 +8,7 @@ import {
 } from "@/shared/filters/reservas-filter.schema";
 import { getDateISO } from "@/shared/get-date";
 import { informacionUsuario } from "../usuario-helper";
+import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 
 type InputGetAll = z.infer<typeof inputGetAllPrestamosLibros>;
 export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
@@ -53,6 +54,11 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
       : {}),
   };
 
+  const ordenLibro: Prisma.ReservaLibroOrderByWithRelationInput = construirOrderByDinamico(
+    orderBy ?? "",
+    orderDirection ?? "",
+  );
+
   const [count, reservas] = await ctx.db.$transaction([
     ctx.db.reservaLibro.count({
       where: filtrosWhereReservaLibro,
@@ -78,17 +84,7 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
         libro: true,
       },
       where: filtrosWhereReservaLibro,
-      orderBy: [
-        {
-          reserva: {
-            // Prisma ORM no soporta orderBy con CASE, por lo tanto ordenamos primero por estatus y justo pendiente queda primero
-            estatus: "asc",
-          },
-        },
-        {
-          [orderBy]: orderDirection,
-        },
-      ],
+      orderBy: ordenLibro,
       skip: parseInt(pageIndex) * parseInt(pageSize),
       take: parseInt(pageSize),
     }),
