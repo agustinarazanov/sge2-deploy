@@ -10,11 +10,16 @@ import { type z } from "zod";
 
 type InputGetAll = z.infer<typeof inputGetCursos>;
 export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, materia, anioDeCarrera, userId } = input;
+  const { pageIndex, pageSize, materia, anioDeCarrera, userId, searchText } = input;
 
   const where = {
     materiaId: materia ? parseInt(materia) : undefined,
     anioDeCarrera: anioDeCarrera ? parseInt(anioDeCarrera) : undefined,
+    division: {
+      nombre: {
+        contains: searchText.toUpperCase(),
+      },
+    },
     OR: [
       {
         profesores: {
