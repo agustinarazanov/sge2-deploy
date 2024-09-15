@@ -24,6 +24,14 @@ export const ActionButtonsPrestamos = ({ filters }: ActionButtonsProps) => {
             Ir a biblioteca
           </Link>
         </Button>
+        <Button color={"ghost"}>
+          <Link
+            href={rutaBiblioteca?.subRutas && rutaBiblioteca.subRutas[2] ? rutaBiblioteca.subRutas[2].href : ""}
+            passHref
+          >
+            Ir a mis préstamos
+          </Link>
+        </Button>
       </div>
 
       <div className="w-full space-y-3 sm:flex sm:flex-row sm:space-x-3 sm:space-y-0 md:basis-1/2">

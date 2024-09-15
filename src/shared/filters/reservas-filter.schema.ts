@@ -32,6 +32,7 @@ export const inputGetAllPrestamosLibros = z.object({
   orderDirection: z.enum(["asc", "desc"]).default("desc").catch("desc"),
   searchText: z.string().default(""),
   estatus: z.enum(["PENDIENTE", "FINALIZADA", "CANCELADA", ""]).default("").catch(""),
+  userId: z.string().optional(),
 });
 
 export const inputPrestarLibro = z

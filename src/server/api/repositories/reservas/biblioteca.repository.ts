@@ -12,7 +12,7 @@ import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 
 type InputGetAll = z.infer<typeof inputGetAllPrestamosLibros>;
 export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText, orderDirection, orderBy, estatus } = input;
+  const { pageIndex, pageSize, searchText, orderDirection, orderBy, estatus, userId } = input;
 
   const filtrosWhereReservaLibro: Prisma.ReservaLibroWhereInput = {
     ...(searchText
@@ -52,6 +52,7 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
           },
         }
       : {}),
+    ...(userId ? { reserva: { usuarioSolicitoId: userId } } : {}),
   };
 
   const ordenLibro: Prisma.ReservaLibroOrderByWithRelationInput = construirOrderByDinamico(
