@@ -95,6 +95,11 @@ export const getColumnasPrestamo = () => {
 
         return <span className="text-center">Sin información</span>;
       },
+      meta: {
+        header: {
+          hideSort: true,
+        },
+      },
     }),
     colHelper.accessor("reserva.usuarioRecibio.apellido", {
       header: "Recibio",
