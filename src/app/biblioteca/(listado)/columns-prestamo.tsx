@@ -7,10 +7,10 @@ import RenovarPrestamoLibroModal from "../_components/modal-renovar";
 
 type LibroPrestamoData = RouterOutputs["reservas"]["reservaBiblioteca"]["getAll"]["reservas"][number];
 
-export const getColumnasPrestamo = () => {
+export const getColumnasPrestamo = ({ filterByUser }: { filterByUser?: boolean }) => {
   const colHelper = createColumnHelper<LibroPrestamoData>();
 
-  return [
+  const columnasBasicas = [
     colHelper.accessor("id", {
       header: "Prestamo #",
     }),
@@ -79,6 +79,9 @@ export const getColumnasPrestamo = () => {
         );
       },
     }),
+  ] as ColumnDef<LibroPrestamoData>[];
+
+  const columnasGeneral = [
     colHelper.display({
       header: "Renovar",
       cell: ({ row }) => {
@@ -130,6 +133,10 @@ export const getColumnasPrestamo = () => {
       },
     }),
   ] as ColumnDef<LibroPrestamoData>[];
+
+  const columnas = filterByUser ? columnasBasicas : [...columnasBasicas, ...columnasGeneral];
+
+  return columnas;
 };
 
 export const getColumnasPrestamoNames = () => {
