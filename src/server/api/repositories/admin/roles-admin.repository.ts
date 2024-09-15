@@ -50,7 +50,9 @@ type InputGetAll = z.infer<typeof inputGetRoles>;
 export const getAllRoles = async (ctx: { db: PrismaClient }, input?: InputGetAll) => {
   const { pageIndex, pageSize, searchText, orderDirection, orderBy } = input ?? {};
 
-  const ordenRol: Prisma.RolOrderByWithRelationInput = construirOrderByDinamico(orderBy ?? "", orderDirection ?? "");
+  const ordenRol: Prisma.RolOrderByWithRelationInput = orderBy
+    ? construirOrderByDinamico(orderBy ?? "", orderDirection ?? "")
+    : {};
 
   const filtrosWhereRol: Prisma.RolWhereInput = {
     ...(searchText
