@@ -8,41 +8,40 @@ import {
 } from "@/shared/filters/reservas-filter.schema";
 import { getDateISO } from "@/shared/get-date";
 import { informacionUsuario } from "../usuario-helper";
+import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 
 type InputGetAll = z.infer<typeof inputGetAllPrestamosLibros>;
-export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText, orderDirection, orderBy } = input;
+export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetAll, userId: string) => {
+  const { pageIndex, pageSize, searchText, orderDirection, orderBy, estatus, filtrByUserId } = input;
 
   const filtrosWhereReservaLibro: Prisma.ReservaLibroWhereInput = {
+    reserva: {
+      ...(filtrByUserId === "true" ? { usuarioSolicitoId: userId } : {}),
+      ...(estatus ? { estatus: estatus } : {}),
+    },
     ...(searchText
       ? {
           OR: [
             {
               reserva: {
-                usuarioSolicito: {
-                  nombre: {
-                    contains: searchText ?? undefined,
-                    mode: "insensitive",
+                reservaLibro: {
+                  libro: {
+                    titulo: {
+                      contains: searchText ?? undefined,
+                      mode: "insensitive",
+                    },
                   },
                 },
               },
             },
             {
               reserva: {
-                usuarioAprobador: {
-                  nombre: {
-                    contains: searchText ?? undefined,
-                    mode: "insensitive",
-                  },
-                },
-              },
-            },
-            {
-              reserva: {
-                usuarioRenovo: {
-                  nombre: {
-                    contains: searchText ?? undefined,
-                    mode: "insensitive",
+                reservaLibro: {
+                  libro: {
+                    inventarioId: {
+                      contains: searchText ?? undefined,
+                      mode: "insensitive",
+                    },
                   },
                 },
               },
@@ -51,6 +50,18 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
         }
       : {}),
   };
+
+  console.log({
+    input,
+    filtrosWhereReservaLibro,
+  });
+
+  const ordenLibro: Prisma.ReservaLibroOrderByWithRelationInput = construirOrderByDinamico(
+    orderBy ?? "",
+    orderDirection ?? "",
+  );
+
+  console.log({ filtrosWhereReservaLibro, userId });
 
   const [count, reservas] = await ctx.db.$transaction([
     ctx.db.reservaLibro.count({
@@ -77,9 +88,7 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
         libro: true,
       },
       where: filtrosWhereReservaLibro,
-      orderBy: {
-        [orderBy]: orderDirection,
-      },
+      orderBy: ordenLibro,
       skip: parseInt(pageIndex) * parseInt(pageSize),
       take: parseInt(pageSize),
     }),
@@ -271,7 +280,6 @@ export const devolverLibro = async (ctx: { db: PrismaClient }, input: InputGetRe
         },
         data: {
           usuarioRecibioId: userId,
-          usuarioRenovoId: null,
           estatus: "FINALIZADA",
 
           fechaRecibido: new Date(),

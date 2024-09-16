@@ -25,9 +25,9 @@ export const inputGetEquipos = z.object({
     .refine((value) => parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
     .catch("0"),
   orderBy: z
-    .enum(["inventario", "tipo.nombre", "marca", "modelo", "numeroSerie", "estado", "estadoPrestamo"])
-    .default("tipo.nombre")
-    .catch("tipo.nombre"),
+    .enum(["inventarioId", "tipo_nombre", "marca_nombre", "modelo", "numeroSerie", "estado_nombre", "disponible"])
+    .default("inventarioId")
+    .catch("inventarioId"),
   orderDirection: z.enum(["asc", "desc"]).default("asc").catch("asc"),
   searchText: z.string().default(""),
   armario: z.string().default(""),

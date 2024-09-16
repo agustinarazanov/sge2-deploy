@@ -20,7 +20,9 @@ export const getTodasLasReservasProcedure = protectedProcedure
   .query(async ({ ctx, input }) => {
     validarInput(inputGetAllPrestamosLibros, input);
 
-    const reservas = await getAllReservas(ctx, input);
+    const userId = ctx.session.user.id;
+
+    const reservas = await getAllReservas(ctx, input, userId);
 
     return reservas;
   });

@@ -28,7 +28,17 @@ export const inputGetBooks = z.object({
     .refine((value) => parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
     .catch("0"),
   orderBy: z
-    .enum(["inventario", "id", "titulo", "autor", "anio", "editorial", "idioma", "isbn", "materias", "estado"])
+    .enum([
+      "inventarioId",
+      "id",
+      "titulo",
+      "autor_autorNombre",
+      "anio",
+      "editorial_editorial",
+      "idioma_idioma",
+      "isbn",
+      "disponible",
+    ])
     .default("titulo")
     .catch("titulo"),
   orderDirection: z.enum(["asc", "desc"]).default("asc").catch("asc"),
