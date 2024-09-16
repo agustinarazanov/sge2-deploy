@@ -6,7 +6,7 @@ import { Button } from "@/components/ui";
 
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
 import { Separator } from "@radix-ui/react-separator";
-import { EquipoInformacionBasica } from "./info-basica-equipo";
+import { EquipoInformacionBasica } from "../equipo/_components/info-basica-equipo";
 import { EquipoFormPrestarORenovar } from "./form-prestar";
 
 type PrestarEquipoModalProps = {
