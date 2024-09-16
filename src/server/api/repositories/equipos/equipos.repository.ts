@@ -8,27 +8,44 @@ import {
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 import { generarEquipoInventarioId, getUltimoEquipoInventarioId } from "./generador-inventario-id";
+import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 
 type InputGetAll = z.infer<typeof inputGetEquipos>;
 export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
   const { pageIndex, pageSize, searchText } = input;
 
+  const ordenEquipos: Prisma.EquipoOrderByWithRelationInput = construirOrderByDinamico(
+    input?.orderBy ?? "",
+    input?.orderDirection ?? "",
+  );
+
+  const filtrosWhereEquipoTipo: Prisma.EquipoWhereInput = {
+    ...(searchText
+      ? {
+          OR: [
+            {
+              observaciones: {
+                contains: searchText ?? undefined,
+              },
+            },
+            {
+              palabrasClave: {
+                contains: searchText ?? undefined,
+              },
+            },
+            {
+              imagen: {
+                contains: searchText ?? undefined,
+              },
+            },
+          ],
+        }
+      : {}),
+  };
+
   const [count, equipos] = await ctx.db.$transaction([
     ctx.db.equipo.count({
-      where: {
-        OR: [
-          {
-            observaciones: {
-              contains: searchText ?? undefined,
-            },
-          },
-          {
-            palabrasClave: {
-              contains: searchText ?? undefined,
-            },
-          },
-        ],
-      },
+      where: filtrosWhereEquipoTipo,
     }),
     ctx.db.equipo.findMany({
       include: {
@@ -39,9 +56,8 @@ export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAl
         estado: true,
         tipo: true,
       },
-      orderBy: {
-        // [orderBy]: orderDirection,
-      },
+      where: filtrosWhereEquipoTipo,
+      orderBy: ordenEquipos,
       skip: parseInt(pageIndex) * parseInt(pageSize),
       take: parseInt(pageSize),
     }),
@@ -65,6 +81,7 @@ export const getEquipoPorId = async (ctx: { db: PrismaClient }, input: InputGetE
       marca: true,
       estado: true,
       tipo: true,
+      sede: true,
     },
     where: {
       id,

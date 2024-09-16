@@ -1,3 +1,4 @@
+import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 import {
   type inputEditarRol,
   type inputGetRol,
@@ -5,7 +6,7 @@ import {
   type inputEliminarRol,
   type inputGetRoles,
 } from "@/shared/filters/admin-roles-filter.schema";
-import { type PrismaClient } from "@prisma/client";
+import { type Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 
 type InputGetById = z.infer<typeof inputGetRol>;
@@ -47,8 +48,36 @@ export const getRolById = async (ctx: { db: PrismaClient }, input: InputGetById)
 
 type InputGetAll = z.infer<typeof inputGetRoles>;
 export const getAllRoles = async (ctx: { db: PrismaClient }, input?: InputGetAll) => {
+  const { searchText, orderDirection, orderBy } = input ?? {};
+
+  const ordenRol: Prisma.RolOrderByWithRelationInput = orderBy
+    ? construirOrderByDinamico(orderBy ?? "", orderDirection ?? "")
+    : {};
+
+  const filtrosWhereRol: Prisma.RolWhereInput = {
+    ...(searchText
+      ? {
+          nombre: {
+            contains: input?.searchText ?? undefined,
+            mode: "insensitive",
+          },
+          ...(!input?.permiso
+            ? undefined
+            : {
+                rolPermiso: {
+                  some: {
+                    permisoId: input?.permiso ? parseInt(input?.permiso) : undefined,
+                  },
+                },
+              }),
+        }
+      : {}),
+  };
+
   const [count, roles] = await ctx.db.$transaction([
-    ctx.db.rol.count(),
+    ctx.db.rol.count({
+      where: filtrosWhereRol,
+    }),
     ctx.db.rol.findMany({
       select: {
         id: true,
@@ -70,24 +99,8 @@ export const getAllRoles = async (ctx: { db: PrismaClient }, input?: InputGetAll
           },
         },
       },
-      where: {
-        nombre: {
-          contains: input?.searchText ?? undefined,
-          mode: "insensitive",
-        },
-        ...(!input?.permiso
-          ? undefined
-          : {
-              rolPermiso: {
-                some: {
-                  permisoId: input?.permiso ? parseInt(input?.permiso) : undefined,
-                },
-              },
-            }),
-      },
-      orderBy: {
-        nombre: input?.orderDirection,
-      },
+      where: filtrosWhereRol,
+      orderBy: ordenRol,
     }),
   ]);
 

@@ -16,7 +16,7 @@ export const getColumns = () => {
     colHelper.accessor("sede.nombre", {
       header: "Sede",
     }),
-    colHelper.display({
+    colHelper.accessor("ac", {
       header: "Duración",
       cell: (info) => {
         const duracion = info.row.original.ac;
@@ -26,7 +26,7 @@ export const getColumns = () => {
         return "-";
       },
     }),
-    colHelper.display({
+    colHelper.accessor("turno", {
       header: "Turno",
       cell: (info) => {
         const turno = info.row.original.turno;
@@ -46,11 +46,21 @@ export const getColumns = () => {
       cell: (info) => {
         return <HoraDia {...info.row.original} diaDeHoy={"LUNES"} />;
       },
+      meta: {
+        header: {
+          hideSort: true,
+        },
+      },
     }),
     colHelper.display({
       header: "Martes",
       cell: (info) => {
         return <HoraDia {...info.row.original} diaDeHoy={"MARTES"} />;
+      },
+      meta: {
+        header: {
+          hideSort: true,
+        },
       },
     }),
     colHelper.display({
@@ -58,11 +68,21 @@ export const getColumns = () => {
       cell: (info) => {
         return <HoraDia {...info.row.original} diaDeHoy={"MIERCOLES"} />;
       },
+      meta: {
+        header: {
+          hideSort: true,
+        },
+      },
     }),
     colHelper.display({
       header: "Jueves",
       cell: (info) => {
         return <HoraDia {...info.row.original} diaDeHoy={"JUEVES"} />;
+      },
+      meta: {
+        header: {
+          hideSort: true,
+        },
       },
     }),
     colHelper.display({
@@ -70,11 +90,21 @@ export const getColumns = () => {
       cell: (info) => {
         return <HoraDia {...info.row.original} diaDeHoy={"VIERNES"} />;
       },
+      meta: {
+        header: {
+          hideSort: true,
+        },
+      },
     }),
     colHelper.display({
       header: "Sábado",
       cell: (info) => {
         return <HoraDia {...info.row.original} diaDeHoy={"SABADO"} />;
+      },
+      meta: {
+        header: {
+          hideSort: true,
+        },
       },
     }),
     colHelper.display({
@@ -86,6 +116,11 @@ export const getColumns = () => {
 
         return profesores.map((profesor) => `${profesor.usuario.apellido} ${profesor.usuario.nombre}`).join(", ");
       },
+      meta: {
+        header: {
+          hideSort: true,
+        },
+      },
     }),
     colHelper.display({
       header: "Ayudante/s",
@@ -95,6 +130,11 @@ export const getColumns = () => {
         if (!ayudantes.length) return <span className="hidden">Sin ayudantes</span>;
 
         return ayudantes.map((ayudante) => `${ayudante.usuario.apellido} ${ayudante.usuario.nombre}`).join(", ");
+      },
+      meta: {
+        header: {
+          hideSort: true,
+        },
       },
     }),
   ] as ColumnDef<CursosData>[];

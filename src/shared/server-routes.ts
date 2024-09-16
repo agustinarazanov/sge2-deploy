@@ -27,6 +27,11 @@ export const BIBLIOTECA_ROUTE = {
       label: "Prestamos",
       isPublic: false,
     },
+    {
+      href: "/biblioteca/mis_prestamos",
+      label: "Mis prestamos",
+      isPublic: false,
+    },
   ],
 };
 
@@ -112,7 +117,7 @@ export const CURSOS_ROUTE: AppRoute = {
   ],
 };
 
-export const ADMIN_ROUTE: AppRoute = {
+export const ADMIN_ROUTE = {
   href: "/admin",
   label: "Administración",
   isPublic: false,

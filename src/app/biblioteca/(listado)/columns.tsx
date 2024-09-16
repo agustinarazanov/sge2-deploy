@@ -27,19 +27,11 @@ export const getColumns = () => {
     colHelper.accessor("anio", {
       header: "Año",
     }),
-    colHelper.display({
+    colHelper.accessor("editorial.editorial", {
       header: "Editorial",
-      cell: (info) => {
-        const editorial = info.row.original.editorial;
-        return editorial.editorial ?? "";
-      },
     }),
-    colHelper.display({
+    colHelper.accessor("idioma.idioma", {
       header: "Idioma",
-      cell: (info) => {
-        const idioma = info.row.original.idioma;
-        return idioma.idioma ?? "";
-      },
     }),
     colHelper.accessor("isbn", {
       header: "ISBN",
@@ -52,6 +44,11 @@ export const getColumns = () => {
         if (!materiasLibro.length) return <span className="hidden">Sin materias</span>;
 
         return <MateriasColumnar materiasLibro={materiasLibro.map((materia) => materia.materia.nombre)} />;
+      },
+      meta: {
+        header: {
+          hideSort: true,
+        },
       },
     }),
     colHelper.accessor("disponible", {

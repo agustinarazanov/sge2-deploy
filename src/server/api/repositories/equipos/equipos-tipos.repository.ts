@@ -81,7 +81,7 @@ export const getAllTipos = async (ctx: { db: PrismaClient }, input: InputTipoGet
 };
 
 type InputEditarTipo = z.infer<typeof inputEditarTipo>;
-export const editarTipo = async (ctx: { db: PrismaClient }, input: InputEditarTipo, userId: string) => {
+export const editarTipo = async (ctx: { db: PrismaClient }, input: InputEditarTipo, _userId: string) => {
   try {
     const tipo = await ctx.db.equipoTipo.update({
       data: {

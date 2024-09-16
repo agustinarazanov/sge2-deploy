@@ -1,3 +1,4 @@
+import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 import {
   type inputEditarCurso,
   type inputEliminarCurso,
@@ -9,24 +10,62 @@ import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 
 type InputGetAll = z.infer<typeof inputGetCursos>;
-export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, materia, anioDeCarrera, userId } = input;
+export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll, userId: string) => {
+  const { pageIndex, pageSize, materia, anioDeCarrera, filtrByUserId, orderBy, orderDirection, searchText } = input;
 
-  const where = {
+  const ordenCursos: Prisma.CursoOrderByWithRelationInput | Prisma.CursoOrderByWithRelationInput[] = orderBy
+    ? construirOrderByDinamico(orderBy ?? "", orderDirection ?? "")
+    : [
+        { anioDeCarrera: "asc" },
+        { materia: { nombre: "asc" } },
+        { sede: { nombre: "desc" } },
+        { ac: "asc" },
+        { turno: "asc" },
+        { division: { nombre: "asc" } },
+      ];
+
+  const where: Prisma.CursoWhereInput = {
     materiaId: materia ? parseInt(materia) : undefined,
     anioDeCarrera: anioDeCarrera ? parseInt(anioDeCarrera) : undefined,
     OR: [
       {
         profesores: {
           some: {
-            userId: userId,
+            ...(filtrByUserId === "true" ? { userId: userId } : {}),
+            ...(searchText
+              ? {
+                  usuario: {
+                    OR: [
+                      { nombre: { contains: searchText ?? undefined, mode: "insensitive" } },
+                      { apellido: { contains: searchText ?? undefined, mode: "insensitive" } },
+                    ],
+                  },
+                }
+              : {}),
           },
         },
       },
       {
         ayudantes: {
           some: {
-            userId: userId,
+            ...(filtrByUserId === "true" ? { userId: userId } : {}),
+            ...(searchText
+              ? {
+                  usuario: {
+                    OR: [
+                      { nombre: { contains: searchText ?? undefined, mode: "insensitive" } },
+                      { apellido: { contains: searchText ?? undefined, mode: "insensitive" } },
+                    ],
+                  },
+                }
+              : {}),
+          },
+        },
+      },
+      {
+        division: {
+          nombre: {
+            ...(searchText ? { contains: searchText ?? undefined, mode: "insensitive" } : {}),
           },
         },
       },
@@ -61,14 +100,7 @@ export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll
         },
       },
       where: where,
-      orderBy: [
-        { anioDeCarrera: "asc" },
-        { materia: { nombre: "asc" } },
-        { sede: { nombre: "desc" } },
-        { ac: "asc" },
-        { turno: "asc" },
-        { division: { nombre: "asc" } },
-      ],
+      orderBy: ordenCursos,
       skip: parseInt(pageIndex) * parseInt(pageSize),
       take: parseInt(pageSize),
     }),

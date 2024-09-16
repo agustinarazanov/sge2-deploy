@@ -1,3 +1,4 @@
+import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 import {
   type inputGetUsuario,
   type inputEliminarUsuario,
@@ -9,7 +10,12 @@ import { type z } from "zod";
 
 type InputGetAll = z.infer<typeof inputGetUsuarios>;
 export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText, orderDirection } = input ?? {};
+  const { pageIndex, pageSize, searchText, orderDirection, orderBy } = input ?? {};
+
+  const ordenUsuario: Prisma.UserOrderByWithRelationInput = construirOrderByDinamico(
+    orderBy ?? "",
+    orderDirection ?? "",
+  );
 
   const filtrosWhereUsuario: Prisma.UserWhereInput = {
     ...(searchText
@@ -43,14 +49,14 @@ export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetA
         }
       : {}),
     ...(input?.rol
-        ? {
+      ? {
           usuarioRol: {
             some: {
               rolId: parseInt(input?.rol),
             },
           },
         }
-        : {}),
+      : {}),
   };
 
   const [count, usuarios] = await ctx.db.$transaction([
@@ -66,9 +72,7 @@ export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetA
         },
       },
       where: filtrosWhereUsuario,
-      orderBy: {
-        nombre: orderDirection,
-      },
+      orderBy: ordenUsuario,
       ...(pageIndex && pageSize
         ? {
             skip: parseInt(pageIndex) * parseInt(pageSize),
