@@ -169,15 +169,17 @@ export default function ClienteContenedorUsuario({ usuarioData }: ClienteContene
             idUsuario={usuarioData.id}
             titulo="Reserva de Libros"
             descripcion="Historial de Libros"
-            reservas={mockReservasLibros || []}
+            reservas={reservasLibros || []}
             columns={[
               { header: "ID", key: "id", className: "w-[100px]" },
-              { header: "Fecha", key: (item) => item.fechaCreacion.toLocaleDateString("es-ES") },
-              { header: "Libro", key: "titulo" },
+              { header: "Fecha de préstamo", key: (item) => item.fechaCreacion.toLocaleDateString("es-ES") },
+              { header: "Libro", key: (item) => item.libro?.titulo },
               {
                 header: "Estado",
                 key: (item) => (
-                  <Badge color={item.estatus === "PENDIENTE" ? "warning" : "primary"}>{item.estatus}</Badge>
+                  <Badge color={item.reserva.estatus === "PENDIENTE" ? "warning" : "primary"}>
+                    {item.reserva.estatus}
+                  </Badge>
                 ),
                 className: "text-right",
               },
@@ -196,13 +198,15 @@ export default function ClienteContenedorUsuario({ usuarioData }: ClienteContene
             reservas={reservasInventario || []}
             columns={[
               { header: "ID", key: "id", className: "w-[100px]" },
-              { header: "Fecha", key: (item) => item.fechaCreacion.toLocaleDateString("es-ES") },
-              { header: "Nombre", key: "nombre" },
-              { header: "Marca", key: "marca" },
+              { header: "Fecha de préstamo", key: (item) => item.fechaCreacion.toLocaleDateString("es-ES") },
+              { header: "Nombre", key: (item) => item.reserva.equipo.modelo },
+              { header: "Marca", key: (item) => item.reserva.equipo.marca.nombre },
               {
                 header: "Estado",
                 key: (item) => (
-                  <Badge color={item.estatus === "PENDIENTE" ? "warning" : "primary"}>{item.estatus}</Badge>
+                  <Badge color={item.reserva.estatus === "PENDIENTE" ? "warning" : "primary"}>
+                    {item.reserva.estatus}
+                  </Badge>
                 ),
                 className: "text-right",
               },
