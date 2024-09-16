@@ -10,6 +10,7 @@ import { EditarEquipoModal } from "./edit-equipo";
 import { type SortingState } from "@tanstack/react-table";
 import { getEquiposColumnas } from "./columns";
 import { type inputGetEquipos } from "@/shared/filters/equipos-filter.schema";
+import { VerEquipoModal } from "./ver-equipo";
 
 type EquiposData = RouterOutputs["equipos"]["getAll"];
 type EquiposFilters = z.infer<typeof inputGetEquipos>;
@@ -43,6 +44,7 @@ export const EquiposTable = ({ data, filters }: EquiposTableProps) => {
           cell({ original }) {
             return (
               <>
+                <VerEquipoModal equipoId={original.id} />
                 <EditarEquipoModal equipoId={original.id} />
                 <RemoveEquipoModal equipoId={original.id} nombre={original.tipo.nombre} onSubmit={refresh} />
               </>
