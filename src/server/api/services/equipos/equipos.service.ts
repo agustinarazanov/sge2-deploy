@@ -34,17 +34,17 @@ import {
 export const getTodosLosEquiposProcedure = protectedProcedure.input(inputGetEquipos).query(async ({ ctx, input }) => {
   validarInput(inputGetEquipos, input);
 
-  const libros = await getAllEquipos(ctx, input);
+  const equipos = await getAllEquipos(ctx, input);
 
-  return libros;
+  return equipos;
 });
 
 export const equipoPorIdProcedure = protectedProcedure.input(inputGetEquipo).query(async ({ ctx, input }) => {
   validarInput(inputGetEquipo, input);
 
-  const libro = await getEquipoPorId(ctx, input);
+  const equipos = await getEquipoPorId(ctx, input);
 
-  return libro;
+  return equipos;
 });
 
 export const nuevoEquipoProcedure = protectedProcedure.input(inputAgregarEquipo).mutation(async ({ ctx, input }) => {
@@ -52,9 +52,9 @@ export const nuevoEquipoProcedure = protectedProcedure.input(inputAgregarEquipo)
 
   const userId = ctx.session.user.id;
 
-  const libro = await agregarEquipo(ctx, input, userId);
+  const equipo = await agregarEquipo(ctx, input, userId);
 
-  return libro;
+  return equipo;
 });
 
 export const editarEquipoProcedure = protectedProcedure.input(inputEditarEquipos).mutation(async ({ ctx, input }) => {

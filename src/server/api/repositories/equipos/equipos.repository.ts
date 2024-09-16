@@ -23,19 +23,43 @@ export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAl
     ...(searchText
       ? {
           OR: [
+            { inventarioId: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
+            {
+              tipo: {
+                nombre: {
+                  contains: searchText ?? undefined,
+                  mode: "insensitive",
+                }
+              },
+            },
+            {
+              marca: {
+                nombre: {
+                  contains: searchText ?? undefined,
+                  mode: "insensitive",
+                }
+              },
+            },
+            {
+              modelo: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
             {
               observaciones: {
                 contains: searchText ?? undefined,
+                mode: "insensitive",
               },
             },
             {
               palabrasClave: {
                 contains: searchText ?? undefined,
-              },
-            },
-            {
-              imagen: {
-                contains: searchText ?? undefined,
+                mode: "insensitive",
               },
             },
           ],

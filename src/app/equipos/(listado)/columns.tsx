@@ -1,7 +1,6 @@
 import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import EstadoEquipo from "./estado-equipo";
-// import EstadoEquipo from "./estado-equipo";
 
 type EquipoData = RouterOutputs["equipos"]["getAll"]["equipos"][number];
 
@@ -13,7 +12,7 @@ export const getEquiposColumnas = () => {
       header: "Inventario",
       cell: ({ getValue }) => {
         const id = getValue().toString().padStart(4, "0");
-        return `#${id}`;
+        return `${id}`;
       },
     }),
     colHelper.accessor("tipo.nombre", {
