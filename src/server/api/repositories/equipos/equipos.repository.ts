@@ -81,6 +81,7 @@ export const getEquipoPorId = async (ctx: { db: PrismaClient }, input: InputGetE
       marca: true,
       estado: true,
       tipo: true,
+      sede: true,
     },
     where: {
       id,
