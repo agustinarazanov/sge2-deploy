@@ -15,14 +15,10 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
   const { pageIndex, pageSize, searchText, orderDirection, orderBy, estatus, userId } = input;
 
   const filtrosWhereReservaEquipo: Prisma.ReservaEquipoWhereInput = {
-    ...(userId ? { reserva: { usuarioSolicitoId: userId } } : {}),
-    ...(estatus
-      ? {
-          reserva: {
-            estatus: estatus,
-          },
-        }
-      : {}),
+    reserva: {
+      ...(userId ? { usuarioSolicitoId: userId } : {}),
+      ...(estatus ? { estatus: estatus } : {}),
+    },
     ...(searchText
       ? {
           OR: [
@@ -116,7 +112,11 @@ export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: I
 };
 
 type InputCrearPrestamoEquipo = z.infer<typeof inputPrestarEquipo>;
-export const crearPrestamoEquipo = async (ctx: { db: PrismaClient }, input: InputCrearPrestamoEquipo, userId: string) => {
+export const crearPrestamoEquipo = async (
+  ctx: { db: PrismaClient },
+  input: InputCrearPrestamoEquipo,
+  userId: string,
+) => {
   try {
     if (!input.usuarioSolicitanteId) {
       throw new Error("El usuario solicitante es requerido");
