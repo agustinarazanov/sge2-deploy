@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import PrestarEquipoModal from "../_components/modal-prestar";
+import DevolverEquipoModal from "../_components/modal-devolver";
 
 type EstadoEquipoProps = {
   id: number;
@@ -13,7 +14,7 @@ export default function EstadoEquipo({ disponible, id }: EstadoEquipoProps) {
         <Badge variant={"default"} color={"success"} className="w-full text-center">
           <div className="w-full">Disponible</div>
         </Badge>
-        {<PrestarEquipoModal equipoId={id} />}
+        <PrestarEquipoModal equipoId={id} />
       </div>
     );
   }
@@ -23,7 +24,7 @@ export default function EstadoEquipo({ disponible, id }: EstadoEquipoProps) {
       <Badge variant={"default"} color={"danger"} className="w-full text-center">
         <div className="w-full">Prestado</div>
       </Badge>
-      {/* <DevolverLibroModal libroId={id} /> */}
+      <DevolverEquipoModal equipoId={id} />
     </div>
   );
 }
