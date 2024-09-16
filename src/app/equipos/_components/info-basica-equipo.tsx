@@ -38,7 +38,7 @@ export const EquipoInformacionBasica = ({ equipoId }: { equipoId: number }) => {
 
         <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
           <div className="w-full">
-            <u>Palabras clave:</u> {isLoading ? <Skeleton className="h-4 w-full" /> : `${equipo?.palabrasClave}`}
+            <u>Palabras clave:</u> {isLoading ? <Skeleton className="h-4 w-full" /> : `${equipo?.palabrasClave ?? ""}`}
           </div>
 
           <div className="w-full">
