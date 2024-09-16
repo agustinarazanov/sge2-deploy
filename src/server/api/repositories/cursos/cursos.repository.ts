@@ -10,8 +10,8 @@ import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 
 type InputGetAll = z.infer<typeof inputGetCursos>;
-export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, materia, anioDeCarrera, userId, orderBy, orderDirection, searchText } = input;
+export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll, userId: string) => {
+  const { pageIndex, pageSize, materia, anioDeCarrera, filtrByUserId, orderBy, orderDirection, searchText } = input;
 
   const ordenCursos: Prisma.CursoOrderByWithRelationInput | Prisma.CursoOrderByWithRelationInput[] = orderBy
     ? construirOrderByDinamico(orderBy ?? "", orderDirection ?? "")
@@ -31,76 +31,45 @@ export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll
       {
         profesores: {
           some: {
-            userId: userId,
+            ...(filtrByUserId === "true" ? { userId: userId } : {}),
+            ...(searchText
+              ? {
+                  usuario: {
+                    OR: [
+                      { nombre: { contains: searchText ?? undefined, mode: "insensitive" } },
+                      { apellido: { contains: searchText ?? undefined, mode: "insensitive" } },
+                    ],
+                  },
+                }
+              : {}),
           },
         },
       },
       {
         ayudantes: {
           some: {
-            userId: userId,
+            ...(filtrByUserId === "true" ? { userId: userId } : {}),
+            ...(searchText
+              ? {
+                  usuario: {
+                    OR: [
+                      { nombre: { contains: searchText ?? undefined, mode: "insensitive" } },
+                      { apellido: { contains: searchText ?? undefined, mode: "insensitive" } },
+                    ],
+                  },
+                }
+              : {}),
+          },
+        },
+      },
+      {
+        division: {
+          nombre: {
+            ...(searchText ? { contains: searchText ?? undefined, mode: "insensitive" } : {}),
           },
         },
       },
     ],
-    ...(searchText
-      ? {
-          OR: [
-            {
-              division: {
-                nombre: {
-                  contains: searchText ?? undefined,
-                  mode: "insensitive",
-                },
-              },
-            },
-            {
-              profesores: {
-                some: {
-                  usuario: {
-                    OR: [
-                      {
-                        nombre: {
-                          contains: searchText ?? undefined,
-                          mode: "insensitive",
-                        },
-                      },
-                      {
-                        apellido: {
-                          contains: searchText ?? undefined,
-                          mode: "insensitive",
-                        },
-                      },
-                    ],
-                  },
-                },
-              },
-            },
-            {
-              ayudantes: {
-                some: {
-                  usuario: {
-                    OR: [
-                      {
-                        nombre: {
-                          contains: searchText ?? undefined,
-                          mode: "insensitive",
-                        },
-                      },
-                      {
-                        apellido: {
-                          contains: searchText ?? undefined,
-                          mode: "insensitive",
-                        },
-                      },
-                    ],
-                  },
-                },
-              },
-            },
-          ],
-        }
-      : {}),
   };
 
   const [cursos, count] = await ctx.db.$transaction([
