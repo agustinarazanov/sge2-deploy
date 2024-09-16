@@ -39,7 +39,7 @@ export const inputGetCursos = z.object({
     .refine((value) => value && parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
     .catch(""),
   anioDeCarrera: z.string().optional(),
-  userId: z.string().optional(),
+  filtrByUserId: z.enum(["true", "false"]).optional(),
 });
 
 export const inputGetCursosParaReserva = z.object({});

@@ -18,7 +18,9 @@ import {
 export const getTodosLosCursosProcedure = protectedProcedure.input(inputGetCursos).query(async ({ ctx, input }) => {
   validarInput(inputGetCursos, input);
 
-  const cursos = await getAllCursos(ctx, input);
+  const userId = ctx.session.user.id;
+
+  const cursos = await getAllCursos(ctx, input, userId);
 
   return cursos;
 });
