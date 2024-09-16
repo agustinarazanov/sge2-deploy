@@ -28,4 +28,6 @@ export const inputEditarUsuario = z.object({
   apellido: z.string().min(1, { message: "Requerido" }),
   email: z.string().min(1, { message: "Requerido" }),
   legajo: z.string().min(1, { message: "Requerido" }),
+  esTutor: z.boolean(),
+  esDocente: z.boolean(),
 });

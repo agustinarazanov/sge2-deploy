@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { XIcon } from "lucide-react";
 import { inputEditarUsuario } from "@/shared/filters/admin-usuarios-filter.schema";
 import { RolesSelector } from "../../usuarios/_components/filtros/roles-selector";
+import { Checkbox } from "@/components/ui/checkbox";
+import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 
 type Props = {
   id: string;
@@ -35,6 +37,8 @@ export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
       email: usuario?.email ?? "",
       legajo: usuario?.legajo ?? "",
       roles: usuario?.usuarioRol.map((rol) => String(rol.rolId)) ?? [],
+      esTutor: usuario?.esTutor ?? false,
+      esDocente: usuario?.esDocente ?? false,
     },
     resolver: zodResolver(inputEditarUsuario),
   });
@@ -53,6 +57,8 @@ export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
         email: usuario?.email ?? "",
         legajo: usuario?.legajo ?? "",
         roles: usuario.usuarioRol.map((rol) => String(rol.rolId)),
+        esTutor: usuario?.esTutor ?? false,
+        esDocente: usuario?.esDocente ?? false,
       });
     }
   }, [formHook, usuario]);
@@ -164,6 +170,37 @@ export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
                   type={"text"}
                   className="mt-2"
                   autoComplete="off"
+                />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+              <div className="mt-4 w-full">
+                <FormField
+                  control={control}
+                  name="esDocente"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      </FormControl>
+                      <FormLabel>Es docente</FormLabel>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="mt-4 w-full">
+                <FormField
+                  control={control}
+                  name="esTutor"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      </FormControl>
+                      <FormLabel>Es tutor</FormLabel>
+                    </FormItem>
+                  )}
                 />
               </div>
             </div>

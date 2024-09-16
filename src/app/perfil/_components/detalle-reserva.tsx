@@ -1,11 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { type RouterOutputs } from "@/trpc/react";
 
-type ReservaBase = {
-  id: number;
-  fechaCreacion: Date;
-  estatus: string;
-};
+type ReservaBibliotecaData = RouterOutputs["reservas"]["reservaBiblioteca"]["getReservaPorUser"];
+type ReservaEquipoData = RouterOutputs["reservas"]["reservaEquipo"]["getReservaPorUser"];
+type ReservaLaboratorioData = RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getReservaPorUser"];
+type ReservaBase = ReservaBibliotecaData | ReservaEquipoData | ReservaLaboratorioData;
 
 type ColumnConfig<T> = {
   header: string;

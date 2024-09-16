@@ -10,24 +10,9 @@ import DetalleReserva from "./detalle-reserva";
 import type { RouterOutputs } from "@/trpc/react";
 
 type UsuarioData = RouterOutputs["admin"]["usuarios"]["getUsuarioPorId"];
-type ReservaBase = {
-  id: number;
-  fechaCreacion: Date;
-  estatus: string;
-};
-
-type ReservaLibro = ReservaBase & {
-  titulo: string;
-};
-
-type ReservaInventario = ReservaBase & {
-  nombre: string;
-  marca: string;
-};
-
-type ReservaLaboratorio = ReservaBase & {
-  laboratorio: string;
-};
+type ReservaBibliotecaData = RouterOutputs["reservas"]["reservaBiblioteca"]["getReservaPorUser"];
+type ReservaEquipoData = RouterOutputs["reservas"]["reservaEquipo"]["getReservaPorUser"];
+type ReservaLaboratorioData = RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getReservaPorUser"];
 
 type ClienteContenedorUsuarioProps = {
   usuarioData: UsuarioData;
@@ -124,7 +109,7 @@ const mockReservasLibros = [
   },
 ];
 
-export default function ClienteContenedorUsuario({ usuarioData }: ClienteContenedorUsuarioProps) {
+export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsuarioProps) {
   const [activeTab, setActiveTab] = useState<"libros" | "inventario" | "laboratorio">("libros");
 
   const { data: reservasLibros, isLoading: isLoadingLibros } = useQuery({
@@ -165,7 +150,7 @@ export default function ClienteContenedorUsuario({ usuarioData }: ClienteContene
         {isLoadingLibros ? (
           <div>Cargando reservas de libros...</div>
         ) : (
-          <DetalleReserva<ReservaLibro>
+          <DetalleReserva<ReservaBibliotecaData>
             idUsuario={usuarioData.id}
             titulo="Reserva de Libros"
             descripcion="Historial de Libros"
@@ -191,7 +176,7 @@ export default function ClienteContenedorUsuario({ usuarioData }: ClienteContene
         {isLoadingInventario ? (
           <div>Cargando reservas de inventario...</div>
         ) : (
-          <DetalleReserva<ReservaInventario>
+          <DetalleReserva<ReservaEquipoData>
             idUsuario={usuarioData.id}
             titulo="Reserva de Inventario"
             descripcion="Historial de Inventarios"
@@ -218,7 +203,7 @@ export default function ClienteContenedorUsuario({ usuarioData }: ClienteContene
         {isLoadingLaboratorio ? (
           <div>Cargando reservas de laboratorio...</div>
         ) : (
-          <DetalleReserva<ReservaLaboratorio>
+          <DetalleReserva<ReservaLaboratorioData>
             idUsuario={usuarioData.id}
             titulo="Reserva de Laboratorio"
             descripcion="Historial de Laboratorios"
