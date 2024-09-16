@@ -11,18 +11,14 @@ import { informacionUsuario } from "../usuario-helper";
 import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 
 type InputGetAll = z.infer<typeof inputGetAllPrestamosLibros>;
-export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText, orderDirection, orderBy, estatus, userId } = input;
+export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetAll, userId: string) => {
+  const { pageIndex, pageSize, searchText, orderDirection, orderBy, estatus, filtrByUserId } = input;
 
   const filtrosWhereReservaLibro: Prisma.ReservaLibroWhereInput = {
-    ...(userId ? { reserva: { usuarioSolicitoId: userId } } : {}),
-    ...(estatus
-      ? {
-          reserva: {
-            estatus: estatus,
-          },
-        }
-      : {}),
+    reserva: {
+      ...(filtrByUserId === "true" ? { usuarioSolicitoId: userId } : {}),
+      ...(estatus ? { estatus: estatus } : {}),
+    },
     ...(searchText
       ? {
           OR: [
@@ -55,10 +51,17 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
       : {}),
   };
 
+  console.log({
+    input,
+    filtrosWhereReservaLibro,
+  });
+
   const ordenLibro: Prisma.ReservaLibroOrderByWithRelationInput = construirOrderByDinamico(
     orderBy ?? "",
     orderDirection ?? "",
   );
+
+  console.log({ filtrosWhereReservaLibro, userId });
 
   const [count, reservas] = await ctx.db.$transaction([
     ctx.db.reservaLibro.count({

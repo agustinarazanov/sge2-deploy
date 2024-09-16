@@ -2,7 +2,6 @@ import { api } from "@/trpc/server";
 import { type z } from "zod";
 import { type inputGetAllPrestamosLibros } from "@/shared/filters/reservas-filter.schema";
 import { BibliotecaPrestamosTable } from "./table";
-import { getServerAuthSession } from "@/server/auth";
 
 type BibliotecaPrestamosFilters = z.infer<typeof inputGetAllPrestamosLibros>;
 
@@ -18,7 +17,7 @@ export default async function BibliotecaPrestamosTableContainer({
   if (filterByUser) {
     filters = {
       ...filters,
-      userId: (await getServerAuthSession())?.user.id,
+      filtrByUserId: "true",
     };
   }
 
