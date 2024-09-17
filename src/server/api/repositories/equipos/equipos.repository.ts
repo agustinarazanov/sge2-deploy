@@ -65,6 +65,13 @@ export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAl
           ],
         }
       : {}),
+      ...(input?.laboratorio
+        ? {
+            laboratorio: {
+              id: parseInt(input?.laboratorio),
+            },
+          }
+        : {}),
   };
 
   const [count, equipos] = await ctx.db.$transaction([
