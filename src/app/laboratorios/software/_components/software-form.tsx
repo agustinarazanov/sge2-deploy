@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
 import { inputEditarSoftware } from "@/shared/filters/laboratorio-filter.schema";
 import { LaboratorioDropdownMultipleForm } from "@/app/_components/form/laboratorios-dropdown-multiple";
+import { type z } from "zod";
 
 type Props = {
   softwareId?: number;
