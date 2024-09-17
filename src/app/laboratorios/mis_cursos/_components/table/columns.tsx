@@ -1,4 +1,5 @@
 import { DatoUsuarioReserva } from "@/app/_components/datos-usuario";
+import { CursoTurno } from "@/app/_components/turno-text";
 import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
@@ -26,11 +27,7 @@ export const getColumns = () => {
       cell: (info) => {
         const turno = info.row.original.turno;
 
-        if (turno === "MANANA") return "Mañana";
-        if (turno === "TARDE") return "Tarde";
-        if (turno === "NOCHE") return "Noche";
-
-        return turno ?? "-";
+        return <CursoTurno turno={turno} />;
       },
     }),
     colHelper.accessor("sede.nombre", {
@@ -110,7 +107,7 @@ export const getColumns = () => {
         if (!profesores.length) return <span className="hidden">Sin profesores</span>;
 
         return profesores.map((profesor) => {
-          return <DatoUsuarioReserva usuario={profesor.usuario} />;
+          return <DatoUsuarioReserva usuario={profesor.usuario} key={profesor.userId} />;
         });
       },
       meta: {
@@ -127,7 +124,7 @@ export const getColumns = () => {
         if (!ayudantes.length) return <span className="hidden">Sin ayudantes</span>;
 
         return ayudantes.map((ayudante) => {
-          return <DatoUsuarioReserva usuario={ayudante.usuario} />;
+          return <DatoUsuarioReserva usuario={ayudante.usuario} key={ayudante.userId} />;
         });
       },
       meta: {
