@@ -63,9 +63,9 @@ export const editarEquipoProcedure = protectedProcedure.input(inputEditarEquipos
 
   const userId = ctx.session.user.id;
 
-  const libro = await editarEquipo(ctx, input, userId);
+  const equipo = await editarEquipo(ctx, input, userId);
 
-  return libro;
+  return equipo;
 });
 
 export const eliminarEquipoProcedure = protectedProcedure
@@ -73,9 +73,9 @@ export const eliminarEquipoProcedure = protectedProcedure
   .mutation(async ({ ctx, input }) => {
     validarInput(inputEliminarEquipo, input);
 
-    const libro = await eliminarEquipo(ctx, input);
+    const equipo = await eliminarEquipo(ctx, input);
 
-    return libro;
+    return equipo;
   });
 
 export const eliminarTipoProcedure = protectedProcedure.input(inputEliminarTipo).mutation(async ({ ctx, input }) => {
@@ -117,9 +117,9 @@ export const nuevoTipoProcedure = protectedProcedure.input(inputAgregarTipo).mut
 
   const userId = ctx.session.user.id;
 
-  const libro = await agregarTipo(ctx, input, userId);
+  const tipo = await agregarTipo(ctx, input, userId);
 
-  return libro;
+  return tipo;
 });
 
 export const getTodasLasMarcasProcedure = protectedProcedure.query(async ({ ctx }) => {
@@ -129,9 +129,9 @@ export const getTodasLasMarcasProcedure = protectedProcedure.query(async ({ ctx 
 });
 
 export const getTodosLosEstadosProcedure = protectedProcedure.query(async ({ ctx }) => {
-  const marcas = await getAllEstados(ctx);
+  const estados = await getAllEstados(ctx);
 
-  return marcas;
+  return estados;
 });
 
 export const getTodosLosArmariosProcedure = protectedProcedure.query(async ({ ctx }) => {
