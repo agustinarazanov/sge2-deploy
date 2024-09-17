@@ -16,7 +16,7 @@ type Props = {
 };
 
 export const EquiposFilterArmario = ({ filters }: Props) => {
-  const { armario, onArmarioChange, laboratorio } = useEquiposQueryParam(filters);
+  const { armario, onArmarioChange } = useEquiposQueryParam(filters);
 
   const [query, setQuery] = useState("");
 
