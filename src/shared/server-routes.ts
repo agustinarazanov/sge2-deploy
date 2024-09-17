@@ -35,7 +35,7 @@ export const BIBLIOTECA_ROUTE = {
   ],
 };
 
-export const LABORATORIO_ROUTE: AppRoute = {
+export const LABORATORIO_ROUTE = {
   href: "/laboratorios",
   label: "Laboratorios",
   isPublic: false,
@@ -48,6 +48,11 @@ export const LABORATORIO_ROUTE: AppRoute = {
     {
       href: "/laboratorios/catedra",
       label: "Cátedra",
+      isPublic: false,
+    },
+    {
+      href: "/laboratorios/software",
+      label: "Aplicaciones en Laboratorios",
       isPublic: false,
     },
   ],

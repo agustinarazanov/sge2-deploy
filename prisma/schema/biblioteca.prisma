@@ -12,25 +12,25 @@ model Libro {
     materias LibroMateria[]
 
     laboratorioId Int
-    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id])
+    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id], onDelete: Restrict)
 
     armarioId Int?
-    armario   Armario? @relation(fields: [armarioId], references: [id])
+    armario   Armario? @relation(fields: [armarioId], references: [id], onDelete: Restrict)
 
     estanteId Int?
-    estante   Estante? @relation(fields: [estanteId], references: [id])
+    estante   Estante? @relation(fields: [estanteId], references: [id], onDelete: Restrict)
 
     autorId Int
-    autor   LibroAutor @relation(fields: [autorId], references: [id])
+    autor   LibroAutor @relation(fields: [autorId], references: [id], onDelete: Restrict)
 
     idiomaId Int
-    idioma   LibroIdioma @relation(fields: [idiomaId], references: [id])
+    idioma   LibroIdioma @relation(fields: [idiomaId], references: [id], onDelete: Restrict)
 
     editorialId Int
-    editorial   LibroEditorial @relation(fields: [editorialId], references: [id])
+    editorial   LibroEditorial @relation(fields: [editorialId], references: [id], onDelete: Restrict)
 
     sedeId Int
-    sede   Sede @relation(fields: [sedeId], references: [id])
+    sede   Sede @relation(fields: [sedeId], references: [id], onDelete: Cascade)
 
     disponible Boolean @default(true)
 
