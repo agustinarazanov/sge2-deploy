@@ -12,7 +12,7 @@ import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 
 type InputGetAll = z.infer<typeof inputGetEquipos>;
 export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText, laboratorio, tipo } = input;
+  const { pageIndex, pageSize, searchText, laboratorio, tipo, armario } = input;
 
   const ordenEquipos: Prisma.EquipoOrderByWithRelationInput = construirOrderByDinamico(
     input?.orderBy ?? "",
@@ -76,6 +76,13 @@ export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAl
         ? {
             tipo: {
               id: parseInt(tipo),
+            },
+          }
+        : {}),
+      ...(armario
+        ? {
+            armario: {
+              id: parseInt(armario),
             },
           }
         : {}),
@@ -246,4 +253,19 @@ export const getAllEstados = async (ctx: { db: PrismaClient }) => {
   });
 
   return estados;
+};
+
+export const getAllArmarios = async (ctx: { db: PrismaClient }) => {
+  const armarios = await ctx.db.armario.findMany({
+    orderBy: {
+      nombre: "asc",
+    },
+    select: {
+      id: true,
+      nombre: true,
+      laboratorio: true,
+    },
+  });
+
+  return armarios;
 };
