@@ -84,7 +84,7 @@ export const EquiposFilterTipo = ({ filters }: Props) => {
         className={""}
         onQueryChange={setQuery}
         isLoading={isLoading}
-        placeholder="Buscar por tipo de equipo"
+        placeholder="Buscar por tipo"
         clearable
         debounceTime={0}
         value={currentTipo}

@@ -9,6 +9,7 @@ import {
   agregarEquipo,
   editarEquipo,
   eliminarEquipo,
+  getAllArmarios,
   getAllEquipos,
   getAllEstados,
   getAllMarcas,
@@ -131,4 +132,10 @@ export const getTodosLosEstadosProcedure = protectedProcedure.query(async ({ ctx
   const marcas = await getAllEstados(ctx);
 
   return marcas;
+});
+
+export const getTodosLosArmariosProcedure = protectedProcedure.query(async ({ ctx }) => {
+  const armarios = await getAllArmarios(ctx);
+
+  return armarios;
 });
