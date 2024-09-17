@@ -10,25 +10,25 @@ model Equipo {
     imagen        String?
 
     tipoId Int
-    tipo   EquipoTipo @relation(fields: [tipoId], references: [id])
+    tipo   EquipoTipo @relation(fields: [tipoId], references: [id], onDelete: Restrict)
 
     marcaId Int
-    marca   EquipoMarca @relation(fields: [marcaId], references: [id])
+    marca   EquipoMarca @relation(fields: [marcaId], references: [id], onDelete: Restrict)
 
     sedeId Int
-    sede   Sede @relation(fields: [sedeId], references: [id])
+    sede   Sede @relation(fields: [sedeId], references: [id], onDelete: Cascade)
 
     laboratorioId Int
-    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id])
+    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id], onDelete: Restrict)
 
     armarioId Int?
-    armario   Armario? @relation(fields: [armarioId], references: [id])
+    armario   Armario? @relation(fields: [armarioId], references: [id], onDelete: Restrict)
 
     estanteId Int?
-    estante   Estante? @relation(fields: [estanteId], references: [id])
+    estante   Estante? @relation(fields: [estanteId], references: [id], onDelete: Restrict)
 
     estadoId Int
-    estado   EquipoEstado @relation(fields: [estadoId], references: [id])
+    estado   EquipoEstado @relation(fields: [estadoId], references: [id], onDelete: Restrict)
 
     disponible Boolean @default(true)
 
