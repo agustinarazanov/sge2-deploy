@@ -17,13 +17,13 @@ model Curso {
     ac            String
 
     sedeId Int
-    sede   Sede @relation(fields: [sedeId], references: [id])
+    sede   Sede @relation(fields: [sedeId], references: [id], onDelete: Cascade)
 
     materiaId Int
-    materia   Materia @relation(fields: [materiaId], references: [id])
+    materia   Materia @relation(fields: [materiaId], references: [id], onDelete: Cascade)
 
     divisionId Int
-    division   Division @relation(fields: [divisionId], references: [id])
+    division   Division @relation(fields: [divisionId], references: [id], onDelete: Cascade)
 
     turno TurnoCurso
 
@@ -43,8 +43,8 @@ model CursoAyudante {
     cursoId Int
     userId  String
 
-    curso   Curso @relation(fields: [cursoId], references: [id])
-    usuario User  @relation(fields: [userId], references: [id])
+    curso   Curso @relation(fields: [cursoId], references: [id], onDelete: Cascade)
+    usuario User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     fechaCreacion    DateTime @default(now())
     usuarioCreadorId String
@@ -59,8 +59,8 @@ model CursoProfesor {
     cursoId Int
     userId  String
 
-    curso   Curso @relation(fields: [cursoId], references: [id])
-    usuario User  @relation(fields: [userId], references: [id])
+    curso   Curso @relation(fields: [cursoId], references: [id], onDelete: Cascade)
+    usuario User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     fechaCreacion    DateTime @default(now())
     usuarioCreadorId String

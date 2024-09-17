@@ -1,3 +1,4 @@
+import { DatoUsuarioReserva } from "@/app/_components/datos-usuario";
 import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
@@ -10,16 +11,16 @@ export const getColumns = () => {
     colHelper.accessor("division.nombre", {
       header: "División",
     }),
-    colHelper.accessor("ac", {
-      header: "Duración",
-      cell: (info) => {
-        const duracion = info.row.original.ac;
+    // colHelper.accessor("ac", {
+    //   header: "Duración",
+    //   cell: (info) => {
+    //     const duracion = info.row.original.ac;
 
-        if (duracion === "A") return "Anual";
-        if (duracion === "C") return "Cuatrimestral";
-        return "-";
-      },
-    }),
+    //     if (duracion === "A") return "Anual";
+    //     if (duracion === "C") return "Cuatrimestral";
+    //     return "-";
+    //   },
+    // }),
     colHelper.accessor("turno", {
       header: "Turno",
       cell: (info) => {
@@ -108,7 +109,9 @@ export const getColumns = () => {
 
         if (!profesores.length) return <span className="hidden">Sin profesores</span>;
 
-        return profesores.map((profesor) => `${profesor.usuario.apellido} ${profesor.usuario.nombre}`).join(", ");
+        return profesores.map((profesor) => {
+          return <DatoUsuarioReserva usuario={profesor.usuario} />;
+        });
       },
       meta: {
         header: {
@@ -123,7 +126,9 @@ export const getColumns = () => {
 
         if (!ayudantes.length) return <span className="hidden">Sin ayudantes</span>;
 
-        return ayudantes.map((ayudante) => `${ayudante.usuario.apellido} ${ayudante.usuario.nombre}`).join(", ");
+        return ayudantes.map((ayudante) => {
+          return <DatoUsuarioReserva usuario={ayudante.usuario} />;
+        });
       },
       meta: {
         header: {
