@@ -2,6 +2,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { getServerSession, type DefaultSession, type NextAuthOptions } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
 import DiscordProvider from "next-auth/providers/discord";
+import KeycloakProvider, { type KeycloakProfile } from "next-auth/providers/keycloak";
 
 import { env } from "@/env";
 import { db } from "@/server/db";
@@ -21,12 +22,20 @@ declare module "next-auth" {
       // role: UserRole;
     } & DefaultSession["user"];
   }
-
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
 }
+
+const prismaAdapter = PrismaAdapter(db);
+
+const CustomAdapter = {
+  ...prismaAdapter,
+  linkAccount: (account) => {
+    delete account["not-before-policy"];
+    if (prismaAdapter.linkAccount) {
+      return prismaAdapter.linkAccount(account as Parameters<typeof prismaAdapter.linkAccount>[0]);
+    }
+    throw new Error("linkAccount method is undefined in prismaAdapter");
+  },
+} as Adapter;
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -39,6 +48,26 @@ export const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60,
   },
   callbacks: {
+    signIn: async ({ user, account }) => {
+      if (!account || (await db.account.findFirst({ where: { provider: account.provider } }))) return true;
+
+      const existingUser = await db.user.findUnique({
+        where: { email: user.email ?? undefined },
+      });
+
+      if (existingUser) {
+        if (Object.hasOwn(account, "not-before-policy")) {
+          delete account["not-before-policy"];
+        }
+        await db.account.create({
+          data: {
+            ...account,
+            userId: existingUser.id,
+          },
+        });
+      }
+      return true;
+    },
     session: ({ session, token }) => {
       return {
         ...session,
@@ -49,7 +78,7 @@ export const authOptions: NextAuthOptions = {
       };
     },
   },
-  adapter: PrismaAdapter(db) as Adapter,
+  adapter: CustomAdapter,
   providers: [
     Credentials({
       name: "domain email",
@@ -69,6 +98,21 @@ export const authOptions: NextAuthOptions = {
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
+    }),
+    KeycloakProvider({
+      clientId: process.env.KEYCLOAK_CLIENT_ID ?? "",
+      clientSecret: process.env.KEYCLOAK_CLIENT_SECRET ?? "",
+      issuer: process.env.KEYCLOAK_ISSUER,
+      profile(profile: KeycloakProfile) {
+        return {
+          id: profile.sub,
+          name: profile.preferred_username,
+          email: profile.email,
+          image: profile.picture,
+          nombre: profile.given_name,
+          apellido: profile.family_name,
+        };
+      },
     }),
     /**
      * ...add more providers here.

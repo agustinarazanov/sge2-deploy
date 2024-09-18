@@ -9,7 +9,6 @@ import { useState } from "react";
 
 export const AdminLaboratoriosNuevoLaboratorio = () => {
   const [open, setOpen] = useState(false);
-
   const router = useRouter();
 
   const handleSave = () => {
@@ -33,7 +32,7 @@ export const AdminLaboratoriosNuevoLaboratorio = () => {
       }
       className={"max-h-[calc(100vh_-_10%)]"}
     >
-      <div className="flex max-h-max w-full flex-col  gap-4">
+      <div className="flex max-h-full w-full flex-col">
         <AdminLaboratorioForm onCancel={handleCancel} onSubmit={handleSave} />
       </div>
     </ModalDrawer>
