@@ -161,14 +161,9 @@ export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEdita
 };
 
 export const getAllTutores = async (ctx: { db: PrismaClient }) => {
-  const tutores = await ctx.db.user.findMany({
-    select: {
-      id: true,
-      nombre: true,
-      apellido: true,
-      email: true,
-      legajo: true,
-      image: true,
+  const tutores = await ctx.db.tutor.findMany({
+    include: {
+      usuario: true,
     },
   });
 

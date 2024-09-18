@@ -10,7 +10,7 @@ type TutorData = {
 
 export function TutorCard({ className, ...props }: CardProps & TutorData) {
   const { tutor } = props;
-  const { nombre, apellido, email, image } = tutor;
+  const { nombre, apellido, email, image } = tutor.usuario;
 
   return (
     <Card
@@ -47,13 +47,13 @@ export function TutorCard({ className, ...props }: CardProps & TutorData) {
             <span className="font-bold">Nombre:</span> {nombre} {apellido}
           </CardDescription>
           <CardDescription>
-            <span className="font-bold">Días y horarios:</span> {email}
+            <span className="font-bold">Días y horarios:</span> {tutor.diasHorarios}
           </CardDescription>
           <CardDescription>
-            <span className="font-bold">Sede:</span> {email}
+            <span className="font-bold">Sede:</span> {tutor.sede}
           </CardDescription>
           <CardDescription>
-            <span className="font-bold">Especialidad:</span> {email}
+            <span className="font-bold">Especialidad:</span> {tutor.especialidad}
           </CardDescription>
         </div>
       </CardContent>
