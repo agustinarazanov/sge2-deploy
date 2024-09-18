@@ -109,7 +109,9 @@ export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: I
       libro: true,
     },
     where: {
-      usuarioCreadorId: id,
+      reserva: {
+        usuarioSolicitoId: id,
+      },
     },
     orderBy: {
       fechaCreacion: "desc",
