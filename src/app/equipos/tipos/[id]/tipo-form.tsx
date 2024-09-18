@@ -92,7 +92,7 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
           <div className="flex w-full flex-col items-center justify-center">
             <div className="flex flex-col space-y-4 px-0 md:px-6">
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-                <div className="basis-1/1 mt-4">
+                <div className="mt-4 basis-2/2">
                   <FormInput
                     label={"Nombre"}
                     control={control}
@@ -100,6 +100,17 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     type={"text"}
                     className="mt-2"
                     placeholder={"Ingrese el nombre del tipo"}
+                  />
+                </div>
+              </div>
+              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+                <div className="mt-4 basis-2/2">
+                  <FormInput
+                    label={"Agregar imagen"}
+                    control={control}
+                    name="imagen"
+                    type={"file"}
+                    className="mt-2"
                   />
                 </div>
               </div>
