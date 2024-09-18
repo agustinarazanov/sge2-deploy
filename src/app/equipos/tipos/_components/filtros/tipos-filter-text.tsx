@@ -34,12 +34,16 @@ export const TiposFilterText = ({ filters }: Props) => {
     }
   };
 
+  const onClickIcon = () => {
+    onSearchTextChange(currentSearchText);
+  };
+
   return (
     <form onSubmit={(e) => e.preventDefault()} className="w-full">
       <Input
-        placeholder={"Buscar por tipo"}
+        placeholder={"Buscar por nombre"}
         name="searchText"
-        unit={<SearchIcon className="relative top-0.5 h-4 w-4 text-sub" />}
+        unit={<SearchIcon className="relative top-0.5 h-4 w-4 text-sub" onClick={onClickIcon} />}
         type={"search"}
         value={currentSearchText}
         onChange={handleTextChange}

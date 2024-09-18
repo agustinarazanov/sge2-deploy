@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-// TODO: como funciona esto?
 export const inputGetTipos = z.object({
   pageSize: z.enum(["10", "20", "30", "40", "50"]).default("10").catch("10"),
   pageIndex: z
@@ -19,6 +18,7 @@ export const inputGetTipos = z.object({
     .optional()
     .refine((value) => value && parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
     .catch(""),
+  fromFilter: z.string().optional().default("").catch(""),
 });
 
 export const inputEliminarTipo = z.object({ id: z.number() });
