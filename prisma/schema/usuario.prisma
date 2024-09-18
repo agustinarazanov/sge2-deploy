@@ -6,7 +6,7 @@ model User {
     name          String? // Viene con la cuenta
     email         String?   @unique
     emailVerified DateTime?
-    image         String?
+    image         String?   @default("/default-avatar.svg")
 
     nombre          String?
     apellido        String?
@@ -25,6 +25,7 @@ model User {
     gitlab          String?
     penalizaciones  Int       @default(0)
     esDocente       Boolean   @default(false)
+    esTutor         Boolean   @default(false)
 
     fechaRegistro            DateTime @default(now())
     fechaUltimoAcceso        DateTime @default(now())

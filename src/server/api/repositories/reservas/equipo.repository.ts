@@ -99,7 +99,15 @@ export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: I
   const reservas = await ctx.db.reservaEquipo.findMany({
     include: {
       reserva: true,
-      equipo: true,
+      equipo: {
+        include: {
+          marca: {
+            select: {
+              nombre: true,
+            },
+          },
+        },
+      },
     },
     where: {
       usuarioCreadorId: id,
