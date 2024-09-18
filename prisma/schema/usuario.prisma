@@ -25,6 +25,7 @@ model User {
     gitlab          String?
     penalizaciones  Int       @default(0)
     esDocente       Boolean   @default(false)
+    esTutor         Boolean   @default(false)
 
     fechaRegistro            DateTime @default(now())
     fechaUltimoAcceso        DateTime @default(now())

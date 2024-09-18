@@ -131,31 +131,56 @@ export const getUsuarioPorId = async (ctx: { db: PrismaClient }, input: InputGet
 type InputEditarUsuario = z.infer<typeof inputEditarUsuario>;
 export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEditarUsuario, userId: string) => {
   try {
-    const usuario = await ctx.db.user.update({
-      data: {
-        nombre: input.nombre,
-        apellido: input.apellido,
-        email: input.email,
-        legajo: input.legajo,
-        usuarioRol: {
-          deleteMany: {
-            userId: input.id,
-          },
-          createMany: {
-            data: input.roles.map((rolId) => ({
-              rolId: parseInt(rolId),
-              usuarioCreadorId: userId,
-            })),
+    const usuario = await ctx.db.$transaction(async (prisma) => {
+      const updatedUser = await prisma.user.update({
+        data: {
+          nombre: input.nombre,
+          apellido: input.apellido,
+          email: input.email,
+          legajo: input.legajo,
+          esDocente: input.esDocente,
+          esTutor: input.esTutor,
+          usuarioRol: {
+            deleteMany: {
+              userId: input.id,
+            },
+            createMany: {
+              data: input.roles.map((rolId) => ({
+                rolId: parseInt(rolId),
+                usuarioCreadorId: userId,
+              })),
+            },
           },
         },
-      },
-      where: {
-        id: input.id,
-      },
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (input.esTutor) {
+        await prisma.tutor.upsert({
+          where: { userId: input.id },
+          create: { userId: input.id, diasHorarios: "", especialidad: "", sede: "", usuarioCreadorId: userId },
+          update: {},
+        });
+      } else {
+        // buscar si existe un tutor, si no existe no hacer nada, si existe eliminarlo
+        const tutor = await prisma.tutor.findUnique({
+          where: { userId: input.id },
+        });
+        if (tutor) {
+          await prisma.tutor.delete({
+            where: { userId: input.id },
+          });
+        }
+      }
+
+      return updatedUser;
     });
 
     return usuario;
   } catch (error) {
+    console.error(error);
     throw new Error(`Error modificando usuario ${input.id}`);
   }
 };
