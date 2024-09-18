@@ -164,9 +164,15 @@ export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEdita
           update: {},
         });
       } else {
-        await prisma.tutor.delete({
+        // buscar si existe un tutor, si no existe no hacer nada, si existe eliminarlo
+        const tutor = await prisma.tutor.findUnique({
           where: { userId: input.id },
         });
+        if (tutor) {
+          await prisma.tutor.delete({
+            where: { userId: input.id },
+          });
+        }
       }
 
       return updatedUser;

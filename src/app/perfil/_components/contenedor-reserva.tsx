@@ -14,99 +14,10 @@ type ClienteContenedorUsuarioProps = {
   usuarioData: UsuarioData;
 };
 
-const mockReservasLibros = [
-  {
-    id: 1,
-    fechaCreacion: new Date(),
-    fechaEntregado: new Date(),
-    reservaId: 1,
-    libroId: 1,
-    usuarioCreadorId: "idUsuario",
-    usuarioModificadorId: "",
-    fechaModificacion: new Date(),
-    libro: {
-      id: 1,
-      bibliotecaId: "1",
-      inventarioId: "1",
-      titulo: "Libro 1",
-      anio: 2022,
-      autorId: 1,
-      editorialId: 1,
-      isbn: "ISBN 1",
-      sedeId: 1,
-      laboratorioId: 1,
-      idiomaId: 1,
-      armarioId: 0,
-      estanteId: 0,
-      fechaCreacion: new Date(),
-      fechaModificacion: new Date(),
-      usuarioCreadorId: "",
-      usuarioModificadorId: "",
-    },
-    reserva: {
-      id: 1,
-      usuarioCreadorId: "idUsuario",
-      fechaCreacion: new Date(),
-      tipo: "LIBRO",
-      estatus: "PENDIENTE",
-      fechaHoraInicio: new Date(),
-      fechaHoraFin: new Date(),
-      codigo: "",
-      usuarioModificadorId: "",
-      disponible: true,
-      usuarioTutorId: "",
-      fechaModificacion: new Date(),
-      fechaAprobacion: new Date(),
-    },
-  },
-  {
-    id: 2,
-    fechaCreacion: new Date(),
-    fechaEntregado: new Date(),
-    reservaId: 2,
-    libroId: 2,
-    usuarioCreadorId: "idUsuario",
-    usuarioModificadorId: "",
-    fechaModificacion: new Date(),
-    libro: {
-      id: 2,
-      bibliotecaId: "2",
-      inventarioId: "2",
-      titulo: "Libro 2asdasd",
-      disponible: true,
-      anio: 2022,
-      autorId: 2,
-      editorialId: 2,
-      isbn: "ISBN 2",
-      sedeId: 2,
-      laboratorioId: 2,
-      idiomaId: 2,
-      armarioId: 0,
-      estanteId: 0,
-      fechaCreacion: new Date(),
-      fechaModificacion: new Date(),
-      usuarioCreadorId: "",
-      usuarioModificadorId: "",
-    },
-    reserva: {
-      id: 2,
-      usuarioCreadorId: "idUsuario",
-      fechaCreacion: new Date(),
-      tipo: "LIBRO",
-      estatus: "PENDIENTE",
-      fechaHoraInicio: new Date(),
-      fechaHoraFin: new Date(),
-      codigo: "",
-      usuarioModificadorId: "",
-      usuarioTutorId: "",
-      fechaModificacion: new Date(),
-      fechaAprobacion: new Date(),
-    },
-  },
-];
-
 export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsuarioProps) {
-  const [activeTab, setActiveTab] = useState<"libros" | "inventario" | "laboratorio">("libros");
+  const [activeTab, setActiveTab] = useState<"libros" | "inventario" | "laboratorio abierto" | "laboratorio cerrado">(
+    "libros",
+  );
 
   if (!usuarioData) {
     return <div>Usuario no encontrado</div>;
@@ -128,17 +39,25 @@ export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsua
       },
     );
 
-  const { data: reservasLaboratorio, isLoading: isLoadingLaboratorio } =
+  const { data: reservasLaboratorioAbierto, isLoading: isLoadingLaboratorioAbierto } =
     api.reservas.reservaLaboratorioAbierto.getReservaPorUser.useQuery(
       { id: usuarioData.id },
       {
-        enabled: activeTab === "laboratorio",
+        enabled: activeTab === "laboratorio abierto",
+      },
+    );
+
+  const { data: reservasLaboratorioCerrado, isLoading: isLoadingLaboratorioCerrado } =
+    api.reservas.ReservarLaboratorioCerrado.getReservaPorUser.useQuery(
+      { id: usuarioData.id },
+      {
+        enabled: activeTab === "laboratorio cerrado",
       },
     );
 
   return (
     <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as typeof activeTab)} className="w-full">
-      <TabsList className="grid w-full grid-cols-3">
+      <TabsList className="grid w-full grid-cols-4">
         <TabsTrigger value="libros">
           <BookIcon className="mr-2 h-4 w-4" />
           Libros
@@ -147,9 +66,13 @@ export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsua
           <BoxIcon className="mr-2 h-4 w-4" />
           Inventario
         </TabsTrigger>
-        <TabsTrigger value="laboratorio">
+        <TabsTrigger value="laboratorio abierto">
           <BeakerIcon className="mr-2 h-4 w-4" />
-          Laboratorio
+          Laboratorio abierto
+        </TabsTrigger>
+        <TabsTrigger value="laboratorio cerrado">
+          <BeakerIcon className="mr-2 h-4 w-4" />
+          Laboratorio cerrado
         </TabsTrigger>
       </TabsList>
       <TabsContent value="libros">
@@ -205,15 +128,41 @@ export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsua
           />
         )}
       </TabsContent>
-      <TabsContent value="laboratorio">
-        {isLoadingLaboratorio ? (
+      <TabsContent value="laboratorio abierto">
+        {isLoadingLaboratorioAbierto ? (
           <div>Cargando reservas de laboratorio...</div>
         ) : (
           <DetalleReserva
             idUsuario={usuarioData.id}
-            titulo="Reserva de Laboratorio"
-            descripcion="Historial de Laboratorios"
-            reservas={reservasLaboratorio ?? []}
+            titulo="Reserva de Laboratorio abierto"
+            descripcion="Historial de Laboratorios abiertos"
+            reservas={reservasLaboratorioAbierto ?? []}
+            columns={[
+              { header: "ID", key: "id", className: "w-[100px]" },
+              { header: "Fecha", key: (item) => item.fechaCreacion.toLocaleDateString("es-ES") },
+              { header: "Laboratorio", key: "laboratorio" },
+              {
+                header: "Estado",
+                key: (item) => (
+                  <Badge color={item.reserva.estatus === "PENDIENTE" ? "warning" : "primary"}>
+                    {item.reserva.estatus}
+                  </Badge>
+                ),
+                className: "text-right",
+              },
+            ]}
+          />
+        )}
+      </TabsContent>
+      <TabsContent value="laboratorio cerrado">
+        {isLoadingLaboratorioCerrado ? (
+          <div>Cargando reservas de laboratorio...</div>
+        ) : (
+          <DetalleReserva
+            idUsuario={usuarioData.id}
+            titulo="Reserva de Laboratorio cerrado"
+            descripcion="Historial de Laboratorios cerrados"
+            reservas={reservasLaboratorioCerrado ?? []}
             columns={[
               { header: "ID", key: "id", className: "w-[100px]" },
               { header: "Fecha", key: (item) => item.fechaCreacion.toLocaleDateString("es-ES") },

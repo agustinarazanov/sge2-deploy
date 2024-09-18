@@ -218,17 +218,12 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
                       control={control}
                       name="esReservable"
                       render={({ field }) => (
-                        <>
+                        <div className="flex items-center justify-between rounded-md border border-white p-2">
                           <label htmlFor="esReservable" className="text-base">
-                            Laboratorio abierto
+                            Es reservable
                           </label>
-                          <Switch
-                            id="esReservable"
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            className="bg-white"
-                          />
-                        </>
+                          <Switch id="esReservable" checked={field.value} onCheckedChange={field.onChange} />
+                        </div>
                       )}
                     />
                   </div>
@@ -237,12 +232,12 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
                       control={control}
                       name="tienePc"
                       render={({ field }) => (
-                        <>
+                        <div className="flex items-center justify-between rounded-md border border-white p-2">
                           <label htmlFor="tienePc" className="text-base">
                             Tiene PC
                           </label>
                           <Switch id="tienePc" checked={field.value} onCheckedChange={field.onChange} />
-                        </>
+                        </div>
                       )}
                     />
                   </div>
