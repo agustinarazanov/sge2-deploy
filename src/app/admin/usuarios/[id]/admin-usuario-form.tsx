@@ -1,4 +1,4 @@
-import { FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { type RouterOutputs, api } from "@/trpc/react";
 import { Button, FormInput, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +9,8 @@ import { XIcon } from "lucide-react";
 import { inputEditarUsuario } from "@/shared/filters/admin-usuarios-filter.schema";
 import { RolesSelector } from "../../usuarios/_components/filtros/roles-selector";
 import { Checkbox } from "@/components/ui/checkbox";
-import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Switch } from "@/components/ui/switch";
+import { white } from "tailwindcss/colors";
 
 type Props = {
   id: string;
@@ -176,30 +177,31 @@ export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
 
             <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
               <div className="mt-4 w-full">
-                <FormField
+                <Controller
                   control={control}
                   name="esDocente"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                      </FormControl>
-                      <FormLabel>Es docente</FormLabel>
-                    </FormItem>
+                    <div className="flex items-center justify-between rounded-md border border-white p-2">
+                      <label htmlFor="esDocente" className="text-base">
+                        Es docente
+                      </label>
+                      <Switch id="esDocente" checked={field.value} onCheckedChange={field.onChange} />
+                    </div>
                   )}
                 />
               </div>
+
               <div className="mt-4 w-full">
-                <FormField
+                <Controller
                   control={control}
                   name="esTutor"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                      </FormControl>
-                      <FormLabel>Es tutor</FormLabel>
-                    </FormItem>
+                    <div className="flex items-center justify-between rounded-md border border-white  p-2">
+                      <label htmlFor="esTutor" className="text-base">
+                        Es tutor
+                      </label>
+                      <Switch id="esTutor" checked={field.value} onCheckedChange={field.onChange} />
+                    </div>
                   )}
                 />
               </div>

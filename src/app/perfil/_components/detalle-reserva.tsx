@@ -4,8 +4,15 @@ import { type RouterOutputs } from "@/trpc/react";
 
 type ReservaBibliotecaData = RouterOutputs["reservas"]["reservaBiblioteca"]["getReservaPorUser"][number];
 type ReservaEquipoData = RouterOutputs["reservas"]["reservaEquipo"]["getReservaPorUser"][number];
-type ReservaLaboratorioData = RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getReservaPorUser"][number];
-type ReservaBase = ReservaBibliotecaData | ReservaEquipoData | ReservaLaboratorioData;
+type ReservaLaboratorioAbiertoData =
+  RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getReservaPorUser"][number];
+type ReservaLaboratorioCerradoData =
+  RouterOutputs["reservas"]["ReservarLaboratorioCerrado"]["getReservaPorUser"][number];
+type ReservaBase =
+  | ReservaBibliotecaData
+  | ReservaEquipoData
+  | ReservaLaboratorioAbiertoData
+  | ReservaLaboratorioCerradoData;
 
 type ColumnConfig<T> = {
   header: string;

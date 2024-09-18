@@ -1,4 +1,4 @@
-import {ViewIcon} from "lucide-react";
+import { EyeIcon } from "lucide-react";
 import Link from "next/link";
 
 type EditLibroModalProps = {
@@ -8,7 +8,7 @@ type EditLibroModalProps = {
 export const DetallesUsuarioPage = (props: EditLibroModalProps) => {
   return (
     <Link key={props.usuarioId} href={`/perfil/${props.usuarioId}`} passHref prefetch={false}>
-      <ViewIcon />
+      <EyeIcon />
     </Link>
   );
 };
