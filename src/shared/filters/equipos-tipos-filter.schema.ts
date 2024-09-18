@@ -25,8 +25,15 @@ export const inputEliminarTipo = z.object({ id: z.number() });
 
 export const inputGetTipo = z.object({ id: z.number() });
 
+const MAX_FILE_SIZE = 1024 * 1024 * 1;
+const ACCEPTED_IMAGE_MIME_TYPES = ["image/jpeg", "image/jpg", "image/png",];
+
 export const inputAgregarTipo = z.object({
   nombre: z.string().min(1, { message: "Requerido" }),
+  imagen: z.any()
+    .refine(file => file?.[0]?.size <= MAX_FILE_SIZE, {message: "Tamaño maximo es de 1MB"})
+    .refine(file => ACCEPTED_IMAGE_MIME_TYPES.includes(file?.[0]?.type), {message: "Solo .jpg, .jpeg, and .png son soportados"})
+    .optional(),
 });
 
 export const inputEditarTipo = z
