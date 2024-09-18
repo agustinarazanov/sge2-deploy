@@ -6,7 +6,7 @@ model User {
     name          String? // Viene con la cuenta
     email         String?   @unique
     emailVerified DateTime?
-    image         String?
+    image         String?   @default("/default-avatar.svg")
 
     nombre          String?
     apellido        String?
