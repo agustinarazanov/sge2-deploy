@@ -12,6 +12,7 @@ import { EquipoTipoSelector } from "@/app/laboratorios/mis_cursos/_components/fi
 import { type LaboratorioAbiertoType } from "../_components/laboratorios";
 import { Slider } from "@/components/ui/slider";
 import { FormSelect } from "@/components/ui/autocomplete";
+import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
 
 type Props = {
   tipo: LaboratorioAbiertoType;
@@ -161,15 +162,12 @@ export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
 
             <div className="flex w-full flex-col justify-end gap-y-4 lg:justify-between">
               <div className="items-top flex space-x-2">
-                <FormSelect
-                  label={"Sede"}
+                <SelectSedeForm
                   name="sedeId"
-                  className="mt-2 basis-1/2"
                   control={control}
-                  items={[
-                    { id: "1", label: "Medrano" },
-                    { id: "2", label: "Lugano" },
-                  ]}
+                  className="mt-2"
+                  label={"Sede"}
+                  placeholder={"Selecciona una sede"}
                 />
               </div>
             </div>

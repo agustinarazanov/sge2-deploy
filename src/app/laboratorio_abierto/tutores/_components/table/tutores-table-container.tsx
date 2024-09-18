@@ -10,7 +10,7 @@ export default async function TutoresContainer() {
     <div className="flex w-full flex-row gap-x-8 px-4">
       <div className="grid w-full grid-cols-1 content-center justify-center gap-8 px-8 md:grid-cols-2 lg:grid-cols-3 xl:px-12 ">
         {tutores.map((tutor) => {
-          return <TutorCard key={tutor.id} tutor={tutor} className="grid-flow-row" />;
+          return <TutorCard key={tutor.userId} tutor={tutor} className="grid-flow-row" />;
         })}
       </div>
     </div>
