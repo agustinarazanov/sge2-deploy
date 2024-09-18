@@ -1,13 +1,12 @@
-import { useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { Button, FormInput, Input, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { useEffect, useState, useRef } from "react";
 import { inputEditarLaboratorio } from "@/shared/filters/admin-laboratorios-filter.schema";
-import { Plus, Minus, ChevronDown, ChevronRight } from "lucide-react";
+import { Plus, ChevronDown, ChevronRight, MinusIcon } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
 
 type Props = {
@@ -189,9 +188,9 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
   };
 
   return (
-    <Form {...formHook}>
+    <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="flex h-full flex-col">
-        <ScrollArea className="h-[calc(400vh-450px)] max-h-[400px]" ref={scrollAreaRef}>
+        <ScrollArea className="max-h-[calc(100vh_-_10%)]" ref={scrollAreaRef}>
           <div className="flex flex-grow flex-col overflow-hidden">
             <div className="space-y-4 px-0 md:px-6">
               <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
@@ -215,34 +214,35 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
               <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
                 <div className="flex w-full flex-row lg:justify-between lg:gap-x-4">
                   <div className="w-1/2">
-                    <FormField
+                    <Controller
                       control={control}
                       name="esReservable"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                          <div className="space-y-0.5">
-                            <FormLabel className="text-base">Laboratorio abierto</FormLabel>
-                          </div>
-                          <FormControl>
-                            <Switch checked={field.value} onCheckedChange={field.onChange} />
-                          </FormControl>
-                        </FormItem>
+                        <>
+                          <label htmlFor="esReservable" className="text-base">
+                            Laboratorio abierto
+                          </label>
+                          <Switch
+                            id="esReservable"
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            className="bg-white"
+                          />
+                        </>
                       )}
                     />
                   </div>
                   <div className="w-1/2">
-                    <FormField
+                    <Controller
                       control={control}
                       name="tienePc"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                          <div className="space-y-0.5">
-                            <FormLabel className="text-base">Tiene PC</FormLabel>
-                          </div>
-                          <FormControl>
-                            <Switch checked={field.value} onCheckedChange={field.onChange} />
-                          </FormControl>
-                        </FormItem>
+                        <>
+                          <label htmlFor="tienePc" className="text-base">
+                            Tiene PC
+                          </label>
+                          <Switch id="tienePc" checked={field.value} onCheckedChange={field.onChange} />
+                        </>
                       )}
                     />
                   </div>
@@ -253,7 +253,7 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
             <div className="mt-4 flex flex-grow flex-col overflow-hidden">
               <div className="mb-2 flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Armarios</h3>
-                <Button onClick={agregarArmario} variant="default" size="sm">
+                <Button onClick={agregarArmario} variant="default" size="sm" type="button">
                   <Plus size={16} className="mr-2" />
                   Agregar Armario
                 </Button>
@@ -269,6 +269,7 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
                             variant="default"
                             size="sm"
                             className="mr-2"
+                            type="button"
                           >
                             {armario.isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                           </Button>
@@ -286,9 +287,13 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
                             }}
                           />
                         </div>
-                        <Button onClick={() => eliminarArmario(armarioIndex)} variant="destructive" size="icon">
-                          <Minus size={16} />
-                        </Button>
+                        <Button
+                          onClick={() => eliminarArmario(armarioIndex)}
+                          variant="icon"
+                          color="outline"
+                          icon={MinusIcon}
+                          type="button"
+                        />
                       </div>
                       {armario.isExpanded && (
                         <div className="ml-6 mt-2 space-y-2">
@@ -312,11 +317,11 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
                               />
                               <Button
                                 onClick={() => eliminarEstante(armarioIndex, estanteIndex)}
-                                variant="destructive"
-                                size="icon"
-                              >
-                                <Minus size={16} />
-                              </Button>
+                                variant="icon"
+                                color="outline"
+                                icon={MinusIcon}
+                                type="button"
+                              />
                             </div>
                           ))}
                           <Button
@@ -324,6 +329,7 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
                             variant="default"
                             size="sm"
                             className="mt-2"
+                            type="button"
                           >
                             <Plus size={16} className="mr-2" />
                             Agregar Estante
@@ -346,6 +352,6 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
           </Button>
         </div>
       </form>
-    </Form>
+    </FormProvider>
   );
 };

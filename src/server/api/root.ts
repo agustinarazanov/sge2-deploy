@@ -4,6 +4,7 @@ import { materiasRouter } from "./routers/materias";
 import { equiposRouter } from "./routers/equipos";
 import { cursosRouter } from "./routers/cursos";
 import { adminRouter } from "./routers/admin";
+import { softwareRouter } from "./routers/software";
 import { reservasRouter } from "@/server/api/routers/reservas";
 
 /**
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   cursos: cursosRouter,
   admin: adminRouter,
   reservas: reservasRouter,
+  software: softwareRouter,
 });
 
 // export type definition of API

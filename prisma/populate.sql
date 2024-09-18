@@ -346,9 +346,13 @@ INSERT INTO public."LibroAutor" (id, "autorNombre", "fechaCreacion", "usuarioCre
 INSERT INTO public."LibroAutor" (id, "autorNombre", "fechaCreacion", "usuarioCreadorId") VALUES (290, 'Hector René González, Amadeo Mario Mariani', '2024-08-31 16:19:41.687', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."LibroAutor" (id, "autorNombre", "fechaCreacion", "usuarioCreadorId") VALUES (67, 'Que Corporation', '2024-08-31 16:19:41.687', 'clzgaj7zq0000fpw46qxteeni');
 
+ALTER SEQUENCE public."LibroAutor_id_seq" RESTART WITH 10000;
+
 INSERT INTO public."LibroIdioma" (id, idioma, "fechaCreacion", "usuarioCreadorId") VALUES (1, 'Castellano', '2024-08-26 00:17:13.515', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."LibroIdioma" (id, idioma, "fechaCreacion", "usuarioCreadorId") VALUES (2, 'Inglés', '2024-08-26 00:17:13.515', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."LibroIdioma" (id, idioma, "fechaCreacion", "usuarioCreadorId") VALUES (3, 'Portugués', '2024-08-26 00:17:13.515', 'clzgaj7zq0000fpw46qxteeni');
+
+ALTER SEQUENCE public."LibroIdioma_id_seq" RESTART WITH 4;
 
 INSERT INTO public."LibroEditorial" (id, editorial, "fechaCreacion", "usuarioCreadorId") VALUES (1, 'Peace', '2024-08-26 00:17:13.522', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."LibroEditorial" (id, editorial, "fechaCreacion", "usuarioCreadorId") VALUES (2, 'Campus', '2024-08-26 00:17:13.522', 'clzgaj7zq0000fpw46qxteeni');
@@ -422,6 +426,8 @@ INSERT INTO public."LibroEditorial" (id, editorial, "fechaCreacion", "usuarioCre
 INSERT INTO public."LibroEditorial" (id, editorial, "fechaCreacion", "usuarioCreadorId") VALUES (70, 'ITT', '2024-08-26 00:17:13.522', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."LibroEditorial" (id, editorial, "fechaCreacion", "usuarioCreadorId") VALUES (71, 'Presidencia de la Nacion', '2024-08-26 00:17:13.522', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."LibroEditorial" (id, editorial, "fechaCreacion", "usuarioCreadorId") VALUES (72, 'Acofra', '2024-08-26 00:17:13.522', 'clzgaj7zq0000fpw46qxteeni');
+
+ALTER SEQUENCE public."LibroEditorial_id_seq" RESTART WITH 10000;
 
 INSERT INTO public."Division" (id, nombre, anio, "fechaCreacion", "usuarioCreadorId") VALUES (1, 'R3053', 3, '2024-08-30 04:26:04.053', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Division" (id, nombre, anio, "fechaCreacion", "usuarioCreadorId") VALUES (2, 'R4031', 4, '2024-08-30 04:26:04.053', 'clzgaj7zq0000fpw46qxteeni');
@@ -528,6 +534,8 @@ INSERT INTO public."Division" (id, nombre, anio, "fechaCreacion", "usuarioCreado
 INSERT INTO public."Division" (id, nombre, anio, "fechaCreacion", "usuarioCreadorId") VALUES (103, 'R2051', 2, '2024-08-30 04:26:04.053', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Division" (id, nombre, anio, "fechaCreacion", "usuarioCreadorId") VALUES (104, 'R1043', 1, '2024-08-30 04:26:04.053', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Division" (id, nombre, anio, "fechaCreacion", "usuarioCreadorId") VALUES (105, 'R5054', 5, '2024-08-30 04:26:04.053', 'clzgaj7zq0000fpw46qxteeni');
+
+ALTER SEQUENCE public."Division_id_seq" RESTART WITH 10000;
 
 INSERT INTO public."EquipoMarca" (id, nombre, "fechaCreacion", "usuarioCreadorId") VALUES (1, 'MinSeg', '2024-08-26 00:17:13.535', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."EquipoMarca" (id, nombre, "fechaCreacion", "usuarioCreadorId") VALUES (2, 'KEYSIGHT TECHNOLOGIES', '2024-08-26 00:17:13.535', 'clzgaj7zq0000fpw46qxteeni');
@@ -874,6 +882,8 @@ INSERT INTO public."EquipoMarca" (id, nombre, "fechaCreacion", "usuarioCreadorId
 INSERT INTO public."EquipoMarca" (id, nombre, "fechaCreacion", "usuarioCreadorId") VALUES (343, 'Phiilips', '2024-08-26 00:17:13.535', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."EquipoMarca" (id, nombre, "fechaCreacion", "usuarioCreadorId") VALUES (344, 'SOYO', '2024-08-26 00:17:13.535', 'clzgaj7zq0000fpw46qxteeni');
 
+ALTER SEQUENCE public."EquipoMarca_id_seq" RESTART WITH 10000;
+
 INSERT INTO public."EquipoTipo" (id, nombre, "fechaCreacion", "usuarioCreadorId") VALUES (1, 'Acoplador Direccional', '2024-08-26 00:17:13.543', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."EquipoTipo" (id, nombre, "fechaCreacion", "usuarioCreadorId") VALUES (2, 'Bateria', '2024-08-26 00:17:13.543', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."EquipoTipo" (id, nombre, "fechaCreacion", "usuarioCreadorId") VALUES (3, 'Analizer Signature', '2024-08-26 00:17:13.543', 'clzgaj7zq0000fpw46qxteeni');
@@ -992,14 +1002,20 @@ INSERT INTO public."EquipoTipo" (id, nombre, "fechaCreacion", "usuarioCreadorId"
 INSERT INTO public."EquipoTipo" (id, nombre, "fechaCreacion", "usuarioCreadorId") VALUES (116, 'Oscilador', '2024-08-26 00:17:13.543', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."EquipoTipo" (id, nombre, "fechaCreacion", "usuarioCreadorId") VALUES (117, 'Adaptador', '2024-08-26 00:17:13.543', 'clzgaj7zq0000fpw46qxteeni');
 
+ALTER SEQUENCE public."EquipoTipo_id_seq" RESTART WITH 10000;
+
 INSERT INTO public."EquipoEstado" (id, nombre, "fechaCreacion", "usuarioCreadorId") VALUES (1, 'Descarte', '2024-08-26 00:17:13.550', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."EquipoEstado" (id, nombre, "fechaCreacion", "usuarioCreadorId") VALUES (2, 'Normal', '2024-08-26 00:17:13.550', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."EquipoEstado" (id, nombre, "fechaCreacion", "usuarioCreadorId") VALUES (3, 'Roto', '2024-08-26 00:17:13.550', 'clzgaj7zq0000fpw46qxteeni');
+
+ALTER SEQUENCE public."EquipoEstado_id_seq" RESTART WITH 4;
 
 INSERT INTO public."Sede" (id, nombre) VALUES (1, 'Saenz');
 INSERT INTO public."Sede" (id, nombre) VALUES (2, 'Virtual');
 INSERT INTO public."Sede" (id, nombre) VALUES (3, 'Campus');
 INSERT INTO public."Sede" (id, nombre) VALUES (4, 'Medrano');
+
+ALTER SEQUENCE public."Sede_id_seq" RESTART WITH 5;
 
 INSERT INTO public."Laboratorio" (id, nombre, "tienePc", "esReservable", "laboratorioAbiertoTipo", "sedeId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (1, 'Cañon para Aula Campus', false, true, null, 3, '2024-08-26 00:17:13.563', '2024-08-26 00:17:13.563', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Laboratorio" (id, nombre, "tienePc", "esReservable", "laboratorioAbiertoTipo", "sedeId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (2, 'Cañon para Aula Medrano', false, true, null, 4, '2024-08-26 00:17:13.563', '2024-08-26 00:17:13.563', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
@@ -1033,6 +1049,8 @@ INSERT INTO public."Laboratorio" (id, nombre, "tienePc", "esReservable", "labora
 INSERT INTO public."Laboratorio" (id, nombre, "tienePc", "esReservable", "laboratorioAbiertoTipo", "sedeId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (30, 'Retroproyector Aula Campu', false, true, null, 3, '2024-08-26 00:17:13.563', '2024-08-26 00:17:13.563', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Laboratorio" (id, nombre, "tienePc", "esReservable", "laboratorioAbiertoTipo", "sedeId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (31, 'Saenz', false, false, null, 4, '2024-08-26 00:17:13.563', '2024-08-26 00:17:13.563', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Laboratorio" (id, nombre, "tienePc", "esReservable", "laboratorioAbiertoTipo", "sedeId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (32, 'Secretaria', true, false, null, 4, '2024-08-26 00:17:13.563', '2024-08-26 00:17:13.563', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
+
+ALTER SEQUENCE public."Laboratorio_id_seq" RESTART WITH 10000;
 
 INSERT INTO public."Armario" (id, nombre, "laboratorioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (1, '10101', 23, '2024-08-26 00:17:13.571', '2024-08-26 00:17:13.571', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Armario" (id, nombre, "laboratorioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (2, '06308', 8, '2024-08-26 00:17:13.571', '2024-08-26 00:17:13.571', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
@@ -1090,6 +1108,8 @@ INSERT INTO public."Armario" (id, nombre, "laboratorioId", "fechaCreacion", "fec
 INSERT INTO public."Armario" (id, nombre, "laboratorioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (54, '00', 21, '2024-08-26 00:17:13.571', '2024-08-26 00:17:13.571', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Armario" (id, nombre, "laboratorioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (55, 'BIBLIO1', 28, '2024-08-26 00:17:13.571', '2024-08-26 00:17:13.571', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Armario" (id, nombre, "laboratorioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (56, '06305', 8, '2024-08-26 00:17:13.571', '2024-08-26 00:17:13.571', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
+
+ALTER SEQUENCE public."Armario_id_seq" RESTART WITH 10000;
 
 INSERT INTO public."Estante" (id, nombre, "armarioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (1, ' 1', 55, '2024-08-26 00:17:13.578', '2024-08-26 00:17:13.578', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Estante" (id, nombre, "armarioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (2, '0', 1, '2024-08-26 00:17:13.578', '2024-08-26 00:17:13.578', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
@@ -1273,6 +1293,8 @@ INSERT INTO public."Estante" (id, nombre, "armarioId", "fechaCreacion", "fechaMo
 INSERT INTO public."Estante" (id, nombre, "armarioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (180, '9', 39, '2024-08-26 00:17:13.578', '2024-08-26 00:17:13.578', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Estante" (id, nombre, "armarioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (181, 'Arriba', 53, '2024-08-26 00:17:13.578', '2024-08-26 00:17:13.578', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Estante" (id, nombre, "armarioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (182, 'Estante 00', 38, '2024-08-26 00:17:13.578', '2024-08-26 00:17:13.578', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
+
+ALTER SEQUENCE public."Estante_id_seq" RESTART WITH 10000;
 
 INSERT INTO public."Libro" (id, "bibliotecaId", "inventarioId", titulo, anio, isbn, "laboratorioId", "armarioId", "estanteId", "autorId", "idiomaId", "editorialId", "sedeId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (1, '', 'NB0068', 'Fiber optic reference guide', 1996, '240802632', 11, 34, 127, 161, 2, 14, 4, '2024-08-30 04:26:04.123', '2024-08-30 04:26:04.123', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Libro" (id, "bibliotecaId", "inventarioId", titulo, anio, isbn, "laboratorioId", "armarioId", "estanteId", "autorId", "idiomaId", "editorialId", "sedeId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (2, '', 'NB0069', 'Fundamentos de aplicaciones en electromagnetismo', 2007, '132413264', 11, 34, 127, 195, 1, 7, 4, '2024-08-30 04:26:04.123', '2024-08-30 04:26:04.123', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
@@ -1687,6 +1709,8 @@ INSERT INTO public."Libro" (id, "bibliotecaId", "inventarioId", titulo, anio, is
 INSERT INTO public."Libro" (id, "bibliotecaId", "inventarioId", titulo, anio, isbn, "laboratorioId", "armarioId", "estanteId", "autorId", "idiomaId", "editorialId", "sedeId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (243, '--------', 'NB0211', 'Circuitos Microelectrónicos ', 1999, '970-613-379-8', 15, 9, 30, 331, 1, 23, 4, '2024-08-30 04:26:04.123', '2024-08-30 04:26:04.123', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Libro" (id, "bibliotecaId", "inventarioId", titulo, anio, isbn, "laboratorioId", "armarioId", "estanteId", "autorId", "idiomaId", "editorialId", "sedeId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (245, '--------', 'NB0213', 'Principios de Electrónica', 2000, '0-02-80-2833-3', 15, 9, 30, 233, 1, 19, 4, '2024-08-30 04:26:04.123', '2024-08-30 04:26:04.123', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Libro" (id, "bibliotecaId", "inventarioId", titulo, anio, isbn, "laboratorioId", "armarioId", "estanteId", "autorId", "idiomaId", "editorialId", "sedeId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (246, '--------', 'NB0214', 'Dispositivos Electrónicos ', 2008, '970-26-1193-8', 15, 9, 30, 15, 1, 7, 4, '2024-08-30 04:26:04.123', '2024-08-30 04:26:04.123', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
+
+ALTER SEQUENCE public."Libro_id_seq" RESTART WITH 10000;
 
 INSERT INTO public."Equipo" (id, "inventarioId", modelo, "numeroSerie", observaciones, "palabrasClave", imagen, "tipoId", "marcaId", "sedeId", "laboratorioId", "armarioId", "estanteId", "estadoId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (1, '100375', '411', '100375', 'Valvular', null, null, 73, 123, 4, 12, 29, 43, 2, '2024-08-30 04:26:04.174', '2024-08-30 04:26:04.174', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Equipo" (id, "inventarioId", modelo, "numeroSerie", observaciones, "palabrasClave", imagen, "tipoId", "marcaId", "sedeId", "laboratorioId", "armarioId", "estanteId", "estadoId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (2, '103020', '', '', '220/6,3v', null, null, 69, 263, 4, 12, 29, 124, 2, '2024-08-30 04:26:04.174', '2024-08-30 04:26:04.174', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
@@ -4367,6 +4391,8 @@ INSERT INTO public."Equipo" (id, "inventarioId", modelo, "numeroSerie", observac
 INSERT INTO public."Equipo" (id, "inventarioId", modelo, "numeroSerie", observaciones, "palabrasClave", imagen, "tipoId", "marcaId", "sedeId", "laboratorioId", "armarioId", "estanteId", "estadoId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (2053, 'NG2120', 'B2910BL', 'MY61390106', 'Fuente de precisión / Unidad de medición', 'Fuente de precisión', '', 78, 31, 4, 23, 14, 7, 2, '2024-08-30 04:26:04.174', '2024-08-30 04:26:04.174', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Equipo" (id, "inventarioId", modelo, "numeroSerie", observaciones, "palabrasClave", imagen, "tipoId", "marcaId", "sedeId", "laboratorioId", "armarioId", "estanteId", "estadoId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (2052, 'NG2119', '2100', '8003447', 'Multímetro digital de banco de 6 1/2 dígitos de precisión', 'Multímetro precisión', '', 32, 31, 4, 23, 51, 170, 2, '2024-08-30 04:26:04.174', '2024-08-30 04:26:04.174', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 
+ALTER SEQUENCE public."Equipo_id_seq" RESTART WITH 10000;
+
 INSERT INTO public."Pais" (iso, "nombreEspanol", "nombreIngles", iso3, "codigoNumerico") VALUES ('TJ', 'Tayikistán', 'Tajikistan', 'TJK', 762);
 INSERT INTO public."Pais" (iso, "nombreEspanol", "nombreIngles", iso3, "codigoNumerico") VALUES ('VC', 'San Vicente y las Granadinas', 'Saint Vincent and the Grenadines', 'VCT', 670);
 INSERT INTO public."Pais" (iso, "nombreEspanol", "nombreIngles", iso3, "codigoNumerico") VALUES ('SA', 'Arabia Saudita', 'Saudi Arabia', 'SAU', 682);
@@ -5704,6 +5730,8 @@ INSERT INTO public."DocumentoTipo" (id, nombre) VALUES (3, 'Pasaporte');
 INSERT INTO public."DocumentoTipo" (id, nombre) VALUES (4, 'C.I.');
 INSERT INTO public."DocumentoTipo" (id, nombre) VALUES (5, 'L.E.');
 
+ALTER SEQUENCE public."DocumentoTipo_id_seq" RESTART WITH 10000;
+
 INSERT INTO public."Materia" (id, nombre, codigo, anio, duracion, tipo, "directorUsuarioId", "jefeTrabajoPracticoUsuarioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (2, 'Análisis Matemático I', '95-0702', 1, 'AMBOS', 'OBLIGATORIA', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteenj', '2024-08-30 04:26:04.279', '2024-08-30 04:26:04.279', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Materia" (id, nombre, codigo, anio, duracion, tipo, "directorUsuarioId", "jefeTrabajoPracticoUsuarioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (3, 'Análisis Matemático II', '95-0703', 2, 'CUATRIMESTRAL', 'OBLIGATORIA', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteenj', '2024-08-30 04:26:04.279', '2024-08-30 04:26:04.279', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Materia" (id, nombre, codigo, anio, duracion, tipo, "directorUsuarioId", "jefeTrabajoPracticoUsuarioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (4, 'Análisis de Señales y Sistemas', '95-0454', 3, 'ANUAL', 'OBLIGATORIA', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteenj', '2024-08-30 04:26:04.279', '2024-08-30 04:26:04.279', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
@@ -5779,6 +5807,8 @@ INSERT INTO public."Materia" (id, nombre, codigo, anio, duracion, tipo, "directo
 INSERT INTO public."Materia" (id, nombre, codigo, anio, duracion, tipo, "directorUsuarioId", "jefeTrabajoPracticoUsuarioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (30, 'Informática II', '95-0453', 2, 'ANUAL', 'INTEGRADORA', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteenj', '2024-08-30 04:26:04.279', '2024-08-30 04:26:04.279', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Materia" (id, nombre, codigo, anio, duracion, tipo, "directorUsuarioId", "jefeTrabajoPracticoUsuarioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (46, 'Máquinas e Instalaciones Eléctricas', '95-0432', 4, 'ANUAL', 'OBLIGATORIA', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteenj', '2024-08-30 04:26:04.279', '2024-08-30 04:26:04.279', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Materia" (id, nombre, codigo, anio, duracion, tipo, "directorUsuarioId", "jefeTrabajoPracticoUsuarioId", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (47, 'Optoelectrónica y Aplicaciones Láser', '95-0417', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteenj', '2024-08-30 04:26:04.279', '2024-08-30 04:26:04.279', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
+
+ALTER SEQUENCE public."Materia_id_seq" RESTART WITH 10000;
 
 INSERT INTO public."LibroMateria" ("libroId", "materiaId", "fechaCreacion", "usuarioCreadorId") VALUES (1, 44, '2024-08-30 04:26:04.291', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."LibroMateria" ("libroId", "materiaId", "fechaCreacion", "usuarioCreadorId") VALUES (2, 44, '2024-08-30 04:26:04.291', 'clzgaj7zq0000fpw46qxteeni');
@@ -6409,6 +6439,8 @@ INSERT INTO public."Curso" (id, "horaInicio1", duracion1, "horaInicio2", duracio
 INSERT INTO public."Curso" (id, "horaInicio1", duracion1, "horaInicio2", duracion2, dia1, dia2, "anioDeCarrera", activo, ac, "sedeId", "materiaId", "divisionId", turno, "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (128, '1', '5', '', '', 'MIERCOLES', null, 5, true, 'A', 4, 74, 105, 'NOCHE', '2024-08-30 04:26:04.309', '2024-08-30 04:26:04.309', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Curso" (id, "horaInicio1", duracion1, "horaInicio2", duracion2, dia1, dia2, "anioDeCarrera", activo, ac, "sedeId", "materiaId", "divisionId", turno, "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (129, '1', '5', '', '', 'JUEVES', null, 5, true, 'A', 4, 43, 105, 'NOCHE', '2024-08-30 04:26:04.309', '2024-08-30 04:26:04.309', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 
+ALTER SEQUENCE public."Curso_id_seq" RESTART WITH 10000;
+
 INSERT INTO public."MateriaCorrelativa" ("materiaPrerequisitoId", "correlativaId", "estatusCorrelativa", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (22, 21, 'RENDIR_APROBADA', '2024-08-30 04:26:04.324', '2024-08-30 04:26:04.324', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."MateriaCorrelativa" ("materiaPrerequisitoId", "correlativaId", "estatusCorrelativa", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (26, 28, 'RENDIR_APROBADA', '2024-08-30 04:26:04.324', '2024-08-30 04:26:04.324', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."MateriaCorrelativa" ("materiaPrerequisitoId", "correlativaId", "estatusCorrelativa", "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (61, 32, 'CURSAR_APROBADA', '2024-08-30 04:26:04.324', '2024-08-30 04:26:04.324', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
@@ -6696,6 +6728,8 @@ INSERT INTO public."Permiso" (id, nombre, "fechaCreacion", "fechaModificacion", 
 INSERT INTO public."Permiso" (id, nombre, "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (68, 'Administrador: El usuario pertenece al grupo Administrador Web', '2024-08-28 22:50:40.498', '2024-08-28 22:50:40.498', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Permiso" (id, nombre, "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (69, 'Reserva de laboratorio: Agregar y Eliminar de pantalla', '2024-08-28 22:50:40.498', '2024-08-28 22:50:40.498', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 
+ALTER SEQUENCE public."Permiso_id_seq" RESTART WITH 10000;
+
 INSERT INTO public."Rol" (id, nombre, "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (1, 'Administrador', '2024-08-26 00:17:13.787', '2024-08-26 00:17:13.787', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Rol" (id, nombre, "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (2, 'Docente', '2024-08-26 00:17:13.787', '2024-08-26 00:17:13.787', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Rol" (id, nombre, "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (3, 'Alumno', '2024-08-26 00:17:13.787', '2024-08-26 00:17:13.787', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
@@ -6703,6 +6737,8 @@ INSERT INTO public."Rol" (id, nombre, "fechaCreacion", "fechaModificacion", "usu
 INSERT INTO public."Rol" (id, nombre, "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (5, 'Secretario', '2024-08-26 00:17:13.787', '2024-08-26 00:17:13.787', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Rol" (id, nombre, "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (6, 'Consejero', '2024-08-26 00:17:13.787', '2024-08-26 00:17:13.787', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."Rol" (id, nombre, "fechaCreacion", "fechaModificacion", "usuarioCreadorId", "usuarioModificadorId") VALUES (7, 'Tutor', '2024-08-26 00:17:13.787', '2024-08-26 00:17:13.787', 'clzgaj7zq0000fpw46qxteeni', 'clzgaj7zq0000fpw46qxteeni');
+
+ALTER SEQUENCE public."Rol_id_seq" RESTART WITH 10000;
 
 INSERT INTO public."RolPermiso" ("rolId", "permisoId", "fechaCreacion", "usuarioCreadorId") VALUES (1, 1, '2024-08-28 22:50:40.514', 'clzgaj7zq0000fpw46qxteeni');
 INSERT INTO public."RolPermiso" ("rolId", "permisoId", "fechaCreacion", "usuarioCreadorId") VALUES (1, 2, '2024-08-28 22:50:40.514', 'clzgaj7zq0000fpw46qxteeni');

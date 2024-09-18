@@ -32,13 +32,13 @@ model User {
     fechaUltimaActualizacion DateTime @default(now()) @updatedAt
 
     documentoTipoId Int?
-    documentoTipo   DocumentoTipo? @relation(fields: [documentoTipoId], references: [id])
+    documentoTipo   DocumentoTipo? @relation(fields: [documentoTipoId], references: [id], onDelete: Restrict)
 
     provinciaIso String?
-    provincia    Provincia? @relation(fields: [provinciaIso, paisIso], references: [iso, paisIso])
+    provincia    Provincia? @relation(fields: [provinciaIso, paisIso], references: [iso, paisIso], onDelete: Restrict)
 
     paisIso String?
-    pais    Pais?   @relation(fields: [paisIso], references: [iso])
+    pais    Pais?   @relation(fields: [paisIso], references: [iso], onDelete: Restrict)
 
     accounts   Account[]
     sessions   Session[]
@@ -67,7 +67,7 @@ model User {
 
 model Tutor {
     userId  String @unique
-    usuario User   @relation(fields: [userId], references: [id])
+    usuario User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     diasHorarios String
     sede         String
@@ -82,10 +82,10 @@ model Tutor {
 
 model UsuarioRol {
     userId  String
-    usuario User   @relation(fields: [userId], references: [id])
+    usuario User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     rolId Int
-    rol   Rol @relation(fields: [rolId], references: [id])
+    rol   Rol @relation(fields: [rolId], references: [id], onDelete: Cascade)
 
     fechaCreacion    DateTime @default(now())
     usuarioCreadorId String
@@ -142,7 +142,7 @@ model Provincia {
     nombre String
 
     paisIso String
-    pais    Pais   @relation(fields: [paisIso], references: [iso])
+    pais    Pais   @relation(fields: [paisIso], references: [iso], onDelete: Cascade)
 
     usuarios User[]
 

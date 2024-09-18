@@ -4,15 +4,11 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BeakerIcon, BookIcon, BoxIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { useQuery } from "@tanstack/react-query";
 import { api } from "@/trpc/react";
 import DetalleReserva from "./detalle-reserva";
 import type { RouterOutputs } from "@/trpc/react";
 
 type UsuarioData = RouterOutputs["admin"]["usuarios"]["getUsuarioPorId"];
-type ReservaBibliotecaData = RouterOutputs["reservas"]["reservaBiblioteca"]["getReservaPorUser"];
-type ReservaEquipoData = RouterOutputs["reservas"]["reservaEquipo"]["getReservaPorUser"];
-type ReservaLaboratorioData = RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getReservaPorUser"];
 
 type ClienteContenedorUsuarioProps = {
   usuarioData: UsuarioData;
@@ -112,23 +108,33 @@ const mockReservasLibros = [
 export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsuarioProps) {
   const [activeTab, setActiveTab] = useState<"libros" | "inventario" | "laboratorio">("libros");
 
-  const { data: reservasLibros, isLoading: isLoadingLibros } = useQuery({
-    queryKey: ["reservasLibros", usuarioData.id],
-    queryFn: () => api.reservas.reservaBiblioteca.getReservaPorUser({ id: usuarioData.id }),
-    enabled: activeTab === "libros",
-  });
+  if (!usuarioData) {
+    return <div>Usuario no encontrado</div>;
+  }
 
-  const { data: reservasInventario, isLoading: isLoadingInventario } = useQuery({
-    queryKey: ["reservasInventario", usuarioData.id],
-    queryFn: () => api.reservas.reservaEquipo.getReservaPorUser({ id: usuarioData.id }),
-    enabled: activeTab === "inventario",
-  });
+  const { data: reservasLibros, isLoading: isLoadingLibros } =
+    api.reservas.reservaBiblioteca.getReservaPorUser.useQuery(
+      { id: usuarioData.id },
+      {
+        enabled: activeTab === "libros",
+      },
+    );
 
-  const { data: reservasLaboratorio, isLoading: isLoadingLaboratorio } = useQuery({
-    queryKey: ["reservasLaboratorio", usuarioData.id],
-    queryFn: () => api.reservas.reservaLaboratorioAbierto.getReservaPorUser({ id: usuarioData.id }),
-    enabled: activeTab === "laboratorio",
-  });
+  const { data: reservasInventario, isLoading: isLoadingInventario } =
+    api.reservas.reservaEquipo.getReservaPorUser.useQuery(
+      { id: usuarioData.id },
+      {
+        enabled: activeTab === "inventario",
+      },
+    );
+
+  const { data: reservasLaboratorio, isLoading: isLoadingLaboratorio } =
+    api.reservas.reservaLaboratorioAbierto.getReservaPorUser.useQuery(
+      { id: usuarioData.id },
+      {
+        enabled: activeTab === "laboratorio",
+      },
+    );
 
   return (
     <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as typeof activeTab)} className="w-full">
@@ -150,11 +156,11 @@ export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsua
         {isLoadingLibros ? (
           <div>Cargando reservas de libros...</div>
         ) : (
-          <DetalleReserva<ReservaBibliotecaData>
+          <DetalleReserva
             idUsuario={usuarioData.id}
             titulo="Reserva de Libros"
             descripcion="Historial de Libros"
-            reservas={reservasLibros || []}
+            reservas={reservasLibros ?? []}
             columns={[
               { header: "ID", key: "id", className: "w-[100px]" },
               { header: "Fecha de préstamo", key: (item) => item.fechaCreacion.toLocaleDateString("es-ES") },
@@ -176,16 +182,16 @@ export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsua
         {isLoadingInventario ? (
           <div>Cargando reservas de inventario...</div>
         ) : (
-          <DetalleReserva<ReservaEquipoData>
+          <DetalleReserva
             idUsuario={usuarioData.id}
             titulo="Reserva de Inventario"
             descripcion="Historial de Inventarios"
-            reservas={reservasInventario || []}
+            reservas={reservasInventario ?? []}
             columns={[
               { header: "ID", key: "id", className: "w-[100px]" },
               { header: "Fecha de préstamo", key: (item) => item.fechaCreacion.toLocaleDateString("es-ES") },
-              { header: "Nombre", key: (item) => item.reserva.equipo.modelo },
-              { header: "Marca", key: (item) => item.reserva.equipo.marca.nombre },
+              { header: "Nombre", key: (item) => item.equipo.modelo },
+              { header: "Marca", key: (item) => item.equipo.marca.nombre },
               {
                 header: "Estado",
                 key: (item) => (
@@ -203,11 +209,11 @@ export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsua
         {isLoadingLaboratorio ? (
           <div>Cargando reservas de laboratorio...</div>
         ) : (
-          <DetalleReserva<ReservaLaboratorioData>
+          <DetalleReserva
             idUsuario={usuarioData.id}
             titulo="Reserva de Laboratorio"
             descripcion="Historial de Laboratorios"
-            reservas={reservasLaboratorio || []}
+            reservas={reservasLaboratorio ?? []}
             columns={[
               { header: "ID", key: "id", className: "w-[100px]" },
               { header: "Fecha", key: (item) => item.fechaCreacion.toLocaleDateString("es-ES") },
@@ -215,7 +221,9 @@ export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsua
               {
                 header: "Estado",
                 key: (item) => (
-                  <Badge color={item.estatus === "PENDIENTE" ? "warning" : "primary"}>{item.estatus}</Badge>
+                  <Badge color={item.reserva.estatus === "PENDIENTE" ? "warning" : "primary"}>
+                    {item.reserva.estatus}
+                  </Badge>
                 ),
                 className: "text-right",
               },

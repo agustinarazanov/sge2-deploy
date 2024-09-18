@@ -8,6 +8,7 @@ import {
 } from "@/shared/filters/cursos-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
+import { informacionUsuario } from "../usuario-helper";
 
 type InputGetAll = z.infer<typeof inputGetCursos>;
 export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll, userId: string) => {
@@ -81,20 +82,14 @@ export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll
         ayudantes: {
           include: {
             usuario: {
-              select: {
-                nombre: true,
-                apellido: true,
-              },
+              select: informacionUsuario,
             },
           },
         },
         profesores: {
           include: {
             usuario: {
-              select: {
-                nombre: true,
-                apellido: true,
-              },
+              select: informacionUsuario,
             },
           },
         },

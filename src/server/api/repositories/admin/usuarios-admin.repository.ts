@@ -164,7 +164,7 @@ export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEdita
           update: {},
         });
       } else {
-        await prisma.tutor.deleteMany({
+        await prisma.tutor.delete({
           where: { userId: input.id },
         });
       }
@@ -174,7 +174,8 @@ export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEdita
 
     return usuario;
   } catch (error) {
-    throw new Error(`Error modificando usuario ${input.id}: ${error}`);
+    console.error(error);
+    throw new Error(`Error modificando usuario ${input.id}`);
   }
 };
 
