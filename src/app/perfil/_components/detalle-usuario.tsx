@@ -39,8 +39,8 @@ function DetalleUsuario({ usuarioData }: DetalleContenedor) {
             <Avatar className="h-24 w-24">
               <AvatarImage src={image ?? ""} alt={`${nombre} ${apellido}`} />
               <AvatarFallback>
-                {nombre[0]}
-                {apellido[0]}
+                {nombre?.[0] ?? ""}
+                {apellido?.[0] ?? ""}
               </AvatarFallback>
             </Avatar>
             <div className="flex-grow text-center sm:text-left">
