@@ -1,10 +1,11 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { Button, FormInput, ScrollArea, toast } from "@/components/ui";
+import { Button, FormInput, Input, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { inputEditarTipo } from "@/shared/filters/equipos-tipos-filter.schema";
+import { uploadFile } from "@/shared/upload-file";
 import Image from "next/image";
 
 type Props = {
@@ -29,6 +30,7 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
     return {
       id: tipo.id,
       nombre: tipo.nombre,
+      imagen: "",
       fechaCreacion: tipo.fechaCreacion,
       usuarioCreadorId: tipo.usuarioCreadorId,
     };
@@ -44,6 +46,8 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
 
   useEffect(() => formHook.reset(tipoBase), [formHook, tipoBase]);
 
+  const [selectedImage, setSelectedImage] = useState<File>();
+
   if (!esNuevo && isNaN(tipoId)) {
     return <div>Error al cargar...</div>;
   }
@@ -56,7 +60,18 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
     return <div>Error al cargar...</div>;
   }
 
-  const onFormSubmit = (formData: FormEditarTipoType) => {
+  const onFormSubmit = async (formData: FormEditarTipoType) => {
+    try {
+      const fileForm = new FormData();
+      if(selectedImage) {
+        fileForm.append("file", selectedImage);
+        formData.imagen = await uploadFile(fileForm);
+      }
+    } catch(error) {
+      toast.error(`${error}`);
+      return
+    }
+
     if (esNuevo) {
       agregarTipo.mutate(formData, {
         onSuccess: () => {
@@ -86,6 +101,11 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
     onCancel();
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files?.[0]) return;
+    setSelectedImage(e.target.files?.[0]);
+  };
+
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
@@ -106,18 +126,20 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
               </div>
               <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-2/4">
-                  <FormInput
+                  <Input
                     label={"Agregar imagen"}
-                    control={control}
+                    //control={control}
                     name="imagen"
                     type={"file"}
+                    accept="image/*"
                     className="mt-2"
+                    onChange={handleFileChange}
                   />
                 </div>
                 <div className="mt-4 basis-1/3">
                     <Image
-                      src={"/utn-logo.svg"}
-                      className="mt-2 h-20 w-20"
+                      src={selectedImage ? URL.createObjectURL(selectedImage) : "/utn-logo.svg"}
+                      className="mt-2 h-fit w-fit"
                       alt="Imagen del tipo"
                       height={100}
                       width={100}
