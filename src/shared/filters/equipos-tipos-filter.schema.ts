@@ -30,13 +30,7 @@ const ACCEPTED_IMAGE_MIME_TYPES = ["image/jpeg", "image/jpg", "image/png",];
 
 export const inputAgregarTipo = z.object({
   nombre: z.string().min(1, { message: "Requerido" }),
-  imagen: z.any()
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    .refine(file => file?.[0]?.size <= MAX_FILE_SIZE, {message: "Tamaño maximo es de 1MB"})
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    .refine(file => ACCEPTED_IMAGE_MIME_TYPES.includes(file?.[0]?.type), {message: "Solo .jpg, .jpeg, and .png son soportados"})
-    .optional()
-    .catch(undefined),
+  imagen: z.string().optional().default("")
 });
 
 export const inputEditarTipo = z
