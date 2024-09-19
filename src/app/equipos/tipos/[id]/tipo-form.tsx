@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { useEffect, useMemo } from "react";
 import { inputEditarTipo } from "@/shared/filters/equipos-tipos-filter.schema";
+import Image from "next/image";
 
 type Props = {
   id?: string;
@@ -92,7 +93,7 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
           <div className="flex w-full flex-col items-center justify-center">
             <div className="flex flex-col space-y-4 px-0 md:px-6">
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-                <div className="mt-4 basis-2/2">
+                <div className="mt-4 basis-2/4">
                   <FormInput
                     label={"Nombre"}
                     control={control}
@@ -103,8 +104,8 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
                   />
                 </div>
               </div>
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-                <div className="mt-4 basis-2/2">
+              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
+                <div className="mt-4 basis-2/4">
                   <FormInput
                     label={"Agregar imagen"}
                     control={control}
@@ -112,6 +113,15 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     type={"file"}
                     className="mt-2"
                   />
+                </div>
+                <div className="mt-4 basis-1/3">
+                    <Image
+                      src={"/utn-logo.svg"}
+                      className="mt-2 h-20 w-20"
+                      alt="Imagen del tipo"
+                      height={100}
+                      width={100}
+                    />
                 </div>
               </div>
             </div>
