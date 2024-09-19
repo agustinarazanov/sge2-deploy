@@ -47,6 +47,7 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
   useEffect(() => formHook.reset(tipoBase), [formHook, tipoBase]);
 
   const [selectedImage, setSelectedImage] = useState<File>();
+  const [previewImgUrl, setPreviewimgUrl] = useState("");
 
   if (!esNuevo && isNaN(tipoId)) {
     return <div>Error al cargar...</div>;
@@ -102,8 +103,15 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files?.[0]) return;
+    if (!e.target.files?.[0]) {
+      setSelectedImage(undefined);
+      setPreviewimgUrl("");
+      return;
+    }
+
     setSelectedImage(e.target.files?.[0]);
+
+    setPreviewimgUrl(URL.createObjectURL(e.target.files?.[0]));
   };
 
   return (
@@ -136,14 +144,14 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     onChange={handleFileChange}
                   />
                 </div>
-                <div className="mt-4 basis-1/3">
-                    <Image
-                      src={selectedImage ? URL.createObjectURL(selectedImage) : "/utn-logo.svg"}
-                      className="mt-2 h-fit w-fit"
-                      alt="Imagen del tipo"
-                      height={100}
-                      width={100}
-                    />
+                <div className="mt-4 basis-1/3 h-32 w-32">
+                  {previewImgUrl && (<Image
+                        src={previewImgUrl}
+                        className="mt-2 h-auto w-auto"
+                        alt="Imagen del tipo"
+                        height={100}
+                        width={100}
+                    />)}
                 </div>
               </div>
             </div>
