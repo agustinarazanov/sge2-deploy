@@ -64,13 +64,13 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
   const onFormSubmit = async (formData: FormEditarTipoType) => {
     try {
       const fileForm = new FormData();
-      if(selectedImage) {
+      if (selectedImage) {
         fileForm.append("file", selectedImage);
         formData.imagen = await uploadFile(fileForm);
       }
-    } catch(error) {
-      toast.error(`${error}`);
-      return
+    } catch (error) {
+      console.log(error);
+      return;
     }
 
     if (esNuevo) {
@@ -144,14 +144,16 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     onChange={handleFileChange}
                   />
                 </div>
-                <div className="mt-4 basis-1/3 h-32 w-32">
-                  {previewImgUrl && (<Image
-                        src={previewImgUrl}
-                        className="mt-2 h-auto w-auto"
-                        alt="Imagen del tipo"
-                        height={100}
-                        width={100}
-                    />)}
+                <div className="mt-4 h-32 w-32 basis-1/3">
+                  {previewImgUrl && (
+                    <Image
+                      src={previewImgUrl}
+                      className="mt-2 h-auto w-auto"
+                      alt="Imagen del tipo"
+                      height={100}
+                      width={100}
+                    />
+                  )}
                 </div>
               </div>
             </div>
