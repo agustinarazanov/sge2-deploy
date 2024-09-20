@@ -125,7 +125,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
-        <ScrollArea className="max-h-[calc(100vh_-_30%)] w-full pr-4">
+        <ScrollArea className="max-h-[calc(100vh_-_20%)] w-full pr-4 md:max-h-[calc(100vh_-_30%)] lg:max-h-[calc(100vh_-_30%)]">
           <div className="flex w-full flex-col items-center justify-center">
             <div className="flex flex-col space-y-4 px-0 md:px-6">
               <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
@@ -146,7 +146,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
               </div>
 
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 {!esNuevo && (
                   <div className="mt-4 basis-1/2">
                     <FormInput
@@ -170,7 +170,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
               </div>
 
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
                   <FormInput label={"ISBN"} control={control} name="isbn" type={"text"} className="mt-2" />
                 </div>
@@ -187,12 +187,12 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
               </div>
 
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
                   <SelectSedeForm
                     name="sedeId"
                     control={control}
-                    className="mt-2"
+                    className="mt-2 text-sm"
                     label={"Sede"}
                     placeholder={"Selecciona una sede"}
                     onChange={() => {
@@ -208,7 +208,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                   <SelectLaboratorioForm
                     name="laboratorioId"
                     control={control}
-                    className="mt-2"
+                    className="mt-2 text-sm"
                     label={"Laboratorio"}
                     sedeId={sedeId}
                     disabled={!sedeId}
@@ -221,12 +221,12 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
               </div>
 
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
                   <SelectArmarioForm
                     name="armarioId"
                     control={control}
-                    className="mt-2"
+                    className="mt-2 text-sm"
                     label={"Armario"}
                     laboratorioId={laboratorioId}
                     placeholder={!laboratorioId ? "Selecciona un laboratorio" : "Selecciona un armario"}
@@ -240,7 +240,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                   <SelectEstanteForm
                     name="estanteId"
                     control={control}
-                    className="mt-2"
+                    className="mt-2 text-sm"
                     label={"Estante"}
                     armarioId={armarioId}
                     placeholder={!armarioId ? "Selecciona un armario" : "Selecciona una estante"}
@@ -248,7 +248,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
               </div>
 
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
                   <SelectEditorialForm
                     name="editorial"
@@ -263,14 +263,14 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                   <SelectIdiomasForm
                     name="idiomaId"
                     control={control}
-                    className="mt-2"
+                    className="mt-2 text-sm"
                     label={"Idioma"}
                     placeholder={"Selecciona un idioma"}
                   />
                 </div>
               </div>
 
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 w-full">
                   <label>
                     Materias
@@ -281,7 +281,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
             </div>
           </div>
         </ScrollArea>
-        <div className="flex w-full flex-row items-end justify-end space-x-4">
+        <div className="mb-3 flex w-full flex-row items-end justify-center space-x-4 md:justify-end lg:justify-end">
           <Button title="Cancelar" type="button" variant="default" color="secondary" onClick={handleCancel}>
             Cancelar
           </Button>
