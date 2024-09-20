@@ -155,6 +155,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
                     inputBaseStyle,
                     "!w-full pr-10 group-focus-within:!border-input-active group-hover:border-input-hover group-active:!border-input-active",
                     "disabled:group-focus-within:!border-disabled disabled:group-active:!border-disabled",
+                    "placeholder:text-sm",
                     {
                       "rounded-b-none": open,
                       "pr-16": isLoading,
