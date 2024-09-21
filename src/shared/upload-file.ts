@@ -18,5 +18,5 @@ export async function uploadFile(formData: FormData) {
 
   revalidatePath("/");
 
-  return filePath;
+  return `/imagenes/${file.name}`;
 }
