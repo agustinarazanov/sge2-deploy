@@ -36,8 +36,9 @@ export const BibliotecaTable = ({ data, filters }: BibliotecaTableProps) => {
         pageIndex={pagination.pageIndex}
         config={{
           sorting,
-          onSortingChange: (updaterOrValue: SortingState | ((prevState: SortingState) => SortingState)) =>
-            onSortingChange(typeof updaterOrValue === "function" ? updaterOrValue([]) : updaterOrValue),
+          onSortingChange: (updaterOrValue: SortingState | ((prevState: SortingState) => SortingState)) => {
+            return onSortingChange(typeof updaterOrValue === "function" ? updaterOrValue([]) : updaterOrValue);
+          },
         }}
         action={{
           header: "Acciones",

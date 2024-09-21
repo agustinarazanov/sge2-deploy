@@ -1,11 +1,13 @@
-import { FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { Button, FormInput, Input, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { inputEditarLaboratorio } from "@/shared/filters/admin-laboratorios-filter.schema";
-import { FormSelect } from "@/components/ui/autocomplete";
+import { Plus, ChevronDown, ChevronRight, MinusIcon } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
 
 type Props = {
   id?: string;
@@ -15,13 +17,20 @@ type Props = {
 
 type FormEditarLaboratorioType = z.infer<typeof inputEditarLaboratorio>;
 
+type Armario = {
+  id?: number;
+  nombre: string;
+  estantes: { id?: number; nombre: string }[];
+  isExpanded: boolean;
+};
+
 export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
   const esNuevo = id === undefined;
   const laboratorioId = parseInt(id ?? "");
 
-  const [armarios, setArmarios] = useState<
-    { id: number; nombre: string; estantes: { id: number; nombre: string }[] }[]
-  >([]);
+  const [armarios, setArmarios] = useState<Armario[]>([]);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const scrollPositionRef = useRef<number>(0);
 
   const {
     data: laboratorio,
@@ -29,33 +38,33 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
     isError,
   } = api.admin.laboratorios.getLaboratorioPorId.useQuery({ id: laboratorioId }, { enabled: !!id });
 
-  const editarLaboratorio = api.admin.laboratorios.editarLaboratorio.useMutation(); // Se llama si existe laboratorioId
-  const agregarLaboratorio = api.admin.laboratorios.nuevoLaboratorio.useMutation(); // Se llama si no existe laboratorioId
+  const editarLaboratorio = api.admin.laboratorios.editarLaboratorio.useMutation();
+  const agregarLaboratorio = api.admin.laboratorios.nuevoLaboratorio.useMutation();
 
   const formHook = useForm<FormEditarLaboratorioType>({
     mode: "onChange",
     defaultValues: {
       id: laboratorio?.id ?? undefined,
       nombre: laboratorio?.nombre ?? "",
-      esAbierto: laboratorio?.esAbierto ?? false,
+      esReservable: laboratorio?.esReservable ?? false,
       sedeId: String(laboratorio?.sedeId) ?? "",
+      tienePc: laboratorio?.tienePc ?? false,
     },
     resolver: zodResolver(inputEditarLaboratorio),
   });
 
   const { handleSubmit, control } = formHook;
 
-  // TODO: Separar componente de formulario y logica de carga y actualización de laboratorio
   useEffect(() => {
     if (laboratorio) {
       formHook.reset({
         id: laboratorio.id,
         nombre: laboratorio.nombre,
-        esAbierto: laboratorio.esAbierto,
+        esReservable: laboratorio.esReservable,
         sedeId: String(laboratorio.sedeId),
+        tienePc: laboratorio.tienePc,
       });
 
-      // Transform the `armarios` data to match the expected type
       const transformedArmarios = laboratorio.armarios.map((armario) => ({
         id: armario.id,
         nombre: armario.nombre,
@@ -63,11 +72,18 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
           id: estante.id,
           nombre: estante.nombre,
         })),
+        isExpanded: true,
       }));
 
       setArmarios(transformedArmarios);
     }
   }, [formHook, laboratorio]);
+
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTop = scrollPositionRef.current;
+    }
+  }, [armarios]);
 
   if (!esNuevo && isNaN(laboratorioId)) {
     return <div>Error al cargar...</div>;
@@ -82,8 +98,19 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
   }
 
   const onFormSubmit = (formData: FormEditarLaboratorioType) => {
+    const dataToSubmit = {
+      ...formData,
+      armarios: armarios.map((armario) => ({
+        ...armario,
+        estantes: armario.estantes.map((estante) => ({
+          ...estante,
+          armarioId: armario.id,
+        })),
+      })),
+    };
+
     if (esNuevo) {
-      agregarLaboratorio.mutate(formData, {
+      agregarLaboratorio.mutate(dataToSubmit, {
         onSuccess: () => {
           toast.success("Laboratorio agregado con éxito.");
           onSubmit();
@@ -92,18 +119,17 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
           toast.error(error?.message ?? "Error al agregar el laboratorio");
         },
       });
-      return;
+    } else {
+      editarLaboratorio.mutate(dataToSubmit, {
+        onSuccess: () => {
+          toast.success("Laboratorio actualizado con éxito.");
+          onSubmit();
+        },
+        onError: (error) => {
+          toast.error(error?.message ?? "Error al actualizar el laboratorio");
+        },
+      });
     }
-
-    editarLaboratorio.mutate(formData, {
-      onSuccess: () => {
-        toast.success("Laboratorio actualizado con éxito.");
-        onSubmit();
-      },
-      onError: (error) => {
-        toast.error(error?.message ?? "Error al actualizar el laboratorio");
-      },
-    });
   };
 
   const handleCancel = () => {
@@ -111,115 +137,208 @@ export const AdminLaboratorioForm = ({ id, onSubmit, onCancel }: Props) => {
     onCancel();
   };
 
+  const agregarArmario = () => {
+    saveScrollPosition();
+    setArmarios([...armarios, { nombre: `Armario ${armarios.length + 1}`, estantes: [], isExpanded: true }]);
+  };
+
+  const agregarEstante = (armarioIndex: number) => {
+    saveScrollPosition();
+    const nuevosArmarios = [...armarios];
+    if (!nuevosArmarios[armarioIndex]) {
+      return;
+    }
+    nuevosArmarios[armarioIndex].estantes.push({
+      nombre: `Estante ${nuevosArmarios[armarioIndex]?.estantes.length + 1}`,
+    });
+    setArmarios(nuevosArmarios);
+  };
+
+  const eliminarArmario = (index: number) => {
+    saveScrollPosition();
+    setArmarios(armarios.filter((_, i) => i !== index));
+  };
+
+  const eliminarEstante = (armarioIndex: number, estanteIndex: number) => {
+    saveScrollPosition();
+    const nuevosArmarios = [...armarios];
+    if (!nuevosArmarios[armarioIndex]) {
+      return;
+    }
+
+    nuevosArmarios[armarioIndex].estantes = nuevosArmarios[armarioIndex]?.estantes.filter((_, i) => i !== estanteIndex);
+    setArmarios(nuevosArmarios);
+  };
+
+  const toggleArmarioExpansion = (index: number) => {
+    saveScrollPosition();
+    const nuevosArmarios = [...armarios];
+    if (!nuevosArmarios[index]) {
+      return;
+    }
+
+    nuevosArmarios[index].isExpanded = !nuevosArmarios[index].isExpanded;
+    setArmarios(nuevosArmarios);
+  };
+
+  const saveScrollPosition = () => {
+    if (scrollAreaRef.current) {
+      scrollPositionRef.current = scrollAreaRef.current.scrollTop;
+    }
+  };
+
   return (
     <FormProvider {...formHook}>
-      <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
-        <div className="flex w-full flex-col items-center justify-center">
-          <div className="flex w-full flex-col space-y-4 px-0 md:px-6">
-            <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
-              <div className="mt-4 w-full">
-                <FormInput
-                  label={"Nombre"}
-                  control={control}
-                  name="nombre"
-                  type={"text"}
-                  className="mt-2"
-                  autoComplete="off"
-                />
-              </div>
-            </div>
-
-            <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
-              <div className="mt-4 w-full">
-                <FormSelect
-                  label={"Sede"}
-                  control={control}
-                  name="sedeId"
-                  className="mt-2"
-                  items={[
-                    { id: "1", label: "Medrano" },
-                    { id: "2", label: "Lugano" },
-                  ]}
-                />
-              </div>
-              <div className="mt-4 w-full">
-                <FormInput
-                  type="checkbox"
-                  label={"Laboratorio abierto"}
-                  control={control}
-                  name="esAbierto"
-                  className="mt-2"
-                />
-              </div>
-            </div>
-
-            <ScrollArea className="mt-4 h-80 max-h-80 w-full pr-4">
+      <form onSubmit={handleSubmit(onFormSubmit)} className="flex h-full flex-col">
+        <ScrollArea className="max-h-[calc(100vh_-_10%)]" ref={scrollAreaRef}>
+          <div className="flex flex-grow flex-col overflow-hidden">
+            <div className="space-y-4 px-0 md:px-6">
               <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
                 <div className="mt-4 w-full">
-                  {armarios?.map((armario, indexArmario) => (
-                    <div key={armario.id} className="flex w-full flex-col space-y-2">
-                      <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
-                        <div className="mt-4 w-full">
+                  <FormInput
+                    label={"Nombre"}
+                    control={control}
+                    name="nombre"
+                    type={"text"}
+                    className="mt-2"
+                    autoComplete="off"
+                  />
+                </div>
+              </div>
+
+              <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+                <div className="mt-4 w-full">
+                  <SelectSedeForm label={"Sede"} control={control} name="sedeId" className="mt-2" />
+                </div>
+              </div>
+              <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+                <div className="flex w-full flex-row lg:justify-between lg:gap-x-4">
+                  <div className="w-1/2">
+                    <Controller
+                      control={control}
+                      name="esReservable"
+                      render={({ field }) => (
+                        <div className="flex items-center justify-between rounded-md border border-white p-2">
+                          <label htmlFor="esReservable" className="text-base">
+                            Es reservable
+                          </label>
+                          <Switch id="esReservable" checked={field.value} onCheckedChange={field.onChange} />
+                        </div>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/2">
+                    <Controller
+                      control={control}
+                      name="tienePc"
+                      render={({ field }) => (
+                        <div className="flex items-center justify-between rounded-md border border-white p-2">
+                          <label htmlFor="tienePc" className="text-base">
+                            Tiene PC
+                          </label>
+                          <Switch id="tienePc" checked={field.value} onCheckedChange={field.onChange} />
+                        </div>
+                      )}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 flex flex-grow flex-col overflow-hidden">
+              <div className="mb-2 flex items-center justify-between">
+                <h3 className="text-lg font-semibold">Armarios</h3>
+                <Button onClick={agregarArmario} variant="default" size="sm" type="button">
+                  <Plus size={16} className="mr-2" />
+                  Agregar Armario
+                </Button>
+              </div>
+              <div className="flex-grow overflow-hidden">
+                <div className="space-y-4 pr-4">
+                  {armarios.map((armario, armarioIndex) => (
+                    <div key={armario.id ?? armarioIndex} className="rounded border p-4">
+                      <div className="mb-2 flex items-center justify-between">
+                        <div className="flex items-center">
+                          <Button
+                            onClick={() => toggleArmarioExpansion(armarioIndex)}
+                            variant="default"
+                            size="sm"
+                            className="mr-2"
+                            type="button"
+                          >
+                            {armario.isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                          </Button>
                           <Input
-                            label={"Nombre de armario"}
-                            type={"text"}
-                            className="mt-2"
-                            autoComplete="off"
+                            type="text"
+                            className="flex-grow"
                             value={armario.nombre}
                             onChange={(event) => {
                               const newArmarios = [...armarios];
-
-                              const newArmario = newArmarios[indexArmario];
-
-                              if (newArmario) {
-                                newArmario.nombre = event.target.value;
+                              if (!newArmarios[armarioIndex]) {
+                                return;
                               }
-
+                              newArmarios[armarioIndex].nombre = event.target.value;
                               setArmarios(newArmarios);
                             }}
                           />
                         </div>
-                        <div className="mt-4 flex w-full flex-col gap-2">
-                          {armario.estantes?.map((estante, indexEstante) => (
-                            <div key={estante.id} className="flex w-full flex-col space-y-2">
-                              <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
-                                <div className="w-full">
-                                  <Input
-                                    label={"Nombre de estante"}
-                                    type={"text"}
-                                    className="mt-2"
-                                    autoComplete="off"
-                                    value={estante.nombre}
-                                    onChange={(event) => {
-                                      const newArmarios = [...armarios];
-
-                                      const newArmario = newArmarios[indexArmario];
-
-                                      if (newArmario) {
-                                        const newEstante = newArmario.estantes[indexEstante];
-
-                                        if (newEstante) {
-                                          newEstante.nombre = event.target.value;
-                                        }
-                                      }
-
-                                      setArmarios(newArmarios);
-                                    }}
-                                  />
-                                </div>
-                              </div>
+                        <Button
+                          onClick={() => eliminarArmario(armarioIndex)}
+                          variant="icon"
+                          color="outline"
+                          icon={MinusIcon}
+                          type="button"
+                        />
+                      </div>
+                      {armario.isExpanded && (
+                        <div className="ml-6 mt-2 space-y-2">
+                          {armario.estantes.map((estante, estanteIndex) => (
+                            <div key={estante.id ?? estanteIndex} className="flex items-center">
+                              <Input
+                                type="text"
+                                className="mr-2 flex-grow"
+                                value={estante.nombre}
+                                onChange={(event) => {
+                                  const newArmarios = [...armarios];
+                                  if (!newArmarios[armarioIndex]) {
+                                    return;
+                                  }
+                                  if (!newArmarios[armarioIndex].estantes[estanteIndex]) {
+                                    return;
+                                  }
+                                  newArmarios[armarioIndex].estantes[estanteIndex].nombre = event.target.value;
+                                  setArmarios(newArmarios);
+                                }}
+                              />
+                              <Button
+                                onClick={() => eliminarEstante(armarioIndex, estanteIndex)}
+                                variant="icon"
+                                color="outline"
+                                icon={MinusIcon}
+                                type="button"
+                              />
                             </div>
                           ))}
+                          <Button
+                            onClick={() => agregarEstante(armarioIndex)}
+                            variant="default"
+                            size="sm"
+                            className="mt-2"
+                            type="button"
+                          >
+                            <Plus size={16} className="mr-2" />
+                            Agregar Estante
+                          </Button>
                         </div>
-                      </div>
+                      )}
                     </div>
                   ))}
                 </div>
               </div>
-            </ScrollArea>
+            </div>
           </div>
-        </div>
-        <div className="flex w-full flex-row items-end justify-end space-x-4">
+        </ScrollArea>
+        <div className="mt-4 flex justify-end space-x-4 border-t pt-4">
           <Button title="Cancelar" type="button" variant="default" color="secondary" onClick={handleCancel}>
             Cancelar
           </Button>

@@ -82,7 +82,8 @@ export const editarLaboratorio = async (ctx: { db: PrismaClient }, input: InputE
       data: {
         nombre: input.nombre,
         sedeId: parseInt(input.sedeId),
-        esAbierto: input.esAbierto,
+        esReservable: input.esReservable,
+        tienePc: input.tienePc,
 
         usuarioModificadorId: userId,
       },
@@ -104,7 +105,7 @@ export const agregarLaboratorio = async (ctx: { db: PrismaClient }, input: Input
       data: {
         nombre: input.nombre,
         sedeId: parseInt(input.sedeId),
-        esAbierto: input.esAbierto,
+        esReservable: input.esReservable,
 
         usuarioCreadorId: userId,
         usuarioModificadorId: userId,

@@ -11,7 +11,7 @@ export const getColumns = () => {
     colHelper.accessor("nombre", {
       header: "Nombre",
     }),
-    colHelper.display({
+    colHelper.accessor("tienePc", {
       header: "Tiene PC",
       cell: (info) => {
         const tienePc = info.row.original.tienePc;
@@ -26,13 +26,13 @@ export const getColumns = () => {
         );
       },
     }),
-    colHelper.display({
-      header: "Es abierto",
+    colHelper.accessor("esReservable", {
+      header: "Es reservable",
       cell: (info) => {
-        const esAbierto = info.row.original.esAbierto;
+        const esReservable = info.row.original.esReservable;
 
-        const color = esAbierto ? "success" : "danger";
-        const texto = esAbierto ? "Sí" : "No";
+        const color = esReservable ? "success" : "danger";
+        const texto = esReservable ? "Sí" : "No";
 
         return (
           <Badge variant={"default"} color={color}>
@@ -41,7 +41,7 @@ export const getColumns = () => {
         );
       },
     }),
-    colHelper.display({
+    colHelper.accessor("laboratorioAbiertoTipo", {
       header: "Tipo de laboratorio",
       cell: (info) => {
         const tipoLaboratorio = info.row.original.laboratorioAbiertoTipo;
@@ -49,16 +49,21 @@ export const getColumns = () => {
         return tipoLaboratorio ?? "Normal";
       },
     }),
-    colHelper.accessor("nombre", {
+    colHelper.accessor("sede.nombre", {
       header: "Sede",
     }),
     colHelper.display({
       header: "Cantidad de armarios",
-      // cell: (info) => {
-      //   const armarios = info.row.original.armarios;
+      cell: (info) => {
+        const armarios = info.row.original.armarios;
 
-      //   return armarios.length;
-      // },
+        return armarios.length;
+      },
+      meta: {
+        header: {
+          hideSort: true,
+        },
+      },
     }),
   ] as ColumnDef<LibroData>[];
 };

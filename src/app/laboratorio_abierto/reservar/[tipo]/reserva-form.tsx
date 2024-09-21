@@ -22,7 +22,7 @@ type Props = {
 type FormReservarLaboratorioAbiertoType = z.infer<typeof inputReservaLaboratorioAbierto>;
 
 export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
-  const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery();
+  const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery({ tipoId: undefined });
 
   // const editarCurso = api.cursos.editarCurso.useMutation();
 
@@ -195,7 +195,8 @@ export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
                         <Input
                           readOnly
                           value={
-                            todosLosEquiposTipo?.find((equipo) => String(equipo.id) === equipoTipo.idTipo)?.nombre ?? ""
+                            todosLosEquiposTipo?.tipos?.find((equipo) => String(equipo.id) === equipoTipo.idTipo)
+                              ?.nombre ?? ""
                           }
                           className="mt-2 grow basis-2/3"
                         />

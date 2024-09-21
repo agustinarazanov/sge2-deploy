@@ -11,9 +11,10 @@ export const inputAgregarEquipo = z.object({
   marcaId: z.number().min(1, { message: "Requerido" }),
   sedeId: z.number().min(1, { message: "Requerido" }),
   laboratorioId: z.number().min(1, { message: "Requerido" }),
-  armarioId: z.number().min(1, { message: "Requerido" }),
-  estanteId: z.number().min(1, { message: "Requerido" }),
+  armarioId: z.number().positive().nullish(),
+  estanteId: z.number().positive().nullish(),
   estadoId: z.number().min(1, { message: "Requerido" }),
+  inventarioId: z.string().min(1, { message: "Requerido" }),
 });
 
 export const inputGetEquipos = z.object({
@@ -24,9 +25,9 @@ export const inputGetEquipos = z.object({
     .refine((value) => parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
     .catch("0"),
   orderBy: z
-    .enum(["inventario", "tipo.nombre", "marca", "modelo", "numeroSerie", "estado", "estadoPrestamo"])
-    .default("tipo.nombre")
-    .catch("tipo.nombre"),
+    .enum(["inventarioId", "tipo_nombre", "marca_nombre", "modelo", "numeroSerie", "estado_nombre", "disponible"])
+    .default("inventarioId")
+    .catch("inventarioId"),
   orderDirection: z.enum(["asc", "desc"]).default("asc").catch("asc"),
   searchText: z.string().default(""),
   armario: z.string().default(""),

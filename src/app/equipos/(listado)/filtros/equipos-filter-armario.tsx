@@ -1,20 +1,13 @@
 "use client";
 
-import React from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui";
+import React, { useMemo, useState } from "react";
+import { Autocomplete, Select, SelectTrigger, SelectValue } from "@/components/ui";
 import { api } from "@/trpc/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { type z } from "zod";
 import { useEquiposQueryParam } from "../../_hooks/use-equipos-query-param";
 import { type inputGetEquipos } from "@/shared/filters/equipos-filter.schema";
+import { estaDentroDe } from "@/shared/string-compare";
 
 type EquiposFilters = z.infer<typeof inputGetEquipos>;
 
@@ -25,7 +18,30 @@ type Props = {
 export const EquiposFilterArmario = ({ filters }: Props) => {
   const { armario, onArmarioChange } = useEquiposQueryParam(filters);
 
-  const { data: armarios, isLoading, isError } = api.materia.getAll.useQuery();
+  const [query, setQuery] = useState("");
+
+  const { data, isLoading, isError } = api.equipos.getAllArmarios.useQuery();
+
+  const armarios = useMemo(() => {
+    if (!data) return [];
+
+    return data
+      .map((item) => {
+        const { id, nombre, laboratorio } = item;
+        return {
+          id: id,
+          label: `${nombre} (${laboratorio.nombre})`,
+          data: item,
+        };
+      })
+      .filter((item) => !query || estaDentroDe(query, item.label));
+  }, [data, query]);
+
+  const currentTipo = useMemo(() => {
+    if (!armarios) return null;
+
+    return armarios.find((item) => String(item.id) === armario);
+  }, [armarios, armario]);
 
   if (isLoading) {
     return (
@@ -57,26 +73,23 @@ export const EquiposFilterArmario = ({ filters }: Props) => {
 
   return (
     <div className="w-full">
-      <Select onValueChange={(value) => onArmarioChange(value)} value={armario}>
-        <div className="flex flex-row items-center space-x-2">
-          <SelectGroup className="w-full">
-            <SelectLabel className="sr-only">Selecciona un armario</SelectLabel>
-            <SelectTrigger
-              id="selectArmario"
-              className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
-            >
-              <SelectValue placeholder="Selecciona un armario" />
-            </SelectTrigger>
-            <SelectContent>
-              {(armarios ?? []).map((option) => (
-                <SelectItem key={option.id} value={String(option.id)}>
-                  {option.nombre} ({option.codigo})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectGroup>
-        </div>
-      </Select>
+      <Autocomplete
+        async
+        items={armarios}
+        noOptionsComponent={
+          <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm text-white">
+            <span>No se encontró el armario</span>
+          </div>
+        }
+        className={""}
+        onQueryChange={setQuery}
+        isLoading={isLoading}
+        placeholder="Buscar por armario"
+        clearable
+        debounceTime={0}
+        value={currentTipo}
+        onChange={(value) => onArmarioChange(value?.id ? String(value.id) : "")}
+      />
     </div>
   );
 };

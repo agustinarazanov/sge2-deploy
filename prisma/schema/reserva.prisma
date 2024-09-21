@@ -8,27 +8,27 @@ model Reserva {
 
     // Usuario que hace la reserva
     usuarioSolicitoId String
-    usuarioSolicito   User   @relation(fields: [usuarioSolicitoId], references: [id], name: "reservasSolicitadas")
+    usuarioSolicito   User   @relation(fields: [usuarioSolicitoId], references: [id], name: "reservasSolicitadas", onDelete: Restrict)
 
     // Usuario que aprueba la reserva
     usuarioAprobadorId String
-    usuarioAprobador   User   @relation(fields: [usuarioAprobadorId], references: [id], name: "reservasAprobadas")
+    usuarioAprobador   User   @relation(fields: [usuarioAprobadorId], references: [id], name: "reservasAprobadas", onDelete: Restrict)
 
     // Usuario que rechaza la reserva
     usuarioRechazadoId String?
-    usuarioRechazado   User?   @relation(fields: [usuarioRechazadoId], references: [id], name: "reservasRechazadas")
+    usuarioRechazado   User?   @relation(fields: [usuarioRechazadoId], references: [id], name: "reservasRechazadas", onDelete: Restrict)
 
     // Usuario que solicita renovar la reserva
     usuarioRenovoId String?
-    usuarioRenovo   User?   @relation(fields: [usuarioRenovoId], references: [id], name: "reservasRenovadas")
+    usuarioRenovo   User?   @relation(fields: [usuarioRenovoId], references: [id], name: "reservasRenovadas", onDelete: Restrict)
 
     // Usuario que marca la reserva como terminada
     usuarioRecibioId String?
-    usuarioRecibio   User?   @relation(fields: [usuarioRecibioId], references: [id], name: "reservasRecibidas")
+    usuarioRecibio   User?   @relation(fields: [usuarioRecibioId], references: [id], name: "reservasRecibidas", onDelete: Restrict)
 
     // Tutor de la reserva (solo aplicable a reserva de laboratorio abierto)
     usuarioTutorId String?
-    usuarioTutor   User?   @relation(fields: [usuarioTutorId], references: [id], name: "reservaTutor")
+    usuarioTutor   User?   @relation(fields: [usuarioTutorId], references: [id], name: "reservaTutor", onDelete: Restrict)
 
     reservaEquipo             ReservaEquipo?
     reservaLibro              ReservaLibro?
@@ -59,10 +59,10 @@ model ReservaEquipo {
     numeroReserva  Int // TODO: QUE ES? Se puede reemplazar por `reserva.codigo`?
 
     reservaId Int     @unique
-    reserva   Reserva @relation(fields: [reservaId], references: [id])
+    reserva   Reserva @relation(fields: [reservaId], references: [id], onDelete: Cascade)
 
     equipoId Int
-    equipo   Equipo @relation(fields: [equipoId], references: [id])
+    equipo   Equipo @relation(fields: [equipoId], references: [id], onDelete: Cascade)
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @default(now()) @updatedAt
@@ -78,10 +78,10 @@ model ReservaLibro {
     fechaEntregado DateTime
 
     reservaId Int     @unique
-    reserva   Reserva @relation(fields: [reservaId], references: [id])
+    reserva   Reserva @relation(fields: [reservaId], references: [id], onDelete: Cascade)
 
     libroId Int
-    libro   Libro @relation(fields: [libroId], references: [id])
+    libro   Libro @relation(fields: [libroId], references: [id], onDelete: Cascade)
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @default(now()) @updatedAt
@@ -95,13 +95,13 @@ model ReservaLaboratorioCerrado {
     id Int @id @default(autoincrement())
 
     reservaId Int     @unique
-    reserva   Reserva @relation(fields: [reservaId], references: [id])
+    reserva   Reserva @relation(fields: [reservaId], references: [id], onDelete: Cascade)
 
     laboratorioId Int
-    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id])
+    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id], onDelete: Cascade)
 
     cursoId Int
-    curso   Curso @relation(fields: [cursoId], references: [id])
+    curso   Curso @relation(fields: [cursoId], references: [id], onDelete: Cascade)
 
     equipoReservado ReservaLaboratorioCerradoEquipo[]
 
@@ -120,7 +120,7 @@ model ReservaLaboratorioCerradoEquipo {
     reservaLaboratorioCerrado   ReservaLaboratorioCerrado @relation(fields: [reservaLaboratorioCerradoId], references: [id])
 
     equipoId Int
-    equipo   Equipo @relation(fields: [equipoId], references: [id])
+    equipo   Equipo @relation(fields: [equipoId], references: [id], onDelete: Cascade)
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @default(now()) @updatedAt
@@ -137,10 +137,10 @@ model ReservaLaboratorioAbierto {
     mailConfirmado Boolean
 
     reservaId Int     @unique
-    reserva   Reserva @relation(fields: [reservaId], references: [id])
+    reserva   Reserva @relation(fields: [reservaId], references: [id], onDelete: Cascade)
 
     laboratorioId Int
-    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id])
+    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id], onDelete: Cascade)
 
     equipoReservado ReservaLaboratorioAbiertoEquipo[]
 
@@ -160,10 +160,10 @@ model ReservaLaboratorioAbiertoEquipo {
     cantidad Int
 
     reservaLaboratorioAbiertoId Int
-    reservaLaboratorioAbierto   ReservaLaboratorioAbierto @relation(fields: [reservaLaboratorioAbiertoId], references: [id])
+    reservaLaboratorioAbierto   ReservaLaboratorioAbierto @relation(fields: [reservaLaboratorioAbiertoId], references: [id], onDelete: Cascade)
 
     equipoId Int
-    equipo   Equipo @relation(fields: [equipoId], references: [id])
+    equipo   Equipo @relation(fields: [equipoId], references: [id], onDelete: Cascade)
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @default(now()) @updatedAt

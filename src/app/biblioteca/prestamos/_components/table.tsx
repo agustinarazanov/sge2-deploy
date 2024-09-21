@@ -17,12 +17,13 @@ type BibliotecaFilters = z.infer<typeof inputGetAllPrestamosLibros>;
 type BibliotecaTableProps = {
   data: LibroPrestamoData;
   filters: BibliotecaFilters;
+  filterByUser?: boolean;
 };
 
-export const BibliotecaPrestamosTable = ({ data, filters }: BibliotecaTableProps) => {
+export const BibliotecaPrestamosTable = ({ data, filters, filterByUser }: BibliotecaTableProps) => {
   const { pagination, sorting, onSortingChange, onPaginationChange } = useBibliotecaPrestamosQueryParam(filters);
 
-  const columns = getColumnasPrestamo();
+  const columns = getColumnasPrestamo({ filterByUser });
 
   return (
     <>
@@ -42,7 +43,9 @@ export const BibliotecaPrestamosTable = ({ data, filters }: BibliotecaTableProps
           cell() {
             return (
               <>
-                <Button title="Ver" variant="icon" color="ghost" icon={PrinterIcon} />
+                {!filterByUser && (
+                  <Button title="Ver" variant="icon" color="ghost" icon={PrinterIcon} onClick={() => window.print()} />
+                )}
                 {/* <VerLibroModal libroId={original.id} />
                 <EditLibroModal libroId={original.id} /> */}
               </>
