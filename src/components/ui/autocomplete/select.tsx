@@ -218,6 +218,7 @@ export const FormSelect = <
             {...props}
             value={value as ItemType<TType, TMulti>}
             onChange={(value) => {
+              props.onChange?.(value);
               if (!value) field.onChange?.(value as PathValue<T, Path<T>>);
               if (Array.isArray(value)) {
                 field.onChange?.(
@@ -229,8 +230,6 @@ export const FormSelect = <
               } else {
                 field.onChange((typeof value === "string" ? value : value?.id) as PathValue<T, Path<T>>);
               }
-
-              props.onChange?.(value);
             }}
             onBlur={field.onBlur}
             isDirty={fieldState.isDirty}

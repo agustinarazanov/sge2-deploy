@@ -38,7 +38,7 @@ export default async function Navbar() {
           {/* Right side of the navbar - Notifications & User Icon */}
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             {isLogged && <Notifications />}
-            {isLogged && <UserIcon />}
+            {isLogged && <UserIcon {...user} />}
           </div>
         </div>
       </div>
