@@ -25,12 +25,18 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
   const editarTipo = api.equipos.editarTipo.useMutation();
   const agregarTipo = api.equipos.nuevoTipo.useMutation();
 
+  const [selectedImage, setSelectedImage] = useState<File>();
+  const [previewImgUrl, setPreviewimgUrl] = useState("");
+
   const tipoBase: FormEditarTipoType = useMemo(() => {
     if (!tipo) return {} as FormEditarTipoType;
+
+    setPreviewimgUrl(tipo.imagen ?? "");
+
     return {
       id: tipo.id,
       nombre: tipo.nombre,
-      imagen: "",
+      imagen: tipo.imagen ?? "",
       fechaCreacion: tipo.fechaCreacion,
       usuarioCreadorId: tipo.usuarioCreadorId,
     };
@@ -45,9 +51,6 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
   const { handleSubmit, control } = formHook;
 
   useEffect(() => formHook.reset(tipoBase), [formHook, tipoBase]);
-
-  const [selectedImage, setSelectedImage] = useState<File>();
-  const [previewImgUrl, setPreviewimgUrl] = useState("");
 
   if (!esNuevo && isNaN(tipoId)) {
     return <div>Error al cargar...</div>;
@@ -135,7 +138,7 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
               <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-2/4">
                   <Input
-                    label={"Agregar imagen"}
+                    label={!previewImgUrl ? "Agregar imagen" : "Cambiar"}
                     //control={control}
                     name="imagen"
                     type={"file"}
