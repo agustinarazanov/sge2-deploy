@@ -29,52 +29,74 @@ export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll
   const where: Prisma.CursoWhereInput = {
     materiaId: materia ? parseInt(materia) : undefined,
     anioDeCarrera: anioDeCarrera ? parseInt(anioDeCarrera) : undefined,
-    division: {
-      nombre: {
-        contains: searchText.toUpperCase(),
-      },
-    },
-    OR: [
+    AND: [
       {
-        profesores: {
-          some: {
-            ...(filtrByUserId === "true" ? { userId: userId } : {}),
-            ...(searchText
-              ? {
-                  usuario: {
-                    OR: [
-                      { nombre: { contains: searchText ?? undefined, mode: "insensitive" } },
-                      { apellido: { contains: searchText ?? undefined, mode: "insensitive" } },
-                    ],
-                  },
-                }
-              : {}),
+        OR: [
+          {
+            division: {
+              nombre: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
           },
-        },
+          {
+            profesores: {
+              some: {
+                usuario: {
+                  OR: [
+                    {
+                      nombre: {
+                        contains: searchText ?? undefined,
+                        mode: "insensitive",
+                      },
+                    },
+                    { apellido: { contains: searchText ?? undefined, mode: "insensitive" } },
+                  ],
+                },
+              },
+            },
+          },
+          {
+            ayudantes: {
+              some: {
+                usuario: {
+                  OR: [
+                    {
+                      nombre: {
+                        contains: searchText ?? undefined,
+                        mode: "insensitive",
+                      },
+                    },
+                    { apellido: { contains: searchText ?? undefined, mode: "insensitive" } },
+                  ],
+                },
+              },
+            },
+          },
+        ],
       },
       {
-        ayudantes: {
-          some: {
-            ...(filtrByUserId === "true" ? { userId: userId } : {}),
-            ...(searchText
-              ? {
-                  usuario: {
-                    OR: [
-                      { nombre: { contains: searchText ?? undefined, mode: "insensitive" } },
-                      { apellido: { contains: searchText ?? undefined, mode: "insensitive" } },
-                    ],
-                  },
-                }
-              : {}),
+        OR: [
+          {
+            profesores: {
+              some: {
+                usuario: {
+                  id: filtrByUserId == "true" ? userId : undefined,
+                },
+              },
+            },
           },
-        },
-      },
-      {
-        division: {
-          nombre: {
-            ...(searchText ? { contains: searchText ?? undefined, mode: "insensitive" } : {}),
+          {
+            ayudantes: {
+              some: {
+                usuario: {
+                  id: filtrByUserId == "true" ? userId : undefined,
+                },
+              },
+            },
           },
-        },
+        ],
       },
     ],
   };
