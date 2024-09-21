@@ -11,8 +11,8 @@ export async function uploadFile(formData: FormData) {
 
   const filePath = path.join(process.cwd(), "public/imagenes", file.name);
   try {
-    writeFile(filePath, buffer)
-  } catch(e) {
+    await writeFile(filePath, buffer);
+  } catch (e) {
     throw new Error(`No se pudo guardar la imagen en ${filePath}`);
   }
 
