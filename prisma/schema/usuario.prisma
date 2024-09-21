@@ -52,7 +52,7 @@ model User {
     reservasRecibidas   Reserva[] @relation(name: "reservasRecibidas")
 
     cursosComoAyudante CursoAyudante[]
-    cursosComoProfesor CursoProfesor[]
+    cursosComoProfesor Curso[]
 
     materiasDirector            Materia[] @relation(name: "materiasDirector")
     materiasJefeTrabajoPractico Materia[] @relation(name: "materiasJefeTrabajoPractico")

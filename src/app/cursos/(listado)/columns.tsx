@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
@@ -110,16 +111,7 @@ export const getColumns = () => {
     colHelper.display({
       header: "Profesor",
       cell: (info) => {
-        const profesores = info.row.original.profesores;
-
-        if (!profesores.length) return <span className="hidden">Sin profesores</span>;
-
-        return profesores.map((profesor) => `${profesor.usuario.apellido} ${profesor.usuario.nombre}`).join(", ");
-      },
-      meta: {
-        header: {
-          hideSort: true,
-        },
+        return `${info.row.original.profesor.apellido} ${info.row.original.profesor.nombre}`;
       },
     }),
     colHelper.display({
