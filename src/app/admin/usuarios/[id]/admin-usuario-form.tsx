@@ -8,9 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { XIcon } from "lucide-react";
 import { inputEditarUsuario } from "@/shared/filters/admin-usuarios-filter.schema";
 import { RolesSelector } from "../../usuarios/_components/filtros/roles-selector";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
-import { white } from "tailwindcss/colors";
 
 type Props = {
   id: string;
