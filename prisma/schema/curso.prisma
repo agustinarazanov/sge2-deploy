@@ -10,7 +10,8 @@ model Curso {
     dia2 CursoDia?
 
     ayudantes  CursoAyudante[]
-    profesores CursoProfesor[]
+    profesorId String
+    profesor   User            @relation(fields: [profesorId], references: [id], onDelete: Cascade)
 
     anioDeCarrera Int
     activo        Boolean
@@ -40,22 +41,6 @@ model Curso {
 }
 
 model CursoAyudante {
-    cursoId Int
-    userId  String
-
-    curso   Curso @relation(fields: [cursoId], references: [id], onDelete: Cascade)
-    usuario User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    fechaCreacion    DateTime @default(now())
-    usuarioCreadorId String
-
-    fechaModificacion    DateTime @default(now()) @updatedAt
-    usuarioModificadorId String
-
-    @@id([cursoId, userId])
-}
-
-model CursoProfesor {
     cursoId Int
     userId  String
 

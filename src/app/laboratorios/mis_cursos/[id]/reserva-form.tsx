@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { Button, FormInput, Input, ScrollArea, toast } from "@/components/ui";
@@ -163,7 +164,7 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
                   name="profesor"
                   type={"text"}
                   className="mt-2"
-                  value={curso?.profesores.map((profesor) => profesor.usuario.apellido).join(", ") ?? ""}
+                  value={`${curso?.profesor.nombre} ${curso?.profesor.apellido}`}
                   readOnly
                 />
               </div>
