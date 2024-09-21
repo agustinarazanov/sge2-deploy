@@ -28,9 +28,9 @@ export const inputGetCursos = z.object({
     .refine((value) => parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
     .catch("0"),
   orderBy: z
-    .enum(["division_nombre", "anioDeCarrera", "materia_nombre", "sede_nombre", "duracion", "turno"])
-    .default("materia_nombre")
-    .catch("materia_nombre"),
+    .enum(["division_nombre", "ac", "turno", "sede_nombre"])
+    .default("division_nombre")
+    .catch("division_nombre"),
   orderDirection: z.enum(["asc", "desc"]).default("asc").catch("asc"),
   searchText: z.string().default(""),
   materia: z
@@ -39,7 +39,7 @@ export const inputGetCursos = z.object({
     .refine((value) => value && parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
     .catch(""),
   anioDeCarrera: z.string().optional(),
-  userId: z.string().optional(),
+  filtrByUserId: z.enum(["true", "false"]).optional(),
 });
 
 export const inputGetCursosParaReserva = z.object({});

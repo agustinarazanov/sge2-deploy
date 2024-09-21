@@ -7,10 +7,10 @@ import RenovarPrestamoLibroModal from "../_components/modal-renovar";
 
 type LibroPrestamoData = RouterOutputs["reservas"]["reservaBiblioteca"]["getAll"]["reservas"][number];
 
-export const getColumnasPrestamo = () => {
+export const getColumnasPrestamo = ({ filterByUser }: { filterByUser?: boolean }) => {
   const colHelper = createColumnHelper<LibroPrestamoData>();
 
-  return [
+  const columnasBasicas = [
     colHelper.accessor("id", {
       header: "Prestamo #",
     }),
@@ -72,13 +72,16 @@ export const getColumnasPrestamo = () => {
         const fechaRenovacion = reserva.fechaRenovacion ? getDateISOString(reserva.fechaRenovacion) : "";
 
         return (
-          <>
+          <div className="flex flex-col space-y-2 text-center">
             <DatoUsuarioReserva usuario={usuarioRenovo} />
             <div>{fechaRenovacion}</div>
-          </>
+          </div>
         );
       },
     }),
+  ] as ColumnDef<LibroPrestamoData>[];
+
+  const columnasGeneral = [
     colHelper.display({
       header: "Renovar",
       cell: ({ row }) => {
@@ -95,6 +98,11 @@ export const getColumnasPrestamo = () => {
 
         return <span className="text-center">Sin información</span>;
       },
+      meta: {
+        header: {
+          hideSort: true,
+        },
+      },
     }),
     colHelper.accessor("reserva.usuarioRecibio.apellido", {
       header: "Recibio",
@@ -110,10 +118,10 @@ export const getColumnasPrestamo = () => {
           const fechaRecibido = reserva.fechaRecibido ? getDateISOString(reserva.fechaRecibido) : "";
 
           return (
-            <>
+            <div className="flex flex-col space-y-2 text-center">
               <DatoUsuarioReserva usuario={usuarioRecibio} />
               <div>{fechaRecibido}</div>
-            </>
+            </div>
           );
         }
 
@@ -125,6 +133,10 @@ export const getColumnasPrestamo = () => {
       },
     }),
   ] as ColumnDef<LibroPrestamoData>[];
+
+  const columnas = filterByUser ? columnasBasicas : [...columnasBasicas, ...columnasGeneral];
+
+  return columnas;
 };
 
 export const getColumnasPrestamoNames = () => {

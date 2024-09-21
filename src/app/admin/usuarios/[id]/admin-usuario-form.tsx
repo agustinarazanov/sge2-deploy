@@ -1,4 +1,4 @@
-import { FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { type RouterOutputs, api } from "@/trpc/react";
 import { Button, FormInput, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { XIcon } from "lucide-react";
 import { inputEditarUsuario } from "@/shared/filters/admin-usuarios-filter.schema";
 import { RolesSelector } from "../../usuarios/_components/filtros/roles-selector";
+import { Switch } from "@/components/ui/switch";
 
 type Props = {
   id: string;
@@ -35,6 +36,8 @@ export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
       email: usuario?.email ?? "",
       legajo: usuario?.legajo ?? "",
       roles: usuario?.usuarioRol.map((rol) => String(rol.rolId)) ?? [],
+      esTutor: usuario?.esTutor ?? false,
+      esDocente: usuario?.esDocente ?? false,
     },
     resolver: zodResolver(inputEditarUsuario),
   });
@@ -53,6 +56,8 @@ export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
         email: usuario?.email ?? "",
         legajo: usuario?.legajo ?? "",
         roles: usuario.usuarioRol.map((rol) => String(rol.rolId)),
+        esTutor: usuario?.esTutor ?? false,
+        esDocente: usuario?.esDocente ?? false,
       });
     }
   }, [formHook, usuario]);
@@ -164,6 +169,38 @@ export const AdminUsuarioForm = ({ id, onSubmit, onCancel }: Props) => {
                   type={"text"}
                   className="mt-2"
                   autoComplete="off"
+                />
+              </div>
+            </div>
+
+            <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+              <div className="mt-4 w-full">
+                <Controller
+                  control={control}
+                  name="esDocente"
+                  render={({ field }) => (
+                    <div className="flex items-center justify-between rounded-md border border-white p-2">
+                      <label htmlFor="esDocente" className="text-base">
+                        Es docente
+                      </label>
+                      <Switch id="esDocente" checked={field.value} onCheckedChange={field.onChange} />
+                    </div>
+                  )}
+                />
+              </div>
+
+              <div className="mt-4 w-full">
+                <Controller
+                  control={control}
+                  name="esTutor"
+                  render={({ field }) => (
+                    <div className="flex items-center justify-between rounded-md border border-white  p-2">
+                      <label htmlFor="esTutor" className="text-base">
+                        Es tutor
+                      </label>
+                      <Switch id="esTutor" checked={field.value} onCheckedChange={field.onChange} />
+                    </div>
+                  )}
                 />
               </div>
             </div>

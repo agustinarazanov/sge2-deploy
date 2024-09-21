@@ -27,10 +27,15 @@ export const BIBLIOTECA_ROUTE = {
       label: "Prestamos",
       isPublic: false,
     },
+    {
+      href: "/biblioteca/mis_prestamos",
+      label: "Mis prestamos",
+      isPublic: false,
+    },
   ],
 };
 
-export const LABORATORIO_ROUTE: AppRoute = {
+export const LABORATORIO_ROUTE = {
   href: "/laboratorios",
   label: "Laboratorios",
   isPublic: false,
@@ -43,6 +48,11 @@ export const LABORATORIO_ROUTE: AppRoute = {
     {
       href: "/laboratorios/catedra",
       label: "Cátedra",
+      isPublic: false,
+    },
+    {
+      href: "/laboratorios/software",
+      label: "Aplicaciones en Laboratorios",
       isPublic: false,
     },
   ],
@@ -78,17 +88,17 @@ export const EQUIPOS_ROUTE: AppRoute = {
   subRutas: [
     {
       href: "/equipos",
-      label: "Listado",
-      isPublic: false,
-    },
-    {
-      href: "/equipos/prestamos",
-      label: "Prestamos",
+      label: "Equipos",
       isPublic: false,
     },
     {
       href: "/equipos/tipos",
       label: "Tipos",
+      isPublic: false,
+    },
+    {
+      href: "/equipos/prestamos",
+      label: "Prestamos",
       isPublic: false,
     },
   ],
@@ -112,7 +122,7 @@ export const CURSOS_ROUTE: AppRoute = {
   ],
 };
 
-export const ADMIN_ROUTE: AppRoute = {
+export const ADMIN_ROUTE = {
   href: "/admin",
   label: "Administración",
   isPublic: false,

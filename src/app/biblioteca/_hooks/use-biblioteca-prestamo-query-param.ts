@@ -3,7 +3,10 @@ import { type z } from "zod";
 import { type PaginationState, type SortingState } from "@tanstack/react-table";
 import { useCallback } from "react";
 import { inputGetAllPrestamosLibros } from "@/shared/filters/reservas-filter.schema";
+import { type RouterOutputs } from "@/trpc/react";
 
+type EstadoReservaType =
+  RouterOutputs["reservas"]["reservaBiblioteca"]["getAll"]["reservas"][number]["reserva"]["estatus"];
 type BibliotecaPrestamoFilters = z.infer<typeof inputGetAllPrestamosLibros>;
 type OrderByType = BibliotecaPrestamoFilters["orderBy"];
 type PageSizeType = BibliotecaPrestamoFilters["pageSize"];
@@ -54,6 +57,21 @@ const changeSearchText = (filters: BibliotecaPrestamoFilters, searchText: string
   return filtersTyped;
 };
 
+const changeEstatus = (
+  filters: BibliotecaPrestamoFilters,
+  newEstatus: EstadoReservaType | "",
+): BibliotecaPrestamoFilters => {
+  const newFilters: BibliotecaPrestamoFilters = {
+    ...filters,
+    estatus: newEstatus,
+    pageIndex: "0",
+  };
+
+  const filtersTyped = inputGetAllPrestamosLibros.parse(newFilters);
+
+  return filtersTyped;
+};
+
 const getPagination = (filters: BibliotecaPrestamoFilters): { pageSize: number; pageIndex: number } => {
   const { pageIndex, pageSize } = filters;
 
@@ -73,6 +91,7 @@ export const useBibliotecaPrestamosQueryParam = (filters: BibliotecaPrestamoFilt
   const sorting = getSorting(filters);
   const pagination = getPagination(filters);
   const searchText = filters.searchText;
+  const reservaEstatus = filters.estatus;
 
   const changeQueryParams = useCallback(
     (filters: BibliotecaPrestamoFilters) => {
@@ -108,13 +127,24 @@ export const useBibliotecaPrestamosQueryParam = (filters: BibliotecaPrestamoFilt
     [filters, changeQueryParams],
   );
 
+  const onReservaEstatusChange = useCallback(
+    (reservaEstatus: EstadoReservaType | "") => {
+      const newFilters = changeEstatus(filters, reservaEstatus);
+
+      changeQueryParams({ ...newFilters });
+    },
+    [filters, changeQueryParams],
+  );
+
   return {
     refresh: () => router.refresh(),
     pagination,
     sorting,
     searchText,
+    reservaEstatus,
     onSortingChange,
     onPaginationChange,
     onSearchTextChange,
+    onReservaEstatusChange,
   };
 };

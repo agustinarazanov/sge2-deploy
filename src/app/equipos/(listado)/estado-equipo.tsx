@@ -1,25 +1,30 @@
 import { Badge } from "@/components/ui/badge";
-import { type RouterOutputs } from "@/trpc/react";
+import PrestarEquipoModal from "../_components/modal-prestar";
+import DevolverEquipoModal from "../_components/modal-devolver";
 
-type EstadoType = RouterOutputs["equipos"]["getAll"]["equipos"][number];
-
-type RemoveEquipoModalProps = {
-  equipoId: number;
-  estado: EstadoType;
+type EstadoEquipoProps = {
+  id: number;
+  disponible: boolean;
 };
 
-export default function EstadoEquipo({ estado }: RemoveEquipoModalProps) {
-  if (!estado) {
+export default function EstadoEquipo({ disponible, id }: EstadoEquipoProps) {
+  if (disponible) {
     return (
-      <Badge variant={"default"} color={"danger"}>
-        Prestado
-      </Badge>
+      <div className="flex flex-col">
+        <Badge variant={"default"} color={"success"} className="w-full text-center">
+          <div className="w-full">Disponible</div>
+        </Badge>
+        <PrestarEquipoModal equipoId={id} />
+      </div>
     );
   }
 
   return (
-    <Badge variant={"default"} color={"success"}>
-      Disponible
-    </Badge>
+    <div className="flex flex-col">
+      <Badge variant={"default"} color={"danger"} className="w-full text-center">
+        <div className="w-full">Prestado</div>
+      </Badge>
+      <DevolverEquipoModal equipoId={id} />
+    </div>
   );
 }

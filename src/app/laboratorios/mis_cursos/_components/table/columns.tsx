@@ -1,3 +1,5 @@
+import { DatoUsuarioReserva } from "@/app/_components/datos-usuario";
+import { CursoTurno } from "@/app/_components/turno-text";
 import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
@@ -10,26 +12,22 @@ export const getColumns = () => {
     colHelper.accessor("division.nombre", {
       header: "División",
     }),
-    colHelper.display({
-      header: "Duración",
-      cell: (info) => {
-        const duracion = info.row.original.ac;
+    // colHelper.accessor("ac", {
+    //   header: "Duración",
+    //   cell: (info) => {
+    //     const duracion = info.row.original.ac;
 
-        if (duracion === "A") return "Anual";
-        if (duracion === "C") return "Cuatrimestral";
-        return "-";
-      },
-    }),
-    colHelper.display({
+    //     if (duracion === "A") return "Anual";
+    //     if (duracion === "C") return "Cuatrimestral";
+    //     return "-";
+    //   },
+    // }),
+    colHelper.accessor("turno", {
       header: "Turno",
       cell: (info) => {
         const turno = info.row.original.turno;
 
-        if (turno === "MANANA") return "Mañana";
-        if (turno === "TARDE") return "Tarde";
-        if (turno === "NOCHE") return "Noche";
-
-        return turno ?? "-";
+        return <CursoTurno turno={turno} />;
       },
     }),
     colHelper.accessor("sede.nombre", {
@@ -40,11 +38,21 @@ export const getColumns = () => {
       cell: (info) => {
         return <HoraDia {...info.row.original} diaDeHoy={"LUNES"} />;
       },
+      meta: {
+        header: {
+          hideSort: true,
+        },
+      },
     }),
     colHelper.display({
       header: "Martes",
       cell: (info) => {
         return <HoraDia {...info.row.original} diaDeHoy={"MARTES"} />;
+      },
+      meta: {
+        header: {
+          hideSort: true,
+        },
       },
     }),
     colHelper.display({
@@ -52,11 +60,21 @@ export const getColumns = () => {
       cell: (info) => {
         return <HoraDia {...info.row.original} diaDeHoy={"MIERCOLES"} />;
       },
+      meta: {
+        header: {
+          hideSort: true,
+        },
+      },
     }),
     colHelper.display({
       header: "Jueves",
       cell: (info) => {
         return <HoraDia {...info.row.original} diaDeHoy={"JUEVES"} />;
+      },
+      meta: {
+        header: {
+          hideSort: true,
+        },
       },
     }),
     colHelper.display({
@@ -64,11 +82,21 @@ export const getColumns = () => {
       cell: (info) => {
         return <HoraDia {...info.row.original} diaDeHoy={"VIERNES"} />;
       },
+      meta: {
+        header: {
+          hideSort: true,
+        },
+      },
     }),
     colHelper.display({
       header: "Sábado",
       cell: (info) => {
         return <HoraDia {...info.row.original} diaDeHoy={"SABADO"} />;
+      },
+      meta: {
+        header: {
+          hideSort: true,
+        },
       },
     }),
     colHelper.display({
@@ -78,7 +106,14 @@ export const getColumns = () => {
 
         if (!profesores.length) return <span className="hidden">Sin profesores</span>;
 
-        return profesores.map((profesor) => `${profesor.usuario.apellido} ${profesor.usuario.nombre}`).join(", ");
+        return profesores.map((profesor) => {
+          return <DatoUsuarioReserva usuario={profesor.usuario} key={profesor.userId} />;
+        });
+      },
+      meta: {
+        header: {
+          hideSort: true,
+        },
       },
     }),
     colHelper.display({
@@ -88,7 +123,14 @@ export const getColumns = () => {
 
         if (!ayudantes.length) return <span className="hidden">Sin ayudantes</span>;
 
-        return ayudantes.map((ayudante) => `${ayudante.usuario.apellido} ${ayudante.usuario.nombre}`).join(", ");
+        return ayudantes.map((ayudante) => {
+          return <DatoUsuarioReserva usuario={ayudante.usuario} key={ayudante.userId} />;
+        });
+      },
+      meta: {
+        header: {
+          hideSort: true,
+        },
       },
     }),
   ] as ColumnDef<CursosData>[];
@@ -164,7 +206,7 @@ const HoraDia = ({ dia1, dia2, horaInicio1, horaInicio2, duracion1, duracion2, d
         }
 
         return (
-          <div key={hora} className="bg-slate-300 flex h-5 w-5 justify-center rounded-full dark:bg-gray-400">
+          <div key={hora} className="flex h-5 w-5 justify-center rounded-full bg-slate-300 dark:bg-gray-400">
             {hora}
           </div>
         );

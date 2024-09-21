@@ -8,27 +8,89 @@ import {
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
 import { generarEquipoInventarioId, getUltimoEquipoInventarioId } from "./generador-inventario-id";
+import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 
 type InputGetAll = z.infer<typeof inputGetEquipos>;
 export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText } = input;
+  const { pageIndex, pageSize, searchText, laboratorio, tipo, armario } = input;
+
+  const ordenEquipos: Prisma.EquipoOrderByWithRelationInput = construirOrderByDinamico(
+    input?.orderBy ?? "",
+    input?.orderDirection ?? "",
+  );
+
+  const filtrosWhereEquipoTipo: Prisma.EquipoWhereInput = {
+    ...(searchText
+      ? {
+          OR: [
+            { inventarioId: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
+            {
+              tipo: {
+                nombre: {
+                  contains: searchText ?? undefined,
+                  mode: "insensitive",
+                }
+              },
+            },
+            {
+              marca: {
+                nombre: {
+                  contains: searchText ?? undefined,
+                  mode: "insensitive",
+                }
+              },
+            },
+            {
+              modelo: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
+            {
+              observaciones: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
+            {
+              palabrasClave: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
+          ],
+        }
+      : {}),
+      ...(laboratorio
+        ? {
+            laboratorio: {
+              id: parseInt(laboratorio),
+            },
+          }
+        : {}),
+      ...(tipo
+        ? {
+            tipo: {
+              id: parseInt(tipo),
+            },
+          }
+        : {}),
+      ...(armario
+        ? {
+            armario: {
+              id: parseInt(armario),
+            },
+          }
+        : {}),
+  };
 
   const [count, equipos] = await ctx.db.$transaction([
     ctx.db.equipo.count({
-      where: {
-        OR: [
-          {
-            observaciones: {
-              contains: searchText ?? undefined,
-            },
-          },
-          {
-            palabrasClave: {
-              contains: searchText ?? undefined,
-            },
-          },
-        ],
-      },
+      where: filtrosWhereEquipoTipo,
     }),
     ctx.db.equipo.findMany({
       include: {
@@ -39,9 +101,8 @@ export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAl
         estado: true,
         tipo: true,
       },
-      orderBy: {
-        // [orderBy]: orderDirection,
-      },
+      where: filtrosWhereEquipoTipo,
+      orderBy: ordenEquipos,
       skip: parseInt(pageIndex) * parseInt(pageSize),
       take: parseInt(pageSize),
     }),
@@ -65,6 +126,7 @@ export const getEquipoPorId = async (ctx: { db: PrismaClient }, input: InputGetE
       marca: true,
       estado: true,
       tipo: true,
+      sede: true,
     },
     where: {
       id,
@@ -165,8 +227,8 @@ export const editarEquipo = async (ctx: { db: PrismaClient }, input: InputEditar
   }
 };
 
-export const getAllTipos = async (ctx: { db: PrismaClient }) => {
-  const tipos = await ctx.db.equipoTipo.findMany({
+export const getAllMarcas = async (ctx: { db: PrismaClient }) => {
+  const marcas = await ctx.db.equipoMarca.findMany({
     orderBy: {
       nombre: "asc",
     },
@@ -176,5 +238,34 @@ export const getAllTipos = async (ctx: { db: PrismaClient }) => {
     },
   });
 
-  return tipos;
+  return marcas;
+};
+
+export const getAllEstados = async (ctx: { db: PrismaClient }) => {
+  const estados = await ctx.db.equipoEstado.findMany({
+    orderBy: {
+      nombre: "asc",
+    },
+    select: {
+      id: true,
+      nombre: true,
+    },
+  });
+
+  return estados;
+};
+
+export const getAllArmarios = async (ctx: { db: PrismaClient }) => {
+  const armarios = await ctx.db.armario.findMany({
+    orderBy: {
+      nombre: "asc",
+    },
+    select: {
+      id: true,
+      nombre: true,
+      laboratorio: true,
+    },
+  });
+
+  return armarios;
 };
