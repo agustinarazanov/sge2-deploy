@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GeistSans } from "geist/font/sans";
 
 import { TRPCReactProvider } from "@/trpc/react";
@@ -22,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </header>
           <Toaster position="top-right" duration={3000} />
           {children}
+          <SpeedInsights />
         </TRPCReactProvider>
       </body>
     </html>
