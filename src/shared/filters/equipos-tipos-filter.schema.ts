@@ -25,9 +25,6 @@ export const inputEliminarTipo = z.object({ id: z.number() });
 
 export const inputGetTipo = z.object({ id: z.number() });
 
-const MAX_FILE_SIZE = 1024 * 1024 * 1;
-const ACCEPTED_IMAGE_MIME_TYPES = ["image/jpeg", "image/jpg", "image/png"];
-
 export const inputAgregarTipo = z.object({
   nombre: z.string().min(1, { message: "Requerido" }),
   imagen: z.string().optional().default(""),
