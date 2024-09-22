@@ -11,6 +11,7 @@ import { type z } from "zod";
 import { informacionUsuario } from "../usuario-helper";
 
 type InputGetAll = z.infer<typeof inputGetCursos>;
+
 export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll, userId: string) => {
   const { pageIndex, pageSize, materia, anioDeCarrera, filtrByUserId, orderBy, orderDirection, searchText } = input;
 
@@ -28,47 +29,64 @@ export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll
   const where: Prisma.CursoWhereInput = {
     materiaId: materia ? parseInt(materia) : undefined,
     anioDeCarrera: anioDeCarrera ? parseInt(anioDeCarrera) : undefined,
-    OR: [
+    AND: [
       {
-        profesores: {
-          some: {
-            ...(filtrByUserId === "true" ? { userId: userId } : {}),
-            ...(searchText
-              ? {
-                  usuario: {
-                    OR: [
-                      { nombre: { contains: searchText ?? undefined, mode: "insensitive" } },
-                      { apellido: { contains: searchText ?? undefined, mode: "insensitive" } },
-                    ],
-                  },
-                }
-              : {}),
+        OR: [
+          {
+            division: {
+              nombre: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
           },
-        },
+          {
+            profesor: {
+              OR: [
+                {
+                  nombre: {
+                    contains: searchText ?? undefined,
+                    mode: "insensitive",
+                  },
+                },
+                { apellido: { contains: searchText ?? undefined, mode: "insensitive" } },
+              ],
+            },
+          },
+          {
+            ayudantes: {
+              some: {
+                usuario: {
+                  OR: [
+                    {
+                      nombre: {
+                        contains: searchText ?? undefined,
+                        mode: "insensitive",
+                      },
+                    },
+                    { apellido: { contains: searchText ?? undefined, mode: "insensitive" } },
+                  ],
+                },
+              },
+            },
+          },
+        ],
       },
       {
-        ayudantes: {
-          some: {
-            ...(filtrByUserId === "true" ? { userId: userId } : {}),
-            ...(searchText
-              ? {
-                  usuario: {
-                    OR: [
-                      { nombre: { contains: searchText ?? undefined, mode: "insensitive" } },
-                      { apellido: { contains: searchText ?? undefined, mode: "insensitive" } },
-                    ],
-                  },
-                }
-              : {}),
+        OR: [
+          {
+            profesorId: filtrByUserId === "true" ? userId : undefined,
           },
-        },
-      },
-      {
-        division: {
-          nombre: {
-            ...(searchText ? { contains: searchText ?? undefined, mode: "insensitive" } : {}),
+          {
+            ayudantes: {
+              some: {
+                usuario: {
+                  id: filtrByUserId === "true" ? userId : undefined,
+                },
+              },
+            },
           },
-        },
+        ],
       },
     ],
   };
@@ -86,12 +104,8 @@ export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll
             },
           },
         },
-        profesores: {
-          include: {
-            usuario: {
-              select: informacionUsuario,
-            },
-          },
+        profesor: {
+          select: informacionUsuario,
         },
       },
       where: where,
@@ -127,14 +141,10 @@ export const getCursoPorId = async (ctx: { db: PrismaClient }, input: InputGetCu
           },
         },
       },
-      profesores: {
+      profesor: {
         select: {
-          usuario: {
-            select: {
-              apellido: true,
-              nombre: true,
-            },
-          },
+          apellido: true,
+          nombre: true,
         },
       },
     },
@@ -166,7 +176,8 @@ export const agregarCurso = async (ctx: { db: PrismaClient }, input: InputAgrega
         activo: true,
         anioDeCarrera: 1,
         divisionId: 1,
-
+        // TODO: profesorId: input.profesorId,
+        profesorId: userId,
         usuarioCreadorId: userId,
         usuarioModificadorId: userId,
       },

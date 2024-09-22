@@ -29,13 +29,13 @@ export const ActionButtons = ({ filters }: ActionButtonsProps) => {
         </Button>
       </div>
       <div className="w-full space-y-3 sm:flex sm:basis-1/2 sm:flex-row sm:space-x-3 sm:space-y-0">
-        <div className="md:basis-1/3">
+        <div className="md:basis-2/5">
           <CursosFilterText filters={filters} />
         </div>
-        <div className="md:basis-1/3">
+        <div className="md:basis-2/5">
           <CursosFilterMateria filters={filters} />
         </div>
-        <div className="md:basis-1/3">
+        <div className="md:basis-1/5">
           <CursosFilterAño filters={filters} />
         </div>
       </div>

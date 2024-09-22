@@ -21,7 +21,7 @@ export const inputAgregarCurso = z.object({
 });
 
 export const inputGetCursos = z.object({
-  pageSize: z.enum(["10", "20", "30", "40", "50"]).default("20").catch("10"),
+  pageSize: z.enum(["10", "20", "30", "40", "50"]).default("10").catch("10"),
   pageIndex: z
     .string()
     .default("0")
