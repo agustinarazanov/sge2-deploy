@@ -13,6 +13,7 @@ import { SelectArmarioForm } from "@/app/_components/select-ubicacion/select-arm
 import { SelectEstanteForm } from "@/app/_components/select-ubicacion/select-estante";
 import { SelectTipoForm } from "../../_components/select-tipo";
 import { SelectEstadoForm } from "../../_components/select-estado";
+import { FormTextarea } from "@/components/ui/textarea";
 
 type Props = {
   id?: string;
@@ -267,7 +268,12 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
               <div className="flex w-full flex-row lg:flex-row">
                 <Label htmlFor={id} className="mb-3 flex w-full flex-col text-sm dark:text-input-label">
                   Observaciones
-                  <textarea name="observaciones" id="observaciones" className="w-full dark:bg-background"></textarea>
+                  <FormTextarea
+                    name="observaciones"
+                    control={control}
+                    id="observaciones"
+                    className="w-full dark:bg-background"
+                  />
                 </Label>
               </div>
             </div>
