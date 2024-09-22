@@ -31,7 +31,7 @@ export const CursosTable = ({ data, filters }: CursosTableProps) => {
       <DataTable
         data={data.cursos ?? []}
         columns={columns}
-        // manualSorting
+        manualSorting
         pageSize={pagination.pageSize}
         pageIndex={pagination.pageIndex}
         config={{
