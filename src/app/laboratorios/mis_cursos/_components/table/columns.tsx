@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { DatoUsuarioReserva } from "@/app/_components/datos-usuario";
 import { CursoTurno } from "@/app/_components/turno-text";
 import { type RouterOutputs } from "@/trpc/react";
@@ -102,13 +103,8 @@ export const getColumns = () => {
     colHelper.display({
       header: "Profesor",
       cell: (info) => {
-        const profesores = info.row.original.profesores;
-
-        if (!profesores.length) return <span className="hidden">Sin profesores</span>;
-
-        return profesores.map((profesor) => {
-          return <DatoUsuarioReserva usuario={profesor.usuario} key={profesor.userId} />;
-        });
+        const profesor = info.row.original.profesor;
+        return <DatoUsuarioReserva usuario={profesor} key={profesor.id} />;
       },
       meta: {
         header: {

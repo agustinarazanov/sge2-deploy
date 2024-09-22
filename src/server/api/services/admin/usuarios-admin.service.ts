@@ -9,6 +9,7 @@ import {
 import {
   editarUsuario,
   eliminarUsuario,
+  getAllProfesores,
   getAllTutores,
   getAllUsuarios,
   getUsuarioPorId,
@@ -54,4 +55,8 @@ export const getAllTutoresProcedure = protectedProcedure.query(async ({ ctx }) =
   const tutores = await getAllTutores(ctx);
 
   return tutores;
+});
+
+export const getAllProfesoresProcedure = protectedProcedure.query(async ({ ctx }) => {
+  return await getAllProfesores(ctx);
 });

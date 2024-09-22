@@ -42,7 +42,7 @@ export default function UserIcon(user: Session["user"] | undefined) {
           </MenuItem>
           <MenuItem>
             <a
-              href="#"
+              href="/api/auth/signout"
               className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-slate-100 dark:text-gray-100 dark:data-[focus]:bg-black"
             >
               Cerrar sesión
