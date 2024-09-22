@@ -1,6 +1,6 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { Button, FormInput, Label, ScrollArea, toast } from "@/components/ui";
+import { Button, FormInput, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { useEffect, useMemo } from "react";
