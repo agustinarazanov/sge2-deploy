@@ -101,6 +101,11 @@ export const EQUIPOS_ROUTE: AppRoute = {
       label: "Prestamos",
       isPublic: false,
     },
+    {
+      href: "/equipos/mis_prestamos",
+      label: "Mis Préstamos",
+      isPublic: false,
+    },
   ],
 };
 

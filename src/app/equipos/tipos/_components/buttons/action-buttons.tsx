@@ -13,11 +13,10 @@ type ActionButtonsProps = {
 export const EquiposTiposActionButtons = ({ filters }: ActionButtonsProps) => {
   return (
     <div className="relative flex w-full flex-col items-center justify-between space-y-3 sm:space-y-0 md:flex-row-reverse md:space-x-1.5">
-      <div className="relative flex w-full flex-col justify-end space-y-3 sm:basis-1/2 sm:flex-row sm:space-x-2 sm:space-y-0 md:w-auto md:basis-1/3">
+      <div className="relative flex w-full flex-col justify-end space-y-3 sm:basis-1/2 sm:flex-row sm:space-x-2 sm:space-y-0 md:w-auto md:basis-1/3 md:space-y-0">
         <EquiposTiposNuevoTipo />
-        <div className="flex flex-row justify-center gap-x-3">
-          <EquiposButtons />
-        </div>
+
+        <EquiposButtons />
       </div>
 
       <div className="w-full space-y-3 sm:flex sm:flex-row sm:space-x-3 sm:space-y-0 md:basis-1/2">
