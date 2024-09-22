@@ -46,6 +46,15 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
+      <link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-iphone-60x60.png" />
+      <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="/apple-touch-icon-ipad-76x76.png" />
+      <link
+        rel="apple-touch-icon"
+        type="image/png"
+        sizes="114x114"
+        href="/apple-touch-icon-iphone-retina-120x120.png"
+      />
+      <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="/apple-touch-icon-ipad-retina-152x152.png" />
       <body>
         <TRPCReactProvider>
           <header>
