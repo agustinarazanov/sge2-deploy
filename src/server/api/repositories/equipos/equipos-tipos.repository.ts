@@ -71,8 +71,8 @@ export const getAllTipos = async (ctx: { db: PrismaClient }, input: InputTipoGet
       orderBy: {
         nombre: orderDirection,
       },
-      skip: fromFilter.length === 0 ? parseInt(pageIndex) * parseInt(pageSize) : undefined,
-      take: fromFilter.length === 0 ? parseInt(pageSize) : undefined,
+      skip: fromFilter === "false" ? parseInt(pageIndex) * parseInt(pageSize) : undefined,
+      take: fromFilter === "false" ? parseInt(pageSize) : undefined,
     }),
   ]);
 

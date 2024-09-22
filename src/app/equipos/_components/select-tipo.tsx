@@ -15,7 +15,7 @@ export const SelectTipoForm = <
   className,
   ...props
 }: Omit<FormSelectProps<T, TType, TMulti>, "items"> & { tipoId?: number }): ReactElement => {
-  const { data, isLoading, isError } = api.equipos.getAllTipos.useQuery({ tipoId: props.tipoId });
+  const { data, isLoading, isError } = api.equipos.getAllTipos.useQuery({ tipoId: props.tipoId, fromFilter: "true" });
 
   const tipos = useMemo(() => {
     if (!data) return [];
