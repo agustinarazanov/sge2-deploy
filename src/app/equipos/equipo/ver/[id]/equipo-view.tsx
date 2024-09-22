@@ -42,7 +42,7 @@ export const EquipoView = ({ id, onCancel }: Props) => {
       </ScrollArea>
 
       <div className="flex w-full flex-row items-end justify-end space-x-4">
-        <Button title="Cancelar" type="button" variant="default" color="secondary" onClick={handleCancel}>
+        <Button title="Cancelar" type="button" variant="default" color="primary" onClick={handleCancel}>
           Volver
         </Button>
       </div>

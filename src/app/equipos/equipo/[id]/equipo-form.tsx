@@ -252,7 +252,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
               </div>
 
-              {/*
+              {/* TODO: mostrar imagen en formulario??
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
                 <div className="w-full">
                   <FormInput

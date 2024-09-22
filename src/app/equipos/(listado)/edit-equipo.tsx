@@ -7,7 +7,13 @@ type EditEquipoModalProps = {
 
 export const EditarEquipoModal = (props: EditEquipoModalProps) => {
   return (
-    <Link key={props.equipoId} href={`/equipos/equipo/${props.equipoId}`} passHref prefetch={false}>
+    <Link
+      key={props.equipoId}
+      href={`/equipos/equipo/${props.equipoId}`}
+      passHref
+      prefetch={false}
+      title="Editar equipo"
+    >
       <EditIcon />
     </Link>
   );
