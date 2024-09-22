@@ -11,12 +11,12 @@ import { informacionUsuario } from "../usuario-helper";
 import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 
 type InputGetAll = z.infer<typeof inputGetAllPrestamosEquipos>;
-export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText, orderDirection, orderBy, estatus, userId } = input;
+export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetAll, userId: string) => {
+  const { pageIndex, pageSize, searchText, orderDirection, orderBy, estatus, filtrByUserId } = input;
 
   const filtrosWhereReservaEquipo: Prisma.ReservaEquipoWhereInput = {
     reserva: {
-      ...(userId ? { usuarioSolicitoId: userId } : {}),
+      ...(filtrByUserId === "true" ? { usuarioSolicitoId: userId } : {}),
       ...(estatus ? { estatus: estatus } : {}),
     },
     ...(searchText
@@ -26,9 +26,11 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
               reserva: {
                 reservaEquipo: {
                   equipo: {
-                    modelo: {
-                      contains: searchText ?? undefined,
-                      mode: "insensitive",
+                    tipo: {
+                      nombre: {
+                        contains: searchText ?? undefined,
+                        mode: "insensitive",
+                      },
                     },
                   },
                 },
@@ -110,7 +112,9 @@ export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: I
       },
     },
     where: {
-      usuarioCreadorId: id,
+      reserva: {
+        usuarioCreadorId: id,
+      },
     },
     orderBy: {
       fechaCreacion: "desc",
@@ -360,6 +364,6 @@ export const renovarEquipo = async (ctx: { db: PrismaClient }, input: InputRenov
 
     return reserva;
   } catch (error) {
-    throw new Error(`Error renovando equipos`);
+    throw new Error(`Error renovando equipo`);
   }
 };
