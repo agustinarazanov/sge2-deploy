@@ -45,6 +45,7 @@
     "@trpc/client": "next",
     "@trpc/react-query": "next",
     "@trpc/server": "next",
+    "@vercel/speed-insights": "^1.0.12",
     "@zedux/react": "^1.2.2",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
