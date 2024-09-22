@@ -252,6 +252,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
               </div>
 
+              {/*
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
                 <div className="w-full">
                   <FormInput
@@ -264,17 +265,12 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                   />
                 </div>
               </div>
+              */}
 
-              <div className="flex w-full flex-row lg:flex-row">
-                <Label htmlFor={id} className="mb-3 flex w-full flex-col text-sm dark:text-input-label">
-                  Observaciones
-                  <FormTextarea
-                    name="observaciones"
-                    control={control}
-                    id="observaciones"
-                    className="w-full dark:bg-background"
-                  />
-                </Label>
+              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+                <div className="mt-4 h-auto w-full">
+                  <FormTextarea label={"Observaciones"} name="observaciones" control={control} id="observaciones" />
+                </div>
               </div>
             </div>
           </div>
