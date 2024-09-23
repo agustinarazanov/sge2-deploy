@@ -141,44 +141,44 @@ DROP INDEX IF EXISTS public."Curso_turno_idx";
 DROP INDEX IF EXISTS public."Curso_anioDeCarrera_idx";
 DROP INDEX IF EXISTS public."Curso_activo_idx";
 DROP INDEX IF EXISTS public."Account_provider_providerAccountId_key";
-ALTER TABLE IF EXISTS ONLY public."UsuarioRol" DROP CONSTRAINT IF EXISTS "UsuarioRol_pkey";
-ALTER TABLE IF EXISTS ONLY public."User" DROP CONSTRAINT IF EXISTS "User_pkey";
-ALTER TABLE IF EXISTS ONLY public."Tutor" DROP CONSTRAINT IF EXISTS "Tutor_pkey";
-ALTER TABLE IF EXISTS ONLY public."Software" DROP CONSTRAINT IF EXISTS "Software_pkey";
-ALTER TABLE IF EXISTS ONLY public."SoftwareLaboratorio" DROP CONSTRAINT IF EXISTS "SoftwareLaboratorio_pkey";
-ALTER TABLE IF EXISTS ONLY public."Session" DROP CONSTRAINT IF EXISTS "Session_pkey";
-ALTER TABLE IF EXISTS ONLY public."Sede" DROP CONSTRAINT IF EXISTS "Sede_pkey";
-ALTER TABLE IF EXISTS ONLY public."Rol" DROP CONSTRAINT IF EXISTS "Rol_pkey";
-ALTER TABLE IF EXISTS ONLY public."RolPermiso" DROP CONSTRAINT IF EXISTS "RolPermiso_pkey";
-ALTER TABLE IF EXISTS ONLY public."Reserva" DROP CONSTRAINT IF EXISTS "Reserva_pkey";
-ALTER TABLE IF EXISTS ONLY public."ReservaLibro" DROP CONSTRAINT IF EXISTS "ReservaLibro_pkey";
-ALTER TABLE IF EXISTS ONLY public."ReservaLaboratorioCerrado" DROP CONSTRAINT IF EXISTS "ReservaLaboratorioCerrado_pkey";
-ALTER TABLE IF EXISTS ONLY public."ReservaLaboratorioCerradoEquipo" DROP CONSTRAINT IF EXISTS "ReservaLaboratorioCerradoEquipo_pkey";
-ALTER TABLE IF EXISTS ONLY public."ReservaLaboratorioAbierto" DROP CONSTRAINT IF EXISTS "ReservaLaboratorioAbierto_pkey";
-ALTER TABLE IF EXISTS ONLY public."ReservaLaboratorioAbiertoEquipo" DROP CONSTRAINT IF EXISTS "ReservaLaboratorioAbiertoEquipo_pkey";
-ALTER TABLE IF EXISTS ONLY public."ReservaEquipo" DROP CONSTRAINT IF EXISTS "ReservaEquipo_pkey";
-ALTER TABLE IF EXISTS ONLY public."Provincia" DROP CONSTRAINT IF EXISTS "Provincia_pkey";
-ALTER TABLE IF EXISTS ONLY public."Permiso" DROP CONSTRAINT IF EXISTS "Permiso_pkey";
-ALTER TABLE IF EXISTS ONLY public."Pais" DROP CONSTRAINT IF EXISTS "Pais_pkey";
-ALTER TABLE IF EXISTS ONLY public."Materia" DROP CONSTRAINT IF EXISTS "Materia_pkey";
-ALTER TABLE IF EXISTS ONLY public."MateriaCorrelativa" DROP CONSTRAINT IF EXISTS "MateriaCorrelativa_pkey";
-ALTER TABLE IF EXISTS ONLY public."Libro" DROP CONSTRAINT IF EXISTS "Libro_pkey";
-ALTER TABLE IF EXISTS ONLY public."LibroMateria" DROP CONSTRAINT IF EXISTS "LibroMateria_pkey";
-ALTER TABLE IF EXISTS ONLY public."LibroIdioma" DROP CONSTRAINT IF EXISTS "LibroIdioma_pkey";
-ALTER TABLE IF EXISTS ONLY public."LibroEditorial" DROP CONSTRAINT IF EXISTS "LibroEditorial_pkey";
-ALTER TABLE IF EXISTS ONLY public."LibroAutor" DROP CONSTRAINT IF EXISTS "LibroAutor_pkey";
-ALTER TABLE IF EXISTS ONLY public."Laboratorio" DROP CONSTRAINT IF EXISTS "Laboratorio_pkey";
-ALTER TABLE IF EXISTS ONLY public."Estante" DROP CONSTRAINT IF EXISTS "Estante_pkey";
-ALTER TABLE IF EXISTS ONLY public."Equipo" DROP CONSTRAINT IF EXISTS "Equipo_pkey";
-ALTER TABLE IF EXISTS ONLY public."EquipoTipo" DROP CONSTRAINT IF EXISTS "EquipoTipo_pkey";
-ALTER TABLE IF EXISTS ONLY public."EquipoMarca" DROP CONSTRAINT IF EXISTS "EquipoMarca_pkey";
-ALTER TABLE IF EXISTS ONLY public."EquipoEstado" DROP CONSTRAINT IF EXISTS "EquipoEstado_pkey";
-ALTER TABLE IF EXISTS ONLY public."DocumentoTipo" DROP CONSTRAINT IF EXISTS "DocumentoTipo_pkey";
-ALTER TABLE IF EXISTS ONLY public."Division" DROP CONSTRAINT IF EXISTS "Division_pkey";
-ALTER TABLE IF EXISTS ONLY public."Curso" DROP CONSTRAINT IF EXISTS "Curso_pkey";
-ALTER TABLE IF EXISTS ONLY public."CursoAyudante" DROP CONSTRAINT IF EXISTS "CursoAyudante_pkey";
-ALTER TABLE IF EXISTS ONLY public."Armario" DROP CONSTRAINT IF EXISTS "Armario_pkey";
-ALTER TABLE IF EXISTS ONLY public."Account" DROP CONSTRAINT IF EXISTS "Account_pkey";
+ALTER TABLE IF EXISTS ONLY public."UsuarioRol" DROP CONSTRAINT IF EXISTS "UsuarioRol_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."User" DROP CONSTRAINT IF EXISTS "User_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Tutor" DROP CONSTRAINT IF EXISTS "Tutor_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Software" DROP CONSTRAINT IF EXISTS "Software_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."SoftwareLaboratorio" DROP CONSTRAINT IF EXISTS "SoftwareLaboratorio_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Session" DROP CONSTRAINT IF EXISTS "Session_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Sede" DROP CONSTRAINT IF EXISTS "Sede_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Rol" DROP CONSTRAINT IF EXISTS "Rol_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."RolPermiso" DROP CONSTRAINT IF EXISTS "RolPermiso_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Reserva" DROP CONSTRAINT IF EXISTS "Reserva_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."ReservaLibro" DROP CONSTRAINT IF EXISTS "ReservaLibro_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."ReservaLaboratorioCerrado" DROP CONSTRAINT IF EXISTS "ReservaLaboratorioCerrado_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."ReservaLaboratorioCerradoEquipo" DROP CONSTRAINT IF EXISTS "ReservaLaboratorioCerradoEquipo_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."ReservaLaboratorioAbierto" DROP CONSTRAINT IF EXISTS "ReservaLaboratorioAbierto_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."ReservaLaboratorioAbiertoEquipo" DROP CONSTRAINT IF EXISTS "ReservaLaboratorioAbiertoEquipo_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."ReservaEquipo" DROP CONSTRAINT IF EXISTS "ReservaEquipo_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Provincia" DROP CONSTRAINT IF EXISTS "Provincia_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Permiso" DROP CONSTRAINT IF EXISTS "Permiso_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Pais" DROP CONSTRAINT IF EXISTS "Pais_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Materia" DROP CONSTRAINT IF EXISTS "Materia_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."MateriaCorrelativa" DROP CONSTRAINT IF EXISTS "MateriaCorrelativa_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Libro" DROP CONSTRAINT IF EXISTS "Libro_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."LibroMateria" DROP CONSTRAINT IF EXISTS "LibroMateria_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."LibroIdioma" DROP CONSTRAINT IF EXISTS "LibroIdioma_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."LibroEditorial" DROP CONSTRAINT IF EXISTS "LibroEditorial_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."LibroAutor" DROP CONSTRAINT IF EXISTS "LibroAutor_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Laboratorio" DROP CONSTRAINT IF EXISTS "Laboratorio_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Estante" DROP CONSTRAINT IF EXISTS "Estante_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Equipo" DROP CONSTRAINT IF EXISTS "Equipo_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."EquipoTipo" DROP CONSTRAINT IF EXISTS "EquipoTipo_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."EquipoMarca" DROP CONSTRAINT IF EXISTS "EquipoMarca_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."EquipoEstado" DROP CONSTRAINT IF EXISTS "EquipoEstado_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."DocumentoTipo" DROP CONSTRAINT IF EXISTS "DocumentoTipo_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Division" DROP CONSTRAINT IF EXISTS "Division_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Curso" DROP CONSTRAINT IF EXISTS "Curso_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."CursoAyudante" DROP CONSTRAINT IF EXISTS "CursoAyudante_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Armario" DROP CONSTRAINT IF EXISTS "Armario_pkey" CASCADE;
+ALTER TABLE IF EXISTS ONLY public."Account" DROP CONSTRAINT IF EXISTS "Account_pkey" CASCADE;
 ALTER TABLE IF EXISTS public."Software" ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public."Sede" ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public."Rol" ALTER COLUMN id DROP DEFAULT;
@@ -280,16 +280,14 @@ DROP TYPE IF EXISTS public."EstatusCorrelativa";
 DROP TYPE IF EXISTS public."CursoDia";
 DROP SCHEMA IF EXISTS public;
 --
--- Name: public; Type: SCHEMA; Schema: -; Owner: agustina
+-- Name: public; Type: SCHEMA; Schema: -; Owner: -
 --
 
 CREATE SCHEMA public;
 
 
-ALTER SCHEMA public OWNER TO agustina;
-
 --
--- Name: CursoDia; Type: TYPE; Schema: public; Owner: agustina
+-- Name: CursoDia; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public."CursoDia" AS ENUM (
@@ -303,10 +301,8 @@ CREATE TYPE public."CursoDia" AS ENUM (
 );
 
 
-ALTER TYPE public."CursoDia" OWNER TO agustina;
-
 --
--- Name: EstatusCorrelativa; Type: TYPE; Schema: public; Owner: agustina
+-- Name: EstatusCorrelativa; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public."EstatusCorrelativa" AS ENUM (
@@ -316,10 +312,8 @@ CREATE TYPE public."EstatusCorrelativa" AS ENUM (
 );
 
 
-ALTER TYPE public."EstatusCorrelativa" OWNER TO agustina;
-
 --
--- Name: LaboratorioAbiertoTipo; Type: TYPE; Schema: public; Owner: agustina
+-- Name: LaboratorioAbiertoTipo; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public."LaboratorioAbiertoTipo" AS ENUM (
@@ -329,10 +323,8 @@ CREATE TYPE public."LaboratorioAbiertoTipo" AS ENUM (
 );
 
 
-ALTER TYPE public."LaboratorioAbiertoTipo" OWNER TO agustina;
-
 --
--- Name: MateriaDuracion; Type: TYPE; Schema: public; Owner: agustina
+-- Name: MateriaDuracion; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public."MateriaDuracion" AS ENUM (
@@ -342,10 +334,8 @@ CREATE TYPE public."MateriaDuracion" AS ENUM (
 );
 
 
-ALTER TYPE public."MateriaDuracion" OWNER TO agustina;
-
 --
--- Name: MateriaTipo; Type: TYPE; Schema: public; Owner: agustina
+-- Name: MateriaTipo; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public."MateriaTipo" AS ENUM (
@@ -355,10 +345,8 @@ CREATE TYPE public."MateriaTipo" AS ENUM (
 );
 
 
-ALTER TYPE public."MateriaTipo" OWNER TO agustina;
-
 --
--- Name: ReservaEstatus; Type: TYPE; Schema: public; Owner: agustina
+-- Name: ReservaEstatus; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public."ReservaEstatus" AS ENUM (
@@ -368,10 +356,8 @@ CREATE TYPE public."ReservaEstatus" AS ENUM (
 );
 
 
-ALTER TYPE public."ReservaEstatus" OWNER TO agustina;
-
 --
--- Name: ReservaTipo; Type: TYPE; Schema: public; Owner: agustina
+-- Name: ReservaTipo; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public."ReservaTipo" AS ENUM (
@@ -382,10 +368,8 @@ CREATE TYPE public."ReservaTipo" AS ENUM (
 );
 
 
-ALTER TYPE public."ReservaTipo" OWNER TO agustina;
-
 --
--- Name: TurnoCurso; Type: TYPE; Schema: public; Owner: agustina
+-- Name: TurnoCurso; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public."TurnoCurso" AS ENUM (
@@ -395,14 +379,12 @@ CREATE TYPE public."TurnoCurso" AS ENUM (
 );
 
 
-ALTER TYPE public."TurnoCurso" OWNER TO agustina;
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
 --
--- Name: Account; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Account; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Account" (
@@ -423,10 +405,8 @@ CREATE TABLE public."Account" (
 );
 
 
-ALTER TABLE public."Account" OWNER TO agustina;
-
 --
--- Name: Armario; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Armario; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Armario" (
@@ -440,10 +420,8 @@ CREATE TABLE public."Armario" (
 );
 
 
-ALTER TABLE public."Armario" OWNER TO agustina;
-
 --
--- Name: Armario_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: Armario_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."Armario_id_seq"
@@ -455,17 +433,15 @@ CREATE SEQUENCE public."Armario_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Armario_id_seq" OWNER TO agustina;
-
 --
--- Name: Armario_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: Armario_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."Armario_id_seq" OWNED BY public."Armario".id;
 
 
 --
--- Name: Curso; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Curso; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Curso" (
@@ -491,10 +467,8 @@ CREATE TABLE public."Curso" (
 );
 
 
-ALTER TABLE public."Curso" OWNER TO agustina;
-
 --
--- Name: CursoAyudante; Type: TABLE; Schema: public; Owner: agustina
+-- Name: CursoAyudante; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."CursoAyudante" (
@@ -507,10 +481,8 @@ CREATE TABLE public."CursoAyudante" (
 );
 
 
-ALTER TABLE public."CursoAyudante" OWNER TO agustina;
-
 --
--- Name: Curso_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: Curso_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."Curso_id_seq"
@@ -522,17 +494,15 @@ CREATE SEQUENCE public."Curso_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Curso_id_seq" OWNER TO agustina;
-
 --
--- Name: Curso_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: Curso_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."Curso_id_seq" OWNED BY public."Curso".id;
 
 
 --
--- Name: Division; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Division; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Division" (
@@ -544,10 +514,8 @@ CREATE TABLE public."Division" (
 );
 
 
-ALTER TABLE public."Division" OWNER TO agustina;
-
 --
--- Name: Division_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: Division_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."Division_id_seq"
@@ -559,17 +527,15 @@ CREATE SEQUENCE public."Division_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Division_id_seq" OWNER TO agustina;
-
 --
--- Name: Division_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: Division_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."Division_id_seq" OWNED BY public."Division".id;
 
 
 --
--- Name: DocumentoTipo; Type: TABLE; Schema: public; Owner: agustina
+-- Name: DocumentoTipo; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."DocumentoTipo" (
@@ -578,10 +544,8 @@ CREATE TABLE public."DocumentoTipo" (
 );
 
 
-ALTER TABLE public."DocumentoTipo" OWNER TO agustina;
-
 --
--- Name: DocumentoTipo_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: DocumentoTipo_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."DocumentoTipo_id_seq"
@@ -593,17 +557,15 @@ CREATE SEQUENCE public."DocumentoTipo_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."DocumentoTipo_id_seq" OWNER TO agustina;
-
 --
--- Name: DocumentoTipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: DocumentoTipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."DocumentoTipo_id_seq" OWNED BY public."DocumentoTipo".id;
 
 
 --
--- Name: Equipo; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Equipo; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Equipo" (
@@ -629,10 +591,8 @@ CREATE TABLE public."Equipo" (
 );
 
 
-ALTER TABLE public."Equipo" OWNER TO agustina;
-
 --
--- Name: EquipoEstado; Type: TABLE; Schema: public; Owner: agustina
+-- Name: EquipoEstado; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."EquipoEstado" (
@@ -643,10 +603,8 @@ CREATE TABLE public."EquipoEstado" (
 );
 
 
-ALTER TABLE public."EquipoEstado" OWNER TO agustina;
-
 --
--- Name: EquipoEstado_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: EquipoEstado_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."EquipoEstado_id_seq"
@@ -658,17 +616,15 @@ CREATE SEQUENCE public."EquipoEstado_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."EquipoEstado_id_seq" OWNER TO agustina;
-
 --
--- Name: EquipoEstado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: EquipoEstado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."EquipoEstado_id_seq" OWNED BY public."EquipoEstado".id;
 
 
 --
--- Name: EquipoMarca; Type: TABLE; Schema: public; Owner: agustina
+-- Name: EquipoMarca; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."EquipoMarca" (
@@ -679,10 +635,8 @@ CREATE TABLE public."EquipoMarca" (
 );
 
 
-ALTER TABLE public."EquipoMarca" OWNER TO agustina;
-
 --
--- Name: EquipoMarca_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: EquipoMarca_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."EquipoMarca_id_seq"
@@ -694,17 +648,15 @@ CREATE SEQUENCE public."EquipoMarca_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."EquipoMarca_id_seq" OWNER TO agustina;
-
 --
--- Name: EquipoMarca_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: EquipoMarca_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."EquipoMarca_id_seq" OWNED BY public."EquipoMarca".id;
 
 
 --
--- Name: EquipoTipo; Type: TABLE; Schema: public; Owner: agustina
+-- Name: EquipoTipo; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."EquipoTipo" (
@@ -715,10 +667,8 @@ CREATE TABLE public."EquipoTipo" (
 );
 
 
-ALTER TABLE public."EquipoTipo" OWNER TO agustina;
-
 --
--- Name: EquipoTipo_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: EquipoTipo_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."EquipoTipo_id_seq"
@@ -730,17 +680,15 @@ CREATE SEQUENCE public."EquipoTipo_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."EquipoTipo_id_seq" OWNER TO agustina;
-
 --
--- Name: EquipoTipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: EquipoTipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."EquipoTipo_id_seq" OWNED BY public."EquipoTipo".id;
 
 
 --
--- Name: Equipo_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: Equipo_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."Equipo_id_seq"
@@ -752,17 +700,15 @@ CREATE SEQUENCE public."Equipo_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Equipo_id_seq" OWNER TO agustina;
-
 --
--- Name: Equipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: Equipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."Equipo_id_seq" OWNED BY public."Equipo".id;
 
 
 --
--- Name: Estante; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Estante; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Estante" (
@@ -776,10 +722,8 @@ CREATE TABLE public."Estante" (
 );
 
 
-ALTER TABLE public."Estante" OWNER TO agustina;
-
 --
--- Name: Estante_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: Estante_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."Estante_id_seq"
@@ -791,17 +735,15 @@ CREATE SEQUENCE public."Estante_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Estante_id_seq" OWNER TO agustina;
-
 --
--- Name: Estante_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: Estante_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."Estante_id_seq" OWNED BY public."Estante".id;
 
 
 --
--- Name: Laboratorio; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Laboratorio; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Laboratorio" (
@@ -818,10 +760,8 @@ CREATE TABLE public."Laboratorio" (
 );
 
 
-ALTER TABLE public."Laboratorio" OWNER TO agustina;
-
 --
--- Name: Laboratorio_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: Laboratorio_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."Laboratorio_id_seq"
@@ -833,17 +773,15 @@ CREATE SEQUENCE public."Laboratorio_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Laboratorio_id_seq" OWNER TO agustina;
-
 --
--- Name: Laboratorio_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: Laboratorio_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."Laboratorio_id_seq" OWNED BY public."Laboratorio".id;
 
 
 --
--- Name: Libro; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Libro; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Libro" (
@@ -868,10 +806,8 @@ CREATE TABLE public."Libro" (
 );
 
 
-ALTER TABLE public."Libro" OWNER TO agustina;
-
 --
--- Name: LibroAutor; Type: TABLE; Schema: public; Owner: agustina
+-- Name: LibroAutor; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."LibroAutor" (
@@ -882,10 +818,8 @@ CREATE TABLE public."LibroAutor" (
 );
 
 
-ALTER TABLE public."LibroAutor" OWNER TO agustina;
-
 --
--- Name: LibroAutor_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: LibroAutor_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."LibroAutor_id_seq"
@@ -897,17 +831,15 @@ CREATE SEQUENCE public."LibroAutor_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."LibroAutor_id_seq" OWNER TO agustina;
-
 --
--- Name: LibroAutor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: LibroAutor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."LibroAutor_id_seq" OWNED BY public."LibroAutor".id;
 
 
 --
--- Name: LibroEditorial; Type: TABLE; Schema: public; Owner: agustina
+-- Name: LibroEditorial; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."LibroEditorial" (
@@ -918,10 +850,8 @@ CREATE TABLE public."LibroEditorial" (
 );
 
 
-ALTER TABLE public."LibroEditorial" OWNER TO agustina;
-
 --
--- Name: LibroEditorial_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: LibroEditorial_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."LibroEditorial_id_seq"
@@ -933,17 +863,15 @@ CREATE SEQUENCE public."LibroEditorial_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."LibroEditorial_id_seq" OWNER TO agustina;
-
 --
--- Name: LibroEditorial_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: LibroEditorial_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."LibroEditorial_id_seq" OWNED BY public."LibroEditorial".id;
 
 
 --
--- Name: LibroIdioma; Type: TABLE; Schema: public; Owner: agustina
+-- Name: LibroIdioma; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."LibroIdioma" (
@@ -954,10 +882,8 @@ CREATE TABLE public."LibroIdioma" (
 );
 
 
-ALTER TABLE public."LibroIdioma" OWNER TO agustina;
-
 --
--- Name: LibroIdioma_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: LibroIdioma_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."LibroIdioma_id_seq"
@@ -969,17 +895,15 @@ CREATE SEQUENCE public."LibroIdioma_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."LibroIdioma_id_seq" OWNER TO agustina;
-
 --
--- Name: LibroIdioma_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: LibroIdioma_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."LibroIdioma_id_seq" OWNED BY public."LibroIdioma".id;
 
 
 --
--- Name: LibroMateria; Type: TABLE; Schema: public; Owner: agustina
+-- Name: LibroMateria; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."LibroMateria" (
@@ -990,10 +914,8 @@ CREATE TABLE public."LibroMateria" (
 );
 
 
-ALTER TABLE public."LibroMateria" OWNER TO agustina;
-
 --
--- Name: Libro_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: Libro_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."Libro_id_seq"
@@ -1005,17 +927,15 @@ CREATE SEQUENCE public."Libro_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Libro_id_seq" OWNER TO agustina;
-
 --
--- Name: Libro_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: Libro_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."Libro_id_seq" OWNED BY public."Libro".id;
 
 
 --
--- Name: Materia; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Materia; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Materia" (
@@ -1034,10 +954,8 @@ CREATE TABLE public."Materia" (
 );
 
 
-ALTER TABLE public."Materia" OWNER TO agustina;
-
 --
--- Name: MateriaCorrelativa; Type: TABLE; Schema: public; Owner: agustina
+-- Name: MateriaCorrelativa; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."MateriaCorrelativa" (
@@ -1051,10 +969,8 @@ CREATE TABLE public."MateriaCorrelativa" (
 );
 
 
-ALTER TABLE public."MateriaCorrelativa" OWNER TO agustina;
-
 --
--- Name: Materia_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: Materia_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."Materia_id_seq"
@@ -1066,17 +982,15 @@ CREATE SEQUENCE public."Materia_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Materia_id_seq" OWNER TO agustina;
-
 --
--- Name: Materia_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: Materia_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."Materia_id_seq" OWNED BY public."Materia".id;
 
 
 --
--- Name: Pais; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Pais; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Pais" (
@@ -1088,10 +1002,8 @@ CREATE TABLE public."Pais" (
 );
 
 
-ALTER TABLE public."Pais" OWNER TO agustina;
-
 --
--- Name: Permiso; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Permiso; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Permiso" (
@@ -1104,10 +1016,8 @@ CREATE TABLE public."Permiso" (
 );
 
 
-ALTER TABLE public."Permiso" OWNER TO agustina;
-
 --
--- Name: Permiso_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: Permiso_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."Permiso_id_seq"
@@ -1119,17 +1029,15 @@ CREATE SEQUENCE public."Permiso_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Permiso_id_seq" OWNER TO agustina;
-
 --
--- Name: Permiso_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: Permiso_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."Permiso_id_seq" OWNED BY public."Permiso".id;
 
 
 --
--- Name: Provincia; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Provincia; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Provincia" (
@@ -1139,10 +1047,8 @@ CREATE TABLE public."Provincia" (
 );
 
 
-ALTER TABLE public."Provincia" OWNER TO agustina;
-
 --
--- Name: Reserva; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Reserva; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Reserva" (
@@ -1168,10 +1074,8 @@ CREATE TABLE public."Reserva" (
 );
 
 
-ALTER TABLE public."Reserva" OWNER TO agustina;
-
 --
--- Name: ReservaEquipo; Type: TABLE; Schema: public; Owner: agustina
+-- Name: ReservaEquipo; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."ReservaEquipo" (
@@ -1187,10 +1091,8 @@ CREATE TABLE public."ReservaEquipo" (
 );
 
 
-ALTER TABLE public."ReservaEquipo" OWNER TO agustina;
-
 --
--- Name: ReservaEquipo_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: ReservaEquipo_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."ReservaEquipo_id_seq"
@@ -1202,17 +1104,15 @@ CREATE SEQUENCE public."ReservaEquipo_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."ReservaEquipo_id_seq" OWNER TO agustina;
-
 --
--- Name: ReservaEquipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: ReservaEquipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."ReservaEquipo_id_seq" OWNED BY public."ReservaEquipo".id;
 
 
 --
--- Name: ReservaLaboratorioAbierto; Type: TABLE; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbierto; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."ReservaLaboratorioAbierto" (
@@ -1230,10 +1130,8 @@ CREATE TABLE public."ReservaLaboratorioAbierto" (
 );
 
 
-ALTER TABLE public."ReservaLaboratorioAbierto" OWNER TO agustina;
-
 --
--- Name: ReservaLaboratorioAbiertoEquipo; Type: TABLE; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbiertoEquipo; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."ReservaLaboratorioAbiertoEquipo" (
@@ -1248,10 +1146,8 @@ CREATE TABLE public."ReservaLaboratorioAbiertoEquipo" (
 );
 
 
-ALTER TABLE public."ReservaLaboratorioAbiertoEquipo" OWNER TO agustina;
-
 --
--- Name: ReservaLaboratorioAbiertoEquipo_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbiertoEquipo_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."ReservaLaboratorioAbiertoEquipo_id_seq"
@@ -1263,17 +1159,15 @@ CREATE SEQUENCE public."ReservaLaboratorioAbiertoEquipo_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."ReservaLaboratorioAbiertoEquipo_id_seq" OWNER TO agustina;
-
 --
--- Name: ReservaLaboratorioAbiertoEquipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbiertoEquipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."ReservaLaboratorioAbiertoEquipo_id_seq" OWNED BY public."ReservaLaboratorioAbiertoEquipo".id;
 
 
 --
--- Name: ReservaLaboratorioAbierto_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbierto_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."ReservaLaboratorioAbierto_id_seq"
@@ -1285,17 +1179,15 @@ CREATE SEQUENCE public."ReservaLaboratorioAbierto_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."ReservaLaboratorioAbierto_id_seq" OWNER TO agustina;
-
 --
--- Name: ReservaLaboratorioAbierto_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbierto_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."ReservaLaboratorioAbierto_id_seq" OWNED BY public."ReservaLaboratorioAbierto".id;
 
 
 --
--- Name: ReservaLaboratorioCerrado; Type: TABLE; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerrado; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."ReservaLaboratorioCerrado" (
@@ -1310,10 +1202,8 @@ CREATE TABLE public."ReservaLaboratorioCerrado" (
 );
 
 
-ALTER TABLE public."ReservaLaboratorioCerrado" OWNER TO agustina;
-
 --
--- Name: ReservaLaboratorioCerradoEquipo; Type: TABLE; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerradoEquipo; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."ReservaLaboratorioCerradoEquipo" (
@@ -1328,10 +1218,8 @@ CREATE TABLE public."ReservaLaboratorioCerradoEquipo" (
 );
 
 
-ALTER TABLE public."ReservaLaboratorioCerradoEquipo" OWNER TO agustina;
-
 --
--- Name: ReservaLaboratorioCerradoEquipo_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerradoEquipo_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."ReservaLaboratorioCerradoEquipo_id_seq"
@@ -1343,17 +1231,15 @@ CREATE SEQUENCE public."ReservaLaboratorioCerradoEquipo_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."ReservaLaboratorioCerradoEquipo_id_seq" OWNER TO agustina;
-
 --
--- Name: ReservaLaboratorioCerradoEquipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerradoEquipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."ReservaLaboratorioCerradoEquipo_id_seq" OWNED BY public."ReservaLaboratorioCerradoEquipo".id;
 
 
 --
--- Name: ReservaLaboratorioCerrado_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerrado_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."ReservaLaboratorioCerrado_id_seq"
@@ -1365,17 +1251,15 @@ CREATE SEQUENCE public."ReservaLaboratorioCerrado_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."ReservaLaboratorioCerrado_id_seq" OWNER TO agustina;
-
 --
--- Name: ReservaLaboratorioCerrado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerrado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."ReservaLaboratorioCerrado_id_seq" OWNED BY public."ReservaLaboratorioCerrado".id;
 
 
 --
--- Name: ReservaLibro; Type: TABLE; Schema: public; Owner: agustina
+-- Name: ReservaLibro; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."ReservaLibro" (
@@ -1390,10 +1274,8 @@ CREATE TABLE public."ReservaLibro" (
 );
 
 
-ALTER TABLE public."ReservaLibro" OWNER TO agustina;
-
 --
--- Name: ReservaLibro_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: ReservaLibro_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."ReservaLibro_id_seq"
@@ -1405,17 +1287,15 @@ CREATE SEQUENCE public."ReservaLibro_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."ReservaLibro_id_seq" OWNER TO agustina;
-
 --
--- Name: ReservaLibro_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: ReservaLibro_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."ReservaLibro_id_seq" OWNED BY public."ReservaLibro".id;
 
 
 --
--- Name: Reserva_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: Reserva_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."Reserva_id_seq"
@@ -1427,17 +1307,15 @@ CREATE SEQUENCE public."Reserva_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Reserva_id_seq" OWNER TO agustina;
-
 --
--- Name: Reserva_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: Reserva_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."Reserva_id_seq" OWNED BY public."Reserva".id;
 
 
 --
--- Name: Rol; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Rol; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Rol" (
@@ -1450,10 +1328,8 @@ CREATE TABLE public."Rol" (
 );
 
 
-ALTER TABLE public."Rol" OWNER TO agustina;
-
 --
--- Name: RolPermiso; Type: TABLE; Schema: public; Owner: agustina
+-- Name: RolPermiso; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."RolPermiso" (
@@ -1464,10 +1340,8 @@ CREATE TABLE public."RolPermiso" (
 );
 
 
-ALTER TABLE public."RolPermiso" OWNER TO agustina;
-
 --
--- Name: Rol_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: Rol_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."Rol_id_seq"
@@ -1479,17 +1353,15 @@ CREATE SEQUENCE public."Rol_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Rol_id_seq" OWNER TO agustina;
-
 --
--- Name: Rol_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: Rol_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."Rol_id_seq" OWNED BY public."Rol".id;
 
 
 --
--- Name: Sede; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Sede; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Sede" (
@@ -1498,10 +1370,8 @@ CREATE TABLE public."Sede" (
 );
 
 
-ALTER TABLE public."Sede" OWNER TO agustina;
-
 --
--- Name: Sede_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: Sede_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."Sede_id_seq"
@@ -1513,17 +1383,15 @@ CREATE SEQUENCE public."Sede_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Sede_id_seq" OWNER TO agustina;
-
 --
--- Name: Sede_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: Sede_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."Sede_id_seq" OWNED BY public."Sede".id;
 
 
 --
--- Name: Session; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Session; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Session" (
@@ -1534,10 +1402,8 @@ CREATE TABLE public."Session" (
 );
 
 
-ALTER TABLE public."Session" OWNER TO agustina;
-
 --
--- Name: Software; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Software; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Software" (
@@ -1552,10 +1418,8 @@ CREATE TABLE public."Software" (
 );
 
 
-ALTER TABLE public."Software" OWNER TO agustina;
-
 --
--- Name: SoftwareLaboratorio; Type: TABLE; Schema: public; Owner: agustina
+-- Name: SoftwareLaboratorio; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."SoftwareLaboratorio" (
@@ -1566,10 +1430,8 @@ CREATE TABLE public."SoftwareLaboratorio" (
 );
 
 
-ALTER TABLE public."SoftwareLaboratorio" OWNER TO agustina;
-
 --
--- Name: Software_id_seq; Type: SEQUENCE; Schema: public; Owner: agustina
+-- Name: Software_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public."Software_id_seq"
@@ -1581,17 +1443,15 @@ CREATE SEQUENCE public."Software_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Software_id_seq" OWNER TO agustina;
-
 --
--- Name: Software_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agustina
+-- Name: Software_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public."Software_id_seq" OWNED BY public."Software".id;
 
 
 --
--- Name: Tutor; Type: TABLE; Schema: public; Owner: agustina
+-- Name: Tutor; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."Tutor" (
@@ -1604,10 +1464,8 @@ CREATE TABLE public."Tutor" (
 );
 
 
-ALTER TABLE public."Tutor" OWNER TO agustina;
-
 --
--- Name: User; Type: TABLE; Schema: public; Owner: agustina
+-- Name: User; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."User" (
@@ -1643,10 +1501,8 @@ CREATE TABLE public."User" (
 );
 
 
-ALTER TABLE public."User" OWNER TO agustina;
-
 --
--- Name: UsuarioRol; Type: TABLE; Schema: public; Owner: agustina
+-- Name: UsuarioRol; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."UsuarioRol" (
@@ -1657,10 +1513,8 @@ CREATE TABLE public."UsuarioRol" (
 );
 
 
-ALTER TABLE public."UsuarioRol" OWNER TO agustina;
-
 --
--- Name: VerificationToken; Type: TABLE; Schema: public; Owner: agustina
+-- Name: VerificationToken; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."VerificationToken" (
@@ -1670,198 +1524,196 @@ CREATE TABLE public."VerificationToken" (
 );
 
 
-ALTER TABLE public."VerificationToken" OWNER TO agustina;
-
 --
--- Name: Armario id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: Armario id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Armario" ALTER COLUMN id SET DEFAULT nextval('public."Armario_id_seq"'::regclass);
 
 
 --
--- Name: Curso id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: Curso id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Curso" ALTER COLUMN id SET DEFAULT nextval('public."Curso_id_seq"'::regclass);
 
 
 --
--- Name: Division id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: Division id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Division" ALTER COLUMN id SET DEFAULT nextval('public."Division_id_seq"'::regclass);
 
 
 --
--- Name: DocumentoTipo id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: DocumentoTipo id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."DocumentoTipo" ALTER COLUMN id SET DEFAULT nextval('public."DocumentoTipo_id_seq"'::regclass);
 
 
 --
--- Name: Equipo id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: Equipo id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Equipo" ALTER COLUMN id SET DEFAULT nextval('public."Equipo_id_seq"'::regclass);
 
 
 --
--- Name: EquipoEstado id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: EquipoEstado id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."EquipoEstado" ALTER COLUMN id SET DEFAULT nextval('public."EquipoEstado_id_seq"'::regclass);
 
 
 --
--- Name: EquipoMarca id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: EquipoMarca id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."EquipoMarca" ALTER COLUMN id SET DEFAULT nextval('public."EquipoMarca_id_seq"'::regclass);
 
 
 --
--- Name: EquipoTipo id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: EquipoTipo id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."EquipoTipo" ALTER COLUMN id SET DEFAULT nextval('public."EquipoTipo_id_seq"'::regclass);
 
 
 --
--- Name: Estante id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: Estante id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Estante" ALTER COLUMN id SET DEFAULT nextval('public."Estante_id_seq"'::regclass);
 
 
 --
--- Name: Laboratorio id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: Laboratorio id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Laboratorio" ALTER COLUMN id SET DEFAULT nextval('public."Laboratorio_id_seq"'::regclass);
 
 
 --
--- Name: Libro id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: Libro id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Libro" ALTER COLUMN id SET DEFAULT nextval('public."Libro_id_seq"'::regclass);
 
 
 --
--- Name: LibroAutor id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: LibroAutor id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."LibroAutor" ALTER COLUMN id SET DEFAULT nextval('public."LibroAutor_id_seq"'::regclass);
 
 
 --
--- Name: LibroEditorial id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: LibroEditorial id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."LibroEditorial" ALTER COLUMN id SET DEFAULT nextval('public."LibroEditorial_id_seq"'::regclass);
 
 
 --
--- Name: LibroIdioma id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: LibroIdioma id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."LibroIdioma" ALTER COLUMN id SET DEFAULT nextval('public."LibroIdioma_id_seq"'::regclass);
 
 
 --
--- Name: Materia id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: Materia id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Materia" ALTER COLUMN id SET DEFAULT nextval('public."Materia_id_seq"'::regclass);
 
 
 --
--- Name: Permiso id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: Permiso id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Permiso" ALTER COLUMN id SET DEFAULT nextval('public."Permiso_id_seq"'::regclass);
 
 
 --
--- Name: Reserva id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: Reserva id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Reserva" ALTER COLUMN id SET DEFAULT nextval('public."Reserva_id_seq"'::regclass);
 
 
 --
--- Name: ReservaEquipo id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: ReservaEquipo id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaEquipo" ALTER COLUMN id SET DEFAULT nextval('public."ReservaEquipo_id_seq"'::regclass);
 
 
 --
--- Name: ReservaLaboratorioAbierto id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbierto id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioAbierto" ALTER COLUMN id SET DEFAULT nextval('public."ReservaLaboratorioAbierto_id_seq"'::regclass);
 
 
 --
--- Name: ReservaLaboratorioAbiertoEquipo id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbiertoEquipo id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioAbiertoEquipo" ALTER COLUMN id SET DEFAULT nextval('public."ReservaLaboratorioAbiertoEquipo_id_seq"'::regclass);
 
 
 --
--- Name: ReservaLaboratorioCerrado id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerrado id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioCerrado" ALTER COLUMN id SET DEFAULT nextval('public."ReservaLaboratorioCerrado_id_seq"'::regclass);
 
 
 --
--- Name: ReservaLaboratorioCerradoEquipo id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerradoEquipo id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioCerradoEquipo" ALTER COLUMN id SET DEFAULT nextval('public."ReservaLaboratorioCerradoEquipo_id_seq"'::regclass);
 
 
 --
--- Name: ReservaLibro id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: ReservaLibro id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLibro" ALTER COLUMN id SET DEFAULT nextval('public."ReservaLibro_id_seq"'::regclass);
 
 
 --
--- Name: Rol id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: Rol id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Rol" ALTER COLUMN id SET DEFAULT nextval('public."Rol_id_seq"'::regclass);
 
 
 --
--- Name: Sede id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: Sede id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Sede" ALTER COLUMN id SET DEFAULT nextval('public."Sede_id_seq"'::regclass);
 
 
 --
--- Name: Software id; Type: DEFAULT; Schema: public; Owner: agustina
+-- Name: Software id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Software" ALTER COLUMN id SET DEFAULT nextval('public."Software_id_seq"'::regclass);
 
 
 --
--- Data for Name: Account; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Account; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- Data for Name: Armario; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Armario; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."Armario" VALUES (1, 'srv01', 23, '2024-09-22 15:57:11.682', '2024-09-22 15:57:11.682', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -1923,7 +1775,7 @@ INSERT INTO public."Armario" VALUES (56, '00108', 23, '2024-09-22 15:57:11.682',
 
 
 --
--- Data for Name: Curso; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Curso; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."Curso" VALUES (1, '1', '5', '', '', 'MARTES', NULL, 5, false, 'A', 4, 74, 89, '2024-09-22 15:57:11.776', '2024-09-22 15:57:11.776', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', 'NOCHE', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -2058,7 +1910,7 @@ INSERT INTO public."Curso" VALUES (129, '1', '4', '', '', 'JUEVES', NULL, 6, tru
 
 
 --
--- Data for Name: CursoAyudante; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: CursoAyudante; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."CursoAyudante" VALUES (4, 'cm1dxx94k005rb1tnhzq4w8at', '2024-09-22 15:57:11.782', '2024-09-22 15:57:11.782', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -2112,7 +1964,7 @@ INSERT INTO public."CursoAyudante" VALUES (127, 'cm1dxx94k005rb1tnhzq4w8at', '20
 
 
 --
--- Data for Name: Division; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Division; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."Division" VALUES (1, 'R2055', 2, '2024-09-22 15:57:11.775', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -2223,7 +2075,7 @@ INSERT INTO public."Division" VALUES (105, 'R1022', 1, '2024-09-22 15:57:11.775'
 
 
 --
--- Data for Name: DocumentoTipo; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: DocumentoTipo; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."DocumentoTipo" VALUES (1, 'L.C.');
@@ -2234,7 +2086,7 @@ INSERT INTO public."DocumentoTipo" VALUES (5, 'L.E.');
 
 
 --
--- Data for Name: Equipo; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Equipo; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."Equipo" VALUES (1, '100375', '411', '100375', 'Valvular', NULL, NULL, 38, 68, 4, 12, 48, 52, 2, '2024-09-22 15:57:11.692', '2024-09-22 15:57:11.692', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', true);
@@ -4918,7 +4770,7 @@ INSERT INTO public."Equipo" VALUES (2052, 'NG2119', '2100', '8003447', 'Multíme
 
 
 --
--- Data for Name: EquipoEstado; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: EquipoEstado; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."EquipoEstado" VALUES (1, 'Descarte', '2024-09-22 15:57:11.691', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -4927,7 +4779,7 @@ INSERT INTO public."EquipoEstado" VALUES (3, 'Roto', '2024-09-22 15:57:11.691', 
 
 
 --
--- Data for Name: EquipoMarca; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: EquipoMarca; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."EquipoMarca" VALUES (1, 'Beseler', '2024-09-22 15:57:11.689', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -5277,7 +5129,7 @@ INSERT INTO public."EquipoMarca" VALUES (344, 'V&amp,,,A', '2024-09-22 15:57:11.
 
 
 --
--- Data for Name: EquipoTipo; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: EquipoTipo; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."EquipoTipo" VALUES (1, 'Motor paso a paso', '2024-09-22 15:57:11.688', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -5400,7 +5252,7 @@ INSERT INTO public."EquipoTipo" VALUES (117, 'Preamplificador', '2024-09-22 15:5
 
 
 --
--- Data for Name: Estante; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Estante; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."Estante" VALUES (1, ' 1', '2024-09-22 15:57:11.683', '2024-09-22 15:57:11.683', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', 19);
@@ -5588,7 +5440,7 @@ INSERT INTO public."Estante" VALUES (182, 'Estante 00', '2024-09-22 15:57:11.683
 
 
 --
--- Data for Name: Laboratorio; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Laboratorio; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."Laboratorio" VALUES (1, 'Cañon para Aula Campus', false, NULL, 3, '2024-09-22 15:57:11.68', '2024-09-22 15:57:11.68', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', true);
@@ -5626,7 +5478,7 @@ INSERT INTO public."Laboratorio" VALUES (32, 'Secretaria', true, NULL, 4, '2024-
 
 
 --
--- Data for Name: Libro; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Libro; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."Libro" VALUES (1, '', 'NB0068', 'Fiber optic reference guide', 1996, '240802632', 11, 12, 116, 90, 2, 55, 4, '2024-09-22 15:57:11.746', '2024-09-22 15:57:11.746', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', true);
@@ -6045,7 +5897,7 @@ INSERT INTO public."Libro" VALUES (246, '--------', 'NB0214', 'Dispositivos Elec
 
 
 --
--- Data for Name: LibroAutor; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: LibroAutor; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."LibroAutor" VALUES (1, 'Ferreira Vesga Juan Carlos', '2024-09-22 15:57:11.742', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -6394,7 +6246,7 @@ INSERT INTO public."LibroAutor" VALUES (343, 'N. N. Fiódorov', '2024-09-22 15:5
 
 
 --
--- Data for Name: LibroEditorial; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: LibroEditorial; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."LibroEditorial" VALUES (1, '- - - - - - - - - -', '2024-09-22 15:57:11.745', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -6472,7 +6324,7 @@ INSERT INTO public."LibroEditorial" VALUES (72, 'Van Nostrand Co.', '2024-09-22 
 
 
 --
--- Data for Name: LibroIdioma; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: LibroIdioma; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."LibroIdioma" VALUES (1, 'Castellano', '2024-09-22 15:57:11.745', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -6481,7 +6333,7 @@ INSERT INTO public."LibroIdioma" VALUES (3, 'Portugués', '2024-09-22 15:57:11.7
 
 
 --
--- Data for Name: LibroMateria; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: LibroMateria; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."LibroMateria" VALUES (1, 44, '2024-09-22 15:57:11.767', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -6985,7 +6837,7 @@ INSERT INTO public."LibroMateria" VALUES (413, 72, '2024-09-22 15:57:11.767', 'c
 
 
 --
--- Data for Name: Materia; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Materia; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."Materia" VALUES (2, 'Análisis Matemático I', '95-0702', 1, 'AMBOS', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -7066,7 +6918,7 @@ INSERT INTO public."Materia" VALUES (47, 'Optoelectrónica y Aplicaciones Láser
 
 
 --
--- Data for Name: MateriaCorrelativa; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: MateriaCorrelativa; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."MateriaCorrelativa" VALUES (71, 28, 'CURSAR_APROBADA', '2024-09-22 15:57:11.772', '2024-09-22 15:57:11.772', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -7288,7 +7140,7 @@ INSERT INTO public."MateriaCorrelativa" VALUES (69, 42, 'CURSAR_REGULARIZADA', '
 
 
 --
--- Data for Name: Pais; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Pais; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."Pais" VALUES ('TJ', 'Tayikistán', 'Tajikistan', 'TJK', 762);
@@ -7538,7 +7390,7 @@ INSERT INTO public."Pais" VALUES ('LU', 'Luxemburgo', 'Luxembourg', 'LUX', 442);
 
 
 --
--- Data for Name: Permiso; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Permiso; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."Permiso" VALUES (1, 'Reserva de laboratorio: Reservar laboratorio docente para un curso (Automatico del Sistema ) ', '2024-09-22 15:57:11.785', '2024-09-22 15:57:11.785', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -7613,7 +7465,7 @@ INSERT INTO public."Permiso" VALUES (69, 'Reserva de laboratorio: Agregar y Elim
 
 
 --
--- Data for Name: Provincia; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Provincia; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."Provincia" VALUES ('ZZ', 'Unspecified', 'US');
@@ -8704,49 +8556,49 @@ INSERT INTO public."Provincia" VALUES ('VOA', 'Vóreion Aiyaíon', 'GR');
 
 
 --
--- Data for Name: Reserva; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Reserva; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- Data for Name: ReservaEquipo; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: ReservaEquipo; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- Data for Name: ReservaLaboratorioAbierto; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: ReservaLaboratorioAbierto; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- Data for Name: ReservaLaboratorioAbiertoEquipo; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: ReservaLaboratorioAbiertoEquipo; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- Data for Name: ReservaLaboratorioCerrado; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: ReservaLaboratorioCerrado; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- Data for Name: ReservaLaboratorioCerradoEquipo; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: ReservaLaboratorioCerradoEquipo; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- Data for Name: ReservaLibro; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: ReservaLibro; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- Data for Name: Rol; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Rol; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."Rol" VALUES (1, 'Administrador', '2024-09-22 15:57:11.786', '2024-09-22 15:57:11.786', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -8759,7 +8611,7 @@ INSERT INTO public."Rol" VALUES (7, 'Tutor', '2024-09-22 15:57:11.786', '2024-09
 
 
 --
--- Data for Name: RolPermiso; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: RolPermiso; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."RolPermiso" VALUES (1, 1, '2024-09-22 15:57:11.787', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -8790,7 +8642,7 @@ INSERT INTO public."RolPermiso" VALUES (5, 25, '2024-09-22 15:57:11.789', 'cm1dx
 
 
 --
--- Data for Name: Sede; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Sede; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."Sede" VALUES (1, 'Saenz');
@@ -8800,13 +8652,13 @@ INSERT INTO public."Sede" VALUES (4, 'Medrano');
 
 
 --
--- Data for Name: Session; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Session; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- Data for Name: Software; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Software; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."Software" VALUES (1, 'Adobe Acrobat Reader', '9.0', 'Gratuito', '2024-09-22 15:57:11.685', '2024-09-22 15:57:11.685', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -8840,7 +8692,7 @@ INSERT INTO public."Software" VALUES (28, 'Deep Freeze Standard', '8.6', '-', '2
 
 
 --
--- Data for Name: SoftwareLaboratorio; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: SoftwareLaboratorio; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."SoftwareLaboratorio" VALUES (11, 7, '2024-09-22 15:57:11.686', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -9013,22 +8865,22 @@ INSERT INTO public."SoftwareLaboratorio" VALUES (1, 28, '2024-09-22 15:57:11.686
 
 
 --
--- Data for Name: Tutor; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: Tutor; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."User" VALUES ('cm1dxx94u00mmb1tndqnhunjz', 'hspataro', 'hspataro@frba.utn.edu.ar', NULL, '/default-avatar.svg', 'Spataro', 'AR', '1424', '- -', 'Juan B. Alberdi 1016', '21484610', 2, '1970-02-23 00:00:00', '2017-03-29 00:00:00', '2024-09-22 15:57:11.626', '2024-05-30 00:00:00', NULL, '-', 'AR', 0, '- -', 'B', true, '4433-6215', '-', '-', 'Hector', true, false);
-INSERT INTO public."User" VALUES ('cm1dxx94k005rb1tnhzq4w8at', 'spalozzo', 'spalozzo@frba.utn.edu.ar', NULL, '/default-avatar.svg', 'Palozzo', 'AR', '', '', '', '', 2, '-infinity', '2021-01-27 00:00:00', '2021-01-27 00:00:00', '2024-05-30 00:00:00', NULL, '1756175', 'AR', 0, '', 'B', true, '', '', '', 'Santiago', false, false);
 INSERT INTO public."User" VALUES ('cm1dxx98d015ib1tng86xel1r', 'alumno', 'alumno@frba.utn.edu.ar', NULL, '/default-avatar.svg', 'Anónimo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-09-22 18:57:11.678', '2024-09-22 18:57:11.678', '2024-09-22 18:57:11.678', NULL, '123456', NULL, 0, NULL, NULL, false, NULL, NULL, NULL, 'Alumno', false, false);
+INSERT INTO public."User" VALUES ('cm1dxx94k005rb1tnhzq4w8at', 'spalozzo', 'spalozzo@frba.utn.edu.ar', NULL, '/default-avatar.svg', 'Palozzo', 'AR', '', '', '', '', 2, NULL, '2021-01-27 00:00:00', '2021-01-27 00:00:00', '2024-05-30 00:00:00', NULL, '1756175', 'AR', 0, '', 'B', true, '', '', '', 'Santiago', false, false);
 
 
 --
--- Data for Name: UsuarioRol; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: UsuarioRol; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO public."UsuarioRol" VALUES ('cm1dxx94u00mmb1tndqnhunjz', 1, '2024-09-22 15:57:11.787', 'cm1dxx94u00mmb1tndqnhunjz');
@@ -9037,195 +8889,195 @@ INSERT INTO public."UsuarioRol" VALUES ('cm1dxx98d015ib1tng86xel1r', 3, '2024-09
 
 
 --
--- Data for Name: VerificationToken; Type: TABLE DATA; Schema: public; Owner: agustina
+-- Data for Name: VerificationToken; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- Name: Armario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: Armario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."Armario_id_seq"', 56, true);
 
 
 --
--- Name: Curso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: Curso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."Curso_id_seq"', 129, true);
 
 
 --
--- Name: Division_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: Division_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."Division_id_seq"', 105, true);
 
 
 --
--- Name: DocumentoTipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: DocumentoTipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."DocumentoTipo_id_seq"', 5, true);
 
 
 --
--- Name: EquipoEstado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: EquipoEstado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."EquipoEstado_id_seq"', 3, true);
 
 
 --
--- Name: EquipoMarca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: EquipoMarca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."EquipoMarca_id_seq"', 344, true);
 
 
 --
--- Name: EquipoTipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: EquipoTipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."EquipoTipo_id_seq"', 117, true);
 
 
 --
--- Name: Equipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: Equipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."Equipo_id_seq"', 2132, true);
 
 
 --
--- Name: Estante_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: Estante_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."Estante_id_seq"', 182, true);
 
 
 --
--- Name: Laboratorio_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: Laboratorio_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."Laboratorio_id_seq"', 32, true);
 
 
 --
--- Name: LibroAutor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: LibroAutor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."LibroAutor_id_seq"', 343, true);
 
 
 --
--- Name: LibroEditorial_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: LibroEditorial_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."LibroEditorial_id_seq"', 72, true);
 
 
 --
--- Name: LibroIdioma_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: LibroIdioma_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."LibroIdioma_id_seq"', 3, true);
 
 
 --
--- Name: Libro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: Libro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."Libro_id_seq"', 413, true);
 
 
 --
--- Name: Materia_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: Materia_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."Materia_id_seq"', 75, true);
 
 
 --
--- Name: Permiso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: Permiso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."Permiso_id_seq"', 69, true);
 
 
 --
--- Name: ReservaEquipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: ReservaEquipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."ReservaEquipo_id_seq"', 1, false);
 
 
 --
--- Name: ReservaLaboratorioAbiertoEquipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbiertoEquipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."ReservaLaboratorioAbiertoEquipo_id_seq"', 1, false);
 
 
 --
--- Name: ReservaLaboratorioAbierto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbierto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."ReservaLaboratorioAbierto_id_seq"', 1, false);
 
 
 --
--- Name: ReservaLaboratorioCerradoEquipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerradoEquipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."ReservaLaboratorioCerradoEquipo_id_seq"', 1, false);
 
 
 --
--- Name: ReservaLaboratorioCerrado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerrado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."ReservaLaboratorioCerrado_id_seq"', 1, false);
 
 
 --
--- Name: ReservaLibro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: ReservaLibro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."ReservaLibro_id_seq"', 1, false);
 
 
 --
--- Name: Reserva_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: Reserva_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."Reserva_id_seq"', 1, false);
 
 
 --
--- Name: Rol_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: Rol_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."Rol_id_seq"', 7, true);
 
 
 --
--- Name: Sede_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: Sede_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."Sede_id_seq"', 4, true);
 
 
 --
--- Name: Software_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agustina
+-- Name: Software_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."Software_id_seq"', 28, true);
 
 
 --
--- Name: Account Account_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Account Account_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Account"
@@ -9233,7 +9085,7 @@ ALTER TABLE ONLY public."Account"
 
 
 --
--- Name: Armario Armario_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Armario Armario_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Armario"
@@ -9241,7 +9093,7 @@ ALTER TABLE ONLY public."Armario"
 
 
 --
--- Name: CursoAyudante CursoAyudante_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: CursoAyudante CursoAyudante_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."CursoAyudante"
@@ -9249,7 +9101,7 @@ ALTER TABLE ONLY public."CursoAyudante"
 
 
 --
--- Name: Curso Curso_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Curso Curso_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Curso"
@@ -9257,7 +9109,7 @@ ALTER TABLE ONLY public."Curso"
 
 
 --
--- Name: Division Division_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Division Division_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Division"
@@ -9265,7 +9117,7 @@ ALTER TABLE ONLY public."Division"
 
 
 --
--- Name: DocumentoTipo DocumentoTipo_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: DocumentoTipo DocumentoTipo_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."DocumentoTipo"
@@ -9273,7 +9125,7 @@ ALTER TABLE ONLY public."DocumentoTipo"
 
 
 --
--- Name: EquipoEstado EquipoEstado_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: EquipoEstado EquipoEstado_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."EquipoEstado"
@@ -9281,7 +9133,7 @@ ALTER TABLE ONLY public."EquipoEstado"
 
 
 --
--- Name: EquipoMarca EquipoMarca_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: EquipoMarca EquipoMarca_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."EquipoMarca"
@@ -9289,7 +9141,7 @@ ALTER TABLE ONLY public."EquipoMarca"
 
 
 --
--- Name: EquipoTipo EquipoTipo_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: EquipoTipo EquipoTipo_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."EquipoTipo"
@@ -9297,7 +9149,7 @@ ALTER TABLE ONLY public."EquipoTipo"
 
 
 --
--- Name: Equipo Equipo_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Equipo Equipo_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Equipo"
@@ -9305,7 +9157,7 @@ ALTER TABLE ONLY public."Equipo"
 
 
 --
--- Name: Estante Estante_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Estante Estante_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Estante"
@@ -9313,7 +9165,7 @@ ALTER TABLE ONLY public."Estante"
 
 
 --
--- Name: Laboratorio Laboratorio_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Laboratorio Laboratorio_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Laboratorio"
@@ -9321,7 +9173,7 @@ ALTER TABLE ONLY public."Laboratorio"
 
 
 --
--- Name: LibroAutor LibroAutor_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: LibroAutor LibroAutor_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."LibroAutor"
@@ -9329,7 +9181,7 @@ ALTER TABLE ONLY public."LibroAutor"
 
 
 --
--- Name: LibroEditorial LibroEditorial_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: LibroEditorial LibroEditorial_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."LibroEditorial"
@@ -9337,7 +9189,7 @@ ALTER TABLE ONLY public."LibroEditorial"
 
 
 --
--- Name: LibroIdioma LibroIdioma_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: LibroIdioma LibroIdioma_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."LibroIdioma"
@@ -9345,7 +9197,7 @@ ALTER TABLE ONLY public."LibroIdioma"
 
 
 --
--- Name: LibroMateria LibroMateria_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: LibroMateria LibroMateria_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."LibroMateria"
@@ -9353,7 +9205,7 @@ ALTER TABLE ONLY public."LibroMateria"
 
 
 --
--- Name: Libro Libro_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Libro Libro_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Libro"
@@ -9361,7 +9213,7 @@ ALTER TABLE ONLY public."Libro"
 
 
 --
--- Name: MateriaCorrelativa MateriaCorrelativa_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: MateriaCorrelativa MateriaCorrelativa_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."MateriaCorrelativa"
@@ -9369,7 +9221,7 @@ ALTER TABLE ONLY public."MateriaCorrelativa"
 
 
 --
--- Name: Materia Materia_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Materia Materia_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Materia"
@@ -9377,7 +9229,7 @@ ALTER TABLE ONLY public."Materia"
 
 
 --
--- Name: Pais Pais_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Pais Pais_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Pais"
@@ -9385,7 +9237,7 @@ ALTER TABLE ONLY public."Pais"
 
 
 --
--- Name: Permiso Permiso_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Permiso Permiso_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Permiso"
@@ -9393,7 +9245,7 @@ ALTER TABLE ONLY public."Permiso"
 
 
 --
--- Name: Provincia Provincia_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Provincia Provincia_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Provincia"
@@ -9401,7 +9253,7 @@ ALTER TABLE ONLY public."Provincia"
 
 
 --
--- Name: ReservaEquipo ReservaEquipo_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaEquipo ReservaEquipo_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaEquipo"
@@ -9409,7 +9261,7 @@ ALTER TABLE ONLY public."ReservaEquipo"
 
 
 --
--- Name: ReservaLaboratorioAbiertoEquipo ReservaLaboratorioAbiertoEquipo_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbiertoEquipo ReservaLaboratorioAbiertoEquipo_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioAbiertoEquipo"
@@ -9417,7 +9269,7 @@ ALTER TABLE ONLY public."ReservaLaboratorioAbiertoEquipo"
 
 
 --
--- Name: ReservaLaboratorioAbierto ReservaLaboratorioAbierto_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbierto ReservaLaboratorioAbierto_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioAbierto"
@@ -9425,7 +9277,7 @@ ALTER TABLE ONLY public."ReservaLaboratorioAbierto"
 
 
 --
--- Name: ReservaLaboratorioCerradoEquipo ReservaLaboratorioCerradoEquipo_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerradoEquipo ReservaLaboratorioCerradoEquipo_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioCerradoEquipo"
@@ -9433,7 +9285,7 @@ ALTER TABLE ONLY public."ReservaLaboratorioCerradoEquipo"
 
 
 --
--- Name: ReservaLaboratorioCerrado ReservaLaboratorioCerrado_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerrado ReservaLaboratorioCerrado_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioCerrado"
@@ -9441,7 +9293,7 @@ ALTER TABLE ONLY public."ReservaLaboratorioCerrado"
 
 
 --
--- Name: ReservaLibro ReservaLibro_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLibro ReservaLibro_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLibro"
@@ -9449,7 +9301,7 @@ ALTER TABLE ONLY public."ReservaLibro"
 
 
 --
--- Name: Reserva Reserva_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Reserva Reserva_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Reserva"
@@ -9457,7 +9309,7 @@ ALTER TABLE ONLY public."Reserva"
 
 
 --
--- Name: RolPermiso RolPermiso_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: RolPermiso RolPermiso_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."RolPermiso"
@@ -9465,7 +9317,7 @@ ALTER TABLE ONLY public."RolPermiso"
 
 
 --
--- Name: Rol Rol_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Rol Rol_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Rol"
@@ -9473,7 +9325,7 @@ ALTER TABLE ONLY public."Rol"
 
 
 --
--- Name: Sede Sede_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Sede Sede_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Sede"
@@ -9481,7 +9333,7 @@ ALTER TABLE ONLY public."Sede"
 
 
 --
--- Name: Session Session_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Session Session_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Session"
@@ -9489,7 +9341,7 @@ ALTER TABLE ONLY public."Session"
 
 
 --
--- Name: SoftwareLaboratorio SoftwareLaboratorio_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: SoftwareLaboratorio SoftwareLaboratorio_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."SoftwareLaboratorio"
@@ -9497,7 +9349,7 @@ ALTER TABLE ONLY public."SoftwareLaboratorio"
 
 
 --
--- Name: Software Software_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Software Software_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Software"
@@ -9505,7 +9357,7 @@ ALTER TABLE ONLY public."Software"
 
 
 --
--- Name: Tutor Tutor_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Tutor Tutor_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Tutor"
@@ -9513,7 +9365,7 @@ ALTER TABLE ONLY public."Tutor"
 
 
 --
--- Name: User User_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: User User_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."User"
@@ -9521,7 +9373,7 @@ ALTER TABLE ONLY public."User"
 
 
 --
--- Name: UsuarioRol UsuarioRol_pkey; Type: CONSTRAINT; Schema: public; Owner: agustina
+-- Name: UsuarioRol UsuarioRol_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."UsuarioRol"
@@ -9529,455 +9381,455 @@ ALTER TABLE ONLY public."UsuarioRol"
 
 
 --
--- Name: Account_provider_providerAccountId_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Account_provider_providerAccountId_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON public."Account" USING btree (provider, "providerAccountId");
 
 
 --
--- Name: Curso_activo_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Curso_activo_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Curso_activo_idx" ON public."Curso" USING hash (activo);
 
 
 --
--- Name: Curso_anioDeCarrera_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Curso_anioDeCarrera_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Curso_anioDeCarrera_idx" ON public."Curso" USING btree ("anioDeCarrera");
 
 
 --
--- Name: Curso_turno_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Curso_turno_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Curso_turno_idx" ON public."Curso" USING hash (turno);
 
 
 --
--- Name: Division_anio_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Division_anio_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Division_anio_idx" ON public."Division" USING btree (anio);
 
 
 --
--- Name: Division_nombre_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Division_nombre_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Division_nombre_idx" ON public."Division" USING btree (nombre);
 
 
 --
--- Name: EquipoEstado_nombre_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: EquipoEstado_nombre_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "EquipoEstado_nombre_idx" ON public."EquipoEstado" USING btree (nombre);
 
 
 --
--- Name: EquipoMarca_nombre_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: EquipoMarca_nombre_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "EquipoMarca_nombre_idx" ON public."EquipoMarca" USING btree (nombre);
 
 
 --
--- Name: EquipoTipo_nombre_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: EquipoTipo_nombre_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "EquipoTipo_nombre_idx" ON public."EquipoTipo" USING btree (nombre);
 
 
 --
--- Name: Equipo_inventarioId_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Equipo_inventarioId_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "Equipo_inventarioId_key" ON public."Equipo" USING btree ("inventarioId");
 
 
 --
--- Name: Equipo_modelo_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Equipo_modelo_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Equipo_modelo_idx" ON public."Equipo" USING btree (modelo);
 
 
 --
--- Name: Equipo_numeroSerie_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Equipo_numeroSerie_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Equipo_numeroSerie_idx" ON public."Equipo" USING btree ("numeroSerie");
 
 
 --
--- Name: Laboratorio_esReservable_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Laboratorio_esReservable_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Laboratorio_esReservable_idx" ON public."Laboratorio" USING hash ("esReservable");
 
 
 --
--- Name: Laboratorio_laboratorioAbiertoTipo_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Laboratorio_laboratorioAbiertoTipo_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Laboratorio_laboratorioAbiertoTipo_idx" ON public."Laboratorio" USING btree ("laboratorioAbiertoTipo");
 
 
 --
--- Name: Laboratorio_nombre_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Laboratorio_nombre_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Laboratorio_nombre_idx" ON public."Laboratorio" USING btree (nombre);
 
 
 --
--- Name: Laboratorio_tienePc_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Laboratorio_tienePc_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Laboratorio_tienePc_idx" ON public."Laboratorio" USING hash ("tienePc");
 
 
 --
--- Name: LibroAutor_autorNombre_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: LibroAutor_autorNombre_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "LibroAutor_autorNombre_idx" ON public."LibroAutor" USING btree ("autorNombre");
 
 
 --
--- Name: LibroAutor_autorNombre_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: LibroAutor_autorNombre_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "LibroAutor_autorNombre_key" ON public."LibroAutor" USING btree ("autorNombre");
 
 
 --
--- Name: LibroEditorial_editorial_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: LibroEditorial_editorial_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "LibroEditorial_editorial_idx" ON public."LibroEditorial" USING btree (editorial);
 
 
 --
--- Name: LibroEditorial_editorial_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: LibroEditorial_editorial_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "LibroEditorial_editorial_key" ON public."LibroEditorial" USING btree (editorial);
 
 
 --
--- Name: LibroIdioma_idioma_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: LibroIdioma_idioma_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "LibroIdioma_idioma_idx" ON public."LibroIdioma" USING btree (idioma);
 
 
 --
--- Name: LibroIdioma_idioma_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: LibroIdioma_idioma_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "LibroIdioma_idioma_key" ON public."LibroIdioma" USING btree (idioma);
 
 
 --
--- Name: Libro_anio_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Libro_anio_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Libro_anio_idx" ON public."Libro" USING btree (anio DESC);
 
 
 --
--- Name: Libro_bibliotecaId_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Libro_bibliotecaId_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Libro_bibliotecaId_idx" ON public."Libro" USING btree ("bibliotecaId");
 
 
 --
--- Name: Libro_inventarioId_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Libro_inventarioId_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Libro_inventarioId_idx" ON public."Libro" USING btree ("inventarioId");
 
 
 --
--- Name: Libro_inventarioId_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Libro_inventarioId_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "Libro_inventarioId_key" ON public."Libro" USING btree ("inventarioId");
 
 
 --
--- Name: Libro_titulo_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Libro_titulo_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Libro_titulo_idx" ON public."Libro" USING btree (titulo);
 
 
 --
--- Name: Materia_anio_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Materia_anio_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Materia_anio_idx" ON public."Materia" USING btree (anio);
 
 
 --
--- Name: Materia_codigo_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Materia_codigo_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "Materia_codigo_key" ON public."Materia" USING btree (codigo);
 
 
 --
--- Name: Materia_duracion_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Materia_duracion_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Materia_duracion_idx" ON public."Materia" USING btree (duracion);
 
 
 --
--- Name: Materia_nombre_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Materia_nombre_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Materia_nombre_idx" ON public."Materia" USING btree (nombre);
 
 
 --
--- Name: Materia_tipo_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Materia_tipo_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Materia_tipo_idx" ON public."Materia" USING btree (tipo);
 
 
 --
--- Name: Pais_codigoNumerico_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Pais_codigoNumerico_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Pais_codigoNumerico_idx" ON public."Pais" USING btree ("codigoNumerico");
 
 
 --
--- Name: Pais_iso3_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Pais_iso3_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Pais_iso3_idx" ON public."Pais" USING btree (iso3);
 
 
 --
--- Name: Pais_nombreEspanol_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Pais_nombreEspanol_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Pais_nombreEspanol_idx" ON public."Pais" USING btree ("nombreEspanol");
 
 
 --
--- Name: Permiso_nombre_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Permiso_nombre_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Permiso_nombre_idx" ON public."Permiso" USING btree (nombre);
 
 
 --
--- Name: Permiso_nombre_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Permiso_nombre_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "Permiso_nombre_key" ON public."Permiso" USING btree (nombre);
 
 
 --
--- Name: Provincia_nombre_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Provincia_nombre_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Provincia_nombre_idx" ON public."Provincia" USING btree (nombre);
 
 
 --
--- Name: ReservaEquipo_fechaEntregado_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: ReservaEquipo_fechaEntregado_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "ReservaEquipo_fechaEntregado_idx" ON public."ReservaEquipo" USING btree ("fechaEntregado");
 
 
 --
--- Name: ReservaEquipo_reservaId_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: ReservaEquipo_reservaId_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "ReservaEquipo_reservaId_key" ON public."ReservaEquipo" USING btree ("reservaId");
 
 
 --
--- Name: ReservaLaboratorioAbierto_especialidad_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbierto_especialidad_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "ReservaLaboratorioAbierto_especialidad_idx" ON public."ReservaLaboratorioAbierto" USING btree (especialidad);
 
 
 --
--- Name: ReservaLaboratorioAbierto_mailConfirmado_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbierto_mailConfirmado_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "ReservaLaboratorioAbierto_mailConfirmado_idx" ON public."ReservaLaboratorioAbierto" USING hash ("mailConfirmado");
 
 
 --
--- Name: ReservaLaboratorioAbierto_numeroReserva_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbierto_numeroReserva_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "ReservaLaboratorioAbierto_numeroReserva_idx" ON public."ReservaLaboratorioAbierto" USING btree ("numeroReserva");
 
 
 --
--- Name: ReservaLaboratorioAbierto_reservaId_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbierto_reservaId_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "ReservaLaboratorioAbierto_reservaId_key" ON public."ReservaLaboratorioAbierto" USING btree ("reservaId");
 
 
 --
--- Name: ReservaLaboratorioCerrado_reservaId_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerrado_reservaId_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "ReservaLaboratorioCerrado_reservaId_key" ON public."ReservaLaboratorioCerrado" USING btree ("reservaId");
 
 
 --
--- Name: ReservaLibro_fechaEntregado_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: ReservaLibro_fechaEntregado_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "ReservaLibro_fechaEntregado_idx" ON public."ReservaLibro" USING btree ("fechaEntregado");
 
 
 --
--- Name: ReservaLibro_reservaId_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: ReservaLibro_reservaId_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "ReservaLibro_reservaId_key" ON public."ReservaLibro" USING btree ("reservaId");
 
 
 --
--- Name: Reserva_estatus_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Reserva_estatus_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Reserva_estatus_idx" ON public."Reserva" USING btree (estatus);
 
 
 --
--- Name: Reserva_fechaHoraFin_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Reserva_fechaHoraFin_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Reserva_fechaHoraFin_idx" ON public."Reserva" USING btree ("fechaHoraFin");
 
 
 --
--- Name: Reserva_fechaHoraInicio_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Reserva_fechaHoraInicio_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Reserva_fechaHoraInicio_idx" ON public."Reserva" USING btree ("fechaHoraInicio");
 
 
 --
--- Name: Reserva_tipo_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Reserva_tipo_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Reserva_tipo_idx" ON public."Reserva" USING btree (tipo);
 
 
 --
--- Name: Rol_nombre_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Rol_nombre_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "Rol_nombre_idx" ON public."Rol" USING btree (nombre);
 
 
 --
--- Name: Rol_nombre_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Rol_nombre_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "Rol_nombre_key" ON public."Rol" USING btree (nombre);
 
 
 --
--- Name: Sede_nombre_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Sede_nombre_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "Sede_nombre_key" ON public."Sede" USING btree (nombre);
 
 
 --
--- Name: Session_sessionToken_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Session_sessionToken_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "Session_sessionToken_key" ON public."Session" USING btree ("sessionToken");
 
 
 --
--- Name: Tutor_userId_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: Tutor_userId_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "Tutor_userId_key" ON public."Tutor" USING btree ("userId");
 
 
 --
--- Name: User_apellido_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: User_apellido_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "User_apellido_idx" ON public."User" USING btree (apellido);
 
 
 --
--- Name: User_email_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: User_email_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "User_email_idx" ON public."User" USING btree (email);
 
 
 --
--- Name: User_email_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: User_email_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "User_email_key" ON public."User" USING btree (email);
 
 
 --
--- Name: User_name_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: User_name_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "User_name_idx" ON public."User" USING btree (name);
 
 
 --
--- Name: VerificationToken_identifier_token_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: VerificationToken_identifier_token_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON public."VerificationToken" USING btree (identifier, token);
 
 
 --
--- Name: VerificationToken_token_key; Type: INDEX; Schema: public; Owner: agustina
+-- Name: VerificationToken_token_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX "VerificationToken_token_key" ON public."VerificationToken" USING btree (token);
 
 
 --
--- Name: usuario_legajo_asc_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: usuario_legajo_asc_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX usuario_legajo_asc_idx ON public."User" USING btree (legajo);
 
 
 --
--- Name: usuario_legajo_hash_idx; Type: INDEX; Schema: public; Owner: agustina
+-- Name: usuario_legajo_hash_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX usuario_legajo_hash_idx ON public."User" USING hash (legajo);
 
 
 --
--- Name: Account Account_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Account Account_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Account"
@@ -9985,7 +9837,7 @@ ALTER TABLE ONLY public."Account"
 
 
 --
--- Name: Armario Armario_laboratorioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Armario Armario_laboratorioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Armario"
@@ -9993,7 +9845,7 @@ ALTER TABLE ONLY public."Armario"
 
 
 --
--- Name: CursoAyudante CursoAyudante_cursoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: CursoAyudante CursoAyudante_cursoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."CursoAyudante"
@@ -10001,7 +9853,7 @@ ALTER TABLE ONLY public."CursoAyudante"
 
 
 --
--- Name: CursoAyudante CursoAyudante_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: CursoAyudante CursoAyudante_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."CursoAyudante"
@@ -10009,7 +9861,7 @@ ALTER TABLE ONLY public."CursoAyudante"
 
 
 --
--- Name: Curso Curso_divisionId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Curso Curso_divisionId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Curso"
@@ -10017,7 +9869,7 @@ ALTER TABLE ONLY public."Curso"
 
 
 --
--- Name: Curso Curso_materiaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Curso Curso_materiaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Curso"
@@ -10025,7 +9877,7 @@ ALTER TABLE ONLY public."Curso"
 
 
 --
--- Name: Curso Curso_profesorId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Curso Curso_profesorId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Curso"
@@ -10033,7 +9885,7 @@ ALTER TABLE ONLY public."Curso"
 
 
 --
--- Name: Curso Curso_sedeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Curso Curso_sedeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Curso"
@@ -10041,7 +9893,7 @@ ALTER TABLE ONLY public."Curso"
 
 
 --
--- Name: Equipo Equipo_armarioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Equipo Equipo_armarioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Equipo"
@@ -10049,7 +9901,7 @@ ALTER TABLE ONLY public."Equipo"
 
 
 --
--- Name: Equipo Equipo_estadoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Equipo Equipo_estadoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Equipo"
@@ -10057,7 +9909,7 @@ ALTER TABLE ONLY public."Equipo"
 
 
 --
--- Name: Equipo Equipo_estanteId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Equipo Equipo_estanteId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Equipo"
@@ -10065,7 +9917,7 @@ ALTER TABLE ONLY public."Equipo"
 
 
 --
--- Name: Equipo Equipo_laboratorioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Equipo Equipo_laboratorioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Equipo"
@@ -10073,7 +9925,7 @@ ALTER TABLE ONLY public."Equipo"
 
 
 --
--- Name: Equipo Equipo_marcaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Equipo Equipo_marcaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Equipo"
@@ -10081,7 +9933,7 @@ ALTER TABLE ONLY public."Equipo"
 
 
 --
--- Name: Equipo Equipo_sedeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Equipo Equipo_sedeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Equipo"
@@ -10089,7 +9941,7 @@ ALTER TABLE ONLY public."Equipo"
 
 
 --
--- Name: Equipo Equipo_tipoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Equipo Equipo_tipoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Equipo"
@@ -10097,7 +9949,7 @@ ALTER TABLE ONLY public."Equipo"
 
 
 --
--- Name: Estante Estante_armarioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Estante Estante_armarioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Estante"
@@ -10105,7 +9957,7 @@ ALTER TABLE ONLY public."Estante"
 
 
 --
--- Name: Laboratorio Laboratorio_sedeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Laboratorio Laboratorio_sedeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Laboratorio"
@@ -10113,7 +9965,7 @@ ALTER TABLE ONLY public."Laboratorio"
 
 
 --
--- Name: LibroMateria LibroMateria_libroId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: LibroMateria LibroMateria_libroId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."LibroMateria"
@@ -10121,7 +9973,7 @@ ALTER TABLE ONLY public."LibroMateria"
 
 
 --
--- Name: LibroMateria LibroMateria_materiaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: LibroMateria LibroMateria_materiaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."LibroMateria"
@@ -10129,7 +9981,7 @@ ALTER TABLE ONLY public."LibroMateria"
 
 
 --
--- Name: Libro Libro_armarioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Libro Libro_armarioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Libro"
@@ -10137,7 +9989,7 @@ ALTER TABLE ONLY public."Libro"
 
 
 --
--- Name: Libro Libro_autorId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Libro Libro_autorId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Libro"
@@ -10145,7 +9997,7 @@ ALTER TABLE ONLY public."Libro"
 
 
 --
--- Name: Libro Libro_editorialId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Libro Libro_editorialId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Libro"
@@ -10153,7 +10005,7 @@ ALTER TABLE ONLY public."Libro"
 
 
 --
--- Name: Libro Libro_estanteId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Libro Libro_estanteId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Libro"
@@ -10161,7 +10013,7 @@ ALTER TABLE ONLY public."Libro"
 
 
 --
--- Name: Libro Libro_idiomaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Libro Libro_idiomaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Libro"
@@ -10169,7 +10021,7 @@ ALTER TABLE ONLY public."Libro"
 
 
 --
--- Name: Libro Libro_laboratorioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Libro Libro_laboratorioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Libro"
@@ -10177,7 +10029,7 @@ ALTER TABLE ONLY public."Libro"
 
 
 --
--- Name: Libro Libro_sedeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Libro Libro_sedeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Libro"
@@ -10185,7 +10037,7 @@ ALTER TABLE ONLY public."Libro"
 
 
 --
--- Name: MateriaCorrelativa MateriaCorrelativa_correlativaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: MateriaCorrelativa MateriaCorrelativa_correlativaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."MateriaCorrelativa"
@@ -10193,7 +10045,7 @@ ALTER TABLE ONLY public."MateriaCorrelativa"
 
 
 --
--- Name: MateriaCorrelativa MateriaCorrelativa_materiaPrerequisitoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: MateriaCorrelativa MateriaCorrelativa_materiaPrerequisitoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."MateriaCorrelativa"
@@ -10201,7 +10053,7 @@ ALTER TABLE ONLY public."MateriaCorrelativa"
 
 
 --
--- Name: Materia Materia_directorUsuarioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Materia Materia_directorUsuarioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Materia"
@@ -10209,7 +10061,7 @@ ALTER TABLE ONLY public."Materia"
 
 
 --
--- Name: Materia Materia_jefeTrabajoPracticoUsuarioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Materia Materia_jefeTrabajoPracticoUsuarioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Materia"
@@ -10217,7 +10069,7 @@ ALTER TABLE ONLY public."Materia"
 
 
 --
--- Name: Provincia Provincia_paisIso_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Provincia Provincia_paisIso_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Provincia"
@@ -10225,7 +10077,7 @@ ALTER TABLE ONLY public."Provincia"
 
 
 --
--- Name: ReservaEquipo ReservaEquipo_equipoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaEquipo ReservaEquipo_equipoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaEquipo"
@@ -10233,7 +10085,7 @@ ALTER TABLE ONLY public."ReservaEquipo"
 
 
 --
--- Name: ReservaEquipo ReservaEquipo_reservaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaEquipo ReservaEquipo_reservaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaEquipo"
@@ -10241,7 +10093,7 @@ ALTER TABLE ONLY public."ReservaEquipo"
 
 
 --
--- Name: ReservaLaboratorioAbiertoEquipo ReservaLaboratorioAbiertoEquipo_equipoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbiertoEquipo ReservaLaboratorioAbiertoEquipo_equipoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioAbiertoEquipo"
@@ -10249,7 +10101,7 @@ ALTER TABLE ONLY public."ReservaLaboratorioAbiertoEquipo"
 
 
 --
--- Name: ReservaLaboratorioAbiertoEquipo ReservaLaboratorioAbiertoEquipo_reservaLaboratorioAbiertoI_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbiertoEquipo ReservaLaboratorioAbiertoEquipo_reservaLaboratorioAbiertoI_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioAbiertoEquipo"
@@ -10257,7 +10109,7 @@ ALTER TABLE ONLY public."ReservaLaboratorioAbiertoEquipo"
 
 
 --
--- Name: ReservaLaboratorioAbierto ReservaLaboratorioAbierto_laboratorioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbierto ReservaLaboratorioAbierto_laboratorioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioAbierto"
@@ -10265,7 +10117,7 @@ ALTER TABLE ONLY public."ReservaLaboratorioAbierto"
 
 
 --
--- Name: ReservaLaboratorioAbierto ReservaLaboratorioAbierto_reservaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioAbierto ReservaLaboratorioAbierto_reservaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioAbierto"
@@ -10273,7 +10125,7 @@ ALTER TABLE ONLY public."ReservaLaboratorioAbierto"
 
 
 --
--- Name: ReservaLaboratorioCerradoEquipo ReservaLaboratorioCerradoEquipo_equipoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerradoEquipo ReservaLaboratorioCerradoEquipo_equipoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioCerradoEquipo"
@@ -10281,7 +10133,7 @@ ALTER TABLE ONLY public."ReservaLaboratorioCerradoEquipo"
 
 
 --
--- Name: ReservaLaboratorioCerradoEquipo ReservaLaboratorioCerradoEquipo_reservaLaboratorioCerradoI_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerradoEquipo ReservaLaboratorioCerradoEquipo_reservaLaboratorioCerradoI_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioCerradoEquipo"
@@ -10289,7 +10141,7 @@ ALTER TABLE ONLY public."ReservaLaboratorioCerradoEquipo"
 
 
 --
--- Name: ReservaLaboratorioCerrado ReservaLaboratorioCerrado_cursoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerrado ReservaLaboratorioCerrado_cursoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioCerrado"
@@ -10297,7 +10149,7 @@ ALTER TABLE ONLY public."ReservaLaboratorioCerrado"
 
 
 --
--- Name: ReservaLaboratorioCerrado ReservaLaboratorioCerrado_laboratorioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerrado ReservaLaboratorioCerrado_laboratorioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioCerrado"
@@ -10305,7 +10157,7 @@ ALTER TABLE ONLY public."ReservaLaboratorioCerrado"
 
 
 --
--- Name: ReservaLaboratorioCerrado ReservaLaboratorioCerrado_reservaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLaboratorioCerrado ReservaLaboratorioCerrado_reservaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLaboratorioCerrado"
@@ -10313,7 +10165,7 @@ ALTER TABLE ONLY public."ReservaLaboratorioCerrado"
 
 
 --
--- Name: ReservaLibro ReservaLibro_libroId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLibro ReservaLibro_libroId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLibro"
@@ -10321,7 +10173,7 @@ ALTER TABLE ONLY public."ReservaLibro"
 
 
 --
--- Name: ReservaLibro ReservaLibro_reservaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: ReservaLibro ReservaLibro_reservaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."ReservaLibro"
@@ -10329,7 +10181,7 @@ ALTER TABLE ONLY public."ReservaLibro"
 
 
 --
--- Name: Reserva Reserva_usuarioAprobadorId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Reserva Reserva_usuarioAprobadorId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Reserva"
@@ -10337,7 +10189,7 @@ ALTER TABLE ONLY public."Reserva"
 
 
 --
--- Name: Reserva Reserva_usuarioRechazadoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Reserva Reserva_usuarioRechazadoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Reserva"
@@ -10345,7 +10197,7 @@ ALTER TABLE ONLY public."Reserva"
 
 
 --
--- Name: Reserva Reserva_usuarioRecibioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Reserva Reserva_usuarioRecibioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Reserva"
@@ -10353,7 +10205,7 @@ ALTER TABLE ONLY public."Reserva"
 
 
 --
--- Name: Reserva Reserva_usuarioRenovoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Reserva Reserva_usuarioRenovoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Reserva"
@@ -10361,7 +10213,7 @@ ALTER TABLE ONLY public."Reserva"
 
 
 --
--- Name: Reserva Reserva_usuarioSolicitoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Reserva Reserva_usuarioSolicitoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Reserva"
@@ -10369,7 +10221,7 @@ ALTER TABLE ONLY public."Reserva"
 
 
 --
--- Name: Reserva Reserva_usuarioTutorId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Reserva Reserva_usuarioTutorId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Reserva"
@@ -10377,7 +10229,7 @@ ALTER TABLE ONLY public."Reserva"
 
 
 --
--- Name: RolPermiso RolPermiso_permisoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: RolPermiso RolPermiso_permisoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."RolPermiso"
@@ -10385,7 +10237,7 @@ ALTER TABLE ONLY public."RolPermiso"
 
 
 --
--- Name: RolPermiso RolPermiso_rolId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: RolPermiso RolPermiso_rolId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."RolPermiso"
@@ -10393,7 +10245,7 @@ ALTER TABLE ONLY public."RolPermiso"
 
 
 --
--- Name: Session Session_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Session Session_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Session"
@@ -10401,7 +10253,7 @@ ALTER TABLE ONLY public."Session"
 
 
 --
--- Name: SoftwareLaboratorio SoftwareLaboratorio_laboratorioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: SoftwareLaboratorio SoftwareLaboratorio_laboratorioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."SoftwareLaboratorio"
@@ -10409,7 +10261,7 @@ ALTER TABLE ONLY public."SoftwareLaboratorio"
 
 
 --
--- Name: SoftwareLaboratorio SoftwareLaboratorio_softwareId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: SoftwareLaboratorio SoftwareLaboratorio_softwareId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."SoftwareLaboratorio"
@@ -10417,7 +10269,7 @@ ALTER TABLE ONLY public."SoftwareLaboratorio"
 
 
 --
--- Name: Tutor Tutor_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: Tutor Tutor_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."Tutor"
@@ -10425,7 +10277,7 @@ ALTER TABLE ONLY public."Tutor"
 
 
 --
--- Name: User User_documentoTipoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: User User_documentoTipoId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."User"
@@ -10433,7 +10285,7 @@ ALTER TABLE ONLY public."User"
 
 
 --
--- Name: User User_paisIso_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: User User_paisIso_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."User"
@@ -10441,7 +10293,7 @@ ALTER TABLE ONLY public."User"
 
 
 --
--- Name: User User_provinciaIso_paisIso_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: User User_provinciaIso_paisIso_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."User"
@@ -10449,7 +10301,7 @@ ALTER TABLE ONLY public."User"
 
 
 --
--- Name: UsuarioRol UsuarioRol_rolId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: UsuarioRol UsuarioRol_rolId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."UsuarioRol"
@@ -10457,7 +10309,7 @@ ALTER TABLE ONLY public."UsuarioRol"
 
 
 --
--- Name: UsuarioRol UsuarioRol_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agustina
+-- Name: UsuarioRol UsuarioRol_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."UsuarioRol"
