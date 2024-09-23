@@ -266,6 +266,7 @@ DROP SEQUENCE IF EXISTS public."Division_id_seq";
 DROP TABLE IF EXISTS public."Division";
 DROP SEQUENCE IF EXISTS public."Curso_id_seq";
 DROP TABLE IF EXISTS public."CursoAyudante";
+DROP TABLE IF EXISTS public."CursoProfesor";
 DROP TABLE IF EXISTS public."Curso";
 DROP SEQUENCE IF EXISTS public."Armario_id_seq";
 DROP TABLE IF EXISTS public."Armario";
