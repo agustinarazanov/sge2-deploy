@@ -1,9 +1,10 @@
-import { useMemo, type ReactElement } from "react";
+import { useMemo, useState, type ReactElement } from "react";
 import { type FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { FormSelect, type FormSelectProps, type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
+import { type FormSelectProps, type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Select, SelectTrigger, SelectValue } from "@/components/ui";
+import { FormAutocomplete, Select, SelectTrigger, SelectValue } from "@/components/ui";
+import { estaDentroDe } from "@/shared/string-compare";
 
 export const SelectTipoForm = <
   T extends FieldValues,
@@ -17,18 +18,22 @@ export const SelectTipoForm = <
 }: Omit<FormSelectProps<T, TType, TMulti>, "items"> & { tipoId?: number }): ReactElement => {
   const { data, isLoading, isError } = api.equipos.getAllTipos.useQuery({ tipoId: props.tipoId, fromFilter: "true" });
 
+  const [query, setQuery] = useState("");
+
   const tipos = useMemo(() => {
     if (!data) return [];
 
-    return data.tipos.map((tipo) => {
-      const { id, nombre: label } = tipo;
+    return data.tipos
+      .map((tipo) => {
+        const { id, nombre: label } = tipo;
 
-      return {
-        label,
-        id,
-      };
-    });
-  }, [data]);
+        return {
+          label,
+          id,
+        };
+      })
+      .filter((item) => !query || estaDentroDe(query, item.label));
+  }, [data, query]);
 
   if (isLoading) {
     return (
@@ -54,6 +59,24 @@ export const SelectTipoForm = <
     );
   }
 
-  // @ts-expect-error - The expected type comes from property 'items' which is declared on type 'FormSelectProps<...>'
-  return <FormSelect className={className} name={name} control={control} items={tipos} {...props} />;
+  return (
+    <FormAutocomplete
+      async
+      items={tipos}
+      noOptionsComponent={
+        <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm text-white">
+          <span>No se encontró el tipo</span>
+        </div>
+      }
+      className={className}
+      onQueryChange={setQuery}
+      isLoading={isLoading}
+      placeholder="Buscar por tipo"
+      clearable
+      debounceTime={0}
+      control={control}
+      name={name}
+      {...props}
+    />
+  );
 };
