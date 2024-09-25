@@ -23,6 +23,7 @@ type Props = {
 
 type FormHelperType = {
   marca: { id: number; label: string };
+  tipo: { id: number; label: string };
 };
 
 type FormEditarEquipoType = z.infer<typeof inputEditarEquipos> & FormHelperType;
@@ -49,7 +50,11 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
       modelo: equipo.modelo ?? "",
       numeroSerie: equipo.numeroSerie ?? "",
       palabrasClave: equipo.palabrasClave ?? "",
-      tipoId: equipo.tipoId,
+      tipoId: equipo.tipo.id,
+      tipo: {
+        id: equipo.tipo.id,
+        label: equipo.tipo.nombre,
+      },
       estadoId: equipo.estadoId,
       sedeId: equipo.sedeId,
       laboratorioId: equipo.laboratorioId,
@@ -181,7 +186,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
                   <SelectTipoForm
-                    name="tipoId"
+                    name="tipo"
                     control={control}
                     className="mt-2"
                     label={"Tipo"}
