@@ -21,7 +21,11 @@ type Props = {
   onCancel: () => void;
 };
 
-type FormEditarEquipoType = z.infer<typeof inputEditarEquipos>;
+type FormHelperType = {
+  marca: { id: number; label: string };
+};
+
+type FormEditarEquipoType = z.infer<typeof inputEditarEquipos> & FormHelperType;
 
 export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
   const esNuevo = id === undefined;
@@ -37,7 +41,11 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
     return {
       id: equipo.id,
       inventarioId: equipo.inventarioId,
-      marcaId: equipo.marcaId,
+      marcaId: equipo.marca.id,
+      marca: {
+        id: equipo.marca.id,
+        label: equipo.marca.nombre,
+      },
       modelo: equipo.modelo ?? "",
       numeroSerie: equipo.numeroSerie ?? "",
       palabrasClave: equipo.palabrasClave ?? "",
@@ -125,7 +133,8 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
 
                 <div className="mt-4 basis-1/3">
                   <SelectMarcasForm
-                    name="marcaId"
+                    name="marca"
+                    realNameId="marcaId"
                     control={control}
                     className="mt-2"
                     label={"Marca"}
