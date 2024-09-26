@@ -40,7 +40,7 @@ export const PoliticasPrivacidadModal = ({ triggerText }: { triggerText: string 
               <p className="text-sm font-bold text-muted-foreground">
                 Por este motivo, al asignar una reserva se seguirá el siguiente criterio:
               </p>
-              <ol className="flex list-decimal flex-col gap-4">
+              <ol className="flex list-inside list-decimal flex-col gap-4">
                 <li>
                   <p className="text-sm text-muted-foreground">
                     Tendrá prioridad de asignación el pedido de reserva que involucre la realización de una práctica que
@@ -66,11 +66,11 @@ export const PoliticasPrivacidadModal = ({ triggerText }: { triggerText: string 
             </div>
 
             <div>
-              <p className="text-sm font-bold text-muted-foreground">
+              <p className="text-sm font-bold text-muted-foreground ">
                 A su vez, recordamos algunos puntos importantes a tener en cuenta al realizar una reserva de
                 Laboratorio:
               </p>
-              <ol className="flex list-decimal flex-col gap-4">
+              <ol className="flex list-inside list-decimal flex-col gap-4">
                 <li>
                   <p className="text-sm text-muted-foreground">
                     Los laboratorios abiertos son para utilización por parte de los alumnos para sus prácticas en
