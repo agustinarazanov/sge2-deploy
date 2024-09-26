@@ -120,23 +120,22 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
-        <ScrollArea className="max-h-[calc(100vh_-_30%)] w-full pr-4">
+        <ScrollArea className="max-h-[calc(100vh_-_20%)] w-full pr-4 md:max-h-[calc(100vh_-_30%)] lg:max-h-[calc(100vh_-_30%)]">
           <div className="flex w-full flex-col items-center justify-center">
-            <div className="flex flex-col space-y-4 px-0 md:px-6">
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-                <div className="mt-4 basis-2/4">
+            <div className="flex flex-col space-y-4 px-0 md:flex-row md:space-x-8 md:px-6">
+              <div className="flex w-full flex-col md:flex-col lg:justify-between">
+                <div className="mt-4 basis-1/2">
                   <FormInput
                     label={"Nombre"}
                     control={control}
                     name="nombre"
                     type={"text"}
                     className="mt-2"
-                    placeholder={"Ingrese el nombre del tipo"}
+                    placeholder={"Ingrese nombre del tipo"}
                   />
                 </div>
-              </div>
-              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
-                <div className="mt-4 basis-2/4">
+
+                <div className="mt-4 basis-1/2">
                   <Input
                     label={!previewImgUrl ? "Agregar imagen" : "Cambiar"}
                     //control={control}
@@ -147,22 +146,23 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     onChange={handleFileChange}
                   />
                 </div>
-                <div className="mt-4 h-32 w-32 basis-1/3">
-                  {previewImgUrl && (
-                    <Image
-                      src={previewImgUrl}
-                      className="mt-2 h-auto w-auto"
-                      alt="Imagen del tipo"
-                      height={100}
-                      width={100}
-                    />
-                  )}
+              </div>
+
+              <div className="flex w-full flex-col border md:flex-row lg:justify-between">
+                <div className="mt-4">
+                  <Image
+                    src={previewImgUrl ?? ""}
+                    alt="Imagen del tipo"
+                    className="h-auto w-fit"
+                    height={100}
+                    width={100}
+                  />
                 </div>
               </div>
             </div>
           </div>
         </ScrollArea>
-        <div className="flex w-full flex-row items-end justify-end space-x-4">
+        <div className="mb-3 flex w-full flex-row items-end justify-center space-x-4 md:justify-end lg:justify-end">
           <Button title="Cancelar" type="button" variant="default" color="secondary" onClick={handleCancel}>
             Cancelar
           </Button>

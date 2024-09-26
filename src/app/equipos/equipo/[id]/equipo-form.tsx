@@ -127,15 +127,16 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
-        <ScrollArea className="max-h-[calc(100vh_-_30%)] w-full pr-4">
+        <ScrollArea className="max-h-[calc(100vh_-_20%)] w-full pr-4 md:max-h-[calc(100vh_-_30%)] lg:max-h-[calc(100vh_-_30%)]">
           <div className="flex w-full flex-col items-center justify-center">
             <div className="flex flex-col space-y-4 px-0 md:px-6">
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/3">
                   <FormInput
                     label={"Inventario"}
                     control={control}
                     name="inventarioId"
+                    placeholder={"Ingrese el inventario"}
                     type={"text"}
                     className="mt-2"
                   />
@@ -148,7 +149,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     className="mt-2"
                     label={"Marca"}
-                    placeholder={"Seleccioná una marca"}
+                    placeholder={"Seleccione una marca"}
                   />
                 </div>
 
@@ -158,17 +159,18 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     name="modeloForm"
                     className="mt-2"
-                    placeholder={"Seleccioná un modelo"}
+                    placeholder={"Seleccione un modelo"}
                   />
                 </div>
               </div>
 
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
                   <FormInput
-                    label={"Numero de serie"}
+                    label={"Número de serie"}
                     control={control}
                     name="numeroSerie"
+                    placeholder={"Ingrese el número de serie"}
                     type={"text"}
                     className="mt-2"
                   />
@@ -179,20 +181,21 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     label={"Palabras clave"}
                     control={control}
                     name="palabrasClave"
+                    placeholder={"Ingrese las palabras claves"}
                     type={"text"}
                     className="mt-2"
                   />
                 </div>
               </div>
 
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
                   <SelectTipoForm
                     name="tipo"
                     control={control}
                     className="mt-2"
                     label={"Tipo"}
-                    placeholder={"Seleccioná un tipo"}
+                    placeholder={"Seleccione un tipo"}
                   />
                 </div>
 
@@ -202,19 +205,19 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     className="mt-2"
                     label={"Estado"}
-                    placeholder={"Seleccioná un estado"}
+                    placeholder={"Seleccione un estado"}
                   />
                 </div>
               </div>
 
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
                   <SelectSedeForm
                     name="sedeId"
                     control={control}
                     className="mt-2"
                     label={"Sede"}
-                    placeholder={"Seleccioná una sede"}
+                    placeholder={"Seleccione una sede"}
                     onChange={() => {
                       // @ts-expect-error - undefined
                       formHook.setValue("laboratorioId", undefined);
@@ -232,7 +235,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     label={"Laboratorio"}
                     sedeId={sedeId}
                     disabled={!sedeId}
-                    placeholder={!sedeId ? "Selecciona una sede" : "Selecciona un laboratorio"}
+                    placeholder={!sedeId ? "Seleccione una sede" : "Seleccione un laboratorio"}
                     onChange={() => {
                       formHook.setValue("armarioId", undefined);
                       formHook.setValue("estanteId", undefined);
@@ -241,7 +244,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
               </div>
 
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
                   <SelectArmarioForm
                     name="armarioId"
@@ -249,7 +252,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     className="mt-2"
                     label={"Armario"}
                     laboratorioId={laboratorioId}
-                    placeholder={!laboratorioId ? "Selecciona un laboratorio" : "Selecciona un armario"}
+                    placeholder={!laboratorioId ? "Seleccione un laboratorio" : "Seleccione un armario"}
                     onChange={() => {
                       formHook.setValue("estanteId", undefined);
                     }}
@@ -263,12 +266,12 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     className="mt-2"
                     label={"Estante"}
                     armarioId={armarioId}
-                    placeholder={!armarioId ? "Selecciona un armario" : "Selecciona un estante"}
+                    placeholder={!armarioId ? "Seleccione un armario" : "Seleccione un estante"}
                   />
                 </div>
               </div>
 
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 h-auto w-full">
                   <FormTextarea label={"Observaciones"} name="observaciones" control={control} id="observaciones" />
                 </div>
@@ -276,7 +279,8 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
             </div>
           </div>
         </ScrollArea>
-        <div className="flex w-full flex-row items-end justify-end space-x-4">
+
+        <div className="mb-3 flex w-full flex-row items-end justify-center space-x-4 md:justify-end lg:justify-end">
           <Button title="Cancelar" type="button" variant="default" color="secondary" onClick={handleCancel}>
             Cancelar
           </Button>
