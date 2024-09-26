@@ -6,7 +6,7 @@ model User {
     name          String? // Viene con la cuenta
     email         String?   @unique
     emailVerified DateTime?
-    image         String?
+    image         String?   @default("/default-avatar.svg")
 
     nombre          String?
     apellido        String?
@@ -25,6 +25,7 @@ model User {
     gitlab          String?
     penalizaciones  Int       @default(0)
     esDocente       Boolean   @default(false)
+    esTutor         Boolean   @default(false)
 
     fechaRegistro            DateTime @default(now())
     fechaUltimoAcceso        DateTime @default(now())
@@ -51,11 +52,11 @@ model User {
     reservasRecibidas   Reserva[] @relation(name: "reservasRecibidas")
 
     cursosComoAyudante CursoAyudante[]
-    cursosComoProfesor CursoProfesor[]
+    cursosComoProfesor Curso[]
 
-    materiasDirector            Materia[] @relation(name: "materiasDirector")
-    materiasJefeTrabajoPractico Materia[] @relation(name: "materiasJefeTrabajoPractico")
-    tutor                       Tutor? // 1 tutor por 1 usuario maximo
+    MateriaJefeTp    MateriaJefeTp[] @relation(name: "materiasJefeTrabajoPractico")
+    materiasDirector Materia[]       @relation(name: "materiasDirector")
+    tutor            Tutor? // 1 tutor por 1 usuario maximo
 
     @@index([name(sort: Asc)])
     @@index([apellido(sort: Asc)])

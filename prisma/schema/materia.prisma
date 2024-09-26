@@ -10,13 +10,11 @@ model Materia {
     directorUsuarioId String?
     directorUsuario   User?   @relation(fields: [directorUsuarioId], references: [id], name: "materiasDirector")
 
-    jefeTrabajoPracticoUsuarioId String?
-    jefeTrabajoPracticoUsuario   User?   @relation(fields: [jefeTrabajoPracticoUsuarioId], references: [id], name: "materiasJefeTrabajoPractico")
-
-    cursos              Curso[]
-    libros              LibroMateria[]
-    materiaPrerequisito MateriaCorrelativa[] @relation(name: "materiaPrerequisito")
-    correlativa         MateriaCorrelativa[] @relation(name: "correlativa")
+    jefeTrabajoPracticos MateriaJefeTp[]
+    cursos               Curso[]
+    libros               LibroMateria[]
+    materiaPrerequisito  MateriaCorrelativa[] @relation(name: "materiaPrerequisito")
+    correlativa          MateriaCorrelativa[] @relation(name: "correlativa")
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @default(now()) @updatedAt
@@ -27,6 +25,16 @@ model Materia {
     @@index([anio(sort: Asc)])
     @@index([duracion])
     @@index([tipo])
+}
+
+model MateriaJefeTp {
+    materiaId Int
+    userId    String @map("jefeTrabajoPracticoUsuarioId")
+
+    materia Materia @relation(fields: [materiaId], references: [id], onDelete: Cascade)
+    usuario User    @relation(fields: [userId], references: [id], onDelete: Cascade, name: "materiasJefeTrabajoPractico")
+
+    @@id([materiaId, userId])
 }
 
 model MateriaCorrelativa {

@@ -12,6 +12,7 @@ import {
   tipoPorIdProcedure,
   editarTipoProcedure,
   nuevoTipoProcedure,
+  getTodosLosArmariosProcedure,
 } from "../services/equipos/equipos.service";
 
 export const equiposRouter = createTRPCRouter({
@@ -27,4 +28,5 @@ export const equiposRouter = createTRPCRouter({
   nuevoTipo: nuevoTipoProcedure,
   getAllMarcas: getTodasLasMarcasProcedure,
   getAllEstados: getTodosLosEstadosProcedure,
+  getAllArmarios: getTodosLosArmariosProcedure,
 });

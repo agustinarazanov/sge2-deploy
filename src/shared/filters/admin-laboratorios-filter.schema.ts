@@ -21,8 +21,9 @@ export const inputEliminarLaboratorio = inputGetLaboratorio;
 
 export const inputAgregarLaboratorio = z.object({
   nombre: z.string().min(1, { message: "Requerido" }),
-  esAbierto: z.boolean().default(false),
+  esReservable: z.boolean().default(false),
   sedeId: z.string().min(1, { message: "Requerido" }),
+  tienePc: z.boolean().default(false),
 });
 
 export const inputEditarLaboratorio = z

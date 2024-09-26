@@ -7,9 +7,10 @@ import { Autocomplete, Select, SelectTrigger, SelectValue } from "@/components/u
 type Props = {
   onEquipoTipoChange: (rol: string) => void;
   label?: string;
+  disabled?: boolean;
 };
 
-export const EquipoTipoSelector = ({ onEquipoTipoChange, label }: Props) => {
+export const EquipoTipoSelector = ({ onEquipoTipoChange, label, disabled }: Props) => {
   const { data, isLoading, isError } = api.equipos.getAllTipos.useQuery({ tipoId: undefined });
 
   const [query, setQuery] = useState("");
@@ -75,6 +76,7 @@ export const EquipoTipoSelector = ({ onEquipoTipoChange, label }: Props) => {
         clearable
         debounceTime={0}
         onChange={(value) => onEquipoTipoChange(value?.id ? String(value.id) : "")}
+        disabled={disabled}
       />
     </div>
   );

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { CursoTurno } from "@/app/_components/turno-text";
 import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
@@ -31,11 +33,7 @@ export const getColumns = () => {
       cell: (info) => {
         const turno = info.row.original.turno;
 
-        if (turno === "MANANA") return "Mañana";
-        if (turno === "TARDE") return "Tarde";
-        if (turno === "NOCHE") return "Noche";
-
-        return turno ?? "-";
+        return <CursoTurno turno={turno} />;
       },
     }),
     colHelper.accessor("division.nombre", {
@@ -110,16 +108,7 @@ export const getColumns = () => {
     colHelper.display({
       header: "Profesor",
       cell: (info) => {
-        const profesores = info.row.original.profesores;
-
-        if (!profesores.length) return <span className="hidden">Sin profesores</span>;
-
-        return profesores.map((profesor) => `${profesor.usuario.apellido} ${profesor.usuario.nombre}`).join(", ");
-      },
-      meta: {
-        header: {
-          hideSort: true,
-        },
+        return `${info.row.original.profesor.apellido} ${info.row.original.profesor.nombre}`;
       },
     }),
     colHelper.display({

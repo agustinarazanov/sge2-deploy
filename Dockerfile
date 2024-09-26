@@ -4,5 +4,5 @@ COPY prisma ./prisma
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN echo "npm run start" >> vercel.sh
+RUN npm run build && sed -i 's/build/start/' vercel.sh
 CMD ["./vercel.sh"]

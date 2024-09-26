@@ -2,6 +2,7 @@ import { createTRPCRouter } from "@/server/api/trpc";
 import {
   editarUsuarioProcedure,
   eliminarUsuarioProcedure,
+  getAllProfesoresProcedure,
   getAllTutoresProcedure,
   eliminarTutorProcedure,
   editarTutorProcedure,
@@ -20,4 +21,5 @@ export const usuariosRouter = createTRPCRouter({
   editarTutor: editarTutorProcedure,
   eliminarTutor: eliminarTutorProcedure,
   getAllTutores: getAllTutoresProcedure,
+  getAllProfesores: getAllProfesoresProcedure,
 });
