@@ -24,7 +24,7 @@ type Props = {
 type FormHelperType = {
   marca: { id: number; label: string };
   tipo: { id: number; label: string };
-  modelo2: { id: number; label: string }; //TODO: modelo2 -> modelo
+  modeloForm: { id: number; label: string };
 };
 
 type FormEditarEquipoType = z.infer<typeof inputEditarEquipos> & FormHelperType;
@@ -48,11 +48,10 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
         id: equipo.marca.id,
         label: equipo.marca.nombre,
       },
-      modelo: equipo.modelo ?? "", //TODO: eliminar al normalizar
-      modeloId: 1, //TODO: equipo.modelo.id
-      modelo2: {
-        id: 1, //TODO: equipo.modelo.id
-        label: equipo.modelo ?? "", //TODO: equipo.modelo
+      modelo: equipo.modelo ?? "",
+      modeloForm: {
+        id: 1,
+        label: equipo.modelo ?? "",
       },
       numeroSerie: equipo.numeroSerie ?? "",
       palabrasClave: equipo.palabrasClave ?? "",
@@ -157,7 +156,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                   <SelectModelosForm
                     label={"Modelo"}
                     control={control}
-                    name="modelo2"
+                    name="modeloForm"
                     className="mt-2"
                     placeholder={"Seleccioná un modelo"}
                   />
@@ -268,21 +267,6 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                   />
                 </div>
               </div>
-
-              {/* TODO: mostrar imagen en formulario??
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-                <div className="w-full">
-                  <FormInput
-                    label={"Imagen"}
-                    id="imagen"
-                    control={control}
-                    name="imagen"
-                    type={"url"}
-                    className="mt-2"
-                  />
-                </div>
-              </div>
-              */}
 
               <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 h-auto w-full">

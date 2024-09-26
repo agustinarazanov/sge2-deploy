@@ -272,7 +272,7 @@ export const getAllArmarios = async (ctx: { db: PrismaClient }) => {
 };
 
 export const getAllModelos = async (ctx: { db: PrismaClient }) => {
-  //TODO: normalizar modelos y usar esa tabla
+  //TODO: normalizar modelos y usar esa tabla??
   const modelos = await ctx.db.equipo.findMany({
     orderBy: {
       modelo: "asc",
