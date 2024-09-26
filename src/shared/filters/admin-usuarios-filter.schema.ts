@@ -35,8 +35,8 @@ export const inputEditarUsuario = z.object({
 // Definimos el esquema de validación para editar un tutor
 export const inputEditarTutor = z.object({
   id: z.string(), // ID del tutor, asumimos que es un string
-  nombre: z.string().min(1, { message: "El nombre es requerido" }), // El nombre es obligatorio
-  diasHorarios: z.string().min(1, { message: "Los días y horarios son requeridos" }), // Días y horarios obligatorios
-  sede: z.string().min(1, { message: "La sede es requerida" }), // Sede obligatoria
-  especialidad: z.string().min(1, { message: "La especialidad es requerida" }), // Especialidad obligatoria
+  nombre: z.string().min(1, { message: "El nombre es requerido" }).optional(), // El nombre es obligatorio
+  diasHorarios: z.string().min(1, { message: "Los días y horarios son requeridos" }).optional(), // Días y horarios obligatorios
+  sede: z.string().min(1, { message: "La sede es requerida" }).optional(), // Sede obligatoria
+  especialidad: z.string().min(1, { message: "La especialidad es requerida" }).optional(), // Especialidad obligatoria
 });

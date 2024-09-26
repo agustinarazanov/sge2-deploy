@@ -7,6 +7,7 @@ import { cn } from "@/components/utils"; // Asegúrate de que esta función exis
 import Image from "next/image";
 import RemoveTutorModal from "../action-buttons/remove-tutor";
 import { EditTutorModal } from "../action-buttons/edit-tutor"; // Asegúrate de que este componente sea exportado correctamente
+import { FaEdit } from "react-icons/fa"; // Importa el ícono de lápiz desde react-icons
 
 type CardProps = React.ComponentProps<typeof Card>;
 
@@ -77,8 +78,9 @@ export function TutorCard({ className, ...props }: CardProps & TutorData) {
         <div className="mt-4 flex justify-between">
           <button
             onClick={handleEditClick} // Maneja el clic en el botón de editar
-            className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            className="flex items-center rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
           >
+            <FaEdit className="mr-2" /> {/* Ícono de lápiz */}
             Editar
           </button>
           <RemoveTutorModal
