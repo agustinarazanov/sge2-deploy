@@ -26,13 +26,13 @@ export const getColumns = () => {
         );
       },
     }),
-    colHelper.accessor("esAbierto", {
-      header: "Es abierto",
+    colHelper.accessor("esReservable", {
+      header: "Es reservable",
       cell: (info) => {
-        const esAbierto = info.row.original.esAbierto;
+        const esReservable = info.row.original.esReservable;
 
-        const color = esAbierto ? "success" : "danger";
-        const texto = esAbierto ? "Sí" : "No";
+        const color = esReservable ? "success" : "danger";
+        const texto = esReservable ? "Sí" : "No";
 
         return (
           <Badge variant={"default"} color={color}>

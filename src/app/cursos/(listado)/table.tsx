@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 "use client";
 
 import { DataTable } from "@/components/ui";
@@ -30,7 +31,7 @@ export const CursosTable = ({ data, filters }: CursosTableProps) => {
       <DataTable
         data={data.cursos ?? []}
         columns={columns}
-        // manualSorting
+        manualSorting
         pageSize={pagination.pageSize}
         pageIndex={pagination.pageIndex}
         config={{

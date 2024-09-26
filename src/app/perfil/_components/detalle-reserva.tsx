@@ -1,26 +1,64 @@
-import { api } from "@/trpc/server";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { type RouterOutputs } from "@/trpc/react";
 
-type ReservaData = {
+type ReservaBibliotecaData = RouterOutputs["reservas"]["reservaBiblioteca"]["getReservaPorUser"][number];
+type ReservaEquipoData = RouterOutputs["reservas"]["reservaEquipo"]["getReservaPorUser"][number];
+type ReservaLaboratorioAbiertoData =
+  RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getReservaPorUser"][number];
+type ReservaLaboratorioCerradoData =
+  RouterOutputs["reservas"]["ReservarLaboratorioCerrado"]["getReservaPorUser"][number];
+type ReservaBase =
+  | ReservaBibliotecaData
+  | ReservaEquipoData
+  | ReservaLaboratorioAbiertoData
+  | ReservaLaboratorioCerradoData;
+
+type ColumnConfig<T> = {
+  header: string;
+  key: keyof T | ((item: T) => React.ReactNode);
+  className?: string;
+};
+
+type DetalleReservaProps<T extends ReservaBase> = {
   idUsuario: string;
   titulo: string;
   descripcion: string;
+  reservas: T[];
+  columns: ColumnConfig<T>[];
 };
 
-async function DetalleReserva({ idUsuario, titulo, descripcion }: ReservaData) {
-  const reservas = await api.reservas.reservaBiblioteca.getReservaPorUser({ id: idUsuario });
-
+function DetalleReserva<T extends ReservaBase>({ titulo, reservas, columns }: DetalleReservaProps<T>) {
   return (
-    <div className="flex w-full flex-col items-center justify-center">
-      <h3 className="mb-4 text-xl font-semibold">{titulo}</h3>
-      <p className="text-xl">{descripcion}</p>
-      {reservas.map((reserva) => {
-        return (
-          <p key={reserva.id}>
-            {reserva.id} - {reserva.id}
-          </p>
-        );
-      })}
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>{titulo}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {columns.map((column, index) => (
+                <TableHead key={index} className={column.className}>
+                  {column.header}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {reservas.map((reserva) => (
+              <TableRow key={reserva.id}>
+                {columns.map((column, index) => (
+                  <TableCell key={index} className={column.className}>
+                    {typeof column.key === "function" ? column.key(reserva) : (reserva[column.key] as React.ReactNode)}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   );
 }
 

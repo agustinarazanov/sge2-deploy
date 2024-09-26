@@ -2,7 +2,7 @@
 
 import { DataTable } from "@/components/ui";
 import { type RouterOutputs } from "@/trpc/react";
-import { ReservarLaboratorioCerradoModal } from "./editar-curso";
+import { ReservarLaboratorioCerradoModal } from "./reservar-laboratorio";
 import { getColumns } from "./columns";
 
 type CursoData = RouterOutputs["cursos"]["getAll"];

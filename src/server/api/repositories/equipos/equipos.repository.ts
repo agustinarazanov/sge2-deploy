@@ -12,7 +12,7 @@ import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 
 type InputGetAll = z.infer<typeof inputGetEquipos>;
 export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  const { pageIndex, pageSize, searchText } = input;
+  const { pageIndex, pageSize, searchText, laboratorio, tipo, armario } = input;
 
   const ordenEquipos: Prisma.EquipoOrderByWithRelationInput = construirOrderByDinamico(
     input?.orderBy ?? "",
@@ -23,24 +23,69 @@ export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAl
     ...(searchText
       ? {
           OR: [
+            { inventarioId: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
+            {
+              tipo: {
+                nombre: {
+                  contains: searchText ?? undefined,
+                  mode: "insensitive",
+                }
+              },
+            },
+            {
+              marca: {
+                nombre: {
+                  contains: searchText ?? undefined,
+                  mode: "insensitive",
+                }
+              },
+            },
+            {
+              modelo: {
+                contains: searchText ?? undefined,
+                mode: "insensitive",
+              },
+            },
             {
               observaciones: {
                 contains: searchText ?? undefined,
+                mode: "insensitive",
               },
             },
             {
               palabrasClave: {
                 contains: searchText ?? undefined,
-              },
-            },
-            {
-              imagen: {
-                contains: searchText ?? undefined,
+                mode: "insensitive",
               },
             },
           ],
         }
       : {}),
+      ...(laboratorio
+        ? {
+            laboratorio: {
+              id: parseInt(laboratorio),
+            },
+          }
+        : {}),
+      ...(tipo
+        ? {
+            tipo: {
+              id: parseInt(tipo),
+            },
+          }
+        : {}),
+      ...(armario
+        ? {
+            armario: {
+              id: parseInt(armario),
+            },
+          }
+        : {}),
   };
 
   const [count, equipos] = await ctx.db.$transaction([
@@ -208,4 +253,19 @@ export const getAllEstados = async (ctx: { db: PrismaClient }) => {
   });
 
   return estados;
+};
+
+export const getAllArmarios = async (ctx: { db: PrismaClient }) => {
+  const armarios = await ctx.db.armario.findMany({
+    orderBy: {
+      nombre: "asc",
+    },
+    select: {
+      id: true,
+      nombre: true,
+      laboratorio: true,
+    },
+  });
+
+  return armarios;
 };

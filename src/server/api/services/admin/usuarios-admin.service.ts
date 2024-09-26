@@ -13,6 +13,7 @@ import {
   eliminarTutor,
   editarTutor,
   eliminarUsuario,
+  getAllProfesores,
   getAllTutores,
   getAllUsuarios,
   getUsuarioPorId,
@@ -79,3 +80,7 @@ export const eliminarTutorProcedure = protectedProcedure
 
     return usuario;
   });
+
+export const getAllProfesoresProcedure = protectedProcedure.query(async ({ ctx }) => {
+  return await getAllProfesores(ctx);
+});
