@@ -237,6 +237,7 @@ export const eliminarTutor = async (ctx: { db: PrismaClient }, input: InputElimi
   } catch (error) {
     throw new Error(`Error eliminando tutor ${input.id}`);
   }
+};
 
 export const getAllProfesores = async (ctx: { db: PrismaClient }) => {
   return await ctx.db.user.findMany({
