@@ -6,9 +6,10 @@ export const inputReservaLaboratorioCerrado = z.object({
   cursoId: z.number().min(1, { message: "Requerido" }),
   fechaReserva: z.string().min(1, { message: "Requerido" }),
   requierePc: z.boolean().default(false),
-  requiereProyecto: z.boolean().default(false),
+  requiereProyector: z.boolean().default(false),
+  requiereEquipo: z.boolean().default(false),
   equipoRequerido: z.array(inputEquipoRequerido).default([]),
-  observaciones: z.string().default(""),
+  observaciones: z.string().max(250, { message: "Máximo 250 caracteres" }).default(""),
   aceptoTerminos: z.boolean().default(false),
 });
 
