@@ -23,7 +23,8 @@ export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAl
     ...(searchText
       ? {
           OR: [
-            { inventarioId: {
+            {
+              inventarioId: {
                 contains: searchText ?? undefined,
                 mode: "insensitive",
               },
@@ -33,7 +34,7 @@ export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAl
                 nombre: {
                   contains: searchText ?? undefined,
                   mode: "insensitive",
-                }
+                },
               },
             },
             {
@@ -41,7 +42,7 @@ export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAl
                 nombre: {
                   contains: searchText ?? undefined,
                   mode: "insensitive",
-                }
+                },
               },
             },
             {
@@ -65,27 +66,27 @@ export const getAllEquipos = async (ctx: { db: PrismaClient }, input: InputGetAl
           ],
         }
       : {}),
-      ...(laboratorio
-        ? {
-            laboratorio: {
-              id: parseInt(laboratorio),
-            },
-          }
-        : {}),
-      ...(tipo
-        ? {
-            tipo: {
-              id: parseInt(tipo),
-            },
-          }
-        : {}),
-      ...(armario
-        ? {
-            armario: {
-              id: parseInt(armario),
-            },
-          }
-        : {}),
+    ...(laboratorio
+      ? {
+          laboratorio: {
+            id: parseInt(laboratorio),
+          },
+        }
+      : {}),
+    ...(tipo
+      ? {
+          tipo: {
+            id: parseInt(tipo),
+          },
+        }
+      : {}),
+    ...(armario
+      ? {
+          armario: {
+            id: parseInt(armario),
+          },
+        }
+      : {}),
   };
 
   const [count, equipos] = await ctx.db.$transaction([
@@ -268,4 +269,20 @@ export const getAllArmarios = async (ctx: { db: PrismaClient }) => {
   });
 
   return armarios;
+};
+
+export const getAllModelos = async (ctx: { db: PrismaClient }) => {
+  //TODO: normalizar modelos y usar esa tabla
+  const modelos = await ctx.db.equipo.findMany({
+    orderBy: {
+      modelo: "asc",
+    },
+    select: {
+      id: true,
+      modelo: true,
+    },
+    distinct: ["modelo"],
+  });
+
+  return modelos;
 };
