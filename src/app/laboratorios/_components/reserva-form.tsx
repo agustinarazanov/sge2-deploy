@@ -1,4 +1,5 @@
-import { FormProvider, useForm } from "react-hook-form";
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { Button, FormInput, Input, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,8 +8,11 @@ import { useEffect } from "react";
 import { inputReservaLaboratorioCerrado } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { FormTextarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { EquipoTipoSelector } from "../_components/filtros/equipo-tipo-selector";
 import { MinusIcon } from "lucide-react";
+import { EquipoTipoSelector } from "./filtros/equipo-tipo-selector";
+import { CursoTurno } from "@/app/_components/turno-text";
+import { Switch } from "@/components/ui/switch";
+import { PoliticasPrivacidadModal } from "@/app/_components/politicas-privacidad";
 
 type Props = {
   cursoId: string;
@@ -27,17 +31,16 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
 
   const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery({ tipoId: undefined });
 
-  // const editarCurso = api.cursos.editarCurso.useMutation();
-
   const formHook = useForm<FormReservarLaboratorioType>({
     mode: "onChange",
     defaultValues: {
       cursoId: Number(cursoId),
       aceptoTerminos: false,
+      requiereEquipo: false,
       equipoRequerido: [],
       fechaReserva: undefined,
       requierePc: false,
-      requiereProyecto: false,
+      requiereProyector: false,
     },
     resolver: zodResolver(inputReservaLaboratorioCerrado),
   });
@@ -51,7 +54,7 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
       equipoRequerido: [],
       fechaReserva: undefined,
       requierePc: false,
-      requiereProyecto: false,
+      requiereProyector: false,
     });
   }, [formHook, cursoId]);
 
@@ -65,15 +68,6 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
 
   const onFormSubmit = (_formData: FormReservarLaboratorioType) => {
     toast.success("Reserva creada con éxito.");
-    // editarCurso.mutate(formData, {
-    //   onSuccess: () => {
-    //     toast.success("Reserva creada con éxito.");
-    //     onSubmit();
-    //   },
-    //   onError: (error) => {
-    //     toast.error(error?.message ?? "Error al crear la reserva");
-    //   },
-    // });
   };
 
   const handleCancel = () => {
@@ -103,7 +97,22 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
     );
   };
 
+  const onEquipoCambiarCantidad = (equipoTipoId: string, cantidad: number) => {
+    const equipos = formHook.getValues("equipoRequerido");
+
+    const newEquipos = equipos.map((equipo) => {
+      if (equipo.idTipo === equipoTipoId) {
+        return { ...equipo, cantidad };
+      }
+
+      return equipo;
+    });
+
+    formHook.setValue("equipoRequerido", newEquipos);
+  };
+
   const currentEquipoTipo = formHook.watch("equipoRequerido");
+  const requiereEquipo = formHook.watch("requiereEquipo");
 
   return (
     <FormProvider {...formHook}>
@@ -140,7 +149,7 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
                   name="turno"
                   type={"text"}
                   className="mt-2"
-                  value={curso?.turno ?? ""}
+                  value={CursoTurno({ turno: curso?.turno })}
                   readOnly
                 />
               </div>
@@ -163,7 +172,7 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
                   name="profesor"
                   type={"text"}
                   className="mt-2"
-                  value={curso?.profesores.map((profesor) => profesor.usuario.apellido).join(", ") ?? ""}
+                  value={`${curso?.profesor.nombre} ${curso?.profesor.apellido}`}
                   readOnly
                 />
               </div>
@@ -195,66 +204,120 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
 
             <div className="flex w-full flex-col justify-end gap-y-4 lg:justify-between">
               <div className="items-top flex space-x-2">
-                <Checkbox id="requierePc" name="requierePc" />
-                <div className="grid gap-1.5 leading-none">
-                  <label htmlFor="requierePc">Requiere PCs para los alumnos</label>
-                </div>
+                <Controller
+                  control={control}
+                  name="requierePc"
+                  render={({ field }) => (
+                    <label
+                      htmlFor="requierePc"
+                      className="flex w-full items-center justify-between rounded-md border border-white p-2 hover:cursor-pointer hover:bg-gray-500"
+                    >
+                      <div className="text-base">Requiere PCs para los alumnos</div>
+                      <Switch id="requierePc" checked={field.value} onCheckedChange={field.onChange} />
+                    </label>
+                  )}
+                />
               </div>
 
               <div className="items-top flex space-x-2">
-                <Checkbox id="requiereProyector" name="requiereProyector" />
-                <div className="grid gap-1.5 leading-none">
-                  <label htmlFor="requiereProyector">Requiere proyector</label>
-                </div>
+                <Controller
+                  control={control}
+                  name="requiereProyector"
+                  render={({ field }) => (
+                    <label
+                      htmlFor="requiereProyector"
+                      className="flex w-full items-center justify-between rounded-md border border-white p-2 hover:cursor-pointer hover:bg-gray-500"
+                    >
+                      <div className="text-base">Requiere proyector</div>
+                      <Switch id="requiereProyector" checked={field.value} onCheckedChange={field.onChange} />
+                    </label>
+                  )}
+                />
               </div>
             </div>
 
             <div className="flex w-full flex-col justify-end gap-y-4 lg:justify-between">
               <div className="items-top flex space-x-2">
-                <Checkbox id="equipoRequerido" name="equipoRequerido" />
-                <div className="grid gap-1.5 leading-none">
-                  <label htmlFor="equipoRequerido">Requiere instumental</label>
-                </div>
+                <Controller
+                  control={control}
+                  name="requiereEquipo"
+                  render={({ field }) => (
+                    <label
+                      htmlFor="requiereEquipo"
+                      className="flex w-full items-center justify-between rounded-md border border-white p-2 hover:cursor-pointer hover:bg-gray-500"
+                    >
+                      <div className="text-base">Requiere instumental</div>
+                      <Switch id="requiereEquipo" checked={field.value} onCheckedChange={field.onChange} />
+                    </label>
+                  )}
+                />
               </div>
 
-              {/* TODO: Habilitar seccion solo si requiere instrumental = true */}
-              <div className="mt-4 w-full">
-                <EquipoTipoSelector onEquipoTipoChange={onEquipoTipoChange} />
-              </div>
-
-              <div className="mt-4 w-full">
-                <ScrollArea className="max-h-80 w-full">
-                  <div className="flex w-full flex-col">
-                    {currentEquipoTipo?.map((equipoTipo) => (
-                      <div key={equipoTipo.idTipo} className="flex w-full flex-row gap-x-4 pl-4">
-                        <Input
-                          readOnly
-                          value={
-                            todosLosEquiposTipo?.tipos?.find((equipo) => String(equipo.id) === equipoTipo.idTipo)
-                              ?.nombre ?? ""
-                          }
-                          className="mt-2 grow basis-2/3"
-                        />
-                        <Input readOnly value={equipoTipo.cantidad} type="number" className="mt-2 grow basis-1/3" />
-                        <Button
-                          type="button"
-                          variant={"icon"}
-                          icon={MinusIcon}
-                          size="sm"
-                          className="mt-2 rounded-md border-none"
-                          onClick={() => onEquipoTipoDelete(equipoTipo.idTipo)}
-                          title={`Eliminar ${equipoTipo.idTipo} equipo`}
-                        />
-                      </div>
-                    ))}
+              {requiereEquipo && (
+                <>
+                  <div className="mt-4 w-full">
+                    <EquipoTipoSelector onEquipoTipoChange={onEquipoTipoChange} />
                   </div>
-                </ScrollArea>
-              </div>
+
+                  <div className="mt-4 w-full">
+                    <ScrollArea className="max-h-80 w-full">
+                      <div className="flex w-full flex-col">
+                        {currentEquipoTipo?.map((equipoTipo) => {
+                          const currentEquipo = todosLosEquiposTipo?.tipos?.find(
+                            (equipo) => String(equipo.id) === equipoTipo.idTipo,
+                          );
+
+                          return (
+                            <div key={equipoTipo.idTipo} className="flex w-full flex-row gap-x-4 pl-4">
+                              <Input readOnly value={currentEquipo?.nombre ?? ""} className="mt-2 grow basis-2/3" />
+                              <Input
+                                value={equipoTipo.cantidad}
+                                onChange={(event) => {
+                                  const value = event.target.value;
+
+                                  if (value === "") {
+                                    onEquipoCambiarCantidad(equipoTipo.idTipo, 0);
+                                    return;
+                                  }
+
+                                  onEquipoCambiarCantidad(equipoTipo.idTipo, Number(value));
+                                }}
+                                type="number"
+                                className="mt-2 grow basis-1/3"
+                                min={1}
+                                step={1}
+                              />
+                              <Button
+                                type="button"
+                                variant={"icon"}
+                                icon={MinusIcon}
+                                size="sm"
+                                className="mt-2 rounded-md border-none"
+                                onClick={() => onEquipoTipoDelete(equipoTipo.idTipo)}
+                                title={`Eliminar ${currentEquipo?.nombre} de la reserva`}
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </ScrollArea>
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4 w-full">
-                <FormTextarea label={"Observaciones"} control={control} name="observaciones" className="mt-2 w-full" />
+                <FormTextarea
+                  label={"Observaciones"}
+                  control={control}
+                  name="observaciones"
+                  className="mt-2 w-full"
+                  maxLength={250}
+                />
+                <small className="text-sm text-muted-foreground">
+                  {250 - formHook.watch("observaciones")?.length} caracteres restantes
+                </small>
               </div>
             </div>
 
@@ -270,7 +333,8 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
                       <b> Declaro conocer las nuevas políticas de uso de laboratorio</b>
                     </label>
                     <p className="text-sm text-muted-foreground">
-                      La política de uso de laboratorio ha cambiado, TODO: LINK
+                      La política de uso de laboratorio ha cambiado,{" "}
+                      <PoliticasPrivacidadModal triggerText="presione aquí para verla" />
                     </p>
                   </div>
                 </div>
@@ -283,7 +347,7 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
             Cancelar
           </Button>
           <Button title="Guardar" type="submit" variant="default" color="primary">
-            Guardar
+            Realizar reserva
           </Button>
         </div>
       </form>
