@@ -169,3 +169,19 @@ export const getAllTutores = async (ctx: { db: PrismaClient }) => {
 
   return tutores;
 };
+
+type InputEliminarTutor = z.infer<typeof inputEliminarUsuario>; // Ajusta según el esquema si es necesario
+export const eliminarTutor = async (ctx: { db: PrismaClient }, input: InputEliminarTutor) => {
+  try {
+    // En este caso, también eliminamos la relación entre tutor y cualquier otra entidad
+    const tutor = await ctx.db.user.delete({
+      where: {
+        id: input.id,
+      },
+    });
+
+    return tutor; // Devolvemos el tutor eliminado
+  } catch (error) {
+    throw new Error(`Error eliminando tutor ${input.id}`);
+  }
+};
