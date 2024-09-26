@@ -8,13 +8,14 @@ import { inputEditarTutor } from "@/shared/filters/admin-usuarios-filter.schema"
 import { type z } from "zod";
 import { useEffect, useMemo } from "react";
 import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
+import { useRouter } from "next/navigation"; // Importa useRouter
 
 type Props = {
   isOpen: boolean; // Estado para controlar la apertura del modal
   onClose: () => void; // Función para cerrar el modal
   id: string; // id es obligatorio para editar
   onSubmit: () => void; // Función a ejecutar al enviar el formulario
-  onEditSuccess: () => void; // Añadida la función de éxito
+  onEditSuccess?: () => void; // Agrega la propiedad opcional onEditSuccess
   tutor: any; // Cambia "any" por el tipo específico si lo tienes
 };
 
@@ -24,8 +25,9 @@ type FormHelperType = {
 
 type FormEditarTutorType = z.infer<typeof inputEditarTutor> & FormHelperType;
 
-export const EditTutorModal = ({ isOpen, onClose, id, onSubmit, onEditSuccess, tutor }: Props) => {
+export const EditTutorModal = ({ isOpen, onClose, id, onSubmit, tutor }: Props) => {
   const tutorId = parseInt(id);
+  const router = useRouter(); // Usa useRouter
 
   // Se supone que el tutor ya está pasado como prop y no necesitas volver a cargarlo
   const editarTutor = api.admin.usuarios.editarTutor.useMutation(); // Solo edición
@@ -59,7 +61,7 @@ export const EditTutorModal = ({ isOpen, onClose, id, onSubmit, onEditSuccess, t
     editarTutor.mutate(formData, {
       onSuccess: () => {
         toast.success("Tutor actualizado con éxito.");
-        onEditSuccess(); // Llama a la función de éxito aquí
+        router.refresh(); // Refresca la página o los datos
         onClose(); // Cierra el modal después de enviar el formulario
       },
       onError: (error) => {
