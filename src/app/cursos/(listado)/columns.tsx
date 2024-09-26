@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { CursoTurno } from "@/app/_components/turno-text";
 import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
@@ -32,11 +33,7 @@ export const getColumns = () => {
       cell: (info) => {
         const turno = info.row.original.turno;
 
-        if (turno === "MANANA") return "Mañana";
-        if (turno === "TARDE") return "Tarde";
-        if (turno === "NOCHE") return "Noche";
-
-        return turno ?? "-";
+        return <CursoTurno turno={turno} />;
       },
     }),
     colHelper.accessor("division.nombre", {

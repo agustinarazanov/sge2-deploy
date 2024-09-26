@@ -47,7 +47,6 @@ ALTER TABLE IF EXISTS ONLY public."ReservaLaboratorioAbiertoEquipo" DROP CONSTRA
 ALTER TABLE IF EXISTS ONLY public."ReservaEquipo" DROP CONSTRAINT IF EXISTS "ReservaEquipo_reservaId_fkey";
 ALTER TABLE IF EXISTS ONLY public."ReservaEquipo" DROP CONSTRAINT IF EXISTS "ReservaEquipo_equipoId_fkey";
 ALTER TABLE IF EXISTS ONLY public."Provincia" DROP CONSTRAINT IF EXISTS "Provincia_paisIso_fkey";
-ALTER TABLE IF EXISTS ONLY public."Materia" DROP CONSTRAINT IF EXISTS "Materia_jefeTrabajoPracticoUsuarioId_fkey";
 ALTER TABLE IF EXISTS ONLY public."Materia" DROP CONSTRAINT IF EXISTS "Materia_directorUsuarioId_fkey";
 ALTER TABLE IF EXISTS ONLY public."MateriaCorrelativa" DROP CONSTRAINT IF EXISTS "MateriaCorrelativa_materiaPrerequisitoId_fkey";
 ALTER TABLE IF EXISTS ONLY public."MateriaCorrelativa" DROP CONSTRAINT IF EXISTS "MateriaCorrelativa_correlativaId_fkey";
@@ -271,6 +270,7 @@ DROP TABLE IF EXISTS public."Curso";
 DROP SEQUENCE IF EXISTS public."Armario_id_seq";
 DROP TABLE IF EXISTS public."Armario";
 DROP TABLE IF EXISTS public."Account";
+DROP TABLE IF EXISTS public."MateriaJefeTp";
 DROP TYPE IF EXISTS public."TurnoCurso";
 DROP TYPE IF EXISTS public."ReservaTipo";
 DROP TYPE IF EXISTS public."ReservaEstatus";
@@ -947,7 +947,6 @@ CREATE TABLE public."Materia" (
     duracion public."MateriaDuracion" NOT NULL,
     tipo public."MateriaTipo" NOT NULL,
     "directorUsuarioId" text,
-    "jefeTrabajoPracticoUsuarioId" text,
     "fechaCreacion" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     "fechaModificacion" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     "usuarioCreadorId" text NOT NULL,
@@ -969,6 +968,12 @@ CREATE TABLE public."MateriaCorrelativa" (
     "usuarioModificadorId" text NOT NULL
 );
 
+CREATE TABLE public."MateriaJefeTp" (
+    "materiaId" INTEGER NOT NULL,
+    "jefeTrabajoPracticoUsuarioId" TEXT NOT NULL,
+
+    CONSTRAINT "MateriaJefeTp_pkey" PRIMARY KEY ("materiaId","jefeTrabajoPracticoUsuarioId")
+);
 
 --
 -- Name: Materia_id_seq; Type: SEQUENCE; Schema: public; Owner: -
@@ -6841,81 +6846,81 @@ INSERT INTO public."LibroMateria" VALUES (413, 72, '2024-09-22 15:57:11.767', 'c
 -- Data for Name: Materia; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public."Materia" VALUES (2, 'Análisis Matemático I', '95-0702', 1, 'AMBOS', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (3, 'Análisis Matemático II', '95-0703', 2, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (4, 'Análisis de Señales y Sistemas', '95-0454', 3, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (5, 'Aplicaciones de la Inteligencia Artificial', '95-0492', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (6, 'Apoyo tutorías', '95-0002', 1, 'ANUAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (7, 'Aprendizaje Automatico', '95-0401', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (9, 'Automatización Industrial', '95-0483', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (11, 'Bases de Datos', '95-0412', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (12, 'Control Moderno', '95-0491', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (13, 'Desarrollo de Aplicaciones en Dispositivos Móviles', '95-0405', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (14, 'Diseño Asistido por Computadora', '95-1601', 1, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (15, 'Diseño Digital con Logica Programable', '95-0402', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (16, 'Diseño avanzado de Radioenlaces digitales', '95-0418', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (17, 'Diseño de Circuitos Integrados Digitales', '95-0407', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (19, 'Economía', '95-0309', 6, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (21, 'Electrónica Aplicada II', '95-0434', 4, 'ANUAL', 'INTEGRADORA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (22, 'Electrónica Aplicada III', '95-0438', 5, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (23, 'Electrónica Aplicada al Automotor', '95-0406', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (24, 'Electrónica de Potencia', '95-0440', 5, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (25, 'Fundamento de Dispositivos VLSI', '95-0480', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (27, 'Física I', '95-0605', 1, 'AMBOS', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (28, 'Física II', '95-0606', 2, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (31, 'Ingeniería de Calidad', '95-0466', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (32, 'Ingeniería y Sociedad', '95-1604', 1, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (33, 'Inglés Técnico I', '95-1602', 2, 'AMBOS', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (34, 'Inglés Técnico II', '95-1603', 3, 'AMBOS', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (35, 'Introducción a la Inteligencia Artificial', '95-0488', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (36, 'Introducción al Diseño de Circuitos Impresos', '95-0486', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (37, 'Introducción al Diseño de VLSI', '95-0415', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (38, 'Legislación', '95-0310', 3, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (39, 'MECANICA - Automatización Industrial', '94-0863', 6, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (18, 'Dispositivos Electrónicos', '95-0426', 3, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (20, 'Electrónica Aplicada I', '95-0427', 3, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (10, 'Aviónica Digital para la Navegación Aérea', '95-0403', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (26, 'Física Electrónica', '95-0447', 2, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (40, 'MECANICA - Electrónica y Sistemas de Control', '94-0835', 6, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (41, 'MECANICA - Instalaciones Industriales', '94-0843', 6, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (42, 'Medidas Electrónicas I', '95-0457', 4, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (43, 'Medidas Electrónicas II', '95-0458', 5, 'ANUAL', 'INTEGRADORA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (44, 'Medios de Enlace', '95-0456', 3, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (45, 'Multiplex Digitales y Enlaces por Fibra óptica', '95-0475', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (48, 'Organización Industrial', '95-0449', 6, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (49, 'Primeros Pasos', '95-0001', 1, 'ANUAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (50, 'Probabilidad y Estadística', '95-0704', 2, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (51, 'Procesamiento Digital de Imágenes', '95-0462', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (52, 'Procesamiento Digital de Señales', '95-0416', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (53, 'Procesamiento Digital de Señales en Tiempo Real', '95-0473', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (54, 'Protocolos de Redes WAN', '95-0460', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (55, 'Proyecto Final', '95-0441', 6, 'CUATRIMESTRAL', 'INTEGRADORA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (56, 'Química General', '95-1407', 1, 'AMBOS', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (57, 'Redes Convergentes', '96-0403', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (58, 'Redes LAN', '95-0471', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (60, 'Robótica', '95-0482', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (61, 'Seguridad, Higiene y Medio Ambiente', '95-0448', 4, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (62, 'Señales y Sistemas en Ing Cardiovascular', '95-extr', 6, 'ANUAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (63, 'Sist. Avanzados de TV y Tec. Audiovis.', '95-0497', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (64, 'Sistemas Optoelectrónicos', '95-0487', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (65, 'Sistemas de Comunicaciones', '95-0433', 4, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (66, 'Sistemas de Control', '95-0496', 5, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (67, 'Sistemas de Diagnóstico por Imágenes', '95-0413', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (68, 'Sistemas de Radar', '95-0470', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (69, 'Tecnología Electrónica', '95-0439', 5, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (71, 'Teoría de Circuitos II', '95-0431', 4, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (73, 'Técnicas Digitales II', '95-0429', 4, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (74, 'Técnicas Digitales III', '95-0435', 5, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (75, 'Álgebra y Geometría Analítica', '95-0701', 1, 'AMBOS', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (8, 'Aprendizaje Automático', '950401', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (29, 'Informática I', '95-0452', 1, 'ANUAL', 'INTEGRADORA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (72, 'Técnicas Digitales I', '95-0455', 3, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (59, 'Robótica e Inteligencia Artificial Aplicada en RO', '95-0410', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (1, 'Análisis de Señales y Sistemas', '95_0454', 2, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (70, 'Teoría de Circuitos I', '95-0424', 3, 'ANUAL', 'INTEGRADORA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (30, 'Informática II', '95-0453', 2, 'ANUAL', 'INTEGRADORA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (46, 'Máquinas e Instalaciones Eléctricas', '95-0432', 4, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
-INSERT INTO public."Materia" VALUES (47, 'Optoelectrónica y Aplicaciones Láser', '95-0417', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (2, 'Análisis Matemático I', '95-0702', 1, 'AMBOS', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (3, 'Análisis Matemático II', '95-0703', 2, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (4, 'Análisis de Señales y Sistemas', '95-0454', 3, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (5, 'Aplicaciones de la Inteligencia Artificial', '95-0492', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (6, 'Apoyo tutorías', '95-0002', 1, 'ANUAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (7, 'Aprendizaje Automatico', '95-0401', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (9, 'Automatización Industrial', '95-0483', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (11, 'Bases de Datos', '95-0412', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz',  '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (12, 'Control Moderno', '95-0491', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (13, 'Desarrollo de Aplicaciones en Dispositivos Móviles', '95-0405', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (14, 'Diseño Asistido por Computadora', '95-1601', 1, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (15, 'Diseño Digital con Logica Programable', '95-0402', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (16, 'Diseño avanzado de Radioenlaces digitales', '95-0418', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (17, 'Diseño de Circuitos Integrados Digitales', '95-0407', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (19, 'Economía', '95-0309', 6, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (21, 'Electrónica Aplicada II', '95-0434', 4, 'ANUAL', 'INTEGRADORA', 'cm1dxx94u00mmb1tndqnhunjz',  '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (22, 'Electrónica Aplicada III', '95-0438', 5, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (23, 'Electrónica Aplicada al Automotor', '95-0406', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (24, 'Electrónica de Potencia', '95-0440', 5, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz',  '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (25, 'Fundamento de Dispositivos VLSI', '95-0480', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (27, 'Física I', '95-0605', 1, 'AMBOS', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz','2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (28, 'Física II', '95-0606', 2, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (31, 'Ingeniería de Calidad', '95-0466', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (32, 'Ingeniería y Sociedad', '95-1604', 1, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (33, 'Inglés Técnico I', '95-1602', 2, 'AMBOS', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (34, 'Inglés Técnico II', '95-1603', 3, 'AMBOS', 'OBLIGATORIA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (35, 'Introducción a la Inteligencia Artificial', '95-0488', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (36, 'Introducción al Diseño de Circuitos Impresos', '95-0486', 6, 'CUATRIMESTRAL', 'ELECTIVA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (37, 'Introducción al Diseño de VLSI', '95-0415', 6, 'CUATRIMESTRAL', 'ELECTIVA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (38, 'Legislación', '95-0310', 3, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (39, 'MECANICA - Automatización Industrial', '94-0863', 6, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (18, 'Dispositivos Electrónicos', '95-0426', 3, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (20, 'Electrónica Aplicada I', '95-0427', 3, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (10, 'Aviónica Digital para la Navegación Aérea', '95-0403', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (26, 'Física Electrónica', '95-0447', 2, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (40, 'MECANICA - Electrónica y Sistemas de Control', '94-0835', 6, 'ANUAL', 'OBLIGATORIA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (41, 'MECANICA - Instalaciones Industriales', '94-0843', 6, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (42, 'Medidas Electrónicas I', '95-0457', 4, 'ANUAL', 'OBLIGATORIA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (43, 'Medidas Electrónicas II', '95-0458', 5, 'ANUAL', 'INTEGRADORA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (44, 'Medios de Enlace', '95-0456', 3, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (45, 'Multiplex Digitales y Enlaces por Fibra óptica', '95-0475', 6, 'CUATRIMESTRAL', 'ELECTIVA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (48, 'Organización Industrial', '95-0449', 6, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (49, 'Primeros Pasos', '95-0001', 1, 'ANUAL', 'ELECTIVA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (50, 'Probabilidad y Estadística', '95-0704', 2, 'CUATRIMESTRAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (51, 'Procesamiento Digital de Imágenes', '95-0462', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (52, 'Procesamiento Digital de Señales', '95-0416', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (53, 'Procesamiento Digital de Señales en Tiempo Real', '95-0473', 6, 'CUATRIMESTRAL', 'ELECTIVA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (54, 'Protocolos de Redes WAN', '95-0460', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (55, 'Proyecto Final', '95-0441', 6, 'CUATRIMESTRAL', 'INTEGRADORA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (56, 'Química General', '95-1407', 1, 'AMBOS', 'OBLIGATORIA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (57, 'Redes Convergentes', '96-0403', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (58, 'Redes LAN', '95-0471', 6, 'CUATRIMESTRAL', 'ELECTIVA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (60, 'Robótica', '95-0482', 6, 'CUATRIMESTRAL', 'ELECTIVA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (61, 'Seguridad, Higiene y Medio Ambiente', '95-0448', 4, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (62, 'Señales y Sistemas en Ing Cardiovascular', '95-extr', 6, 'ANUAL', 'ELECTIVA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (63, 'Sist. Avanzados de TV y Tec. Audiovis.', '95-0497', 6, 'CUATRIMESTRAL', 'ELECTIVA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (64, 'Sistemas Optoelectrónicos', '95-0487', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (65, 'Sistemas de Comunicaciones', '95-0433', 4, 'ANUAL', 'OBLIGATORIA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (66, 'Sistemas de Control', '95-0496', 5, 'ANUAL', 'OBLIGATORIA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (67, 'Sistemas de Diagnóstico por Imágenes', '95-0413', 6, 'CUATRIMESTRAL', 'ELECTIVA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (68, 'Sistemas de Radar', '95-0470', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz',  '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (69, 'Tecnología Electrónica', '95-0439', 5, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz',  '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (71, 'Teoría de Circuitos II', '95-0431', 4, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (73, 'Técnicas Digitales II', '95-0429', 4, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz',  '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (74, 'Técnicas Digitales III', '95-0435', 5, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (75, 'Álgebra y Geometría Analítica', '95-0701', 1, 'AMBOS', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz',  '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (8, 'Aprendizaje Automático', '950401', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz',  '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (29, 'Informática I', '95-0452', 1, 'ANUAL', 'INTEGRADORA', 'cm1dxx94u00mmb1tndqnhunjz',  '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (72, 'Técnicas Digitales I', '95-0455', 3, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (59, 'Robótica e Inteligencia Artificial Aplicada en RO', '95-0410', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (1, 'Análisis de Señales y Sistemas', '95_0454', 2, 'CUATRIMESTRAL', 'OBLIGATORIA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (70, 'Teoría de Circuitos I', '95-0424', 3, 'ANUAL', 'INTEGRADORA',  'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (30, 'Informática II', '95-0453', 2, 'ANUAL', 'INTEGRADORA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (46, 'Máquinas e Instalaciones Eléctricas', '95-0432', 4, 'ANUAL', 'OBLIGATORIA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
+INSERT INTO public."Materia" VALUES (47, 'Optoelectrónica y Aplicaciones Láser', '95-0417', 6, 'CUATRIMESTRAL', 'ELECTIVA', 'cm1dxx94u00mmb1tndqnhunjz', '2024-09-22 15:57:11.765', '2024-09-22 15:57:11.765', 'cm1dxx94u00mmb1tndqnhunjz', 'cm1dxx94u00mmb1tndqnhunjz');
 
 
 --
@@ -10062,14 +10067,6 @@ ALTER TABLE ONLY public."Materia"
 
 
 --
--- Name: Materia Materia_jefeTrabajoPracticoUsuarioId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."Materia"
-    ADD CONSTRAINT "Materia_jefeTrabajoPracticoUsuarioId_fkey" FOREIGN KEY ("jefeTrabajoPracticoUsuarioId") REFERENCES public."User"(id) ON UPDATE CASCADE ON DELETE SET NULL;
-
-
---
 -- Name: Provincia Provincia_paisIso_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10316,6 +10313,9 @@ ALTER TABLE ONLY public."UsuarioRol"
 ALTER TABLE ONLY public."UsuarioRol"
     ADD CONSTRAINT "UsuarioRol_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."User"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
+
+ALTER TABLE ONLY public."MateriaJefeTp" 
+    ADD CONSTRAINT "MateriaJefeTp_jefeTrabajoPracticoUsuarioId_fkey" FOREIGN KEY ("jefeTrabajoPracticoUsuarioId") REFERENCES public."User"(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- PostgreSQL database dump complete

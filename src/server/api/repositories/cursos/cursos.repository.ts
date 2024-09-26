@@ -13,7 +13,17 @@ import { informacionUsuario } from "../usuario-helper";
 type InputGetAll = z.infer<typeof inputGetCursos>;
 
 export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll, userId: string) => {
-  const { pageIndex, pageSize, materia, anioDeCarrera, filtrByUserId, orderBy, orderDirection, searchText } = input;
+  const {
+    pageIndex,
+    pageSize,
+    materia,
+    anioDeCarrera,
+    filtrByUserId,
+    filtrByCatedraId,
+    orderBy,
+    orderDirection,
+    searchText,
+  } = input;
 
   const ordenCursos: Prisma.CursoOrderByWithRelationInput | Prisma.CursoOrderByWithRelationInput[] = orderBy
     ? construirOrderByDinamico(orderBy ?? "", orderDirection ?? "")
@@ -30,6 +40,41 @@ export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll
     materiaId: materia ? parseInt(materia) : undefined,
     anioDeCarrera: anioDeCarrera ? parseInt(anioDeCarrera) : undefined,
     AND: [
+      {
+        ...(filtrByUserId === "true" && filtrByCatedraId !== "true"
+          ? {
+              OR: [
+                {
+                  profesorId: userId,
+                },
+                {
+                  ayudantes: {
+                    some: {
+                      usuario: {
+                        id: userId,
+                      },
+                    },
+                  },
+                },
+              ],
+            }
+          : {}),
+        ...(filtrByCatedraId === "true"
+          ? {
+              OR: [
+                {
+                  materia: {
+                    jefeTrabajoPracticos: {
+                      some: {
+                        userId: userId,
+                      },
+                    },
+                  },
+                },
+              ],
+            }
+          : {}),
+      },
       {
         OR: [
           {
@@ -66,22 +111,6 @@ export const getAllCursos = async (ctx: { db: PrismaClient }, input: InputGetAll
                     },
                     { apellido: { contains: searchText ?? undefined, mode: "insensitive" } },
                   ],
-                },
-              },
-            },
-          },
-        ],
-      },
-      {
-        OR: [
-          {
-            profesorId: filtrByUserId === "true" ? userId : undefined,
-          },
-          {
-            ayudantes: {
-              some: {
-                usuario: {
-                  id: filtrByUserId === "true" ? userId : undefined,
                 },
               },
             },

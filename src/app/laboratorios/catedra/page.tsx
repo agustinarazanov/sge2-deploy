@@ -8,7 +8,7 @@ export default async function Page() {
     <>
       <ActionButtons />
       <Suspense fallback={<LoadingCursosTable />}>
-        <LaboratorioReservaTableContainer filterByUserId={true} filterByCatedraId={false} />
+        <LaboratorioReservaTableContainer filterByUserId={true} filterByCatedraId={true} />
       </Suspense>
     </>
   );
