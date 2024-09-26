@@ -54,7 +54,7 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
       equipoRequerido: [],
       fechaReserva: undefined,
       requierePc: false,
-      requiereProyecto: false,
+      requiereProyector: false,
     });
   }, [formHook, cursoId]);
 
