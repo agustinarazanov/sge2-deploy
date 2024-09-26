@@ -1,45 +1,44 @@
-import { Dialog } from "@headlessui/react"; // Asegúrate de tener Headless UI instalado
-import { Button } from "@/components/ui"; // Asegúrate de tener el botón importado
+import { Dialog } from "@headlessui/react";
+import { Button } from "@/components/ui";
 import { FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { ScrollArea, FormInput, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { inputEditarTutor } from "@/shared/filters/admin-usuarios-filter.schema"; // Ajusta con tu schema de validación para tutor
+import { inputEditarTutor } from "@/shared/filters/admin-usuarios-filter.schema";
 import { type z } from "zod";
 import { useEffect, useMemo } from "react";
 import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
-import { useRouter } from "next/navigation"; // Importa useRouter
+import { useRouter } from "next/navigation";
 
 type Props = {
-  isOpen: boolean; // Estado para controlar la apertura del modal
-  onClose: () => void; // Función para cerrar el modal
-  id: string; // id es obligatorio para editar
-  onSubmit: () => void; // Función a ejecutar al enviar el formulario
-  onEditSuccess?: () => void; // Agrega la propiedad opcional onEditSuccess
-  tutor: any; // Cambia "any" por el tipo específico si lo tienes
+  isOpen: boolean;
+  onClose: () => void;
+  id: string;
+  onSubmit: () => void;
+  onEditSuccess?: () => void;
+  tutor: any;
 };
 
 type FormHelperType = {
-  diasHorarios: { dia: string; horario: string }[]; // Estructura para días y horarios
+  diasHorarios: { dia: string; horario: string }[];
 };
 
 type FormEditarTutorType = z.infer<typeof inputEditarTutor> & FormHelperType;
 
 export const EditTutorModal = ({ isOpen, onClose, id, onSubmit, tutor }: Props) => {
   const tutorId = parseInt(id);
-  const router = useRouter(); // Usa useRouter
+  const router = useRouter();
 
-  // Se supone que el tutor ya está pasado como prop y no necesitas volver a cargarlo
-  const editarTutor = api.admin.usuarios.editarTutor.useMutation(); // Solo edición
+  const editarTutor = api.admin.usuarios.editarTutor.useMutation();
 
   const tutorBase: FormEditarTutorType = useMemo(() => {
     if (!tutor) return {} as FormEditarTutorType;
     return {
       id: tutor.usuario.id,
       nombre: tutor.usuario.nombre,
-      especialidad: tutor.usuario.especialidad ?? "", // Añadido campo especialidad
-      sede: tutor.usuario.sede,
-      diasHorarios: tutor.usuario.diasHorarios || [], // Añadido campo días y horarios
+      especialidad: tutor.especialidad ?? "",
+      sede: tutor.sede,
+      diasHorarios: tutor.diasHorarios || [],
     };
   }, [tutor]);
 
@@ -61,8 +60,8 @@ export const EditTutorModal = ({ isOpen, onClose, id, onSubmit, tutor }: Props) 
     editarTutor.mutate(formData, {
       onSuccess: () => {
         toast.success("Tutor actualizado con éxito.");
-        router.refresh(); // Refresca la página o los datos
-        onClose(); // Cierra el modal después de enviar el formulario
+        router.refresh();
+        onClose();
       },
       onError: (error) => {
         toast.error(error?.message ?? "Error al actualizar el tutor");
@@ -101,14 +100,13 @@ export const EditTutorModal = ({ isOpen, onClose, id, onSubmit, tutor }: Props) 
                       </div>
                     </div>
 
-                    {/* Campo para los días y horarios */}
                     <div className="flex w-full flex-col lg:flex-col lg:justify-between lg:gap-x-4">
                       <div className="mt-4 w-full">
                         <FormInput
                           label={"Días y Horarios"}
                           control={control}
                           name="diasHorarios"
-                          type={"text"} // Ajusta este campo según sea necesario
+                          type={"text"}
                           className="mt-2"
                           placeholder="Ej: Lunes 10:00-12:00, Miércoles 14:00-16:00"
                         />
