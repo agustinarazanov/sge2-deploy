@@ -5,10 +5,13 @@ import {
   inputEliminarUsuario,
   inputGetUsuario,
   inputGetUsuarios,
+  inputGetTutor,
+  inputEditarTutor,
 } from "@/shared/filters/admin-usuarios-filter.schema";
 import {
   editarUsuario,
   eliminarTutor,
+  editarTutor,
   eliminarUsuario,
   getAllTutores,
   getAllUsuarios,
@@ -31,6 +34,8 @@ export const getUsuarioPorIdProcedure = protectedProcedure.input(inputGetUsuario
   return usuario;
 });
 
+export const getTutorPorIdProcedure = protectedProcedure.input(inputGetTutor).query(async ({ ctx, input }) => {});
+
 export const eliminarUsuarioProcedure = protectedProcedure
   .input(inputEliminarUsuario)
   .mutation(async ({ ctx, input }) => {
@@ -49,6 +54,15 @@ export const editarUsuarioProcedure = protectedProcedure.input(inputEditarUsuari
   const usuario = await editarUsuario(ctx, input, userId);
 
   return usuario;
+});
+
+export const editarTutorProcedure = protectedProcedure.input(inputEditarTutor).mutation(async ({ ctx, input }) => {
+  validarInput(inputEditarTutor, input); // Valida la entrada
+
+  // Aquí llamamos a la función que editará al tutor
+  const tutor = await editarTutor(ctx, input);
+
+  return tutor;
 });
 
 export const getAllTutoresProcedure = protectedProcedure.query(async ({ ctx }) => {

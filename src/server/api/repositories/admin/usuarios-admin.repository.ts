@@ -4,6 +4,8 @@ import {
   type inputEliminarUsuario,
   type inputGetUsuarios,
   type inputEditarUsuario,
+  type inputEditarTutor,
+  type inputGetTutor,
 } from "@/shared/filters/admin-usuarios-filter.schema";
 import { type Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
@@ -128,6 +130,13 @@ export const getUsuarioPorId = async (ctx: { db: PrismaClient }, input: InputGet
   return usuario;
 };
 
+type InputGetTutorPorId = z.infer<typeof inputGetTutor>; // Asumiendo que usas un schema similar a inputGetUsuario para validar el ID
+export const getTutorPorId = async (ctx: { db: PrismaClient }, input: InputGetTutorPorId) => {
+  const { id } = input;
+
+  return;
+};
+
 type InputEditarUsuario = z.infer<typeof inputEditarUsuario>;
 export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEditarUsuario, userId: string) => {
   try {
@@ -160,6 +169,28 @@ export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEdita
   }
 };
 
+type InputEditarTutor = z.infer<typeof inputEditarTutor>;
+export const editarTutor = async (ctx: { db: PrismaClient }, input: InputEditarTutor) => {
+  try {
+    // Actualizamos solo los campos específicos del tutor
+    const tutorActualizado = await ctx.db.tutor.update({
+      data: {
+        //nombre: input.nombre, // Actualiza el nombre del tutor
+        diasHorarios: input.diasHorarios, // Actualiza los días y horarios
+        sede: input.sede, // Actualiza la sede
+        especialidad: input.especialidad, // Actualiza la especialidad
+      },
+      where: {
+        userId: input.id, // Usamos el identificador único (ajustar al campo real)
+      },
+    });
+
+    return tutorActualizado; // Devuelve el tutor actualizado
+  } catch (error) {
+    throw new Error(`Error modificando tutor con ID ${input.id}`);
+  }
+};
+
 export const getAllTutores = async (ctx: { db: PrismaClient }) => {
   const tutores = await ctx.db.tutor.findMany({
     include: {
@@ -170,17 +201,16 @@ export const getAllTutores = async (ctx: { db: PrismaClient }) => {
   return tutores;
 };
 
-type InputEliminarTutor = z.infer<typeof inputEliminarUsuario>; // Ajusta según el esquema si es necesario
+type InputEliminarTutor = z.infer<typeof inputEliminarUsuario>;
 export const eliminarTutor = async (ctx: { db: PrismaClient }, input: InputEliminarTutor) => {
   try {
-    // En este caso, también eliminamos la relación entre tutor y cualquier otra entidad
     const tutor = await ctx.db.user.delete({
       where: {
         id: input.id,
       },
     });
 
-    return tutor; // Devolvemos el tutor eliminado
+    return tutor;
   } catch (error) {
     throw new Error(`Error eliminando tutor ${input.id}`);
   }
