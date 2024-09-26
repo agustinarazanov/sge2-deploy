@@ -29,7 +29,7 @@ export const SelectModelosForm = <
         const { id, modelo: label } = modelo;
 
         return {
-          label: label ?? "", //TODO: eliminar condicion al normalizar modelos
+          label: label ?? "Sin informar",
           id,
         };
       })

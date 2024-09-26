@@ -1,7 +1,7 @@
 import { type z } from "zod";
 
 import { EquiposPrestamoFilterText } from "./filtros/equipos-prestamo-filter-text";
-import { EquiposPrestamoEstadoFilter } from "./filtros/biblioteca-prestamo-estado";
+import { EquiposPrestamoEstadoFilter } from "./filtros/equipos-prestamo-estado";
 import { type inputGetAllPrestamosEquipos } from "@/shared/filters/reservas-equipos-filter.schema";
 import { EquiposButtons } from "../tipos/_components/buttons/action-buttons-links";
 
