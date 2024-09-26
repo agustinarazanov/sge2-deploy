@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { LABORATORIO_ROUTE } from "@/shared/server-routes";
 import { LaboratorioCerradoForm } from "../../_components/reserva-form";
+import { LABORATORIO_ROUTE } from "@/shared/server-routes";
 
 type PageProps = {
   params: { id: string };

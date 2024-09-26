@@ -8,7 +8,7 @@ import { inputReservaLaboratorioAbierto } from "@/shared/filters/reserva-laborat
 import { FormTextarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MinusIcon } from "lucide-react";
-import { EquipoTipoSelector } from "@/app/laboratorios/mis_cursos/_components/filtros/equipo-tipo-selector";
+import { EquipoTipoSelector } from "@/app/laboratorios/_components/filtros/equipo-tipo-selector";
 import { type LaboratorioAbiertoType } from "../_components/laboratorios";
 import { Slider } from "@/components/ui/slider";
 import { FormSelect } from "@/components/ui/autocomplete";
