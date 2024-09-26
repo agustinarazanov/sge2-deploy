@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { useEffect, useMemo } from "react";
 import { inputEditarEquipos } from "@/shared/filters/equipos-filter.schema";
-import { FormSelect } from "@/components/ui/autocomplete";
 import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
 import { SelectMarcasForm } from "../../_components/select-marca";
 import { SelectLaboratorioForm } from "@/app/_components/select-ubicacion/select-laboratorio";
@@ -14,6 +13,7 @@ import { SelectEstanteForm } from "@/app/_components/select-ubicacion/select-est
 import { SelectTipoForm } from "../../_components/select-tipo";
 import { SelectEstadoForm } from "../../_components/select-estado";
 import { FormTextarea } from "@/components/ui/textarea";
+import { SelectModelosForm } from "../../_components/select-modelo";
 
 type Props = {
   id?: string;
@@ -24,6 +24,7 @@ type Props = {
 type FormHelperType = {
   marca: { id: number; label: string };
   tipo: { id: number; label: string };
+  modelo2: { id: number; label: string }; //TODO: modelo2 -> modelo
 };
 
 type FormEditarEquipoType = z.infer<typeof inputEditarEquipos> & FormHelperType;
@@ -47,7 +48,12 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
         id: equipo.marca.id,
         label: equipo.marca.nombre,
       },
-      modelo: equipo.modelo ?? "",
+      modelo: equipo.modelo ?? "", //TODO: eliminar al normalizar
+      modeloId: 1, //TODO: equipo.modelo.id
+      modelo2: {
+        id: 1, //TODO: equipo.modelo.id
+        label: equipo.modelo ?? "", //TODO: equipo.modelo
+      },
       numeroSerie: equipo.numeroSerie ?? "",
       palabrasClave: equipo.palabrasClave ?? "",
       tipoId: equipo.tipo.id,
@@ -148,15 +154,12 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
 
                 <div className="mt-4 basis-1/3">
-                  <FormSelect
+                  <SelectModelosForm
                     label={"Modelo"}
                     control={control}
-                    name="modelo"
+                    name="modelo2"
                     className="mt-2"
-                    items={[
-                      { id: 1, label: "Modelo 1" },
-                      { id: 2, label: "Modelo 2" },
-                    ]}
+                    placeholder={"Seleccioná un modelo"}
                   />
                 </div>
               </div>

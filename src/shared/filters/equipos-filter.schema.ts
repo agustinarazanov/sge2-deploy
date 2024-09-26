@@ -1,12 +1,13 @@
 import { z } from "zod";
 
 export const inputAgregarEquipo = z.object({
-  modelo: z.string().min(1, { message: "Requerido" }),
+  modelo: z.string().min(1, { message: "Requerido" }), //TODO: eliminar al normalizar
   numeroSerie: z.string().min(1, { message: "Requerido" }),
   observaciones: z.string().min(1, { message: "Requerido" }),
   palabrasClave: z.string().min(1, { message: "Requerido" }),
   imagen: z.string().min(1, { message: "Requerido" }),
 
+  modeloId: z.number().min(1, { message: "Requerido" }),
   tipoId: z.number().min(1, { message: "Requerido" }),
   marcaId: z.number().min(1, { message: "Requerido" }),
   sedeId: z.number().min(1, { message: "Requerido" }),
