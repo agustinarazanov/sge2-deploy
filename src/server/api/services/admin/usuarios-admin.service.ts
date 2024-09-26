@@ -8,6 +8,7 @@ import {
 } from "@/shared/filters/admin-usuarios-filter.schema";
 import {
   editarUsuario,
+  eliminarTutor,
   eliminarUsuario,
   getAllTutores,
   getAllUsuarios,
@@ -55,3 +56,13 @@ export const getAllTutoresProcedure = protectedProcedure.query(async ({ ctx }) =
 
   return tutores;
 });
+
+export const eliminarTutorProcedure = protectedProcedure
+  .input(inputEliminarUsuario)
+  .mutation(async ({ ctx, input }) => {
+    validarInput(inputEliminarUsuario, input);
+
+    const usuario = await eliminarTutor(ctx, input);
+
+    return usuario;
+  });

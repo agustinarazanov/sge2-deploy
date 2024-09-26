@@ -4,7 +4,7 @@ import { TutorCard } from "./tutor-card";
 export default async function TutoresContainer() {
   const data = await api.admin.usuarios.getAllTutores();
 
-  const tutores = [...data, ...data, ...data];
+  const tutores = data;
 
   return (
     <div className="flex w-full flex-row gap-x-8 px-4">

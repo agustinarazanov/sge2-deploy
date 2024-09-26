@@ -1,8 +1,10 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { type TutorType } from "./constants";
 import { cn } from "@/components/utils";
 import Image from "next/image";
-
+import RemoveTutorModal from "../action-buttons/remove-tutor";
 type CardProps = React.ComponentProps<typeof Card>;
 type TutorData = {
   tutor: TutorType;
@@ -36,7 +38,6 @@ export function TutorCard({ className, ...props }: CardProps & TutorData) {
             height={300}
           />
         </div>
-
         <CardTitle className="py-4">
           {nombre} {apellido}
         </CardTitle>
@@ -56,6 +57,11 @@ export function TutorCard({ className, ...props }: CardProps & TutorData) {
             <span className="font-bold">Especialidad:</span> {tutor.especialidad}
           </CardDescription>
         </div>
+        <RemoveTutorModal
+          tutorId={tutor.usuario.id}
+          nombre={`${nombre} ${apellido}`} // Pasar nombre completo
+          onSubmit={() => console.log("Tutor eliminado")}
+        />
       </CardContent>
     </Card>
   );
