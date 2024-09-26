@@ -130,7 +130,7 @@ export const getUsuarioPorId = async (ctx: { db: PrismaClient }, input: InputGet
   return usuario;
 };
 
-type InputGetTutorPorId = z.infer<typeof inputGetTutor>; // Asumiendo que usas un schema similar a inputGetUsuario para validar el ID
+type InputGetTutorPorId = z.infer<typeof inputGetTutor>;
 export const getTutorPorId = async (ctx: { db: PrismaClient }, input: InputGetTutorPorId) => {
   const { id } = input;
 
@@ -172,20 +172,18 @@ export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEdita
 type InputEditarTutor = z.infer<typeof inputEditarTutor>;
 export const editarTutor = async (ctx: { db: PrismaClient }, input: InputEditarTutor) => {
   try {
-    // Actualizamos solo los campos específicos del tutor
     const tutorActualizado = await ctx.db.tutor.update({
       data: {
-        //nombre: input.nombre, // Actualiza el nombre del tutor
-        diasHorarios: input.diasHorarios, // Actualiza los días y horarios
-        sede: input.sede, // Actualiza la sede
-        especialidad: input.especialidad, // Actualiza la especialidad
+        diasHorarios: input.diasHorarios,
+        sede: input.sede,
+        especialidad: input.especialidad,
       },
       where: {
-        userId: input.id, // Usamos el identificador único (ajustar al campo real)
+        userId: input.id,
       },
     });
 
-    return tutorActualizado; // Devuelve el tutor actualizado
+    return tutorActualizado;
   } catch (error) {
     throw new Error(`Error modificando tutor con ID ${input.id}`);
   }

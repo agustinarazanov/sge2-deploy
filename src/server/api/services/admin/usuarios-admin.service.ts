@@ -57,9 +57,8 @@ export const editarUsuarioProcedure = protectedProcedure.input(inputEditarUsuari
 });
 
 export const editarTutorProcedure = protectedProcedure.input(inputEditarTutor).mutation(async ({ ctx, input }) => {
-  validarInput(inputEditarTutor, input); // Valida la entrada
+  validarInput(inputEditarTutor, input);
 
-  // Aquí llamamos a la función que editará al tutor
   const tutor = await editarTutor(ctx, input);
 
   return tutor;
