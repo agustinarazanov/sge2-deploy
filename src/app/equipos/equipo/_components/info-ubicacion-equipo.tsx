@@ -11,8 +11,8 @@ export const EquipoInformacionUbicacion = ({ equipoId }: { equipoId: number }) =
   return (
     <>
       <div className="my-2 flex w-full flex-col space-y-4 px-0 text-left text-2xl md:px-6">Ubicación:</div>
-      <div className="flex w-full flex-col space-y-4 px-12">
-        <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+      <div className="flex w-full flex-col px-12 md:flex-row">
+        <div className="flex w-full flex-col gap-x-4 space-y-4 md:flex-row md:space-y-0 lg:justify-between">
           <div className="basis-1/4">
             <u>Sede:</u> {isLoading ? <Skeleton className="h-4 w-full" /> : `${equipo?.sede.nombre}`}
           </div>
