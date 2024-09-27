@@ -6,6 +6,7 @@ import LoadingCursosTable from "../_components/table/loading-curso-table";
 export default async function Page() {
   return (
     <>
+      <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">Reserva Laboratorio - Mis cursos</h3>
       <ActionButtons />
       <Suspense fallback={<LoadingCursosTable />}>
         <LaboratorioReservaTableContainer filterByUserId={true} filterByCatedraId={false} />
