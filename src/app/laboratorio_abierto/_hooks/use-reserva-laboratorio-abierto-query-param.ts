@@ -2,89 +2,95 @@ import { usePathname, useRouter } from "next/navigation";
 import { type z } from "zod";
 import { type PaginationState, type SortingState } from "@tanstack/react-table";
 import { useCallback } from "react";
-import { inputGetAllPrestamosLibros } from "@/shared/filters/reservas-filter.schema";
+import { inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reservas-filter.schema";
 import { type RouterOutputs } from "@/trpc/react";
 
 type EstadoReservaType =
-  RouterOutputs["reservas"]["reservaBiblioteca"]["getAll"]["reservas"][number]["reserva"]["estatus"];
-type BibliotecaPrestamoFilters = z.infer<typeof inputGetAllPrestamosLibros>;
-type OrderByType = BibliotecaPrestamoFilters["orderBy"];
-type PageSizeType = BibliotecaPrestamoFilters["pageSize"];
+  RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getAll"]["reservas"][number]["reserva"]["estatus"];
+type resevaLaboratorioAbiertoFilters = z.infer<typeof inputGetAllSolicitudesReservaLaboratorioAbierto>;
+type OrderByType = resevaLaboratorioAbiertoFilters["orderBy"];
+type PageSizeType = resevaLaboratorioAbiertoFilters["pageSize"];
 
-const createQueryString = (filters: BibliotecaPrestamoFilters) => {
+const createQueryString = (filters: resevaLaboratorioAbiertoFilters) => {
   const params = new URLSearchParams(filters);
 
   return params.toString();
 };
 
-const changeSorting = (filters: BibliotecaPrestamoFilters, newSorting: SortingState): BibliotecaPrestamoFilters => {
-  const newFilters: BibliotecaPrestamoFilters = {
+const changeSorting = (
+  filters: resevaLaboratorioAbiertoFilters,
+  newSorting: SortingState,
+): resevaLaboratorioAbiertoFilters => {
+  const newFilters: resevaLaboratorioAbiertoFilters = {
     ...filters,
     orderBy: newSorting[0]?.id as OrderByType,
     orderDirection: newSorting[0]?.desc ? "desc" : "asc",
     pageIndex: "0",
   };
 
-  const filtersTyped = inputGetAllPrestamosLibros.parse(newFilters);
+  const filtersTyped = inputGetAllSolicitudesReservaLaboratorioAbierto.parse(newFilters);
 
   return filtersTyped;
 };
 
 const changePagination = (
-  filters: BibliotecaPrestamoFilters,
+  filters: resevaLaboratorioAbiertoFilters,
   newPagination: PaginationState,
-): BibliotecaPrestamoFilters => {
-  const newFilters: BibliotecaPrestamoFilters = {
+): resevaLaboratorioAbiertoFilters => {
+  const newFilters: resevaLaboratorioAbiertoFilters = {
     ...filters,
     pageIndex: newPagination.pageIndex.toString(),
     pageSize: newPagination.pageSize.toString() as PageSizeType,
   };
 
-  const filtersTyped = inputGetAllPrestamosLibros.parse(newFilters);
+  const filtersTyped = inputGetAllSolicitudesReservaLaboratorioAbierto.parse(newFilters);
 
   return filtersTyped;
 };
 
-const changeSearchText = (filters: BibliotecaPrestamoFilters, searchText: string): BibliotecaPrestamoFilters => {
-  const newFilters: BibliotecaPrestamoFilters = {
+const changeSearchText = (
+  filters: resevaLaboratorioAbiertoFilters,
+  searchText: string,
+): resevaLaboratorioAbiertoFilters => {
+  const newFilters: resevaLaboratorioAbiertoFilters = {
     ...filters,
     searchText,
     pageIndex: "0",
   };
 
-  const filtersTyped = inputGetAllPrestamosLibros.parse(newFilters);
+  const filtersTyped = inputGetAllSolicitudesReservaLaboratorioAbierto.parse(newFilters);
 
   return filtersTyped;
 };
 
 const changeEstatus = (
-  filters: BibliotecaPrestamoFilters,
+  filters: resevaLaboratorioAbiertoFilters,
   newEstatus: EstadoReservaType | "",
-): BibliotecaPrestamoFilters => {
-  const newFilters: BibliotecaPrestamoFilters = {
+): resevaLaboratorioAbiertoFilters => {
+  const newFilters: resevaLaboratorioAbiertoFilters = {
     ...filters,
     estatus: newEstatus,
     pageIndex: "0",
   };
 
-  const filtersTyped = inputGetAllPrestamosLibros.parse(newFilters);
+  const filtersTyped = inputGetAllSolicitudesReservaLaboratorioAbierto.parse(newFilters);
 
   return filtersTyped;
 };
 
-const getPagination = (filters: BibliotecaPrestamoFilters): { pageSize: number; pageIndex: number } => {
+const getPagination = (filters: resevaLaboratorioAbiertoFilters): { pageSize: number; pageIndex: number } => {
   const { pageIndex, pageSize } = filters;
 
   return { pageIndex: parseInt(pageIndex), pageSize: parseInt(pageSize) };
 };
 
-const getSorting = (filters: BibliotecaPrestamoFilters): SortingState => {
+const getSorting = (filters: resevaLaboratorioAbiertoFilters): SortingState => {
   const { orderBy, orderDirection } = filters;
 
   return [{ id: orderBy, desc: orderDirection === "desc" }];
 };
 
-export const useBibliotecaPrestamosQueryParam = (filters: BibliotecaPrestamoFilters) => {
+export const useReservasLaboratorioAbiertoQueryParam = (filters: resevaLaboratorioAbiertoFilters) => {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -94,7 +100,7 @@ export const useBibliotecaPrestamosQueryParam = (filters: BibliotecaPrestamoFilt
   const reservaEstatus = filters.estatus;
 
   const changeQueryParams = useCallback(
-    (filters: BibliotecaPrestamoFilters) => {
+    (filters: resevaLaboratorioAbiertoFilters) => {
       router.push(pathname + "?" + createQueryString(filters));
     },
     [pathname, router],

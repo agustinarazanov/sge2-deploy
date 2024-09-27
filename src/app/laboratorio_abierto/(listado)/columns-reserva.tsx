@@ -2,7 +2,7 @@ import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { DatoUsuarioReserva } from "@/app/_components/datos-usuario";
 import { getDateISOString } from "@/shared/get-date";
-import RenovarPrestamoLibroModal from "../_components/modal-gestion-reserva";
+import { Badge } from "@/components/ui/badge";
 
 type LaboratorioAbiertoReservaData =
   RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getAll"]["reservas"][number];
@@ -62,43 +62,22 @@ export const getColumnasReservasLaboratorioAbierto = ({ filterByUser }: { filter
         return <DatoUsuarioReserva usuario={usuarioSolicito} />;
       },
     }),
-    colHelper.accessor("reserva.usuarioAprobador.apellido", {
-      header: "Aprobado por",
+
+    colHelper.accessor("reserva.estatus", {
+      header: "Estado",
       cell: ({ row }) => {
-        const { reserva } = row.original;
-        const { usuarioAprobador } = reserva;
-
-        return <DatoUsuarioReserva usuario={usuarioAprobador} />;
-      },
-    }),
-  ] as ColumnDef<LaboratorioAbiertoReservaData>[];
-
-  const columnasGeneral = [
-    colHelper.display({
-      header: "Aprobar",
-      cell: ({ row }) => {
-        const { reserva, laboratorioId } = row.original;
-        const { estatus } = reserva;
-
-        if (estatus === "FINALIZADA") {
-          return <span className="text-center">-</span>;
-        }
-
+        const { estatus } = row.original.reserva;
         if (estatus === "PENDIENTE") {
-          return <RenovarPrestamoLibroModal reservaID={laboratorioId} />;
+          return <Badge color="danger">Pendiente</Badge>;
         }
-
-        return <span className="text-center">Sin información</span>;
-      },
-      meta: {
-        header: {
-          hideSort: true,
-        },
+        if (estatus === "FINALIZADA") {
+          return <Badge color="success">Aprobada</Badge>;
+        }
       },
     }),
   ] as ColumnDef<LaboratorioAbiertoReservaData>[];
 
-  const columnas = filterByUser ? columnasBasicas : [...columnasBasicas, ...columnasGeneral];
+  const columnas = filterByUser ? columnasBasicas : [...columnasBasicas];
 
   return columnas;
 };
@@ -113,7 +92,5 @@ export const getColumnasResevaNames = () => {
     "Inicio de Reserva",
     "Fin de Reserva",
     "Solicitado por",
-    "Aprobado por",
-    "Aprobar",
   ];
 };

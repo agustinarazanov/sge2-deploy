@@ -2,22 +2,22 @@
 
 import { type z } from "zod";
 import { useState } from "react";
-import { type inputGetAllPrestamosLibros } from "@/shared/filters/reservas-filter.schema";
-import { useBibliotecaPrestamosQueryParam } from "../../_hooks/use-biblioteca-prestamo-query-param";
+import { type inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reservas-filter.schema";
+import { useReservasLaboratorioAbiertoQueryParam } from "../../_hooks/use-reserva-laboratorio-abierto-query-param";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { type RouterOutputs } from "@/trpc/react";
 import { cn } from "@/components/utils";
 
-type BibliotecaPrestamoFilters = z.infer<typeof inputGetAllPrestamosLibros>;
+type LaboratorioAbiertoReservaFilters = z.infer<typeof inputGetAllSolicitudesReservaLaboratorioAbierto>;
 type EstadoReservaType =
-  RouterOutputs["reservas"]["reservaBiblioteca"]["getAll"]["reservas"][number]["reserva"]["estatus"];
+  RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getAll"]["reservas"][number]["reserva"]["estatus"];
 
 type Props = {
-  filters: BibliotecaPrestamoFilters;
+  filters: LaboratorioAbiertoReservaFilters;
 };
 
-export const BibliotecaPrestamoEstadoFilter = ({ filters }: Props) => {
-  const { reservaEstatus, onReservaEstatusChange } = useBibliotecaPrestamosQueryParam(filters);
+export const ReservaLaboratorioAbiertoEstadoFilter = ({ filters }: Props) => {
+  const { reservaEstatus, onReservaEstatusChange } = useReservasLaboratorioAbiertoQueryParam(filters);
 
   const [currentEstatus, setCurrentEstatus] = useState<EstadoReservaType | "">(reservaEstatus);
 

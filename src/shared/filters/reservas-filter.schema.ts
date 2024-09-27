@@ -75,14 +75,12 @@ export const inputGetAllSolicitudesReservaLaboratorioAbierto = z.object({
   orderBy: z
     .enum([
       "id",
-      "libro_inventarioId",
-      "libro_titulo",
-      "reserva_usuarioSolicito_apellido",
+      "laboratorioId",
+      "sede",
+      "reserva_fechaCreacion",
       "reserva_fechaHoraInicio",
       "reserva_fechaHoraFin",
-      "reserva_usuarioAprobador_apellido",
-      "reserva_usuarioRenovo_apellido",
-      "reserva_usuarioRecibio_apellido",
+      "reserva_usuarioSolicito_apellido",
     ])
     .default("id")
     .catch("id"),

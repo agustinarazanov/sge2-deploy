@@ -4,17 +4,17 @@ import { Input } from "@/components/ui";
 import { SearchIcon } from "lucide-react";
 import { type z } from "zod";
 import { useState } from "react";
-import { type inputGetAllPrestamosLibros } from "@/shared/filters/reservas-filter.schema";
-import { useBibliotecaPrestamosQueryParam } from "../../_hooks/use-biblioteca-prestamo-query-param";
+import { type inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reservas-filter.schema";
+import { useReservasLaboratorioAbiertoQueryParam } from "../../_hooks/use-reserva-laboratorio-abierto-query-param";
 
-type BibliotecaPrestamoFilters = z.infer<typeof inputGetAllPrestamosLibros>;
+type reservaLaboratorioAbiertoFilters = z.infer<typeof inputGetAllSolicitudesReservaLaboratorioAbierto>;
 
 type Props = {
-  filters: BibliotecaPrestamoFilters;
+  filters: reservaLaboratorioAbiertoFilters;
 };
 
-export const BibliotecaPrestamoFilterText = ({ filters }: Props) => {
-  const { searchText, onSearchTextChange } = useBibliotecaPrestamosQueryParam(filters);
+export const LaboratorioAbiertoReservasFilterText = ({ filters }: Props) => {
+  const { searchText, onSearchTextChange } = useReservasLaboratorioAbiertoQueryParam(filters);
 
   const [currentSearchText, setCurrentSearchText] = useState(searchText);
 
