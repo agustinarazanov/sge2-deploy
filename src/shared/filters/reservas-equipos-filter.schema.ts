@@ -31,7 +31,7 @@ export const inputGetAllPrestamosEquipos = z.object({
   orderDirection: z.enum(["asc", "desc"]).default("desc").catch("desc"),
   searchText: z.string().default(""),
   estatus: z.enum(["PENDIENTE", "FINALIZADA", "CANCELADA", ""]).default("").catch(""),
-  userId: z.string().optional(),
+  filtrByUserId: z.enum(["true", "false"]).optional(),
 });
 
 export const inputPrestarEquipo = z
@@ -55,3 +55,7 @@ export const inputPrestarEquipo = z
       return z.NEVER;
     }
   });
+
+export const inputGetReservaPorUsuarioId = z.object({
+  id: z.string().min(1),
+});
