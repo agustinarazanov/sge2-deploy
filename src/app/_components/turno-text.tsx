@@ -10,7 +10,7 @@ export const CursoTurno = ({ turno }: { turno?: TurnoType }) => {
   return turno ?? "-";
 };
 
-export const turnosValues = [
+export const turnosValues: { id: TurnoType; label: string }[] = [
   { id: "MANANA", label: "Mañana" },
   { id: "TARDE", label: "Tarde" },
   { id: "NOCHE", label: "Noche" },
