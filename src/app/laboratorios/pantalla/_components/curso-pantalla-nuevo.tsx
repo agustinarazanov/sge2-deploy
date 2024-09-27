@@ -3,7 +3,6 @@ import { api } from "@/trpc/react";
 import { Button, FormInput, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
-import { LaboratorioDropdownMultipleForm } from "@/app/_components/form/laboratorios-dropdown-multiple";
 import { type z } from "zod";
 import { inputAgregarReservaPantalla } from "@/shared/filters/reserva-pantalla-filter.schema";
 
