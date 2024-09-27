@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui";
 import { SearchIcon } from "lucide-react";
-import { useBibliotecaQueryParam } from "../../_hooks/use-biblioteca-query-param";
+import { useBibliotecaQueryParam } from "../../_hooks/use-laboratorio-abierto-query-param";
 import { type inputGetBooks } from "@/shared/filters/biblioteca-filter.schema";
 import { type z } from "zod";
 import { useState } from "react";

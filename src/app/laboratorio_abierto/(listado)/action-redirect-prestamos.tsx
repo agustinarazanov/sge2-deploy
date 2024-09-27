@@ -3,14 +3,14 @@ import { type z } from "zod";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { LABORATORIO_ABIERTO_ROUTE } from "@/shared/server-routes";
-import { type inputGetAllPrestamosLibros } from "@/shared/filters/reservas-filter.schema";
-import { BibliotecaPrestamoFilterText } from "./filtros/biblioteca-prestamo-filter-text";
-import { BibliotecaPrestamoEstadoFilter } from "./filtros/biblioteca-prestamo-estado";
+import { type inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reservas-filter.schema";
+import { LaboratorioAbiertoReservasFilterText } from "./filtros/laboratorio_abierto-reserva-filter-text";
+import { ReservaLaboratorioAbiertoEstadoFilter } from "./filtros/biblioteca-prestamo-estado";
 
-type BibliotecaFilters = z.infer<typeof inputGetAllPrestamosLibros>;
+type reservasLaboratorioAbiertoFilters = z.infer<typeof inputGetAllSolicitudesReservaLaboratorioAbierto>;
 
 type ActionButtonsProps = {
-  filters: BibliotecaFilters;
+  filters: reservasLaboratorioAbiertoFilters;
 };
 
 const laboratorioAbierto = LABORATORIO_ABIERTO_ROUTE;
@@ -58,10 +58,10 @@ export const ActionButtonsPrestamos = ({ filters }: ActionButtonsProps) => {
 
       <div className="w-full space-y-3 sm:flex sm:flex-row sm:space-x-3 sm:space-y-0 md:basis-1/2">
         <div className="md:basis-1/2">
-          <BibliotecaPrestamoFilterText filters={filters} />
+          <LaboratorioAbiertoReservasFilterText filters={filters} />
         </div>
         <div className="md:basis-1/2">
-          <BibliotecaPrestamoEstadoFilter filters={filters} />
+          <ReservaLaboratorioAbiertoEstadoFilter filters={filters} />
         </div>
       </div>
     </div>
