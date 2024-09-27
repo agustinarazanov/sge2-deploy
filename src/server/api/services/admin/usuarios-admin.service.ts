@@ -5,9 +5,13 @@ import {
   inputEliminarUsuario,
   inputGetUsuario,
   inputGetUsuarios,
+  inputGetTutor,
+  inputEditarTutor,
 } from "@/shared/filters/admin-usuarios-filter.schema";
 import {
   editarUsuario,
+  eliminarTutor,
+  editarTutor,
   eliminarUsuario,
   getAllProfesores,
   getAllTutores,
@@ -31,6 +35,10 @@ export const getUsuarioPorIdProcedure = protectedProcedure.input(inputGetUsuario
   return usuario;
 });
 
+export const getTutorPorIdProcedure = protectedProcedure.input(inputGetTutor).query(async ({ ctx, input }) => {
+  console.log(ctx, input);
+});
+
 export const eliminarUsuarioProcedure = protectedProcedure
   .input(inputEliminarUsuario)
   .mutation(async ({ ctx, input }) => {
@@ -51,11 +59,29 @@ export const editarUsuarioProcedure = protectedProcedure.input(inputEditarUsuari
   return usuario;
 });
 
+export const editarTutorProcedure = protectedProcedure.input(inputEditarTutor).mutation(async ({ ctx, input }) => {
+  validarInput(inputEditarTutor, input);
+
+  const tutor = await editarTutor(ctx, input);
+
+  return tutor;
+});
+
 export const getAllTutoresProcedure = protectedProcedure.query(async ({ ctx }) => {
   const tutores = await getAllTutores(ctx);
 
   return tutores;
 });
+
+export const eliminarTutorProcedure = protectedProcedure
+  .input(inputEliminarUsuario)
+  .mutation(async ({ ctx, input }) => {
+    validarInput(inputEliminarUsuario, input);
+
+    const usuario = await eliminarTutor(ctx, input);
+
+    return usuario;
+  });
 
 export const getAllProfesoresProcedure = protectedProcedure.query(async ({ ctx }) => {
   return await getAllProfesores(ctx);
