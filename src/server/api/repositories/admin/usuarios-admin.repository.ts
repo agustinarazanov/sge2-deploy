@@ -134,6 +134,8 @@ type InputGetTutorPorId = z.infer<typeof inputGetTutor>;
 export const getTutorPorId = async (ctx: { db: PrismaClient }, input: InputGetTutorPorId) => {
   const { id } = input;
 
+  console.log(id);
+
   return;
 };
 

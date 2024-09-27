@@ -11,7 +11,6 @@ import { MinusIcon } from "lucide-react";
 import { EquipoTipoSelector } from "@/app/laboratorios/_components/filtros/equipo-tipo-selector";
 import { type LaboratorioAbiertoType } from "../_components/laboratorios";
 import { Slider } from "@/components/ui/slider";
-import { FormSelect } from "@/components/ui/autocomplete";
 import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
 
 type Props = {
@@ -162,7 +161,7 @@ export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
                   max={8}
                   step={1}
                   className={"w-full"}
-                  onValueChange={(value) => setConcurrentes(value[0] || 1)}
+                  onValueChange={(value) => setConcurrentes(value[0] ?? 1)}
                 />
                 <p className="mt-2">Cantidad de personas: {concurrentes}</p> {/* Mostramos el valor */}
               </div>

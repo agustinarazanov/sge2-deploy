@@ -35,7 +35,9 @@ export const getUsuarioPorIdProcedure = protectedProcedure.input(inputGetUsuario
   return usuario;
 });
 
-export const getTutorPorIdProcedure = protectedProcedure.input(inputGetTutor).query(async ({ ctx, input }) => {});
+export const getTutorPorIdProcedure = protectedProcedure.input(inputGetTutor).query(async ({ ctx, input }) => {
+  console.log(ctx, input);
+});
 
 export const eliminarUsuarioProcedure = protectedProcedure
   .input(inputEliminarUsuario)
