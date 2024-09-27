@@ -48,7 +48,7 @@ export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsua
     );
 
   const { data: reservasLaboratorioCerrado, isLoading: isLoadingLaboratorioCerrado } =
-    api.reservas.ReservarLaboratorioCerrado.getReservaPorUser.useQuery(
+    api.reservas.reservarLaboratorioCerrado.getReservaPorUser.useQuery(
       { id: usuarioData.id },
       {
         enabled: activeTab === "laboratorio cerrado",

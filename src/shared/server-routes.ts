@@ -55,6 +55,11 @@ export const LABORATORIO_ROUTE = {
       label: "Aplicaciones en Laboratorios",
       isPublic: false,
     },
+    {
+      href: "/laboratorios/pantalla",
+      label: "Pantalla de Reservas",
+      isPublic: false,
+    },
   ],
 };
 
