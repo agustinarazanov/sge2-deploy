@@ -43,7 +43,12 @@ export const TiposTable = ({ data, filters }: TiposTableProps) => {
             return (
               <>
                 <EditarTipoModal tipoId={original.id} />
-                <RemoverTipoModal tipoId={original.id} nombre={original.nombre ?? ""} onSubmit={refresh} />
+                <RemoverTipoModal
+                  tipoId={original.id}
+                  nombre={original.nombre ?? ""}
+                  imagen={original.imagen ?? ""}
+                  onSubmit={refresh}
+                />
               </>
             );
           },

@@ -72,7 +72,7 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
         formData.imagen = await uploadFile(fileForm);
       }
     } catch (error) {
-      console.log(error);
+      toast.error("Error al guardar la imagen");
       return;
     }
 
@@ -122,8 +122,8 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
         <ScrollArea className="max-h-[calc(100vh_-_20%)] w-full pr-4 md:max-h-[calc(100vh_-_30%)] lg:max-h-[calc(100vh_-_30%)]">
           <div className="flex w-full flex-col items-center justify-center">
-            <div className="flex flex-col space-y-4 px-0 md:flex-row md:space-x-8 md:px-6">
-              <div className="flex w-full flex-col md:flex-col lg:justify-between">
+            <div className="flex flex-col space-y-4 px-0 md:flex-row md:justify-between md:space-x-8 md:px-6">
+              <div className="flex w-full flex-col md:w-1/2 md:flex-col lg:justify-between">
                 <div className="mt-4 basis-1/2">
                   <FormInput
                     label={"Nombre"}
@@ -137,7 +137,7 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
 
                 <div className="mt-4 basis-1/2">
                   <Input
-                    label={!previewImgUrl ? "Agregar imagen" : "Cambiar"}
+                    label={!previewImgUrl ? "Agregar imágen" : "Cambiar imágen"}
                     //control={control}
                     name="imagen"
                     type={"file"}
@@ -148,10 +148,10 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
               </div>
 
-              <div className="flex w-full flex-col border md:flex-row lg:justify-between">
+              <div className="flex w-full flex-col border md:w-1/3 md:flex-row lg:justify-between">
                 <div className="mt-4">
                   <Image
-                    src={previewImgUrl ?? ""}
+                    src={previewImgUrl ? previewImgUrl : "/no-image.svg"}
                     alt="Imagen del tipo"
                     className="h-auto w-fit"
                     height={100}
