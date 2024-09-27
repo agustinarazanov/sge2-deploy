@@ -2,7 +2,7 @@ import { type ReadonlyURLSearchParams } from "next/navigation";
 import { Suspense, useMemo } from "react";
 import { ActionButtonsPrestamos } from "../(listado)/action-redirect-prestamos";
 import LoadingEquiposPrestamosTable from "../(listado)/loading-equipos-prestamos-table";
-import EquiposPrestamosTableContainer from "./_components/prestamos-table-container";
+import EquiposPrestamosTableContainer from "../prestamos/_components/prestamos-table-container";
 import { inputGetAllPrestamosEquipos } from "@/shared/filters/reservas-equipos-filter.schema";
 
 type PageProps = {
@@ -18,7 +18,7 @@ export default async function Page({ searchParams }: PageProps) {
     <>
       <ActionButtonsPrestamos filters={filters} />
       <Suspense key={filter_as_key} fallback={<LoadingEquiposPrestamosTable />}>
-        <EquiposPrestamosTableContainer filters={filters} />
+        <EquiposPrestamosTableContainer filters={filters} filterByUser />
       </Suspense>
     </>
   );

@@ -7,7 +7,13 @@ type VerEquipoModalProps = {
 
 export const VerEquipoModal = (props: VerEquipoModalProps) => {
   return (
-    <Link key={props.equipoId} href={`/equipos/equipo/ver/${props.equipoId}`} passHref prefetch={false}>
+    <Link
+      key={props.equipoId}
+      href={`/equipos/equipo/ver/${props.equipoId}`}
+      passHref
+      prefetch={false}
+      title="Detalles de equipo"
+    >
       <EyeIcon />
     </Link>
   );
