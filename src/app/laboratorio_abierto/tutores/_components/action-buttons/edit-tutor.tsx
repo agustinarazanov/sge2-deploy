@@ -9,6 +9,7 @@ import { type z } from "zod";
 import { useEffect, useMemo } from "react";
 import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
 import { useRouter } from "next/navigation";
+import { type TutorType } from "../table/constants";
 
 type Props = {
   isOpen: boolean;
@@ -16,7 +17,7 @@ type Props = {
   id: string;
   onSubmit: () => void;
   onEditSuccess?: () => void;
-  tutor: any;
+  tutor: TutorType;
 };
 
 type FormHelperType = {
@@ -25,17 +26,16 @@ type FormHelperType = {
 
 type FormEditarTutorType = z.infer<typeof inputEditarTutor> & FormHelperType;
 
-export const EditTutorModal = ({ isOpen, onClose, id, onSubmit, tutor }: Props) => {
-  const tutorId = parseInt(id);
+export const EditTutorModal = ({ isOpen, onClose, tutor }: Props) => {
   const router = useRouter();
 
   const editarTutor = api.admin.usuarios.editarTutor.useMutation();
 
-  const tutorBase: FormEditarTutorType = useMemo(() => {
+  const tutorBase = useMemo(() => {
     if (!tutor) return {} as FormEditarTutorType;
     return {
       id: tutor.usuario.id,
-      nombre: tutor.usuario.nombre,
+      nombre: tutor.usuario.nombre ?? "",
       especialidad: tutor.especialidad ?? "",
       sede: tutor.sede,
       diasHorarios: tutor.diasHorarios || [],

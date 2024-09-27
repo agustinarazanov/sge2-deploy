@@ -7,7 +7,7 @@ import { cn } from "@/components/utils";
 import Image from "next/image";
 import RemoveTutorModal from "../action-buttons/remove-tutor";
 import { EditTutorModal } from "../action-buttons/edit-tutor";
-import { FaEdit } from "react-icons/fa";
+import { EditIcon } from "lucide-react";
 
 type CardProps = React.ComponentProps<typeof Card>;
 
@@ -17,7 +17,7 @@ type TutorData = {
 
 export function TutorCard({ className, ...props }: CardProps & TutorData) {
   const { tutor } = props;
-  const { nombre, apellido, email, image } = tutor.usuario;
+  const { nombre, apellido, image } = tutor.usuario;
 
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
@@ -79,7 +79,7 @@ export function TutorCard({ className, ...props }: CardProps & TutorData) {
             className="flex items-center justify-center rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
             title="Editar"
           >
-            <FaEdit /> {}
+            <EditIcon /> {}
           </button>
           <RemoveTutorModal
             tutorId={tutor.usuario.id}
@@ -94,7 +94,9 @@ export function TutorCard({ className, ...props }: CardProps & TutorData) {
         isOpen={isEditModalOpen}
         onClose={handleModalClose}
         id={tutor.usuario.id}
-        onSubmit={() => {}}
+        onSubmit={() => {
+          console.log("Tutor editado");
+        }}
         onEditSuccess={() => {
           console.log("Tutor editado");
           handleModalClose();
