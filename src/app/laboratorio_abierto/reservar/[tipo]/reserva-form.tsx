@@ -3,7 +3,7 @@ import { api } from "@/trpc/react";
 import { Button, FormInput, Input, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { inputReservaLaboratorioAbierto } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { FormTextarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -11,7 +11,7 @@ import { MinusIcon } from "lucide-react";
 import { EquipoTipoSelector } from "@/app/laboratorios/_components/filtros/equipo-tipo-selector";
 import { type LaboratorioAbiertoType } from "../_components/laboratorios";
 import { Slider } from "@/components/ui/slider";
-import { FormSelect } from "@/components/ui/autocomplete";
+import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
 
 type Props = {
   tipo: LaboratorioAbiertoType;
@@ -44,6 +44,8 @@ export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
 
   const { handleSubmit, control } = formHook;
 
+  const [concurrentes, setConcurrentes] = useState<number>(1);
+  const [requiereInstrumental, setRequiereInstrumental] = useState<boolean>(false); // Nuevo
   useEffect(() => {
     formHook.reset({
       tipo: tipo!,
@@ -79,7 +81,6 @@ export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
 
   const onEquipoTipoChange = (equipoTipoId: string) => {
     const equipos = formHook.getValues("equipoRequerido");
-
     const existeEquipo = equipos.find((equipo) => equipo.idTipo === equipoTipoId);
 
     if (existeEquipo) {
@@ -92,7 +93,6 @@ export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
 
   const onEquipoTipoDelete = (equipoTipoId: string) => {
     const equipos = formHook.getValues("equipoRequerido");
-
     formHook.setValue(
       "equipoRequerido",
       equipos.filter((equipo) => equipo.idTipo !== equipoTipoId),
@@ -134,7 +134,7 @@ export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
                 <FormInput
                   label={"Hora de inicio"}
                   control={control}
-                  name="fechaReserva"
+                  name="horaInicio"
                   className="mt-2"
                   type={"time"}
                   required
@@ -144,7 +144,7 @@ export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
                 <FormInput
                   label={"Hora de fin"}
                   control={control}
-                  name="fechaReserva"
+                  name="horaFin"
                   className="mt-2"
                   type={"time"}
                   required
@@ -155,66 +155,84 @@ export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4 w-full">
                 <label htmlFor="">¿Cuántas personas concurrirán al Laboratorio?</label>
-                <Slider defaultValue={[1]} min={0} max={8} step={1} className={"w-full"} />
+                <Slider
+                  value={[concurrentes]}
+                  min={0}
+                  max={8}
+                  step={1}
+                  className={"w-full"}
+                  onValueChange={(value) => setConcurrentes(value[0] ?? 1)}
+                />
+                <p className="mt-2">Cantidad de personas: {concurrentes}</p> {/* Mostramos el valor */}
               </div>
             </div>
 
             <div className="flex w-full flex-col justify-end gap-y-4 lg:justify-between">
               <div className="items-top flex space-x-2">
-                <FormSelect
-                  label={"Sede"}
+                <SelectSedeForm
                   name="sedeId"
-                  className="mt-2 basis-1/2"
                   control={control}
-                  items={[
-                    { id: "1", label: "Medrano" },
-                    { id: "2", label: "Lugano" },
-                  ]}
+                  className="mt-2"
+                  label={"Sede"}
+                  placeholder={"Selecciona una sede"}
                 />
               </div>
             </div>
-
             <div className="flex w-full flex-col justify-end gap-y-4 lg:justify-between">
               <div className="items-top flex space-x-2">
-                <Checkbox id="equipoRequerido" name="equipoRequerido" />
+                <Checkbox
+                  id="equipoRequerido"
+                  name="equipoRequerido"
+                  onCheckedChange={(checked) => {
+                    if (checked === "indeterminate") {
+                      // No hacer nada o manejar según tu lógica
+                    } else {
+                      setRequiereInstrumental(checked); // Aquí solo se asigna true o false
+                    }
+                  }}
+                />
                 <div className="grid gap-1.5 leading-none">
                   <label htmlFor="equipoRequerido">Requiere instumental</label>
                 </div>
               </div>
 
               {/* TODO: Habilitar seccion solo si requiere instrumental = true */}
-              <div className="mt-4 w-full">
-                <EquipoTipoSelector onEquipoTipoChange={onEquipoTipoChange} />
-              </div>
+              {requiereInstrumental && (
+                <div className="mt-4 w-full">
+                  <EquipoTipoSelector onEquipoTipoChange={onEquipoTipoChange} />
+                </div>
+              )}
 
-              <div className="mt-4 w-full">
-                <ScrollArea className="max-h-80 w-full">
-                  <div className="flex w-full flex-col">
-                    {currentEquipoTipo?.map((equipoTipo) => (
-                      <div key={equipoTipo.idTipo} className="flex w-full flex-row gap-x-4 pl-4">
-                        <Input
-                          readOnly
-                          value={
-                            todosLosEquiposTipo?.tipos?.find((equipo) => String(equipo.id) === equipoTipo.idTipo)
-                              ?.nombre ?? ""
-                          }
-                          className="mt-2 grow basis-2/3"
-                        />
-                        <Input readOnly value={equipoTipo.cantidad} type="number" className="mt-2 grow basis-1/3" />
-                        <Button
-                          type="button"
-                          variant={"icon"}
-                          icon={MinusIcon}
-                          size="sm"
-                          className="mt-2 rounded-md border-none"
-                          onClick={() => onEquipoTipoDelete(equipoTipo.idTipo)}
-                          title={`Eliminar ${equipoTipo.idTipo} equipo`}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </ScrollArea>
-              </div>
+              {requiereInstrumental && (
+                <div className="mt-4 w-full">
+                  <ScrollArea className="max-h-80 w-full">
+                    <div className="flex w-full flex-col">
+                      {currentEquipoTipo?.map((equipoTipo) => (
+                        <div key={equipoTipo.idTipo} className="flex w-full flex-row gap-x-4 pl-4">
+                          <Input
+                            readOnly
+                            value={
+                              todosLosEquiposTipo?.tipos?.find((equipo) => String(equipo.id) === equipoTipo.idTipo)
+                                ?.nombre ?? ""
+                            }
+                            className="mt-2 grow basis-2/3"
+                          />
+                          <Input readOnly value={equipoTipo.cantidad} type="number" className="mt-2 grow basis-1/3" />
+                          <Button
+                            type="button"
+                            variant={"icon"}
+                            icon={MinusIcon}
+                            size="sm"
+                            className="mt-2 rounded-md border-none"
+                            onClick={() => onEquipoTipoDelete(equipoTipo.idTipo)}
+                            title={`Eliminar ${equipoTipo.idTipo} equipo`}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </div>
+              )}
             </div>
 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
