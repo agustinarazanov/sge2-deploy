@@ -6,14 +6,16 @@ import { Button } from "@/components/ui";
 import { toast } from "@/components/ui";
 import { api } from "@/trpc/react";
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
+import { removeFile } from "@/shared/upload-file";
 
 type RemoveTipoModalProps = {
   tipoId: number;
   nombre?: string;
+  imagen?: string;
   onSubmit: () => void;
 };
 
-export default function RemoverTipoModal({ tipoId, nombre, onSubmit }: RemoveTipoModalProps) {
+export default function RemoverTipoModal({ tipoId, nombre, imagen, onSubmit }: RemoveTipoModalProps) {
   const eliminarTipo = api.equipos.eliminarTipo.useMutation({
     onSuccess: () => {
       toast.success(`El tipo ${nombre} se eliminó con éxito.`);
@@ -27,7 +29,16 @@ export default function RemoverTipoModal({ tipoId, nombre, onSubmit }: RemoveTip
 
   const [open, setOpen] = useState(false);
 
-  const handleRemoveTipo = async (tipoId: number) => {
+  const handleRemoveTipo = async (tipoId: number, imagen?: string) => {
+    if (imagen) {
+      try {
+        await removeFile(imagen);
+      } catch (error) {
+        toast.error("Error al eliminar la imagen");
+        return;
+      }
+    }
+
     eliminarTipo.mutate({ id: tipoId });
 
     setOpen(false);
@@ -46,7 +57,7 @@ export default function RemoverTipoModal({ tipoId, nombre, onSubmit }: RemoveTip
       open={open}
       onOpenChange={setOpen}
       onCancel={handleCancel}
-      onSubmit={() => handleRemoveTipo(tipoId)}
+      onSubmit={() => handleRemoveTipo(tipoId, imagen)}
       isAlertDialog
     >
       <div>
