@@ -29,7 +29,7 @@ export default function ReservaDiscrecionalModal() {
       onOpenChange={setOpen}
       trigger={
         <Button type="button" color={"outline"} variant={"default"}>
-          <CalendarIcon className="mr-2 h-4 w-4" /> Reserva Discrecional
+          <CalendarIcon className="mr-2 h-4 w-4" /> Realizar Reserva Discrecional
         </Button>
       }
       className={"max-h-[calc(100vh_-_10%)]"}

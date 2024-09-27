@@ -8,9 +8,12 @@ type LayoutProps = {
 export default async function Layout({ children, modal }: LayoutProps) {
   return (
     <>
-      <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">Reserva Laboratorio - Mis cursos</h3>
-      {children}
-      {modal}
+      <main className="flex w-full flex-col">
+        <div className="flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+          {children}
+          {modal}
+        </div>
+      </main>
     </>
   );
 }

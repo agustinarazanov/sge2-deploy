@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { LABORATORIO_ROUTE } from "@/shared/server-routes";
-import ReservaDiscrecionalModal from "../reserva-discrecional-form";
+import { LaboratorioActionButtonsLeft } from "./actions-left";
 
 const rutaCurso = LABORATORIO_ROUTE;
 const subrutasCurso = rutaCurso?.subRutas ?? [];
@@ -15,10 +15,11 @@ export const ActionButtons = () => {
             <Button color={"ghost"}>{subRuta.label}</Button>
           </Link>
         ))}
-        <ReservaDiscrecionalModal />
       </div>
 
-      <div className="flex w-full flex-row space-x-3 md:basis-1/2"></div>
+      <div className="flex w-full flex-row space-x-3 md:basis-1/2">
+        <LaboratorioActionButtonsLeft />
+      </div>
     </div>
   );
 };
