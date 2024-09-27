@@ -5,44 +5,52 @@ import { Button, FormInput, Input, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { useEffect } from "react";
-import { inputReservaLaboratorioCerrado } from "@/shared/filters/reserva-laboratorio-filter.schema";
+import {
+  inputReservaLaboratorioCerrado,
+  inputReservaLaboratorioDiscrecional,
+} from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { FormTextarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MinusIcon } from "lucide-react";
 import { EquipoTipoSelector } from "./filtros/equipo-tipo-selector";
-import { CursoTurno } from "@/app/_components/turno-text";
+import { CursoTurno, turnosValues } from "@/app/_components/turno-text";
 import { Switch } from "@/components/ui/switch";
 import { PoliticasPrivacidadModal } from "@/app/_components/politicas-privacidad";
+import { FormSelect } from "@/components/ui/autocomplete";
 
 type Props = {
-  cursoId: string;
+  cursoId?: string;
   onSubmit: () => void;
   onCancel: () => void;
 };
 
-type FormReservarLaboratorioType = z.infer<typeof inputReservaLaboratorioCerrado>;
+type FormReservarLaboratorioType =
+  | z.infer<typeof inputReservaLaboratorioCerrado>
+  | z.infer<typeof inputReservaLaboratorioDiscrecional>;
 
 export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
+  const esDiscrecional = !cursoId;
   const {
     data: curso,
     isLoading,
     isError,
-  } = api.cursos.cursoPorId.useQuery({ id: Number(cursoId) }, { enabled: !!cursoId });
+  } = api.cursos.cursoPorId.useQuery({ id: Number(cursoId!) }, { enabled: !esDiscrecional });
 
   const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery({ tipoId: undefined });
 
   const formHook = useForm<FormReservarLaboratorioType>({
     mode: "onChange",
     defaultValues: {
-      cursoId: Number(cursoId),
+      cursoId: cursoId ? Number(cursoId) : undefined,
       aceptoTerminos: false,
       requiereEquipo: false,
       equipoRequerido: [],
       fechaReserva: undefined,
       requierePc: false,
       requiereProyector: false,
+      turno: curso?.turno ?? "MANANA",
     },
-    resolver: zodResolver(inputReservaLaboratorioCerrado),
+    resolver: zodResolver(esDiscrecional ? inputReservaLaboratorioDiscrecional : inputReservaLaboratorioCerrado),
   });
 
   const { handleSubmit, control } = formHook;
@@ -67,7 +75,11 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
   }
 
   const onFormSubmit = (_formData: FormReservarLaboratorioType) => {
-    toast.success("Reserva creada con éxito.");
+    if (esDiscrecional) {
+      toast.success("Reserva discrecional creada con éxito.");
+    } else {
+      toast.success("Reserva creada con éxito.");
+    }
   };
 
   const handleCancel = () => {
@@ -119,76 +131,87 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
         <div className="flex w-full flex-col items-center justify-center">
           <div className="flex flex-col space-y-4 px-0 md:px-6">
-            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-              <div className="mt-4 w-full">
-                <Input
-                  label={"Materia"}
-                  name="materia"
-                  type={"text"}
-                  className="mt-2"
-                  value={curso?.materia.nombre ?? ""}
-                  readOnly
-                />
+            {!esDiscrecional && (
+              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+                <div className="mt-4 w-full">
+                  <Input
+                    label={"Materia"}
+                    name="materia"
+                    type={"text"}
+                    className="mt-2"
+                    value={curso?.materia.nombre ?? ""}
+                    readOnly
+                  />
+                </div>
+                <div className="mt-4 w-full">
+                  <Input
+                    label={"División"}
+                    name="division"
+                    type={"text"}
+                    className="mt-2"
+                    value={curso?.division.nombre ?? ""}
+                    readOnly
+                  />
+                </div>
               </div>
-              <div className="mt-4 w-full">
-                <Input
-                  label={"División"}
-                  name="division"
-                  type={"text"}
-                  className="mt-2"
-                  value={curso?.division.nombre ?? ""}
-                  readOnly
-                />
+            )}
+
+            {!esDiscrecional && (
+              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+                <div className="mt-4 w-full">
+                  <Input
+                    label={"Turno"}
+                    name="turno"
+                    type={"text"}
+                    className="mt-2"
+                    value={CursoTurno({ turno: curso?.turno })}
+                    readOnly
+                  />
+                </div>
+                <div className="mt-4 w-full">
+                  <Input
+                    label={"Sede"}
+                    name="sede"
+                    type={"text"}
+                    className="mt-2"
+                    value={curso?.sede.nombre ?? ""}
+                    readOnly
+                  />
+                </div>
               </div>
-            </div>
+            )}
+
+            {!esDiscrecional && (
+              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+                <div className="mt-4 w-full">
+                  <Input
+                    label={"Profesor"}
+                    name="profesor"
+                    type={"text"}
+                    className="mt-2"
+                    value={`${curso?.profesor.nombre} ${curso?.profesor.apellido}`}
+                    readOnly
+                  />
+                </div>
+                <div className="mt-4 w-full">
+                  <Input
+                    label={"Ayudante/s"}
+                    name="ayudante"
+                    type={"text"}
+                    className="mt-2"
+                    value={curso?.ayudantes.map((ayudante) => ayudante.usuario.apellido).join(", ") ?? ""}
+                    readOnly
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-              <div className="mt-4 w-full">
-                <Input
-                  label={"Turno"}
-                  name="turno"
-                  type={"text"}
-                  className="mt-2"
-                  value={CursoTurno({ turno: curso?.turno })}
-                  readOnly
-                />
-              </div>
-              <div className="mt-4 w-full">
-                <Input
-                  label={"Sede"}
-                  name="sede"
-                  type={"text"}
-                  className="mt-2"
-                  value={curso?.sede.nombre ?? ""}
-                  readOnly
-                />
-              </div>
-            </div>
-
-            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
-              <div className="mt-4 w-full">
-                <Input
-                  label={"Profesor"}
-                  name="profesor"
-                  type={"text"}
-                  className="mt-2"
-                  value={`${curso?.profesor.nombre} ${curso?.profesor.apellido}`}
-                  readOnly
-                />
-              </div>
-              <div className="mt-4 w-full">
-                <Input
-                  label={"Ayudante/s"}
-                  name="ayudante"
-                  type={"text"}
-                  className="mt-2"
-                  value={curso?.ayudantes.map((ayudante) => ayudante.usuario.apellido).join(", ") ?? ""}
-                  readOnly
-                />
-              </div>
-            </div>
-
-            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              {esDiscrecional && (
+                <div className="mt-4 w-full">
+                  <FormSelect label={"Turno"} name="turno" className="mt-2" items={turnosValues} control={control} />
+                </div>
+              )}
               <div className="mt-4 basis-1/3">
                 {/* TODO: Habilitar fecha de reserva a los días de curso */}
                 <FormInput
@@ -324,19 +347,36 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4">
                 <div className="items-top flex space-x-2">
-                  <Checkbox id="aceptoTerminos" name="aceptoTerminos" className="mt-2" />
-                  <div className="grid gap-1.5 leading-none">
-                    <label
-                      htmlFor="terms1"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      <b> Declaro conocer las nuevas políticas de uso de laboratorio</b>
-                    </label>
-                    <p className="text-sm text-muted-foreground">
-                      La política de uso de laboratorio ha cambiado,{" "}
-                      <PoliticasPrivacidadModal triggerText="presione aquí para verla" />
-                    </p>
-                  </div>
+                  <Controller
+                    control={control}
+                    name="aceptoTerminos"
+                    render={({ field, fieldState }) => (
+                      <>
+                        <div className="grid gap-1.5 leading-none">
+                          <label
+                            htmlFor="aceptoTerminos"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
+                            <Checkbox
+                              id="aceptoTerminos"
+                              name="aceptoTerminos"
+                              className="mt-2"
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                            <b> Declaro conocer las nuevas políticas de uso de laboratorio</b>
+                          </label>
+                          <p className="text-sm text-muted-foreground">
+                            La política de uso de laboratorio ha cambiado,{" "}
+                            <PoliticasPrivacidadModal triggerText="presione aquí para verla" />
+                          </p>
+                          <div className="min-h-4 text-sm text-danger">
+                            {fieldState.error && fieldState.error.message}
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  />
                 </div>
               </div>
             </div>
