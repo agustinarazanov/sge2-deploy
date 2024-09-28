@@ -6,14 +6,24 @@ import { revalidatePath } from "next/cache";
 import path from "path";
 
 export async function uploadFile(formData: FormData) {
+  const oldFile = formData.get("old") as string;
+  if (oldFile) {
+    try {
+      await removeFile(oldFile);
+    } catch (e) {
+      console.error(`No se pudo eliminar la imagen ${oldFile}`);
+    }
+  }
+
   const file = formData.get("file") as File;
   const arrayBuffer = await file.arrayBuffer();
   const buffer = new Uint8Array(arrayBuffer);
 
-  const dir = path.join(process.cwd(), "public/imagenes");
+  const dir = path.join("./public/imagenes");
   mkdirSync(dir, { recursive: true });
 
-  const filePath = path.join(dir, file.name);
+  const newName = `${Date.now().toString()}-${file.name}`;
+  const filePath = path.join(dir, newName);
 
   try {
     await writeFile(filePath, buffer);
@@ -23,11 +33,11 @@ export async function uploadFile(formData: FormData) {
 
   revalidatePath("/");
 
-  return `${file.name}`;
+  return `${newName}`;
 }
 
 export async function removeFile(fileName: string) {
-  const filePath = path.join(process.cwd(), "public/imagenes", fileName);
+  const filePath = path.join("./public/imagenes", fileName);
 
   try {
     await rm(filePath);
