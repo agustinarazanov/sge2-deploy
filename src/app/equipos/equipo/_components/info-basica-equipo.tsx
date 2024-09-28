@@ -12,15 +12,15 @@ export const EquipoInformacionBasica = ({ equipoId }: { equipoId: number }) => {
   return (
     <>
       <div className="my-2 flex w-full flex-col space-y-4 px-0 text-left text-2xl md:px-6">Descripción:</div>
-      <div className="flex w-full flex-col space-x-0 px-12 md:flex-row md:space-x-4">
-        <div className="flex w-full flex-col border lg:flex-col lg:justify-between">
+      <div className="flex w-full flex-col space-x-0 px-12 sm:flex-row sm:space-x-4">
+        <div className="flex w-full flex-col lg:flex-col lg:justify-between">
           <div className="mt-4">
             <Image
-              src={equipo?.tipo.imagen ?? ""}
+              src={equipo?.tipo.imagen ?? "/no-image.svg"}
               alt="Imagen del tipo"
-              className="h-auto w-fit"
+              className="rounded-xl"
               height={100}
-              width={100}
+              width={200}
             />
           </div>
         </div>
