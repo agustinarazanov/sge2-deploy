@@ -6,7 +6,7 @@ import { type z } from "zod";
 import { useEffect, useMemo, useState } from "react";
 import { inputEditarTipo } from "@/shared/filters/equipos-tipos-filter.schema";
 import { uploadFile } from "@/shared/upload-file";
-import Image, { ImageLoaderProps } from "next/image";
+import Image from "next/image";
 
 type Props = {
   id?: string;
@@ -31,7 +31,7 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
   const tipoBase: FormEditarTipoType = useMemo(() => {
     if (!tipo) return {} as FormEditarTipoType;
 
-    setPreviewimgUrl(tipo.imagen ?? "");
+    setPreviewimgUrl(tipo.imagen ? `/imagenes/${tipo.imagen}` : "");
 
     return {
       id: tipo.id,
@@ -68,6 +68,7 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
     try {
       const fileForm = new FormData();
       if (selectedImage) {
+        fileForm.append("old", formData.imagen);
         fileForm.append("file", selectedImage);
         formData.imagen = await uploadFile(fileForm);
       }
@@ -155,7 +156,7 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     alt="Imagen del tipo"
                     className="h-auto w-fit rounded-xl"
                     height={100}
-                    width={100}
+                    width={250}
                   />
                 </div>
               </div>
