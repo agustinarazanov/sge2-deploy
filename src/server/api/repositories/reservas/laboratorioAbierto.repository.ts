@@ -1,6 +1,6 @@
 import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 import type {
-  inputAprobarORechazarSolicitudReserva,
+  inputAprobarORechazarSolicitudReservaLaboratorioAbierto,
   inputGetAllSolicitudesReservaLaboratorioAbierto,
   inputGetReservaPorId,
   inputGetReservaPorUsuarioId,
@@ -126,8 +126,12 @@ export const getReservaPorId = async (ctx: { db: PrismaClient }, input: InputGet
   return reserva;
 };
 
-type InputAprobarORechazarReserva = z.infer<typeof inputAprobarORechazarSolicitudReserva>;
-export const aprobarReserva = async (ctx: { db: PrismaClient }, input: InputAprobarORechazarReserva) => {
+type InputAprobarORechazarReserva = z.infer<typeof inputAprobarORechazarSolicitudReservaLaboratorioAbierto>;
+export const aprobarReserva = async (
+  ctx: { db: PrismaClient },
+  input: InputAprobarORechazarReserva,
+  userId: string,
+) => {
   try {
     const reserva = await ctx.db.$transaction(async (tx) => {
       const reserva = await tx.reserva.findUnique({
@@ -153,7 +157,7 @@ export const aprobarReserva = async (ctx: { db: PrismaClient }, input: InputApro
           id: input.id,
         },
         data: {
-          usuarioAprobadorId: input.usuarioAprobadorId,
+          usuarioAprobadorId: userId,
           estatus: "FINALIZADA",
         },
       });
@@ -167,7 +171,11 @@ export const aprobarReserva = async (ctx: { db: PrismaClient }, input: InputApro
   }
 };
 
-export const rechazarReserva = async (ctx: { db: PrismaClient }, input: InputAprobarORechazarReserva) => {
+export const rechazarReserva = async (
+  ctx: { db: PrismaClient },
+  input: InputAprobarORechazarReserva,
+  userId: string,
+) => {
   try {
     const reserva = await ctx.db.$transaction(async (tx) => {
       const reserva = await tx.reserva.findUnique({
@@ -193,7 +201,7 @@ export const rechazarReserva = async (ctx: { db: PrismaClient }, input: InputApr
           id: input.id,
         },
         data: {
-          usuarioAprobadorId: input.usuarioAprobadorId,
+          usuarioRechazadoId: userId,
           estatus: "CANCELADA",
         },
       });

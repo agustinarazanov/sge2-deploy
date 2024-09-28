@@ -1,5 +1,6 @@
 import {
-  inputAprobarORechazarSolicitudReserva,
+  inputAprobarORechazarSolicitudReservaLaboratorioAbierto,
+  inputEditarReservaLaboratorioAbiertoSchema,
   inputGetAllSolicitudesReservaLaboratorioAbierto,
   inputGetReservaPorId,
   inputGetReservaPorUsuarioId,
@@ -41,27 +42,41 @@ export const getReservaLaboratorioAbiertoPorIdProcedure = protectedProcedure
   .query(async ({ ctx, input }) => {
     validarInput(inputGetReservaPorId, input);
 
-    const reservas = await getReservaPorId(ctx, input);
+    const reserva = await getReservaPorId(ctx, input);
 
-    return reservas;
+    return reserva;
   });
 
 export const aprobarReservaProcedure = protectedProcedure
-  .input(inputAprobarORechazarSolicitudReserva)
+  .input(inputAprobarORechazarSolicitudReservaLaboratorioAbierto)
   .mutation(async ({ ctx, input }) => {
-    validarInput(inputAprobarORechazarSolicitudReserva, input);
+    validarInput(inputAprobarORechazarSolicitudReservaLaboratorioAbierto, input);
 
-    const reserva = await aprobarReserva(ctx, input);
+    const userId = ctx.session.user.id;
+
+    const reserva = await aprobarReserva(ctx, input, userId);
 
     return reserva;
   });
 
 export const rechazarReservaProcedure = protectedProcedure
-  .input(inputAprobarORechazarSolicitudReserva)
+  .input(inputAprobarORechazarSolicitudReservaLaboratorioAbierto)
   .mutation(async ({ ctx, input }) => {
-    validarInput(inputAprobarORechazarSolicitudReserva, input);
+    validarInput(inputAprobarORechazarSolicitudReservaLaboratorioAbierto, input);
 
-    const reserva = await rechazarReserva(ctx, input);
+    const userId = ctx.session.user.id;
+
+    const reserva = await rechazarReserva(ctx, input, userId);
 
     return reserva;
+  });
+
+export const editarReservaProcedure = protectedProcedure
+  .input(inputEditarReservaLaboratorioAbiertoSchema)
+  .mutation(async ({ ctx, input }) => {
+    validarInput(inputEditarReservaLaboratorioAbiertoSchema, input);
+
+    console.log("TODO: editar reserva", ctx, input);
+
+    return {};
   });

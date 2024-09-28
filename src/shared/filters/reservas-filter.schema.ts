@@ -90,7 +90,13 @@ export const inputGetAllSolicitudesReservaLaboratorioAbierto = z.object({
   filtrByUserId: z.enum(["true", "false"]).optional(),
 });
 
-export const inputAprobarORechazarSolicitudReserva = z.object({
+export const inputAprobarORechazarSolicitudReservaLaboratorioAbierto = z.object({
   id: z.number().positive().min(1, { message: "Requerido" }),
-  usuarioAprobadorId: z.string().min(1, { message: "Requerido" }),
+  tutorId: z.string().optional(),
+  laboratorioId: z.string().min(1, { message: "Requerido" }),
+});
+
+export const inputEditarReservaLaboratorioAbiertoSchema = z.object({
+  id: z.number().positive().min(1, { message: "Requerido" }),
+  laboratorioId: z.number().positive().min(1, { message: "Requerido" }),
 });
