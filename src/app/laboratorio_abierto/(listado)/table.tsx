@@ -10,7 +10,6 @@ import { useReservasLaboratorioAbiertoQueryParam } from "../_hooks/use-reserva-l
 import { type inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reservas-filter.schema";
 import { getColumnasReservasLaboratorioAbierto } from "./columns-reserva";
 import { PrinterIcon } from "lucide-react";
-import { getDateISO } from "@/shared/get-date";
 import { VerReservaModal } from "./ver-reserva";
 
 type LaboratorioAbiertoReservaData = RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getAll"];
@@ -22,34 +21,6 @@ type LaboratorioAbiertoTableProps = {
   filterByUser?: boolean;
 };
 
-const mockData: LaboratorioAbiertoReservaData = [
-  {
-    laboratorio: {
-      id: 1,
-      nombre: "Laboratorio 1",
-      sedeId: 1,
-      tienePc: true,
-      esReservable: true,
-      laboratorioAbiertoTipo: null,
-      fechaCreacion: getDateISO("2023-01-01T00:00:00.000Z"),
-      fechaModificacion: getDateISO("2023-01-01T00:00:00.000Z"),
-      usuarioCreadorId: "user1",
-      usuarioModificadorId: "user2",
-    },
-    reserva: {
-      id: 1,
-      fechaCreacion: getDateISO("2023-01-01T00:00:00.000Z"),
-      fechaHoraInicio: getDateISO("2023-01-01T00:00:00.000Z"),
-      fechaHoraFin: getDateISO("2023-01-01T00:00:00.000Z"),
-      usuarioSolicito: { id: 1, nombre: "Usuario 1", apellido: "Apellido 1" },
-      estatus: "PENDIENTE",
-      usuarioAprobador: null,
-      usuarioRenovo: null,
-      usuarioRecibio: null,
-    },
-  },
-];
-
 export const LaboratorioAbiertoReservaTable = ({ data, filters, filterByUser }: LaboratorioAbiertoTableProps) => {
   const { pagination, sorting, onSortingChange, onPaginationChange } = useReservasLaboratorioAbiertoQueryParam(filters);
 
@@ -58,7 +29,7 @@ export const LaboratorioAbiertoReservaTable = ({ data, filters, filterByUser }: 
   return (
     <>
       <DataTable
-        data={mockData ?? []}
+        data={data.reservas ?? []}
         columns={columns}
         manualSorting
         pageSize={pagination.pageSize}

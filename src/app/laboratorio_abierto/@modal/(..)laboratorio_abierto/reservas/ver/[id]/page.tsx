@@ -33,7 +33,7 @@ export default function VerReservaModal({ params: { id } }: PageProps) {
       className="max-h-[calc(100vh_-_10%)]"
     >
       <div className="flex max-h-max w-full flex-col gap-4">
-        <ReservaViewAdmin id={Number(id)} onCancel={handleClickCancel} />
+        <ReservaViewAdmin reservaId={Number(id)} onCancel={handleClickCancel} />
       </div>
     </ModalDrawer>
   );

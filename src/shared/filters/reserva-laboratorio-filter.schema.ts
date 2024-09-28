@@ -23,3 +23,10 @@ export const inputReservaLaboratorioAbierto = z.object({
   observaciones: z.string().default(""),
   aceptoTerminos: z.boolean().default(false),
 });
+
+export const inputAprobarReservaSchema = z.object({
+  id: z.number().positive().min(1, { message: "Requerido" }),
+  tutorId: z.string().optional(),
+  inventarioRevisado: z.array(z.string()),
+  laboratorioId: z.string().min(1, "Seleccione un laboratorio"),
+});

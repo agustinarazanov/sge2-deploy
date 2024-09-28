@@ -1,52 +1,88 @@
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FormAutocomplete, Label } from "@/components/ui";
+import { Label, toast } from "@/components/ui";
 import { MultiSelectSearch } from "@/app/laboratorio_abierto/_components/multiselect-check";
+import { SelectTutorForm } from "@/app/_components/select-tutor";
+import { useEffect } from "react";
+import { inputAprobarReservaSchema } from "@/shared/filters/reserva-laboratorio-filter.schema";
+import { type z } from "zod";
+import { SelectLaboratorioForm } from "@/app/_components/select-ubicacion/select-laboratorio";
+import { api } from "@/trpc/react";
 
-const aprobarReservaSchema = z.object({
-  id: z.number().positive().min(1, { message: "Requerido" }),
-  tutorId: z.string().optional(),
-  inventarioRevisado: z.array(z.string()),
-  laboratorioId: z.string().min(1, "Seleccione un laboratorio"),
-});
+type FormHelperType = {
+  tutor: { id: string; label: string };
+};
 
-type AprobarReservaFormData = z.infer<typeof aprobarReservaSchema>;
+type AprobarReservaFormData = z.infer<typeof inputAprobarReservaSchema> & FormHelperType;
 
 interface ReservaAprobacionProps {
-  id: number;
-  tutores: Array<{ id: string; name: string }>;
-  laboratorios: Array<{ id: number; nombre: string }>;
-  inventario: Array<{ id: string; name: string }>;
-  onSubmit: (data: AprobarReservaFormData) => Promise<void>;
-  onRechazar: () => Promise<void>;
+  reservaId: number;
+  onAprobar: () => void;
   onCancel: () => void;
-  isAprobando: boolean;
 }
 
-export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({
-  id,
-  tutores,
-  laboratorios,
-  inventario,
-  onSubmit,
-  onRechazar,
-  onCancel,
-  isAprobando,
-}) => {
+const inventario = [
+  { id: "item1", name: "Osciloscopio" },
+  { id: "item2", name: "Multímetro" },
+  { id: "item3", name: "Fuente de alimentación" },
+  { id: "item4", name: "Protoboard" },
+  { id: "item5", name: "Kit de resistencias" },
+];
+
+export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({ reservaId, onAprobar, onCancel }) => {
+  const { isPending: estaAprobando, mutate: aprobarReserva } =
+    api.reservas.reservaLaboratorioAbierto.aprobarReserva.useMutation();
+  const { isPending: estaRechazando, mutate: rechazarReserva } =
+    api.reservas.reservaLaboratorioAbierto.rechazarReserva.useMutation();
+
   const formHook = useForm<AprobarReservaFormData>({
-    resolver: zodResolver(aprobarReservaSchema),
+    mode: "onChange",
+    resolver: zodResolver(inputAprobarReservaSchema),
     defaultValues: {
-      id,
-      tutorId: "",
+      id: reservaId,
       inventarioRevisado: [],
       laboratorioId: "",
+
+      tutorId: "",
+      tutor: {
+        id: "",
+        label: "",
+      },
     },
   });
 
   const { handleSubmit, control, watch, setValue } = formHook;
+
+  const onSubmit = async (data: AprobarReservaFormData) => {
+    aprobarReserva(data, {
+      onSuccess: () => {
+        toast.success("Reserva aprobada con éxito");
+        onAprobar();
+      },
+      onError: (error) => {
+        toast.error("Error al aprobar la reserva");
+        console.error(error);
+      },
+    });
+  };
+
+  const handleRechazo = async () => {
+    rechazarReserva(
+      { id: reservaId, tutorId: "", laboratorioId: "" },
+      {
+        onSuccess: () => {
+          toast.success("Reserva rechazada con éxito");
+          onCancel();
+        },
+        onError: (error) => {
+          toast.error("Error al rechazar la reserva");
+          console.error(error);
+        },
+      },
+    );
+  };
 
   const handleInventarioItemSelect = (itemId: string) => {
     const currentItems = watch("inventarioRevisado");
@@ -61,6 +97,9 @@ export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({
     );
   };
 
+  const [tutor] = watch(["tutor"]);
+  useEffect(() => formHook.setValue("tutorId", tutor.id), [formHook, tutor]);
+
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -70,38 +109,22 @@ export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label htmlFor="tutorId">Tutor (Opcional)</Label>
-              <Controller
-                name="tutorId"
+              <SelectTutorForm
+                name="tutor"
+                realNameId="tutorId"
                 control={control}
-                render={({ field }) => (
-                  <FormAutocomplete
-                    items={tutores.map((tutor) => ({ label: tutor.name, value: tutor.id }))}
-                    onQueryChange={() => {}}
-                    placeholder="Buscar por nombre de tutor"
-                    clearable
-                    debounceTime={0}
-                    {...field}
-                  />
-                )}
+                className="mt-2"
+                label="Tutor (Opcional)"
               />
             </div>
 
             <div>
-              <Label htmlFor="laboratorioId">Laboratorio</Label>
-              <Controller
+              <SelectLaboratorioForm
                 name="laboratorioId"
                 control={control}
-                render={({ field }) => (
-                  <FormAutocomplete
-                    items={laboratorios.map((lab) => ({ label: lab.nombre, value: lab.id.toString() }))}
-                    onQueryChange={() => {}}
-                    placeholder="Buscar por nombre de laboratorio"
-                    clearable
-                    debounceTime={0}
-                    {...field}
-                  />
-                )}
+                className="mt-2"
+                label="Laboratorio"
+                placeholder="Selecciona un laboratorio"
               />
             </div>
 
@@ -124,15 +147,39 @@ export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({
           </CardContent>
         </Card>
 
-        <div className="flex justify-end space-x-4">
-          <Button title="Cancelar" type="button" variant="default" color="secondary" onClick={onCancel}>
+        <div className="flex flex-row justify-end space-x-4">
+          <Button
+            title="Cancelar"
+            type="button"
+            variant="default"
+            color="secondary"
+            onClick={onCancel}
+            className="w-full"
+            isLoading={estaAprobando || estaRechazando}
+          >
             Cancelar
           </Button>
-          <Button title="Rechazar" type="button" variant="default" color="danger" onClick={onRechazar}>
-            Rechazar
+          <Button
+            title="Rechazar"
+            type="button"
+            variant="default"
+            color="danger"
+            onClick={handleRechazo}
+            isLoading={estaRechazando}
+            className="w-full"
+          >
+            {estaRechazando ? "Rechazando..." : "Rechazar"}
           </Button>
-          <Button title="Aprobar" type="submit" variant="default" color="primary" disabled={isAprobando}>
-            {isAprobando ? "Aprobando..." : "Aprobar"}
+          <Button
+            title="Aprobar"
+            type="submit"
+            variant="default"
+            color="primary"
+            disabled={estaAprobando}
+            isLoading={estaAprobando}
+            className="w-full"
+          >
+            {estaAprobando ? "Aprobando..." : "Aprobar"}
           </Button>
         </div>
       </form>

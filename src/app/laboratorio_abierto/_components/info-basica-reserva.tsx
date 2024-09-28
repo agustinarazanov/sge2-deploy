@@ -2,25 +2,33 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, ClockIcon, BookOpenIcon, MapPinIcon } from "lucide-react";
 import { Label } from "@/components/ui";
+import { api } from "@/trpc/react";
+import { BadgeEstatusReserva } from "@/app/_components/badge-estatus-reserva";
 
-interface ReservaDetalleProps {
-  reserva: any;
-  laboratorios: Array<{ id: number; nombre: string }>;
-}
+type ReservaDetalleProps = {
+  reservaId: number;
+};
 
-export const ReservaDetalle: React.FC<ReservaDetalleProps> = ({ reserva, laboratorios }) => {
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "PENDIENTE":
-        return "bg-yellow-500 text-yellow-900";
-      case "FINALIZADA":
-        return "bg-green-500 text-green-900";
-      case "CANCELADA":
-        return "bg-red-500 text-red-900";
-      default:
-        return "bg-gray-500 text-gray-900";
-    }
-  };
+export const ReservaDetalle = ({ reservaId }: ReservaDetalleProps) => {
+  const {
+    data: reserva,
+    isLoading,
+    isError,
+  } = api.reservas.reservaLaboratorioAbierto.getReservaPorID.useQuery({
+    id: reservaId,
+  });
+
+  if (isError) {
+    return <div>Error al cargar reserva...</div>;
+  }
+
+  if (isLoading) {
+    return <div>Cargando reserva...</div>;
+  }
+
+  if (!reserva) {
+    return <div>Reserva no encontrada</div>;
+  }
 
   return (
     <Card className="w-full">
@@ -31,7 +39,7 @@ export const ReservaDetalle: React.FC<ReservaDetalleProps> = ({ reserva, laborat
             <p className="mb-1">{reserva.especialidad}</p>
             <p className="mb-2 text-sm">{reserva.descripcion}</p>
             <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
-              <Badge className={getStatusColor(reserva.reserva.estatus)}>{reserva.reserva.estatus}</Badge>
+              <BadgeEstatusReserva estatus={reserva.reserva.estatus} />
               <Badge color="secondary">{reserva.reserva.tipo}</Badge>
             </div>
           </div>
@@ -44,28 +52,28 @@ export const ReservaDetalle: React.FC<ReservaDetalleProps> = ({ reserva, laborat
               <CalendarIcon className="mr-2 h-4 w-4" />
               Fecha de Inicio
             </Label>
-            <p>{new Date(reserva.reserva.fechaHoraInicio).toLocaleDateString()}</p>
+            <p>{new Date(reserva.reserva.fechaHoraInicio ?? "").toLocaleDateString()}</p>
           </div>
           <div className="space-y-2">
             <Label className="flex items-center font-semibold">
               <ClockIcon className="mr-2 h-4 w-4" />
               Hora de Inicio
             </Label>
-            <p>{new Date(reserva.reserva.fechaHoraInicio).toLocaleTimeString()}</p>
+            <p>{new Date(reserva.reserva.fechaHoraInicio ?? "").toLocaleTimeString()}</p>
           </div>
           <div className="space-y-2">
             <Label className="flex items-center font-semibold">
               <CalendarIcon className="mr-2 h-4 w-4" />
               Fecha de Fin
             </Label>
-            <p>{new Date(reserva.reserva.fechaHoraFin).toLocaleDateString()}</p>
+            <p>{new Date(reserva.reserva.fechaHoraFin ?? "").toLocaleDateString()}</p>
           </div>
           <div className="space-y-2">
             <Label className="flex items-center font-semibold">
               <ClockIcon className="mr-2 h-4 w-4" />
               Hora de Fin
             </Label>
-            <p>{new Date(reserva.reserva.fechaHoraFin).toLocaleTimeString()}</p>
+            <p>{new Date(reserva.reserva.fechaHoraFin ?? "").toLocaleTimeString()}</p>
           </div>
           <div className="space-y-2">
             <Label className="flex items-center font-semibold">
@@ -79,7 +87,7 @@ export const ReservaDetalle: React.FC<ReservaDetalleProps> = ({ reserva, laborat
               <MapPinIcon className="mr-2 h-4 w-4" />
               Laboratorio Actual
             </Label>
-            <p>{laboratorios.find((lab) => lab.id === reserva.laboratorioId)?.nombre}</p>
+            <p>{reserva.laboratorio.nombre}</p>
           </div>
         </div>
       </CardContent>
