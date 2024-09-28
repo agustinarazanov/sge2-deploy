@@ -6,7 +6,7 @@ import { type z } from "zod";
 import { useEffect, useMemo, useState } from "react";
 import { inputEditarTipo } from "@/shared/filters/equipos-tipos-filter.schema";
 import { uploadFile } from "@/shared/upload-file";
-import Image from "next/image";
+import Image, { ImageLoaderProps } from "next/image";
 
 type Props = {
   id?: string;
@@ -148,12 +148,12 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
               </div>
 
-              <div className="flex w-full flex-col border md:w-1/3 md:flex-row lg:justify-between">
+              <div className="flex w-full flex-col md:w-1/3 md:flex-row lg:justify-between">
                 <div className="mt-4">
                   <Image
                     src={previewImgUrl ? previewImgUrl : "/no-image.svg"}
                     alt="Imagen del tipo"
-                    className="h-auto w-fit"
+                    className="h-auto w-fit rounded-xl"
                     height={100}
                     width={100}
                   />
