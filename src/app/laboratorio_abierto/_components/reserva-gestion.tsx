@@ -2,14 +2,16 @@ import { useForm, Controller, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Label, toast } from "@/components/ui";
-import { MultiSelectSearch } from "@/app/laboratorio_abierto/_components/multiselect-check";
+import { Input, Label, ScrollArea, toast } from "@/components/ui";
 import { SelectTutorForm } from "@/app/_components/select-tutor";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { inputAprobarReservaSchema } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { type z } from "zod";
 import { SelectLaboratorioForm } from "@/app/_components/select-ubicacion/select-laboratorio";
 import { api } from "@/trpc/react";
+import { EquipoTipoSelector } from "@/app/laboratorios/mis_cursos/_components/filtros/equipo-tipo-selector";
+import { Switch } from "@/components/ui/switch";
+import { MinusIcon } from "lucide-react";
 
 type FormHelperType = {
   tutor: { id: string; label: string };
@@ -23,19 +25,15 @@ interface ReservaAprobacionProps {
   onCancel: () => void;
 }
 
-const inventario = [
-  { id: "item1", name: "Osciloscopio" },
-  { id: "item2", name: "Multímetro" },
-  { id: "item3", name: "Fuente de alimentación" },
-  { id: "item4", name: "Protoboard" },
-  { id: "item5", name: "Kit de resistencias" },
-];
-
 export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({ reservaId, onAprobar, onCancel }) => {
   const { isPending: estaAprobando, mutate: aprobarReserva } =
     api.reservas.reservaLaboratorioAbierto.aprobarReserva.useMutation();
   const { isPending: estaRechazando, mutate: rechazarReserva } =
     api.reservas.reservaLaboratorioAbierto.rechazarReserva.useMutation();
+  const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery({ tipoId: undefined });
+  const { data: reservaData } = api.reservas.reservaLaboratorioAbierto.getReservaPorID.useQuery({ id: reservaId });
+
+  const [requiereInstrumental, setRequiereInstrumental] = useState(false);
 
   const formHook = useForm<AprobarReservaFormData>({
     mode: "onChange",
@@ -50,6 +48,7 @@ export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({ reservaId,
         id: "",
         label: "",
       },
+      equipoRequerido: [],
     },
   });
 
@@ -84,21 +83,44 @@ export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({ reservaId,
     );
   };
 
-  const handleInventarioItemSelect = (itemId: string) => {
-    const currentItems = watch("inventarioRevisado");
-    setValue("inventarioRevisado", [...currentItems, itemId]);
-  };
+  const [tutor] = watch(["tutor"]);
+  useEffect(() => formHook.setValue("tutorId", tutor.id), [formHook, tutor]);
 
-  const handleInventarioItemRemove = (itemId: string) => {
-    const currentItems = watch("inventarioRevisado");
-    setValue(
-      "inventarioRevisado",
-      currentItems.filter((id) => id !== itemId),
+  useEffect(() => {
+    if (reservaData) {
+      const equiposReservados = reservaData.equipoReservado.map((equipo) => ({
+        idTipo: equipo.equipoId.toString(),
+        cantidad: equipo.cantidad,
+      }));
+
+      setValue("equipoRequerido", equiposReservados);
+      setRequiereInstrumental(equiposReservados.length > 0);
+    }
+  }, [reservaData, setValue]);
+
+  const onEquipoTipoDelete = (equipoTipoId: string) => {
+    const equipos = formHook.getValues("equipoRequerido");
+
+    formHook.setValue(
+      "equipoRequerido",
+      equipos.filter((equipo) => equipo.idTipo !== equipoTipoId),
     );
   };
 
-  const [tutor] = watch(["tutor"]);
-  useEffect(() => formHook.setValue("tutorId", tutor.id), [formHook, tutor]);
+  const onEquipoTipoChange = (equipoTipoId: string) => {
+    const equipos = formHook.getValues("equipoRequerido");
+
+    const existeEquipo = equipos.find((equipo) => equipo.idTipo === equipoTipoId);
+
+    if (existeEquipo) {
+      return;
+    } else {
+      formHook.setValue("equipoRequerido", [...equipos, { idTipo: equipoTipoId, cantidad: 1 }]);
+      return;
+    }
+  };
+
+  const currentEquipoTipo = formHook.watch("equipoRequerido");
 
   return (
     <FormProvider {...formHook}>
@@ -129,20 +151,75 @@ export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({ reservaId,
             </div>
 
             <div>
-              <Label htmlFor="inventarioRevisado">Inventario Revisado</Label>
-              <Controller
-                name="inventarioRevisado"
-                control={control}
-                render={({ field }) => (
-                  <MultiSelectSearch
-                    items={inventario}
-                    selectedItems={field.value}
-                    onItemSelect={handleInventarioItemSelect}
-                    onItemRemove={handleInventarioItemRemove}
-                    placeholder="Buscar items del inventario"
+              <Label htmlFor="inventarioRevisado">Revisar inventario</Label>
+              <div className="mt-2">
+                <div className="items-top flex space-x-2">
+                  <Controller
+                    name="equipoRequerido"
+                    control={control}
+                    render={({ field }) => (
+                      <Switch
+                        id="equipoRequerido"
+                        checked={requiereInstrumental}
+                        onCheckedChange={(checked) => {
+                          setRequiereInstrumental(checked);
+                          if (!checked) {
+                            field.onChange([]);
+                          }
+                        }}
+                      />
+                    )}
                   />
+                  <div className="grid gap-1.5 leading-none">
+                    <label htmlFor="equipoRequerido">Requiere instumental</label>
+                  </div>
+                </div>
+                {requiereInstrumental && (
+                  <div className="mt-4 w-full">
+                    <EquipoTipoSelector onEquipoTipoChange={onEquipoTipoChange} />
+                  </div>
                 )}
-              />
+              </div>
+              {requiereInstrumental && (
+                <div className="mt-4 w-full">
+                  <ScrollArea className="max-h-80 w-full">
+                    <div className="flex w-full flex-col">
+                      {currentEquipoTipo?.map((equipoTipo) => (
+                        <div key={equipoTipo.idTipo} className="flex w-full flex-row gap-x-4 pl-4">
+                          <Input
+                            readOnly
+                            value={
+                              todosLosEquiposTipo?.tipos?.find((equipo) => String(equipo.id) === equipoTipo.idTipo)
+                                ?.nombre ?? ""
+                            }
+                            className="mt-2 grow basis-2/3"
+                          />
+                          <Input
+                            value={equipoTipo.cantidad}
+                            type="number"
+                            className="mt-2 grow basis-1/3"
+                            onChange={(e) => {
+                              const newEquipos = currentEquipoTipo.map((eq) =>
+                                eq.idTipo === equipoTipo.idTipo ? { ...eq, cantidad: Number(e.target.value) } : eq,
+                              );
+                              formHook.setValue("equipoRequerido", newEquipos);
+                            }}
+                          />
+                          <Button
+                            type="button"
+                            variant={"icon"}
+                            icon={MinusIcon}
+                            size="sm"
+                            className="mt-2 rounded-md border-none"
+                            onClick={() => onEquipoTipoDelete(equipoTipo.idTipo)}
+                            title={`Eliminar ${equipoTipo.idTipo} equipo`}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

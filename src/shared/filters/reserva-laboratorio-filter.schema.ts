@@ -29,4 +29,5 @@ export const inputAprobarReservaSchema = z.object({
   tutorId: z.string().optional(),
   inventarioRevisado: z.array(z.string()),
   laboratorioId: z.string().min(1, "Seleccione un laboratorio"),
+  equipoRequerido: z.array(inputEquipoRequerido).default([]),
 });
