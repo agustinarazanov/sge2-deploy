@@ -31,7 +31,7 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
   const tipoBase: FormEditarTipoType = useMemo(() => {
     if (!tipo) return {} as FormEditarTipoType;
 
-    setPreviewimgUrl(tipo.imagen ?? "");
+    setPreviewimgUrl(tipo.imagen ? `/imagenes/${tipo.imagen}` : "");
 
     return {
       id: tipo.id,
@@ -68,6 +68,7 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
     try {
       const fileForm = new FormData();
       if (selectedImage) {
+        fileForm.append("old", formData.imagen);
         fileForm.append("file", selectedImage);
         formData.imagen = await uploadFile(fileForm);
       }
@@ -148,14 +149,14 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
               </div>
 
-              <div className="flex w-full flex-col border md:w-1/3 md:flex-row lg:justify-between">
+              <div className="flex w-full flex-col md:w-1/3 md:flex-row lg:justify-between">
                 <div className="mt-4">
                   <Image
                     src={previewImgUrl ? previewImgUrl : "/no-image.svg"}
                     alt="Imagen del tipo"
-                    className="h-auto w-fit"
+                    className="h-auto w-fit rounded-xl"
                     height={100}
-                    width={100}
+                    width={250}
                   />
                 </div>
               </div>
