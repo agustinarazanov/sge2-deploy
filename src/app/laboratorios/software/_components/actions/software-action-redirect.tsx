@@ -3,23 +3,18 @@ import { Button } from "@/components/ui/button";
 import { LABORATORIO_ROUTE } from "@/shared/server-routes";
 import { SoftwareNuevoEditar } from "./software-nuevo";
 
-const rutaMisCursos = LABORATORIO_ROUTE?.subRutas[0];
-const rutaCatedra = LABORATORIO_ROUTE?.subRutas[1];
+const rutaCurso = LABORATORIO_ROUTE;
+const subrutasCurso = rutaCurso?.subRutas ?? [];
 
 export const SoftwareActionRedirect = () => {
   return (
     <>
       <SoftwareNuevoEditar />
-      <Button color={"ghost"}>
-        <Link href={rutaMisCursos?.href ?? "/"} passHref>
-          Ir a mis cursos
+      {subrutasCurso.map((subRuta, index) => (
+        <Link key={index} href={subRuta.href} passHref>
+          <Button color={"ghost"}>{subRuta.label}</Button>
         </Link>
-      </Button>
-      <Button color={"ghost"}>
-        <Link href={rutaCatedra?.href ?? "/"} passHref>
-          Ir a cátedra
-        </Link>
-      </Button>
+      ))}
     </>
   );
 };

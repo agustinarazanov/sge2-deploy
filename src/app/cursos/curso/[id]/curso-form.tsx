@@ -8,6 +8,7 @@ import { type z } from "zod";
 import { useEffect, useMemo, useState } from "react";
 import { inputEditarCurso } from "@/shared/filters/cursos-filter.schema";
 import { FormSelect } from "@/components/ui/autocomplete";
+import { turnosValues } from "@/app/_components/turno-text";
 
 type Props = {
   id?: string;
@@ -39,12 +40,6 @@ const duracion = ["1", "2", "3", "4", "5", "6"].map((item) => ({
 const ac = [
   { id: "ANUAL", label: "Anual" },
   { id: "CUATRIMESTRAL", label: "Cuatrimestral" },
-];
-
-const turnos = [
-  { id: "MANANA", label: "Mañana" },
-  { id: "TARDE", label: "Tarde" },
-  { id: "NOCHE", label: "Noche" },
 ];
 
 export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
@@ -231,7 +226,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
               </div>
 
               <div className="mt-4 basis-1/3">
-                <FormSelect label={"Turno"} control={control} name="turnoId" className="mt-2" items={turnos} />
+                <FormSelect label={"Turno"} control={control} name="turnoId" className="mt-2" items={turnosValues} />
               </div>
 
               <div className="mt-4 basis-1/3">

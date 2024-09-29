@@ -13,6 +13,7 @@ import {
   getAllEquipos,
   getAllEstados,
   getAllMarcas,
+  getAllModelos,
   getEquipoPorId,
 } from "../../repositories/equipos/equipos.repository";
 import { protectedProcedure } from "../../trpc";
@@ -138,4 +139,10 @@ export const getTodosLosArmariosProcedure = protectedProcedure.query(async ({ ct
   const armarios = await getAllArmarios(ctx);
 
   return armarios;
+});
+
+export const getTodosLosModelosProcedure = protectedProcedure.query(async ({ ctx }) => {
+  const modelos = await getAllModelos(ctx);
+
+  return modelos;
 });

@@ -54,9 +54,9 @@ model User {
     cursosComoAyudante CursoAyudante[]
     cursosComoProfesor Curso[]
 
-    materiasDirector            Materia[] @relation(name: "materiasDirector")
-    materiasJefeTrabajoPractico Materia[] @relation(name: "materiasJefeTrabajoPractico")
-    tutor                       Tutor? // 1 tutor por 1 usuario maximo
+    MateriaJefeTp    MateriaJefeTp[] @relation(name: "materiasJefeTrabajoPractico")
+    materiasDirector Materia[]       @relation(name: "materiasDirector")
+    tutor            Tutor? // 1 tutor por 1 usuario maximo
 
     @@index([name(sort: Asc)])
     @@index([apellido(sort: Asc)])

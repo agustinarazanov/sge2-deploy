@@ -18,7 +18,7 @@ export const inputGetTipos = z.object({
     .optional()
     .refine((value) => value && parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
     .catch(""),
-  fromFilter: z.string().optional().default("").catch(""),
+  fromFilter: z.enum(["true", "false"]).optional().default("false").catch("false"),
 });
 
 export const inputEliminarTipo = z.object({ id: z.number() });
@@ -27,6 +27,7 @@ export const inputGetTipo = z.object({ id: z.number() });
 
 export const inputAgregarTipo = z.object({
   nombre: z.string().min(1, { message: "Requerido" }),
+  imagen: z.string().optional().default(""),
 });
 
 export const inputEditarTipo = z
