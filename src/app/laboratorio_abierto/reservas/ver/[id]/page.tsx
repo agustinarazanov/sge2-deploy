@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { ReservaViewAdmin } from "./form-gestion-reserva";
 
 type PageProps = {
-  params: { id: number };
+  params: { id: string };
 };
 
 export default function PageLibroDetails({ params: { id } }: PageProps) {
@@ -15,7 +15,7 @@ export default function PageLibroDetails({ params: { id } }: PageProps) {
 
   return (
     <>
-      <ReservaViewAdmin reservaId={id} onCancel={handleClickCancel} />
+      <ReservaViewAdmin reservaId={Number(id)} onCancel={handleClickCancel} />
     </>
   );
 }

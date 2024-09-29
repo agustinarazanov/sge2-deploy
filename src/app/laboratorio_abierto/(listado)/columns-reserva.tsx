@@ -3,6 +3,7 @@ import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { DatoUsuarioReserva } from "@/app/_components/datos-usuario";
 import { getDateISOString } from "@/shared/get-date";
 import { Badge } from "@/components/ui/badge";
+import { BadgeEstatusReserva } from "@/app/_components/badge-estatus-reserva";
 
 type LaboratorioAbiertoReservaData =
   RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getAll"]["reservas"][number];
@@ -67,12 +68,8 @@ export const getColumnasReservasLaboratorioAbierto = ({ filterByUser }: { filter
       header: "Estado",
       cell: ({ row }) => {
         const { estatus } = row.original.reserva;
-        if (estatus === "PENDIENTE") {
-          return <Badge color="danger">Pendiente</Badge>;
-        }
-        if (estatus === "FINALIZADA") {
-          return <Badge color="success">Aprobada</Badge>;
-        }
+
+        return <BadgeEstatusReserva estatus={estatus} />;
       },
     }),
   ] as ColumnDef<LaboratorioAbiertoReservaData>[];

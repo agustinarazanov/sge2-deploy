@@ -1,14 +1,17 @@
 import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 import type {
-  inputAprobarORechazarSolicitudReservaLaboratorioAbierto,
   inputGetAllSolicitudesReservaLaboratorioAbierto,
   inputGetReservaPorId,
   inputGetReservaPorUsuarioId,
+  inputRechazarReservaLaboratorioAbierto,
 } from "@/shared/filters/reservas-filter.schema";
 import type { PrismaClient, Prisma } from "@prisma/client";
 import type { z } from "zod";
 import { informacionUsuario } from "../usuario-helper";
-import { inputReservaLaboratorioAbierto } from "@/shared/filters/reserva-laboratorio-filter.schema";
+import {
+  type inputAprobarReservaSchema,
+  type inputReservaLaboratorioAbierto,
+} from "@/shared/filters/reserva-laboratorio-filter.schema";
 
 type InputGetPorUsuarioID = z.infer<typeof inputGetReservaPorUsuarioId>;
 export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: InputGetPorUsuarioID) => {
@@ -116,10 +119,14 @@ export const getReservaPorId = async (ctx: { db: PrismaClient }, input: InputGet
 
   const reserva = await ctx.db.reservaLaboratorioAbierto.findUnique({
     where: {
-      id: id,
+      reservaId: id,
     },
     include: {
-      reserva: true,
+      reserva: {
+        include: {
+          usuarioTutor: true,
+        },
+      },
       laboratorio: true,
       equipoReservado: true,
     },
@@ -128,7 +135,7 @@ export const getReservaPorId = async (ctx: { db: PrismaClient }, input: InputGet
   return reserva;
 };
 
-type InputAprobarORechazarReserva = z.infer<typeof inputAprobarORechazarSolicitudReservaLaboratorioAbierto>;
+type InputAprobarORechazarReserva = z.infer<typeof inputAprobarReservaSchema>;
 export const aprobarReserva = async (
   ctx: { db: PrismaClient },
   input: InputAprobarORechazarReserva,
@@ -161,6 +168,14 @@ export const aprobarReserva = async (
         data: {
           usuarioAprobadorId: userId,
           estatus: "FINALIZADA",
+          fechaAprobacion: new Date(),
+          usuarioTutorId: input.tutorId,
+          reservaLaboratorioAbierto: {
+            update: {
+              laboratorioId: input.laboratorioId,
+              usuarioModificadorId: userId,
+            },
+          },
         },
       });
 
@@ -173,9 +188,10 @@ export const aprobarReserva = async (
   }
 };
 
+type InputRechazarReservaLaboratorioAbierto = z.infer<typeof inputRechazarReservaLaboratorioAbierto>;
 export const rechazarReserva = async (
   ctx: { db: PrismaClient },
-  input: InputAprobarORechazarReserva,
+  input: InputRechazarReservaLaboratorioAbierto,
   userId: string,
 ) => {
   try {
@@ -194,8 +210,8 @@ export const rechazarReserva = async (
         throw new Error("La reserva no existe");
       }
 
-      if (reserva.estatus !== "PENDIENTE") {
-        throw new Error("La reserva no está pendiente");
+      if (reserva.estatus === "CANCELADA") {
+        throw new Error("La reserva ya está cancelada");
       }
 
       await tx.reserva.update({
@@ -205,6 +221,14 @@ export const rechazarReserva = async (
         data: {
           usuarioRechazadoId: userId,
           estatus: "CANCELADA",
+          fechaRechazo: new Date(),
+          usuarioTutorId: null,
+          reservaLaboratorioAbierto: {
+            update: {
+              laboratorioId: null,
+              usuarioModificadorId: userId,
+            },
+          },
         },
       });
 
@@ -213,7 +237,7 @@ export const rechazarReserva = async (
 
     return reserva;
   } catch (error) {
-    throw new Error(`Error rechazando reserva`);
+    throw new Error(`Error rechazando reserva. ${(error as Error).message ?? ""}`);
   }
 };
 
@@ -224,54 +248,39 @@ export const crearReservaLaboratorioAbierto = async (
   userId: string,
 ) => {
   try {
-    const reserva = await ctx.db.$transaction(async (tx) => {
-      const reserva = await tx.reserva.create({
-        data: {
-          usuarioSolicitoId: userId,
-          estatus: "PENDIENTE",
-          // todo pasar input.horaInicio y input.horaFin a fechaHoraInicio y fechaHoraFin
-          fechaHoraInicio: new Date(),
-          fechaHoraFin: new Date(),
-          tipo: "LABORATORIO_ABIERTO",
-          usuarioAprobadorId: userId,
-          usuarioRechazadoId: null,
-          reservaLaboratorioAbierto: {
-            create: {
-              laboratorioId: 0,
-              descripcion: input.observaciones?.trim() ?? "",
-              usuarioCreadorId: userId,
-              usuarioModificadorId: userId,
-              mailConfirmado: false,
-              especialidad: "",
-              numeroReserva: 123456, // TODO: que dato va aca?
-              fechaCreacion: new Date(),
-              fechaModificacion: new Date(),
+    const reserva = await ctx.db.reserva.create({
+      data: {
+        estatus: "PENDIENTE",
+        fechaHoraInicio: new Date(`${input.fechaReserva}T${input.horaInicio}`),
+        fechaHoraFin: new Date(`${input.fechaReserva}T${input.horaFin}`),
+        tipo: "LABORATORIO_ABIERTO",
+        reservaLaboratorioAbierto: {
+          create: {
+            laboratorioId: null,
+            descripcion: input.observaciones?.trim() ?? "",
+            usuarioCreadorId: userId,
+            usuarioModificadorId: userId,
+            especialidad: input.especialidad ?? "",
+            equipoReservado: {
+              createMany: {
+                data: input.equipoRequerido.map((equipo) => ({
+                  cantidad: equipo.cantidad,
+                  equipoId: parseInt(equipo.idTipo),
+                  usuarioCreadorId: userId,
+                  usuarioModificadorId: userId,
+                })),
+              },
             },
           },
-          usuarioCreadorId: userId,
-          usuarioModificadorId: userId,
         },
-      });
-
-      if (input.equipoRequerido.length > 0) {
-        for (const equipo of input.equipoRequerido) {
-          await tx.reservaLaboratorioAbiertoEquipo.create({
-            data: {
-              cantidad: equipo.cantidad,
-              equipoId: parseInt(equipo.idTipo),
-              reservaLaboratorioAbiertoId: reserva.id,
-              usuarioCreadorId: userId,
-              usuarioModificadorId: userId,
-            },
-          });
-        }
-      }
-
-      return reserva;
+        usuarioSolicitoId: userId,
+        usuarioCreadorId: userId,
+        usuarioModificadorId: userId,
+      },
     });
 
     return reserva;
   } catch (error) {
-    throw new Error(`Error rechazando reserva`);
+    throw new Error(`Error creando reserva`);
   }
 };

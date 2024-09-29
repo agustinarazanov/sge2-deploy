@@ -24,12 +24,14 @@ export const SelectTutorForm = <
     if (!data) return [];
 
     return data
-      .map((autor) => {
-        const label = `${autor.apellido} ${autor.nombre}`;
+      .map((usuario) => {
+        const tutor = usuario.usuario;
+
+        const label = `${tutor?.apellido ?? ""} ${tutor?.nombre ?? ""}`;
 
         return {
           label,
-          id: autor.id,
+          id: tutor.id,
         };
       })
       .filter((item) => !query || estaDentroDe(query, item.label));
