@@ -11,9 +11,11 @@ import {
   getReservaPorId,
   aprobarReserva,
   rechazarReserva,
+  crearReservaLaboratorioAbierto,
 } from "../../repositories/reservas/laboratorioAbierto.repository";
 import { protectedProcedure } from "../../trpc";
 import { validarInput } from "../helper";
+import { inputReservaLaboratorioAbierto } from "@/shared/filters/reserva-laboratorio-filter.schema";
 
 export const getReservaLaboratorioAbiertoPorUserProcedure = protectedProcedure
   .input(inputGetReservaPorUsuarioId)
@@ -79,4 +81,16 @@ export const editarReservaProcedure = protectedProcedure
     console.log("TODO: editar reserva", ctx, input);
 
     return {};
+  });
+
+export const InputCrearReservaLaboratorioAbiertoProcedure = protectedProcedure
+  .input(inputReservaLaboratorioAbierto)
+  .mutation(async ({ ctx, input }) => {
+    validarInput(inputReservaLaboratorioAbierto, input);
+
+    const userId = ctx.session.user.id;
+
+    const reserva = await crearReservaLaboratorioAbierto(ctx, input, userId);
+
+    return reserva;
   });

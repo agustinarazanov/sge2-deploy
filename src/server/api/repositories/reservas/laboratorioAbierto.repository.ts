@@ -8,6 +8,7 @@ import type {
 import type { PrismaClient, Prisma } from "@prisma/client";
 import type { z } from "zod";
 import { informacionUsuario } from "../usuario-helper";
+import { inputReservaLaboratorioAbierto } from "@/shared/filters/reserva-laboratorio-filter.schema";
 
 type InputGetPorUsuarioID = z.infer<typeof inputGetReservaPorUsuarioId>;
 export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: InputGetPorUsuarioID) => {
@@ -206,6 +207,65 @@ export const rechazarReserva = async (
           estatus: "CANCELADA",
         },
       });
+
+      return reserva;
+    });
+
+    return reserva;
+  } catch (error) {
+    throw new Error(`Error rechazando reserva`);
+  }
+};
+
+type InputCrearReservaLaboratorioAbierto = z.infer<typeof inputReservaLaboratorioAbierto>;
+export const crearReservaLaboratorioAbierto = async (
+  ctx: { db: PrismaClient },
+  input: InputCrearReservaLaboratorioAbierto,
+  userId: string,
+) => {
+  try {
+    const reserva = await ctx.db.$transaction(async (tx) => {
+      const reserva = await tx.reserva.create({
+        data: {
+          usuarioSolicitoId: userId,
+          estatus: "PENDIENTE",
+          // todo pasar input.horaInicio y input.horaFin a fechaHoraInicio y fechaHoraFin
+          fechaHoraInicio: new Date(input.fechaReserva),
+          fechaHoraFin: new Date(input.fechaReserva),
+          tipo: "LABORATORIO_ABIERTO",
+          usuarioAprobadorId: userId,
+          usuarioRechazadoId: null,
+          reservaLaboratorioAbierto: {
+            create: {
+              laboratorioId: 0,
+              descripcion: input.observaciones?.trim() ?? "",
+              usuarioCreadorId: userId,
+              usuarioModificadorId: userId,
+              mailConfirmado: false,
+              especialidad: "",
+              numeroReserva: 123456, // TODO: que dato va aca?
+              fechaCreacion: new Date(),
+              fechaModificacion: new Date(),
+            },
+          },
+          usuarioCreadorId: userId,
+          usuarioModificadorId: userId,
+        },
+      });
+
+      if (input.equipoRequerido.length > 0) {
+        for (const equipo of input.equipoRequerido) {
+          await tx.reservaLaboratorioAbiertoEquipo.create({
+            data: {
+              cantidad: equipo.cantidad,
+              equipoId: parseInt(equipo.idTipo),
+              reservaLaboratorioAbiertoId: reserva.id,
+              usuarioCreadorId: userId,
+              usuarioModificadorId: userId,
+            },
+          });
+        }
+      }
 
       return reserva;
     });

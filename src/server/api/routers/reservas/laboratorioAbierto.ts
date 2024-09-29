@@ -5,6 +5,7 @@ import {
   aprobarReservaProcedure,
   rechazarReservaProcedure,
   editarReservaProcedure,
+  InputCrearReservaLaboratorioAbiertoProcedure,
 } from "../../services/reservas/laboratorioAbierto.service";
 import { createTRPCRouter } from "../../trpc";
 
@@ -15,4 +16,5 @@ export const reservaLaboratorioAbiertoRouter = createTRPCRouter({
   aprobarReserva: aprobarReservaProcedure,
   rechazarReserva: rechazarReservaProcedure,
   editarReserva: editarReservaProcedure,
+  crearReserva: InputCrearReservaLaboratorioAbiertoProcedure,
 });
