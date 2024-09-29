@@ -66,32 +66,3 @@ export const inputGetReservaPorUsuarioId = z.object({
 export const inputGetReservaPorId = z.object({
   id: z.number().positive().min(1, { message: "Requerido" }),
 });
-
-export const inputGetAllSolicitudesReservaLaboratorioAbierto = z.object({
-  pageSize: z.enum(["10", "20", "30", "40", "50"]).default("10").catch("10"),
-  pageIndex: z
-    .string()
-    .default("0")
-    .refine((value) => parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
-    .catch("0"),
-  orderBy: z
-    .enum([
-      "id",
-      "laboratorioId",
-      "sede",
-      "reserva_fechaCreacion",
-      "reserva_fechaHoraInicio",
-      "reserva_fechaHoraFin",
-      "reserva_usuarioSolicito_apellido",
-    ])
-    .default("id")
-    .catch("id"),
-  orderDirection: z.enum(["asc", "desc"]).default("desc").catch("desc"),
-  searchText: z.string().default(""),
-  estatus: enumReservaEstatus.default("").catch(""),
-  filtrByUserId: z.enum(["true", "false"]).optional(),
-});
-
-export const inputRechazarReservaLaboratorioAbierto = z.object({
-  id: z.number().positive().min(1, { message: "Requerido" }),
-});
