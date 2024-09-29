@@ -1,10 +1,13 @@
-import { FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { Button, FormInput, Input, ScrollArea, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { useEffect, useState } from "react";
-import { inputReservaLaboratorioAbierto } from "@/shared/filters/reserva-laboratorio-filter.schema";
+import {
+  inputEditarReservaLaboratorioAbiertoSchema,
+  inputReservaLaboratorioAbierto,
+} from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { FormTextarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MinusIcon } from "lucide-react";
@@ -12,71 +15,118 @@ import { EquipoTipoSelector } from "@/app/laboratorios/_components/filtros/equip
 import { type LaboratorioAbiertoType } from "../_components/laboratorios";
 import { Slider } from "@/components/ui/slider";
 import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
+import { getDateISOString, getTimeISOString } from "@/shared/get-date";
 
 type Props = {
-  tipo: LaboratorioAbiertoType;
   onSubmit: () => void;
   onCancel: () => void;
-};
+} & ({ reservaId: number; tipo?: undefined } | { reservaId?: undefined; tipo: LaboratorioAbiertoType });
 
-type FormReservarLaboratorioAbiertoType = z.infer<typeof inputReservaLaboratorioAbierto>;
+type FormReservarLaboratorioAbiertoType = z.infer<typeof inputEditarReservaLaboratorioAbiertoSchema>;
 
-export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
+export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: Props) => {
+  const esNuevo = reservaId === undefined;
+
   const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery({ tipoId: undefined });
-
-  // const editarCurso = api.cursos.editarCurso.useMutation();
+  const crearReservaLaboratorioAbierto = api.reservas.reservaLaboratorioAbierto.crearReserva.useMutation();
+  const modificarReservaLaboratorioAbierto = api.reservas.reservaLaboratorioAbierto.editarReserva.useMutation();
+  const cancelarReservaLaboratorioAbierto = api.reservas.reservaLaboratorioAbierto.cancelarReserva.useMutation();
+  const { data: reservaData } = api.reservas.reservaLaboratorioAbierto.getReservaPorID.useQuery(
+    {
+      id: reservaId!,
+    },
+    {
+      enabled: !esNuevo,
+    },
+  );
 
   const formHook = useForm<FormReservarLaboratorioAbiertoType>({
     mode: "onChange",
     defaultValues: {
-      tipo: tipo!,
+      id: reservaId,
+      tipo: esNuevo ? tipo! : reservaData?.reserva.tipo,
       aceptoTerminos: false,
-      concurrentes: 1,
+      concurrentes: esNuevo ? 1 : reservaData?.concurrentes,
       equipoRequerido: [],
-      fechaReserva: undefined,
-      horaInicio: undefined,
-      horaFin: undefined,
-      observaciones: "",
-      sedeId: 1,
+      fechaReserva: esNuevo ? undefined : getDateISOString(reservaData?.reserva.fechaHoraInicio as unknown as Date),
+      horaInicio: esNuevo ? undefined : getTimeISOString(reservaData?.reserva.fechaHoraInicio as unknown as Date),
+      horaFin: esNuevo ? undefined : getTimeISOString(reservaData?.reserva.fechaHoraFin as unknown as Date),
+      observaciones: esNuevo ? "" : (reservaData?.descripcion ?? ""),
+      sedeId: esNuevo ? 1 : reservaData?.sedeId,
     },
-    resolver: zodResolver(inputReservaLaboratorioAbierto),
+    resolver: zodResolver(esNuevo ? inputReservaLaboratorioAbierto : inputEditarReservaLaboratorioAbiertoSchema),
   });
 
-  const { handleSubmit, control } = formHook;
+  const { handleSubmit, control, setValue } = formHook;
 
-  const [concurrentes, setConcurrentes] = useState<number>(1);
+  useEffect(() => {
+    if (reservaData) {
+      formHook.reset({
+        id: reservaId,
+        tipo: esNuevo ? tipo! : reservaData?.reserva.tipo,
+        aceptoTerminos: false,
+        concurrentes: esNuevo ? 1 : reservaData?.concurrentes,
+        equipoRequerido: [],
+        fechaReserva: esNuevo ? undefined : getDateISOString(reservaData?.reserva.fechaHoraInicio as unknown as Date),
+        horaInicio: esNuevo ? undefined : getTimeISOString(reservaData?.reserva.fechaHoraInicio as unknown as Date),
+        horaFin: esNuevo ? undefined : getTimeISOString(reservaData?.reserva.fechaHoraFin as unknown as Date),
+        observaciones: esNuevo ? "" : (reservaData?.descripcion ?? ""),
+        sedeId: esNuevo ? 1 : reservaData?.sedeId,
+      });
+    }
+  }, [esNuevo, formHook, reservaData, reservaId, tipo]);
+
   const [requiereInstrumental, setRequiereInstrumental] = useState<boolean>(false); // Nuevo
   useEffect(() => {
-    formHook.reset({
-      tipo: tipo!,
-      aceptoTerminos: false,
-      concurrentes: 1,
-      equipoRequerido: [],
-      fechaReserva: undefined,
-      horaInicio: undefined,
-      horaFin: undefined,
-      observaciones: "",
-      sedeId: 1,
-    });
-  }, [formHook, tipo]);
+    if (esNuevo) {
+      setValue("tipo", tipo!);
+    }
+  }, [esNuevo, tipo, setValue]);
 
-  const onFormSubmit = (_formData: FormReservarLaboratorioAbiertoType) => {
-    toast.success("Reserva creada con éxito.");
-    // editarCurso.mutate(formData, {
-    //   onSuccess: () => {
-    //     toast.success("Reserva creada con éxito.");
-    //     onSubmit();
-    //   },
-    //   onError: (error) => {
-    //     toast.error(error?.message ?? "Error al crear la reserva");
-    //   },
-    // });
-    // TODO: FIX y crear endpoints para hacer reservas
+  const onFormSubmit = async (formData: FormReservarLaboratorioAbiertoType) => {
+    if (esNuevo) {
+      crearReservaLaboratorioAbierto.mutate(formData, {
+        onSuccess: () => {
+          toast.success("Reserva creada con éxito.");
+          onSubmit();
+        },
+        onError: (error) => {
+          toast.error(error?.message ?? "Error al crear la reserva");
+        },
+      });
+
+      return;
+    }
+
+    modificarReservaLaboratorioAbierto.mutate(formData, {
+      onSuccess: () => {
+        toast.success("Reserva actualizada con éxito.");
+        onSubmit();
+      },
+      onError: (error) => {
+        toast.error(error?.message ?? "Error al actualizar la reserva");
+      },
+    });
   };
 
   const handleCancel = () => {
     formHook.reset();
     onCancel();
+  };
+
+  const handleCancelReserva = () => {
+    cancelarReservaLaboratorioAbierto.mutate(
+      { id: reservaId! },
+      {
+        onSuccess: () => {
+          toast.success("Reserva cancelada con éxito.");
+          onCancel();
+        },
+        onError: (error) => {
+          toast.error(error?.message ?? "Error al cancelar la reserva");
+        },
+      },
+    );
   };
 
   const onEquipoTipoChange = (equipoTipoId: string) => {
@@ -100,6 +150,8 @@ export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
   };
 
   const currentEquipoTipo = formHook.watch("equipoRequerido");
+
+  const concurrentes = formHook.watch("concurrentes");
 
   return (
     <FormProvider {...formHook}>
@@ -155,15 +207,21 @@ export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4 w-full">
                 <label htmlFor="">¿Cuántas personas concurrirán al Laboratorio?</label>
-                <Slider
-                  value={[concurrentes]}
-                  min={0}
-                  max={8}
-                  step={1}
-                  className={"w-full"}
-                  onValueChange={(value) => setConcurrentes(value[0] ?? 1)}
+                <Controller
+                  control={control}
+                  name="concurrentes"
+                  render={({ field }) => (
+                    <Slider
+                      value={[field.value]}
+                      min={0}
+                      max={8}
+                      step={1}
+                      className={"w-full"}
+                      onValueChange={(value) => field.onChange(value[0] ?? 1)}
+                    />
+                  )}
                 />
-                <p className="mt-2">Cantidad de personas: {concurrentes}</p> {/* Mostramos el valor */}
+                <p className="mt-2">Cantidad de personas: {concurrentes}</p>
               </div>
             </div>
 
@@ -178,6 +236,7 @@ export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
                 />
               </div>
             </div>
+
             <div className="flex w-full flex-col justify-end gap-y-4 lg:justify-between">
               <div className="items-top flex space-x-2">
                 <Checkbox
@@ -262,9 +321,20 @@ export const LaboratorioAbiertoForm = ({ tipo, onCancel }: Props) => {
           </div>
         </div>
         <div className="flex w-full flex-row items-end justify-end space-x-4">
-          <Button title="Cancelar" type="button" variant="default" color="secondary" onClick={handleCancel}>
-            Cancelar
+          <Button title="Cerrar" type="button" variant="default" color="secondary" onClick={handleCancel}>
+            Cerrar
           </Button>
+          {!esNuevo && (
+            <Button
+              title="Cancelar Reserva"
+              type="button"
+              variant="default"
+              color="danger"
+              onClick={handleCancelReserva}
+            >
+              Cancelar Reserva
+            </Button>
+          )}
           <Button title="Guardar" type="submit" variant="default" color="primary">
             Guardar
           </Button>

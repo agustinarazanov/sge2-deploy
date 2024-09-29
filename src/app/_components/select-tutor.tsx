@@ -1,12 +1,12 @@
 import { useMemo, useState, type ReactElement } from "react";
-import type { Path, FieldValues } from "react-hook-form";
+import { type Path, type FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { type FormSelectProps, type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
+import { type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FormAutocomplete, Select, SelectTrigger, SelectValue } from "@/components/ui";
+import { FormAutocomplete, type FormAutocompleteProps, Select, SelectTrigger, SelectValue } from "@/components/ui";
 import { estaDentroDe } from "@/shared/string-compare";
 
-export const SelectLaboratorioForm = <
+export const SelectTutorForm = <
   T extends FieldValues,
   TType extends SelectItem | string,
   TMulti extends IsMulti = undefined,
@@ -15,20 +15,23 @@ export const SelectLaboratorioForm = <
   control,
   className,
   ...props
-}: Omit<FormSelectProps<T, TType, TMulti>, "items"> & { sedeId?: number; realNameId?: Path<T> }): ReactElement => {
-  const [query, setQuery] = useState("");
-  const { data, isLoading, isError } = api.admin.laboratorios.getAll.useQuery({ sedeId: props.sedeId?.toString() });
+}: Omit<FormAutocompleteProps<T, TType, TMulti>, "items"> & { realNameId?: Path<T> }): ReactElement => {
+  const { data, isLoading, isError } = api.admin.usuarios.getAllTutores.useQuery();
 
-  const laboratorios = useMemo(() => {
+  const [query, setQuery] = useState("");
+
+  const tutores = useMemo(() => {
     if (!data) return [];
 
-    return data.laboratorios
-      .map((laboratorio) => {
-        const { id, nombre: label } = laboratorio;
+    return data
+      .map((usuario) => {
+        const tutor = usuario.usuario;
+
+        const label = `${tutor?.apellido ?? ""} ${tutor?.nombre ?? ""}`;
 
         return {
           label,
-          id,
+          id: tutor.id,
         };
       })
       .filter((item) => !query || estaDentroDe(query, item.label));
@@ -48,10 +51,10 @@ export const SelectLaboratorioForm = <
         <div className="flex flex-row items-center space-x-2">
           <SelectTrigger
             disabled
-            id="selectLaboratorio"
+            id="selectTutor"
             className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
           >
-            <SelectValue placeholder="Error cargando laboratorios" />
+            <SelectValue placeholder="Error cargando tutores" />
           </SelectTrigger>
         </div>
       </Select>
@@ -61,16 +64,16 @@ export const SelectLaboratorioForm = <
   return (
     <FormAutocomplete
       async
-      items={laboratorios}
+      items={tutores}
       noOptionsComponent={
         <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm text-white">
-          <span>No se encontró el laboratorio</span>
+          <span>No se encontró al tutor</span>
         </div>
       }
       className={className}
       onQueryChange={setQuery}
       isLoading={isLoading}
-      placeholder="Buscar por laboratorio"
+      placeholder="Buscar por nombre de tutor"
       clearable
       debounceTime={0}
       control={control}

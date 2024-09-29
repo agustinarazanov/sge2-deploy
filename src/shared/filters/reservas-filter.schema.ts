@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const enumReservaEstatus = z.enum(["PENDIENTE", "FINALIZADA", "CANCELADA", "RECHAZADA", ""]);
+
 export const inputGetReservaLibroPorUsuarioId = z.object({
   id: z.string().min(1),
 });
@@ -31,7 +33,7 @@ export const inputGetAllPrestamosLibros = z.object({
     .catch("id"),
   orderDirection: z.enum(["asc", "desc"]).default("desc").catch("desc"),
   searchText: z.string().default(""),
-  estatus: z.enum(["PENDIENTE", "FINALIZADA", "CANCELADA", ""]).default("").catch(""),
+  estatus: enumReservaEstatus.default("").catch(""),
   filtrByUserId: z.enum(["true", "false"]).optional(),
 });
 
@@ -59,4 +61,37 @@ export const inputPrestarLibro = z
 
 export const inputGetReservaPorUsuarioId = z.object({
   id: z.string().min(1),
+});
+
+export const inputGetReservaPorId = z.object({
+  id: z.number().positive().min(1, { message: "Requerido" }),
+});
+
+export const inputGetAllSolicitudesReservaLaboratorioAbierto = z.object({
+  pageSize: z.enum(["10", "20", "30", "40", "50"]).default("10").catch("10"),
+  pageIndex: z
+    .string()
+    .default("0")
+    .refine((value) => parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
+    .catch("0"),
+  orderBy: z
+    .enum([
+      "id",
+      "laboratorioId",
+      "sede",
+      "reserva_fechaCreacion",
+      "reserva_fechaHoraInicio",
+      "reserva_fechaHoraFin",
+      "reserva_usuarioSolicito_apellido",
+    ])
+    .default("id")
+    .catch("id"),
+  orderDirection: z.enum(["asc", "desc"]).default("desc").catch("desc"),
+  searchText: z.string().default(""),
+  estatus: enumReservaEstatus.default("").catch(""),
+  filtrByUserId: z.enum(["true", "false"]).optional(),
+});
+
+export const inputRechazarReservaLaboratorioAbierto = z.object({
+  id: z.number().positive().min(1, { message: "Requerido" }),
 });

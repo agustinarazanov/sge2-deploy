@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { enumReservaEstatus } from "./reservas-filter.schema";
 
 export const inputGetReservaEquipoPorUsuarioId = z.object({
   id: z.string().min(1),
@@ -30,7 +31,7 @@ export const inputGetAllPrestamosEquipos = z.object({
     .catch("id"),
   orderDirection: z.enum(["asc", "desc"]).default("desc").catch("desc"),
   searchText: z.string().default(""),
-  estatus: z.enum(["PENDIENTE", "FINALIZADA", "CANCELADA", ""]).default("").catch(""),
+  estatus: enumReservaEstatus.default("").catch(""),
   filtrByUserId: z.enum(["true", "false"]).optional(),
 });
 

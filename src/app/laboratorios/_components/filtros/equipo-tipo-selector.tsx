@@ -75,7 +75,7 @@ export const EquipoTipoSelector = ({ onEquipoTipoChange, label, disabled }: Prop
         placeholder="Buscar por tipo de equipo"
         clearable
         debounceTime={0}
-        onChange={(value) => onEquipoTipoChange(value?.id ? String(value.id) : "")}
+        onChange={(value) => value && onEquipoTipoChange(value?.id ? String(value.id) : "")}
         disabled={disabled}
       />
     </div>

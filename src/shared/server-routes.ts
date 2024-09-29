@@ -74,6 +74,11 @@ export const LABORATORIO_ABIERTO_ROUTE: AppRoute = {
       isPublic: false,
     },
     {
+      href: "/laboratorio_abierto/solicitudes",
+      label: "Solicitudes",
+      isPublic: false,
+    },
+    {
       href: "/laboratorio_abierto/mis_reservas",
       label: "Mis reservas",
       isPublic: false,
