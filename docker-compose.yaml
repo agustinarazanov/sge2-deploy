@@ -18,7 +18,7 @@ services:
       - sge2
 
   app:
-    image: sge2
+    image: registry.frba.utn.edu.ar/tst/sge2
     hostname: app
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/sge2
