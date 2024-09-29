@@ -21,6 +21,8 @@ export const inputEliminarUsuario = z.object({ id: z.string() });
 
 export const inputGetUsuario = z.object({ id: z.string() });
 
+export const inputGetTutor = z.object({ id: z.string() });
+
 export const inputEditarUsuario = z.object({
   id: z.string(),
   roles: z.array(z.string()).default([]),
@@ -30,4 +32,13 @@ export const inputEditarUsuario = z.object({
   legajo: z.string().min(1, { message: "Requerido" }),
   esTutor: z.boolean(),
   esDocente: z.boolean(),
+});
+
+// Definimos el esquema de validación para editar un tutor
+export const inputEditarTutor = z.object({
+  id: z.string(), // ID del tutor, asumimos que es un string
+  nombre: z.string().min(1, { message: "El nombre es requerido" }).optional(), // El nombre es obligatorio
+  diasHorarios: z.string().min(1, { message: "Los días y horarios son requeridos" }).optional(), // Días y horarios obligatorios
+  sede: z.string().min(1, { message: "La sede es requerida" }).optional(), // Sede obligatoria
+  especialidad: z.string().min(1, { message: "La especialidad es requerida" }).optional(), // Especialidad obligatoria
 });

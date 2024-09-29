@@ -55,6 +55,11 @@ export const LABORATORIO_ROUTE = {
       label: "Aplicaciones en Laboratorios",
       isPublic: false,
     },
+    {
+      href: "/laboratorios/pantalla",
+      label: "Pantalla de Reservas",
+      isPublic: false,
+    },
   ],
 };
 
@@ -104,6 +109,11 @@ export const EQUIPOS_ROUTE: AppRoute = {
     {
       href: "/equipos/prestamos",
       label: "Prestamos",
+      isPublic: false,
+    },
+    {
+      href: "/equipos/mis_prestamos",
+      label: "Mis Préstamos",
       isPublic: false,
     },
   ],

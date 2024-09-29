@@ -31,6 +31,7 @@ export const getTipoPorId = async (ctx: { db: PrismaClient }, input: InputGetTip
     select: {
       id: true,
       nombre: true,
+      imagen: true,
       fechaCreacion: true,
       usuarioCreadorId: true,
     },
@@ -52,6 +53,7 @@ export const getAllTipos = async (ctx: { db: PrismaClient }, input: InputTipoGet
       select: {
         id: true,
         nombre: true,
+        imagen: true,
         fechaCreacion: true,
         usuarioCreadorId: true,
         equipos: {
@@ -69,8 +71,8 @@ export const getAllTipos = async (ctx: { db: PrismaClient }, input: InputTipoGet
       orderBy: {
         nombre: orderDirection,
       },
-      skip: fromFilter.length === 0 ? parseInt(pageIndex) * parseInt(pageSize) : undefined,
-      take: fromFilter.length === 0 ? parseInt(pageSize) : undefined,
+      skip: fromFilter === "false" ? parseInt(pageIndex) * parseInt(pageSize) : undefined,
+      take: fromFilter === "false" ? parseInt(pageSize) : undefined,
     }),
   ]);
 
@@ -86,6 +88,7 @@ export const editarTipo = async (ctx: { db: PrismaClient }, input: InputEditarTi
     const tipo = await ctx.db.equipoTipo.update({
       data: {
         nombre: input.nombre,
+        imagen: input.imagen,
       },
       where: {
         id: input.id,
@@ -116,6 +119,7 @@ export const agregarTipo = async (ctx: { db: PrismaClient }, input: InputAgregar
       const tipo = await tx.equipoTipo.create({
         data: {
           nombre: input.nombre,
+          imagen: input.imagen,
           usuarioCreadorId: userId,
         },
       });

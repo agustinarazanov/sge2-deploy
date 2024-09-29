@@ -2,15 +2,27 @@ import { z } from "zod";
 
 const inputEquipoRequerido = z.object({ idTipo: z.string(), cantidad: z.number() });
 
-export const inputReservaLaboratorioCerrado = z.object({
-  cursoId: z.number().min(1, { message: "Requerido" }),
+const inputReservaLaboratorioDiscrecionalBase = z.object({
   fechaReserva: z.string().min(1, { message: "Requerido" }),
   requierePc: z.boolean().default(false),
-  requiereProyecto: z.boolean().default(false),
+  requiereProyector: z.boolean().default(false),
+  requiereEquipo: z.boolean().default(false),
   equipoRequerido: z.array(inputEquipoRequerido).default([]),
-  observaciones: z.string().default(""),
-  aceptoTerminos: z.boolean().default(false),
+  observaciones: z.string().max(250, { message: "Máximo 250 caracteres" }).default(""),
+  aceptoTerminos: z.boolean().refine((value) => value === true, { message: "Debe aceptar los términos y condiciones" }),
 });
+
+export const inputReservaLaboratorioDiscrecional = z
+  .object({
+    turno: z.enum(["MANANA", "TARDE", "NOCHE"]).default("MANANA").catch("MANANA"),
+  })
+  .merge(inputReservaLaboratorioDiscrecionalBase);
+
+export const inputReservaLaboratorioCerrado = z
+  .object({
+    cursoId: z.number().min(1, { message: "Requerido" }),
+  })
+  .merge(inputReservaLaboratorioDiscrecionalBase);
 
 export const inputReservaLaboratorioAbierto = z.object({
   tipo: z.string().min(1, { message: "Requerido" }),

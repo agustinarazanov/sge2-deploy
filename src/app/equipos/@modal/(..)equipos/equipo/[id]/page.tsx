@@ -31,8 +31,8 @@ export default function PageDetails({ params: { id } }: PageProps) {
 
   return (
     <ModalDrawer
-      titulo={"Detalle"}
-      description={"Esta es la página de detalles del equipo."}
+      titulo={"Editar equipo"}
+      description={"Esta es la página de edición del equipo."}
       open={open}
       onOpenChange={handleOpenChange}
       trigger={<></>}

@@ -40,6 +40,7 @@ export const inputGetCursos = z.object({
     .catch(""),
   anioDeCarrera: z.string().optional(),
   filtrByUserId: z.enum(["true", "false"]).optional(),
+  filtrByCatedraId: z.enum(["true", "false"]).optional(),
 });
 
 export const inputGetCursosParaReserva = z.object({});

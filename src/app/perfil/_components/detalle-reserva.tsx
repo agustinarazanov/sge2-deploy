@@ -7,7 +7,7 @@ type ReservaEquipoData = RouterOutputs["reservas"]["reservaEquipo"]["getReservaP
 type ReservaLaboratorioAbiertoData =
   RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getReservaPorUser"][number];
 type ReservaLaboratorioCerradoData =
-  RouterOutputs["reservas"]["ReservarLaboratorioCerrado"]["getReservaPorUser"][number];
+  RouterOutputs["reservas"]["reservarLaboratorioCerrado"]["getReservaPorUser"][number];
 type ReservaBase =
   | ReservaBibliotecaData
   | ReservaEquipoData
