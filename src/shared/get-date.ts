@@ -35,7 +35,9 @@ export const getDateISO = (day: string) => {
  * @param date fecha con el formato Date
  * @returns fecha con el formato yyyy-MM-dd
  */
-export const getDateISOString = (date: Date) => {
+export const getDateISOString = (date: Date | undefined) => {
+  if (!date) return "";
+
   const dateIso = date.toISOString();
 
   const dateISOSplit = dateIso.split("T");
@@ -44,6 +46,27 @@ export const getDateISOString = (date: Date) => {
 
   if (yyyyMMdd) {
     return yyyyMMdd;
+  }
+
+  return "";
+};
+
+/**
+ * Devuelve una fecha con el formato hh:mm:ss
+ * @param date fecha con el formato Date
+ * @returns fecha con el formato hh:mm:ss
+ */
+export const getTimeISOString = (date: Date | undefined) => {
+  if (!date) return "";
+
+  const dateIso = date.toISOString();
+
+  const dateISOSplit = dateIso.split("T");
+
+  const hhmmss = dateISOSplit[1];
+
+  if (hhmmss) {
+    return hhmmss;
   }
 
   return "";

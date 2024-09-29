@@ -33,5 +33,20 @@ export const inputReservaLaboratorioAbierto = z.object({
   sedeId: z.number().min(1, { message: "Requerido" }),
   equipoRequerido: z.array(inputEquipoRequerido).default([]),
   observaciones: z.string().default(""),
+  especialidad: z.string().optional().default(""),
   aceptoTerminos: z.boolean().default(false),
 });
+
+export const inputAprobarReservaSchema = z.object({
+  id: z.number().positive().min(1, { message: "Requerido" }),
+  tutorId: z.string().optional(),
+  inventarioRevisado: z.array(z.string()),
+  laboratorioId: z.number().optional(),
+  equipoRequerido: z.array(inputEquipoRequerido).default([]),
+});
+
+export const inputEditarReservaLaboratorioAbiertoSchema = z
+  .object({
+    id: z.number().positive().min(1, { message: "Requerido" }),
+  })
+  .merge(inputReservaLaboratorioAbierto);
