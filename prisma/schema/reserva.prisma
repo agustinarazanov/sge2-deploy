@@ -96,6 +96,9 @@ model ReservaLaboratorioCerrado {
     reservaId Int     @unique
     reserva   Reserva @relation(fields: [reservaId], references: [id], onDelete: Cascade)
 
+    sedeId Int
+    sede   Sede @relation(fields: [sedeId], references: [id], onDelete: Cascade)
+
     laboratorioId Int?
     laboratorio   Laboratorio? @relation(fields: [laboratorioId], references: [id], onDelete: Cascade)
 
@@ -132,9 +135,13 @@ model ReservaLaboratorioAbierto {
 
     especialidad String
     descripcion  String
+    concurrentes Int
 
     reservaId Int     @unique
     reserva   Reserva @relation(fields: [reservaId], references: [id], onDelete: Cascade)
+
+    sedeId Int
+    sede   Sede @relation(fields: [sedeId], references: [id], onDelete: Cascade)
 
     laboratorioId Int?
     laboratorio   Laboratorio? @relation(fields: [laboratorioId], references: [id], onDelete: Cascade)
@@ -167,10 +174,21 @@ model ReservaLaboratorioAbiertoEquipo {
 }
 
 enum ReservaEstatus {
-    PENDIENTE
-    FINALIZADA
-    CANCELADA
+    PENDIENTE // Cuando el usuario creo y esta pendiente de aprobacion
+    FINALIZADA // Cuando el usuario devuelve el equipo o libro / Cuando se aprueba la reserva de laboratorio
+    CANCELADA // Cuando el usuario que creo la reserva cancela la reserva (solo aplica a laboratorios abierto/cerrado no a equipo/bibioteca)
+    RECHAZADA // Cuando el administrador rechaza la reserva
 }
+
+// Reservas de EQUIPO o LIBRO
+// 1. PENDIENTE => El usuario ya posee el equipo o libro y lo tiene que devolver en el futuro
+// 2. FINALIZADA => El usuario ya devolvió el equipo o libro
+
+// Reservas de LABORATORIO ABIERTO o CERRADO
+// 1. PENDIENTE => El usuario creó una solicit de reserva de laboratorio abierto o cerrado
+// 2. FINALIZADA => El administador aproba la reserva
+// 3. CANCELADA => El usuario que creó la reserva cancela la reserva (no puede volver a modificar
+// 4. RECHAZADA => El administrador rechaza la reserva (el usuario creador puede modificarla y volver a pendiente)
 
 enum ReservaTipo {
     LABORATORIO_ABIERTO

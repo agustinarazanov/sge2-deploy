@@ -2,7 +2,6 @@ import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { DatoUsuarioReserva } from "@/app/_components/datos-usuario";
 import { getDateISOString } from "@/shared/get-date";
-import { Badge } from "@/components/ui/badge";
 import { BadgeEstatusReserva } from "@/app/_components/badge-estatus-reserva";
 
 type LaboratorioAbiertoReservaData =

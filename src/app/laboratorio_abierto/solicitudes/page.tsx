@@ -18,7 +18,7 @@ export default async function Page({ searchParams }: PageProps) {
     <>
       <ActionButtonsPrestamos filters={filters} />
       <Suspense key={filter_as_key} fallback={<LoadingBibliotecaPrestamosTable />}>
-        <LaboratorioAbiertoSolicitudesTableContainer filters={filters} filterByUser />
+        <LaboratorioAbiertoSolicitudesTableContainer filters={filters} />
       </Suspense>
     </>
   );

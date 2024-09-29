@@ -12,6 +12,7 @@ import { api } from "@/trpc/react";
 import { Switch } from "@/components/ui/switch";
 import { MinusIcon } from "lucide-react";
 import { EquipoTipoSelector } from "@/app/laboratorios/_components/filtros/equipo-tipo-selector";
+import { ReservaEstatus } from "@prisma/client";
 
 type FormHelperType = {
   tutor: { id: string; label: string };
@@ -128,8 +129,6 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel }: ReservaApr
   };
 
   const currentEquipoTipo = formHook.watch("equipoRequerido");
-
-  console.log(formHook.formState.errors);
 
   return (
     <FormProvider {...formHook}>
@@ -266,7 +265,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel }: ReservaApr
             isLoading={estaAprobando}
             className="w-full"
           >
-            {estaAprobando ? "Aprobando..." : "Aprobar"}
+            {reservaData?.reserva.estatus === ReservaEstatus.FINALIZADA ? "Modificar" : "Aprobar"}
           </Button>
         </div>
       </form>

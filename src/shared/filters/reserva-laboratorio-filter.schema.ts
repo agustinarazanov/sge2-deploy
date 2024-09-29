@@ -41,6 +41,12 @@ export const inputAprobarReservaSchema = z.object({
   id: z.number().positive().min(1, { message: "Requerido" }),
   tutorId: z.string().optional(),
   inventarioRevisado: z.array(z.string()),
-  laboratorioId: z.number().min(1, "Seleccione un laboratorio"),
+  laboratorioId: z.number().optional(),
   equipoRequerido: z.array(inputEquipoRequerido).default([]),
 });
+
+export const inputEditarReservaLaboratorioAbiertoSchema = z
+  .object({
+    id: z.number().positive().min(1, { message: "Requerido" }),
+  })
+  .merge(inputReservaLaboratorioAbierto);

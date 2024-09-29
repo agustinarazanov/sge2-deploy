@@ -1,9 +1,10 @@
 import { useMemo, type ReactElement } from "react";
-import { type FieldValues } from "react-hook-form";
+import { Controller, type FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { FormSelect, type FormSelectProps, type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
+import { type FormSelectProps, type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui";
+import { cn } from "@/components/utils";
 
 export const SelectSedeForm = <
   T extends FieldValues,
@@ -13,7 +14,7 @@ export const SelectSedeForm = <
   name,
   control,
   className,
-  ...props
+  // ...props
 }: Omit<FormSelectProps<T, TType, TMulti>, "items">): ReactElement => {
   const { data, isLoading, isError } = api.admin.laboratorios.getAllSedes.useQuery();
 
@@ -54,6 +55,34 @@ export const SelectSedeForm = <
     );
   }
 
-  // @ts-expect-error - The expected type comes from property 'items' which is declared on type 'FormSelectProps<...>'
-  return <FormSelect className={className} name={name} control={control} items={sedes} {...props} />;
+  return (
+    <Controller
+      name={name}
+      control={control}
+      render={({ field }) => {
+        return (
+          <select
+            className={cn(
+              "h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover",
+              className,
+            )}
+            name={name}
+            onChange={field.onChange}
+            value={field.value}
+          >
+            {sedes.map((item) => {
+              return (
+                <option key={item.id} value={item.id}>
+                  {item.label}
+                </option>
+              );
+            })}
+          </select>
+        );
+      }}
+    />
+  );
+
+  // // @ts-expect-error - The expected type comes from property 'items' which is declared on type 'FormSelectProps<...>'
+  // return <FormSelect className={className} name={name} control={control} items={sedes} {...props} />;
 };

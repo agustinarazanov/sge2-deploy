@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const enumReservaEstatus = z.enum(["PENDIENTE", "FINALIZADA", "CANCELADA", "RECHAZADA", ""]);
+
 export const inputGetReservaLibroPorUsuarioId = z.object({
   id: z.string().min(1),
 });
@@ -31,7 +33,7 @@ export const inputGetAllPrestamosLibros = z.object({
     .catch("id"),
   orderDirection: z.enum(["asc", "desc"]).default("desc").catch("desc"),
   searchText: z.string().default(""),
-  estatus: z.enum(["PENDIENTE", "FINALIZADA", "CANCELADA", ""]).default("").catch(""),
+  estatus: enumReservaEstatus.default("").catch(""),
   filtrByUserId: z.enum(["true", "false"]).optional(),
 });
 
@@ -86,14 +88,10 @@ export const inputGetAllSolicitudesReservaLaboratorioAbierto = z.object({
     .catch("id"),
   orderDirection: z.enum(["asc", "desc"]).default("desc").catch("desc"),
   searchText: z.string().default(""),
-  estatus: z.enum(["PENDIENTE", "FINALIZADA", "CANCELADA", ""]).default("").catch(""),
+  estatus: enumReservaEstatus.default("").catch(""),
   filtrByUserId: z.enum(["true", "false"]).optional(),
 });
 
 export const inputRechazarReservaLaboratorioAbierto = z.object({
-  id: z.number().positive().min(1, { message: "Requerido" }),
-});
-
-export const inputEditarReservaLaboratorioAbiertoSchema = z.object({
   id: z.number().positive().min(1, { message: "Requerido" }),
 });
