@@ -41,21 +41,11 @@ export const LaboratorioAbiertoForm = ({ tipo, onSubmit, onCancel }: Props) => {
     resolver: zodResolver(inputReservaLaboratorioAbierto),
   });
 
-  const { handleSubmit, control } = formHook;
+  const { handleSubmit, control, setValue } = formHook;
 
   useEffect(() => {
-    formHook.reset({
-      tipo: tipo!,
-      aceptoTerminos: false,
-      concurrentes: 1,
-      equipoRequerido: [],
-      fechaReserva: undefined,
-      horaInicio: undefined,
-      horaFin: undefined,
-      observaciones: "",
-      sedeId: 1,
-    });
-  }, [formHook, tipo]);
+    setValue("tipo", tipo!);
+  }, [tipo, setValue]);
 
   const onFormSubmit = async (_formData: FormReservarLaboratorioAbiertoType) => {
     reservarLaboratorio.mutate(_formData, {
@@ -131,7 +121,7 @@ export const LaboratorioAbiertoForm = ({ tipo, onSubmit, onCancel }: Props) => {
                 <FormInput
                   label={"Hora de inicio"}
                   control={control}
-                  name="fechaReserva"
+                  name="horaInicio"
                   className="mt-2"
                   type={"time"}
                   required
@@ -141,7 +131,7 @@ export const LaboratorioAbiertoForm = ({ tipo, onSubmit, onCancel }: Props) => {
                 <FormInput
                   label={"Hora de fin"}
                   control={control}
-                  name="fechaReserva"
+                  name="horaFin"
                   className="mt-2"
                   type={"time"}
                   required
@@ -164,8 +154,8 @@ export const LaboratorioAbiertoForm = ({ tipo, onSubmit, onCancel }: Props) => {
                   className="mt-2 basis-1/2"
                   control={control}
                   items={[
-                    { id: "1", label: "Medrano" },
-                    { id: "2", label: "Lugano" },
+                    { id: 1, label: "Medrano" },
+                    { id: 2, label: "Lugano" },
                   ]}
                 />
               </div>

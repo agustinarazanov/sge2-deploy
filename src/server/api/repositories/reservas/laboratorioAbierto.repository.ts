@@ -230,8 +230,8 @@ export const crearReservaLaboratorioAbierto = async (
           usuarioSolicitoId: userId,
           estatus: "PENDIENTE",
           // todo pasar input.horaInicio y input.horaFin a fechaHoraInicio y fechaHoraFin
-          fechaHoraInicio: new Date(input.fechaReserva),
-          fechaHoraFin: new Date(input.fechaReserva),
+          fechaHoraInicio: new Date(),
+          fechaHoraFin: new Date(),
           tipo: "LABORATORIO_ABIERTO",
           usuarioAprobadorId: userId,
           usuarioRechazadoId: null,
