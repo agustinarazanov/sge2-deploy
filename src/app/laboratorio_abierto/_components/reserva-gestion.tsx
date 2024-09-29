@@ -9,12 +9,13 @@ import { inputAprobarReservaSchema } from "@/shared/filters/reserva-laboratorio-
 import { type z } from "zod";
 import { SelectLaboratorioForm } from "@/app/_components/select-ubicacion/select-laboratorio";
 import { api } from "@/trpc/react";
-import { EquipoTipoSelector } from "@/app/laboratorios/mis_cursos/_components/filtros/equipo-tipo-selector";
 import { Switch } from "@/components/ui/switch";
 import { MinusIcon } from "lucide-react";
+import { EquipoTipoSelector } from "@/app/laboratorios/_components/filtros/equipo-tipo-selector";
 
 type FormHelperType = {
   tutor: { id: string; label: string };
+  laboratorio: { id: number; label: string };
 };
 
 type AprobarReservaFormData = z.infer<typeof inputAprobarReservaSchema> & FormHelperType;
@@ -25,13 +26,15 @@ interface ReservaAprobacionProps {
   onCancel: () => void;
 }
 
-export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({ reservaId, onAprobar, onCancel }) => {
+export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel }: ReservaAprobacionProps) => {
   const { isPending: estaAprobando, mutate: aprobarReserva } =
     api.reservas.reservaLaboratorioAbierto.aprobarReserva.useMutation();
   const { isPending: estaRechazando, mutate: rechazarReserva } =
     api.reservas.reservaLaboratorioAbierto.rechazarReserva.useMutation();
   const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery({ tipoId: undefined });
-  const { data: reservaData } = api.reservas.reservaLaboratorioAbierto.getReservaPorID.useQuery({ id: reservaId });
+  const { data: reservaData } = api.reservas.reservaLaboratorioAbierto.getReservaPorID.useQuery({
+    id: reservaId,
+  });
 
   const [requiereInstrumental, setRequiereInstrumental] = useState(false);
 
@@ -41,12 +44,15 @@ export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({ reservaId,
     defaultValues: {
       id: reservaId,
       inventarioRevisado: [],
-      laboratorioId: "",
-
-      tutorId: "",
+      laboratorioId: reservaData?.laboratorioId ?? undefined,
+      laboratorio: {
+        id: reservaData?.laboratorioId ?? undefined,
+        label: reservaData?.laboratorio?.nombre ?? "",
+      },
+      tutorId: reservaData?.reserva.usuarioTutorId ?? undefined,
       tutor: {
-        id: "",
-        label: "",
+        id: reservaData?.reserva.usuarioTutorId ?? undefined,
+        label: `${reservaData?.reserva?.usuarioTutor?.apellido ?? ""} ${reservaData?.reserva?.usuarioTutor?.nombre ?? ""}`,
       },
       equipoRequerido: [],
     },
@@ -69,7 +75,7 @@ export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({ reservaId,
 
   const handleRechazo = async () => {
     rechazarReserva(
-      { id: reservaId, tutorId: "", laboratorioId: "" },
+      { id: reservaId },
       {
         onSuccess: () => {
           toast.success("Reserva rechazada con éxito");
@@ -83,8 +89,9 @@ export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({ reservaId,
     );
   };
 
-  const [tutor] = watch(["tutor"]);
-  useEffect(() => formHook.setValue("tutorId", tutor.id), [formHook, tutor]);
+  const [tutor, laboratorio] = watch(["tutor", "laboratorio"]);
+  useEffect(() => tutor && formHook.setValue("tutorId", tutor.id), [formHook, tutor]);
+  useEffect(() => laboratorio && formHook.setValue("laboratorioId", laboratorio?.id), [formHook, laboratorio]);
 
   useEffect(() => {
     if (reservaData) {
@@ -122,6 +129,8 @@ export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({ reservaId,
 
   const currentEquipoTipo = formHook.watch("equipoRequerido");
 
+  console.log(formHook.formState.errors);
+
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -142,7 +151,8 @@ export const ReservaAprobacion: React.FC<ReservaAprobacionProps> = ({ reservaId,
 
             <div>
               <SelectLaboratorioForm
-                name="laboratorioId"
+                name="laboratorio"
+                realNameId="laboratorioId"
                 control={control}
                 className="mt-2"
                 label="Laboratorio"

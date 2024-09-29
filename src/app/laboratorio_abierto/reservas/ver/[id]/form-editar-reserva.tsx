@@ -4,7 +4,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ReservaDetalle } from "@/app/laboratorio_abierto/_components/info-basica-reserva";
-import { SelectLaboratorioForm } from "@/app/_components/select-ubicacion/select-laboratorio";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { inputEditarReservaLaboratorioAbiertoSchema } from "@/shared/filters/reservas-filter.schema";
@@ -16,24 +15,24 @@ interface ReservaViewUsuarioProps {
   onCancel: () => void;
 }
 
-type FormHelperType = z.infer<typeof inputEditarReservaLaboratorioAbiertoSchema>;
+type FormEditarReservaType = z.infer<typeof inputEditarReservaLaboratorioAbiertoSchema>;
 
+// EDITAR RESERVA DEL USUARIO DESDE PUNTO DE VISTA DE USUARIO
 export const ReservaViewUsuario = ({ reservaId, onCancel }: ReservaViewUsuarioProps) => {
   const router = useRouter();
 
   const { isPending: estaEditando, mutate: editarReserva } =
     api.reservas.reservaLaboratorioAbierto.editarReserva.useMutation();
 
-  const formHook = useForm<FormHelperType>({
+  const formHook = useForm<FormEditarReservaType>({
     mode: "onChange",
     resolver: zodResolver(inputEditarReservaLaboratorioAbiertoSchema),
     defaultValues: {
       id: reservaId,
-      laboratorioId: undefined,
     },
   });
 
-  const onSubmit = async (data: FormHelperType) => {
+  const onSubmit = async (data: FormEditarReservaType) => {
     editarReserva(data, {
       onSuccess: () => {
         toast.success("Reserva actualizada con éxito");
@@ -64,16 +63,6 @@ export const ReservaViewUsuario = ({ reservaId, onCancel }: ReservaViewUsuarioPr
           <CardContent>
             <FormProvider {...formHook}>
               <form onSubmit={formHook.handleSubmit(onSubmit)} className="space-y-6">
-                <div>
-                  <SelectLaboratorioForm
-                    name="laboratorioId"
-                    control={formHook.control}
-                    className="mt-2"
-                    label="Laboratorio"
-                    placeholder="Selecciona un laboratorio"
-                    disabled={!estaEditando}
-                  />
-                </div>
                 <div className="flex justify-end space-x-4">
                   <Button type="button" variant="default" color="secondary" onClick={onCancel} disabled={estaEditando}>
                     Volver

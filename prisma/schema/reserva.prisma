@@ -11,8 +11,8 @@ model Reserva {
     usuarioSolicito   User   @relation(fields: [usuarioSolicitoId], references: [id], name: "reservasSolicitadas", onDelete: Restrict)
 
     // Usuario que aprueba la reserva
-    usuarioAprobadorId String
-    usuarioAprobador   User   @relation(fields: [usuarioAprobadorId], references: [id], name: "reservasAprobadas", onDelete: Restrict)
+    usuarioAprobadorId String?
+    usuarioAprobador   User?   @relation(fields: [usuarioAprobadorId], references: [id], name: "reservasAprobadas", onDelete: Restrict)
 
     // Usuario que rechaza la reserva
     usuarioRechazadoId String?
@@ -56,7 +56,6 @@ model ReservaEquipo {
     id Int @id @default(autoincrement())
 
     fechaEntregado DateTime
-    numeroReserva  Int // TODO: QUE ES? Se puede reemplazar por `reserva.codigo`?
 
     reservaId Int     @unique
     reserva   Reserva @relation(fields: [reservaId], references: [id], onDelete: Cascade)
@@ -97,8 +96,8 @@ model ReservaLaboratorioCerrado {
     reservaId Int     @unique
     reserva   Reserva @relation(fields: [reservaId], references: [id], onDelete: Cascade)
 
-    laboratorioId Int
-    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id], onDelete: Cascade)
+    laboratorioId Int?
+    laboratorio   Laboratorio? @relation(fields: [laboratorioId], references: [id], onDelete: Cascade)
 
     cursoId Int
     curso   Curso @relation(fields: [cursoId], references: [id], onDelete: Cascade)
@@ -131,16 +130,14 @@ model ReservaLaboratorioCerradoEquipo {
 model ReservaLaboratorioAbierto {
     id Int @id @default(autoincrement())
 
-    especialidad   String
-    descripcion    String
-    numeroReserva  Int // TODO: QUE ES?
-    mailConfirmado Boolean
+    especialidad String
+    descripcion  String
 
     reservaId Int     @unique
     reserva   Reserva @relation(fields: [reservaId], references: [id], onDelete: Cascade)
 
-    laboratorioId Int
-    laboratorio   Laboratorio @relation(fields: [laboratorioId], references: [id], onDelete: Cascade)
+    laboratorioId Int?
+    laboratorio   Laboratorio? @relation(fields: [laboratorioId], references: [id], onDelete: Cascade)
 
     equipoReservado ReservaLaboratorioAbiertoEquipo[]
 
@@ -150,8 +147,6 @@ model ReservaLaboratorioAbierto {
     usuarioModificadorId String
 
     @@index([especialidad(sort: Asc)])
-    @@index([numeroReserva(sort: Asc)])
-    @@index([mailConfirmado], type: Hash)
 }
 
 model ReservaLaboratorioAbiertoEquipo {

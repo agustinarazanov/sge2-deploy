@@ -1,9 +1,9 @@
 import {
-  inputAprobarORechazarSolicitudReservaLaboratorioAbierto,
   inputEditarReservaLaboratorioAbiertoSchema,
   inputGetAllSolicitudesReservaLaboratorioAbierto,
   inputGetReservaPorId,
   inputGetReservaPorUsuarioId,
+  inputRechazarReservaLaboratorioAbierto,
 } from "@/shared/filters/reservas-filter.schema";
 import {
   getReservaPorUsuarioId,
@@ -15,7 +15,10 @@ import {
 } from "../../repositories/reservas/laboratorioAbierto.repository";
 import { protectedProcedure } from "../../trpc";
 import { validarInput } from "../helper";
-import { inputReservaLaboratorioAbierto } from "@/shared/filters/reserva-laboratorio-filter.schema";
+import {
+  inputAprobarReservaSchema,
+  inputReservaLaboratorioAbierto,
+} from "@/shared/filters/reserva-laboratorio-filter.schema";
 
 export const getReservaLaboratorioAbiertoPorUserProcedure = protectedProcedure
   .input(inputGetReservaPorUsuarioId)
@@ -50,9 +53,9 @@ export const getReservaLaboratorioAbiertoPorIdProcedure = protectedProcedure
   });
 
 export const aprobarReservaProcedure = protectedProcedure
-  .input(inputAprobarORechazarSolicitudReservaLaboratorioAbierto)
+  .input(inputAprobarReservaSchema)
   .mutation(async ({ ctx, input }) => {
-    validarInput(inputAprobarORechazarSolicitudReservaLaboratorioAbierto, input);
+    validarInput(inputAprobarReservaSchema, input);
 
     const userId = ctx.session.user.id;
 
@@ -62,9 +65,9 @@ export const aprobarReservaProcedure = protectedProcedure
   });
 
 export const rechazarReservaProcedure = protectedProcedure
-  .input(inputAprobarORechazarSolicitudReservaLaboratorioAbierto)
+  .input(inputRechazarReservaLaboratorioAbierto)
   .mutation(async ({ ctx, input }) => {
-    validarInput(inputAprobarORechazarSolicitudReservaLaboratorioAbierto, input);
+    validarInput(inputRechazarReservaLaboratorioAbierto, input);
 
     const userId = ctx.session.user.id;
 
@@ -83,7 +86,7 @@ export const editarReservaProcedure = protectedProcedure
     return {};
   });
 
-export const InputCrearReservaLaboratorioAbiertoProcedure = protectedProcedure
+export const inputCrearReservaLaboratorioAbiertoProcedure = protectedProcedure
   .input(inputReservaLaboratorioAbierto)
   .mutation(async ({ ctx, input }) => {
     validarInput(inputReservaLaboratorioAbierto, input);
