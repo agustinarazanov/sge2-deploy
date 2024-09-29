@@ -1,20 +1,19 @@
 import { Badge } from "@/components/ui/badge";
-import { type RouterOutputs } from "@/trpc/react";
+import { ReservaEstatus } from "@prisma/client";
 
-type StatusReservaType =
-  RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getAll"]["reservas"][number]["reserva"]["estatus"];
-
-export const BadgeEstatusReserva = ({ estatus }: { estatus: StatusReservaType | "" }) => {
+export const BadgeEstatusReserva = ({ estatus }: { estatus: ReservaEstatus | "" }) => {
   return <Badge className={getStatusColor(estatus)}>{estatus}</Badge>;
 };
 
-const getStatusColor = (status: StatusReservaType | "") => {
+const getStatusColor = (status: ReservaEstatus | "") => {
   switch (status) {
-    case "PENDIENTE":
+    case ReservaEstatus.PENDIENTE:
       return "bg-yellow-500 text-yellow-900";
-    case "FINALIZADA":
+    case ReservaEstatus.FINALIZADA:
       return "bg-green-500 text-green-900";
-    case "CANCELADA":
+    case ReservaEstatus.CANCELADA:
+      return "bg-orange-500 text-orange-900";
+    case ReservaEstatus.RECHAZADA:
       return "bg-red-500 text-red-900";
     default:
       return "bg-gray-500 text-gray-900";
