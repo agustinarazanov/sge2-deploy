@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input, Label, ScrollArea, toast } from "@/components/ui";
 import { SelectTutorForm } from "@/app/_components/select-tutor";
 import { useEffect, useState } from "react";
-import { inputAprobarReservaSchema } from "@/shared/filters/reserva-laboratorio-filter.schema";
+import { inputAprobarReservaLaboratorioAbiertoSchema } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { type z } from "zod";
 import { SelectLaboratorioForm } from "@/app/_components/select-ubicacion/select-laboratorio";
 import { api } from "@/trpc/react";
@@ -19,7 +19,7 @@ type FormHelperType = {
   laboratorio: { id: number; label: string };
 };
 
-type AprobarReservaFormData = z.infer<typeof inputAprobarReservaSchema> & FormHelperType;
+type AprobarReservaFormData = z.infer<typeof inputAprobarReservaLaboratorioAbiertoSchema> & FormHelperType;
 
 interface ReservaAprobacionProps {
   reservaId: number;
@@ -41,7 +41,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel }: ReservaApr
 
   const formHook = useForm<AprobarReservaFormData>({
     mode: "onChange",
-    resolver: zodResolver(inputAprobarReservaSchema),
+    resolver: zodResolver(inputAprobarReservaLaboratorioAbiertoSchema),
     defaultValues: {
       id: reservaId,
       inventarioRevisado: [],
