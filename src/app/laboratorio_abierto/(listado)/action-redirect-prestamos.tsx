@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { LABORATORIO_ABIERTO_ROUTE } from "@/shared/server-routes";
 import { type inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reservas-filter.schema";
 import { LaboratorioAbiertoReservasFilterText } from "./filtros/laboratorio_abierto-reserva-filter-text";
-import { ReservaLaboratorioAbiertoEstadoFilter } from "./filtros/biblioteca-prestamo-estado";
+import { ReservaLaboratorioAbiertoEstadoFilter } from "./filtros/laboratorio_abierto-filter-estado";
 
 type reservasLaboratorioAbiertoFilters = z.infer<typeof inputGetAllSolicitudesReservaLaboratorioAbierto>;
 
