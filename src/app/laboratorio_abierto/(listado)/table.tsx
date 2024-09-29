@@ -9,8 +9,9 @@ import { type SortingState } from "@tanstack/react-table";
 import { useReservasLaboratorioAbiertoQueryParam } from "../_hooks/use-reserva-laboratorio-abierto-query-param";
 import { type inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reservas-filter.schema";
 import { getColumnasReservasLaboratorioAbierto } from "./columns-reserva";
-import { PrinterIcon } from "lucide-react";
+import { PrinterIcon, TrashIcon } from "lucide-react";
 import { VerReservaModal } from "./ver-reserva";
+import EditarReservaModal from "./editar-reserva-modal";
 
 type LaboratorioAbiertoReservaData = RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getAll"];
 type reservaFilters = z.infer<typeof inputGetAllSolicitudesReservaLaboratorioAbierto>;
@@ -44,17 +45,19 @@ export const LaboratorioAbiertoReservaTable = ({ data, filters, filterByUser }: 
           cell({ original }) {
             return (
               <>
-                <VerReservaModal reservaID={original.reserva.id} />
+                {!filterByUser && <VerReservaModal reservaID={original.reserva.id} />}
+                {filterByUser && <EditarReservaModal params={{ id: original.reserva.id }} />}
 
-                {true && (
-                  <Button
-                    title="Imprimir"
-                    variant="icon"
-                    color="ghost"
-                    icon={PrinterIcon}
-                    onClick={() => window.print()}
-                  />
-                )}
+                <Button
+                  title="Imprimir"
+                  variant="icon"
+                  color="ghost"
+                  icon={PrinterIcon}
+                  onClick={() => window.print()}
+                />
+
+                {/* TODO CREAR COMPONENTE CON ALERT DIALOG */}
+                {filterByUser && <Button title="Cancelar reserva" variant="icon" color="danger" icon={TrashIcon} />}
               </>
             );
           },

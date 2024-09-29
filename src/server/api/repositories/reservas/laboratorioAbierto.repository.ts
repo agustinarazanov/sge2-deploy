@@ -8,9 +8,10 @@ import type {
 import type { PrismaClient, Prisma } from "@prisma/client";
 import type { z } from "zod";
 import { informacionUsuario } from "../usuario-helper";
-import {
-  type inputAprobarReservaSchema,
-  type inputReservaLaboratorioAbierto,
+import type {
+  inputEditarReservaLaboratorioAbiertoSchema,
+  inputAprobarReservaSchema,
+  inputReservaLaboratorioAbierto,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
 
 type InputGetPorUsuarioID = z.infer<typeof inputGetReservaPorUsuarioId>;
@@ -64,17 +65,10 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
       : {}),
   };
 
-  console.log({
-    input,
-    filtrosWhereReservaLaboratorioAbierto,
-  });
-
-  const ordenLibro: Prisma.ReservaLaboratorioAbiertoOrderByWithRelationInput = construirOrderByDinamico(
+  const orden: Prisma.ReservaLaboratorioAbiertoOrderByWithRelationInput = construirOrderByDinamico(
     orderBy ?? "",
     orderDirection ?? "",
   );
-
-  console.log({ filtrosWhereReservaLaboratorioAbierto, userId });
 
   const [count, reservas] = await ctx.db.$transaction([
     ctx.db.reservaLaboratorioAbierto.count({
@@ -101,7 +95,7 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
         laboratorio: true,
       },
       where: filtrosWhereReservaLaboratorioAbierto,
-      orderBy: ordenLibro,
+      orderBy: orden,
       skip: parseInt(pageIndex) * parseInt(pageSize),
       take: parseInt(pageSize),
     }),
@@ -157,8 +151,8 @@ export const aprobarReserva = async (
         throw new Error("La reserva no existe");
       }
 
-      if (reserva.estatus !== "PENDIENTE") {
-        throw new Error("La reserva no está pendiente");
+      if (reserva.estatus === "RECHAZADA" || reserva.estatus === "CANCELADA") {
+        throw new Error("La reserva ya se encuentra rechazada o cancelada");
       }
 
       await tx.reserva.update({
@@ -184,7 +178,59 @@ export const aprobarReserva = async (
 
     return reserva;
   } catch (error) {
-    throw new Error(`Error aprobando reserva`);
+    throw new Error(`Error aprobando reserva. ${(error as Error).message ?? ""}`);
+  }
+};
+
+type InputEditarReservaLaboratorioAbierto = z.infer<typeof inputEditarReservaLaboratorioAbiertoSchema>;
+export const editarReserva = async (
+  ctx: { db: PrismaClient },
+  input: InputEditarReservaLaboratorioAbierto,
+  userId: string,
+) => {
+  try {
+    const reserva = await ctx.db.$transaction(async (tx) => {
+      const reserva = await tx.reserva.findUnique({
+        where: {
+          id: input.id,
+        },
+        select: {
+          usuarioCreadorId: true,
+          estatus: true,
+        },
+      });
+
+      if (!reserva) {
+        throw new Error("La reserva no existe");
+      }
+
+      if (reserva.estatus === "CANCELADA") {
+        throw new Error("La reserva ya está cancelada");
+      }
+
+      if (reserva.usuarioCreadorId !== userId) {
+        throw new Error("No es el creador de la reserva");
+      }
+
+      await tx.reservaLaboratorioAbierto.delete({
+        where: {
+          reservaId: input.id,
+        },
+      });
+
+      await tx.reserva.update({
+        where: {
+          id: input.id,
+        },
+        ...getReservaAbiertaCreateArgs(input, userId),
+      });
+
+      return reserva;
+    });
+
+    return reserva;
+  } catch (error) {
+    throw new Error(`Error editando reserva. ${(error as Error).message ?? ""}`);
   }
 };
 
@@ -210,8 +256,8 @@ export const rechazarReserva = async (
         throw new Error("La reserva no existe");
       }
 
-      if (reserva.estatus === "CANCELADA") {
-        throw new Error("La reserva ya está cancelada");
+      if (reserva.estatus === "CANCELADA" || reserva.estatus === "RECHAZADA") {
+        throw new Error("La reserva ya está cancelada o rechazada");
       }
 
       await tx.reserva.update({
@@ -220,7 +266,7 @@ export const rechazarReserva = async (
         },
         data: {
           usuarioRechazadoId: userId,
-          estatus: "CANCELADA",
+          estatus: "RECHAZADA",
           fechaRechazo: new Date(),
           usuarioTutorId: null,
           reservaLaboratorioAbierto: {
@@ -241,6 +287,54 @@ export const rechazarReserva = async (
   }
 };
 
+export const cancelarReserva = async (
+  ctx: { db: PrismaClient },
+  input: InputRechazarReservaLaboratorioAbierto,
+  userId: string,
+) => {
+  try {
+    const reserva = await ctx.db.$transaction(async (tx) => {
+      const reserva = await tx.reserva.findUnique({
+        where: {
+          id: input.id,
+        },
+        select: {
+          usuarioCreadorId: true,
+          estatus: true,
+        },
+      });
+
+      if (!reserva) {
+        throw new Error("La reserva no existe");
+      }
+
+      if (reserva.estatus === "CANCELADA") {
+        throw new Error("La reserva ya está cancelada");
+      }
+
+      if (reserva.usuarioCreadorId !== userId) {
+        throw new Error("No es el creador de la reserva");
+      }
+
+      await tx.reserva.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          estatus: "CANCELADA",
+          usuarioModificadorId: userId,
+        },
+      });
+
+      return reserva;
+    });
+
+    return reserva;
+  } catch (error) {
+    throw new Error(`Error cancelando reserva. ${(error as Error).message ?? ""}`);
+  }
+};
+
 type InputCrearReservaLaboratorioAbierto = z.infer<typeof inputReservaLaboratorioAbierto>;
 export const crearReservaLaboratorioAbierto = async (
   ctx: { db: PrismaClient },
@@ -249,38 +343,46 @@ export const crearReservaLaboratorioAbierto = async (
 ) => {
   try {
     const reserva = await ctx.db.reserva.create({
-      data: {
-        estatus: "PENDIENTE",
-        fechaHoraInicio: new Date(`${input.fechaReserva}T${input.horaInicio}`),
-        fechaHoraFin: new Date(`${input.fechaReserva}T${input.horaFin}`),
-        tipo: "LABORATORIO_ABIERTO",
-        reservaLaboratorioAbierto: {
-          create: {
-            laboratorioId: null,
-            descripcion: input.observaciones?.trim() ?? "",
-            usuarioCreadorId: userId,
-            usuarioModificadorId: userId,
-            especialidad: input.especialidad ?? "",
-            equipoReservado: {
-              createMany: {
-                data: input.equipoRequerido.map((equipo) => ({
-                  cantidad: equipo.cantidad,
-                  equipoId: parseInt(equipo.idTipo),
-                  usuarioCreadorId: userId,
-                  usuarioModificadorId: userId,
-                })),
-              },
-            },
-          },
-        },
-        usuarioSolicitoId: userId,
-        usuarioCreadorId: userId,
-        usuarioModificadorId: userId,
-      },
+      ...getReservaAbiertaCreateArgs(input, userId),
     });
 
     return reserva;
   } catch (error) {
     throw new Error(`Error creando reserva`);
   }
+};
+
+const getReservaAbiertaCreateArgs = (input: InputCrearReservaLaboratorioAbierto, userId: string) => {
+  return {
+    data: {
+      estatus: "PENDIENTE",
+      fechaHoraInicio: new Date(`${input.fechaReserva}T${input.horaInicio}`),
+      fechaHoraFin: new Date(`${input.fechaReserva}T${input.horaFin}`),
+      tipo: "LABORATORIO_ABIERTO",
+      reservaLaboratorioAbierto: {
+        create: {
+          sedeId: input.sedeId,
+          laboratorioId: null,
+          descripcion: input.observaciones?.trim() ?? "",
+          usuarioCreadorId: userId,
+          usuarioModificadorId: userId,
+          especialidad: input.especialidad ?? "",
+          concurrentes: input.concurrentes ?? 1,
+          equipoReservado: {
+            createMany: {
+              data: input.equipoRequerido.map((equipo) => ({
+                cantidad: equipo.cantidad,
+                equipoId: parseInt(equipo.idTipo),
+                usuarioCreadorId: userId,
+                usuarioModificadorId: userId,
+              })),
+            },
+          },
+        },
+      },
+      usuarioSolicitoId: userId,
+      usuarioCreadorId: userId,
+      usuarioModificadorId: userId,
+    },
+  } as Prisma.ReservaCreateArgs;
 };

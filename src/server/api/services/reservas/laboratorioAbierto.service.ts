@@ -1,5 +1,4 @@
 import {
-  inputEditarReservaLaboratorioAbiertoSchema,
   inputGetAllSolicitudesReservaLaboratorioAbierto,
   inputGetReservaPorId,
   inputGetReservaPorUsuarioId,
@@ -12,12 +11,15 @@ import {
   aprobarReserva,
   rechazarReserva,
   crearReservaLaboratorioAbierto,
+  cancelarReserva,
+  editarReserva,
 } from "../../repositories/reservas/laboratorioAbierto.repository";
 import { protectedProcedure } from "../../trpc";
 import { validarInput } from "../helper";
 import {
   inputAprobarReservaSchema,
   inputReservaLaboratorioAbierto,
+  inputEditarReservaLaboratorioAbiertoSchema,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
 
 export const getReservaLaboratorioAbiertoPorUserProcedure = protectedProcedure
@@ -76,14 +78,28 @@ export const rechazarReservaProcedure = protectedProcedure
     return reserva;
   });
 
+export const cancelarReservaProcedure = protectedProcedure
+  .input(inputRechazarReservaLaboratorioAbierto)
+  .mutation(async ({ ctx, input }) => {
+    validarInput(inputRechazarReservaLaboratorioAbierto, input);
+
+    const userId = ctx.session.user.id;
+
+    const reserva = await cancelarReserva(ctx, input, userId);
+
+    return reserva;
+  });
+
 export const editarReservaProcedure = protectedProcedure
   .input(inputEditarReservaLaboratorioAbiertoSchema)
   .mutation(async ({ ctx, input }) => {
     validarInput(inputEditarReservaLaboratorioAbiertoSchema, input);
 
-    console.log("TODO: editar reserva", ctx, input);
+    const userId = ctx.session.user.id;
 
-    return {};
+    const reserva = await editarReserva(ctx, input, userId);
+
+    return reserva;
   });
 
 export const inputCrearReservaLaboratorioAbiertoProcedure = protectedProcedure
