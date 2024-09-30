@@ -53,6 +53,11 @@ yarn-error.log*
 .direnv*
 devenv.local.nix
 
+# docker
+.dockerignore
+docker-compose.yaml
+Dockerfile
+
 versions.txt
 affected.txt
 changelog-*.md
