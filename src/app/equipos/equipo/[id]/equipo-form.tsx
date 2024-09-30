@@ -89,12 +89,13 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
     "armarioId",
     "laboratorio",
   ]);
-  const [marca, tipo] = watch(["marca", "tipo"]);
+  const [marca, tipo, modeloForm] = watch(["marca", "tipo", "modeloForm"]);
 
   useEffect(() => formHook.reset(equipoBase), [formHook, equipoBase]);
   useEffect(() => laboratorio && formHook.setValue("laboratorioId", laboratorio?.id), [formHook, laboratorio]);
   useEffect(() => formHook.setValue("marcaId", marca?.id), [formHook, marca]);
   useEffect(() => formHook.setValue("tipoId", tipo?.id), [formHook, tipo]);
+  useEffect(() => formHook.setValue("modelo", modeloForm?.label), [formHook, modeloForm]);
 
   if (!esNuevo && isNaN(equipoId)) {
     return <div>Error al cargar...</div>;
@@ -172,6 +173,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     label={"Modelo"}
                     control={control}
                     name="modeloForm"
+                    realNameId="modelo"
                     className="mt-2"
                     placeholder={"Seleccione un modelo"}
                   />
