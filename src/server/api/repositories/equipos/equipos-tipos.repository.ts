@@ -106,9 +106,11 @@ export const agregarTipo = async (ctx: { db: PrismaClient }, input: InputAgregar
   try {
     const nuevoTipo = await ctx.db.$transaction(async (tx) => {
       const existeTipo = await ctx.db.equipoTipo.findFirst({
-        //TODO: ver porque no acepta findUnique
         where: {
-          nombre: input.nombre,
+          nombre: {
+            equals: input.nombre,
+            mode: "insensitive",
+          },
         },
       });
 

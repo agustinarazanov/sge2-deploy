@@ -1,5 +1,3 @@
-"use server";
-
 type LayoutProps = {
   children: React.ReactNode;
 };

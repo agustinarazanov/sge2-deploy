@@ -1,6 +1,15 @@
 "use client";
 
-import { Fragment, useEffect, useId, useMemo, useRef, useState, type ReactElement } from "react";
+import {
+  type FocusEventHandler,
+  Fragment,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type ReactElement,
+} from "react";
 import {
   Combobox,
   ComboboxInput,
@@ -25,10 +34,42 @@ import {
 import { cn } from "../../utils";
 
 import { inputBaseStyle } from "../Input";
-import { type IsMulti, type ItemType, type SelectItem, type SelectProps } from "./select";
 import { useInfiniteScroll } from "@/components/hooks/use-infinitescroll";
 
-interface AutocompleteProps<TType extends SelectItem | string, TMulti extends IsMulti = undefined>
+export interface SelectItemAutocomplete {
+  id: number | string;
+  label: string;
+  value?: string;
+  icon?: React.ReactNode;
+  disabled?: boolean;
+}
+
+export type IsMulti = boolean | undefined;
+
+export type ItemType<TType, TMulti extends IsMulti> = TMulti extends undefined
+  ? TType
+  : TMulti extends true
+    ? TType[]
+    : TType;
+
+export interface SelectProps<TType, TMulti extends IsMulti> {
+  name?: string;
+  label?: string | null;
+  placeholder?: string | null;
+  className?: string;
+  items: TType[];
+  value?: ItemType<TType, TMulti> | null;
+  onChange?: (value: ItemType<TType, TMulti> | null) => void;
+  onBlur?: FocusEventHandler;
+  multiple?: TMulti;
+  disabled?: boolean;
+  isDirty?: boolean;
+  isLoading?: boolean;
+  clearable?: boolean;
+  error?: string;
+}
+
+interface AutocompleteProps<TType extends SelectItemAutocomplete | string, TMulti extends IsMulti = undefined>
   extends SelectProps<TType, TMulti> {
   async?: boolean;
   onQueryChange?: (value: string) => void;
@@ -38,7 +79,7 @@ interface AutocompleteProps<TType extends SelectItem | string, TMulti extends Is
   fetchNextPage?: () => void;
 }
 
-export const Autocomplete = <TType extends SelectItem | string, TMulti extends IsMulti = undefined>({
+export const Autocomplete = <TType extends SelectItemAutocomplete | string, TMulti extends IsMulti = undefined>({
   async,
   onQueryChange,
   label,
@@ -147,8 +188,8 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
                 placeholder={placeholder ?? undefined}
                 displayValue={(p) =>
                   (multiple
-                    ? ((p ?? []) as SelectItem[]).map((v) => v.label).join(", ")
-                    : (p as SelectItem | undefined)?.label) ?? ""
+                    ? ((p ?? []) as SelectItemAutocomplete[]).map((v) => v.label).join(", ")
+                    : (p as SelectItemAutocomplete | undefined)?.label) ?? ""
                 }
                 className={({ open }) =>
                   cn(
@@ -239,7 +280,7 @@ export const Autocomplete = <TType extends SelectItem | string, TMulti extends I
 
 export interface FormAutocompleteProps<
   T extends FieldValues,
-  TType extends SelectItem | string,
+  TType extends SelectItemAutocomplete | string,
   TMulti extends IsMulti = undefined,
 > extends Omit<AutocompleteProps<TType, TMulti>, "name" | "error" | "value" | "onChange" | "isDirty"> {
   control: Control<T>;
@@ -252,7 +293,7 @@ export interface FormAutocompleteProps<
 
 export const FormAutocomplete = <
   T extends FieldValues,
-  TType extends SelectItem | string,
+  TType extends SelectItemAutocomplete | string,
   TMulti extends IsMulti = undefined,
 >({
   name,

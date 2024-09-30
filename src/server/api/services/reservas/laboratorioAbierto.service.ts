@@ -1,9 +1,4 @@
-import {
-  inputGetAllSolicitudesReservaLaboratorioAbierto,
-  inputGetReservaPorId,
-  inputGetReservaPorUsuarioId,
-  inputRechazarReservaLaboratorioAbierto,
-} from "@/shared/filters/reservas-filter.schema";
+import { revalidatePath } from "next/cache";
 import {
   getReservaPorUsuarioId,
   getAllReservas,
@@ -17,15 +12,20 @@ import {
 import { protectedProcedure } from "../../trpc";
 import { validarInput } from "../helper";
 import {
-  inputAprobarReservaSchema,
+  inputAprobarReservaLaboratorioAbiertoSchema,
   inputReservaLaboratorioAbierto,
   inputEditarReservaLaboratorioAbiertoSchema,
+  inputGetAllSolicitudesReservaLaboratorioAbierto,
+  inputRechazarReservaLaboratorioAbierto,
+  inputGetReservaLaboratorioPorUsuarioId,
+  inputGetReservaLaboratorioPorId,
+  inputCancelarReservaLaboratorioAbierto,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
 
 export const getReservaLaboratorioAbiertoPorUserProcedure = protectedProcedure
-  .input(inputGetReservaPorUsuarioId)
+  .input(inputGetReservaLaboratorioPorUsuarioId)
   .query(async ({ ctx, input }) => {
-    validarInput(inputGetReservaPorUsuarioId, input);
+    validarInput(inputGetReservaLaboratorioPorUsuarioId, input);
 
     const reserva = await getReservaPorUsuarioId(ctx, input);
 
@@ -45,9 +45,9 @@ export const getTodasLasReservasProcedure = protectedProcedure
   });
 
 export const getReservaLaboratorioAbiertoPorIdProcedure = protectedProcedure
-  .input(inputGetReservaPorId)
+  .input(inputGetReservaLaboratorioPorId)
   .query(async ({ ctx, input }) => {
-    validarInput(inputGetReservaPorId, input);
+    validarInput(inputGetReservaLaboratorioPorId, input);
 
     const reserva = await getReservaPorId(ctx, input);
 
@@ -55,9 +55,9 @@ export const getReservaLaboratorioAbiertoPorIdProcedure = protectedProcedure
   });
 
 export const aprobarReservaProcedure = protectedProcedure
-  .input(inputAprobarReservaSchema)
+  .input(inputAprobarReservaLaboratorioAbiertoSchema)
   .mutation(async ({ ctx, input }) => {
-    validarInput(inputAprobarReservaSchema, input);
+    validarInput(inputAprobarReservaLaboratorioAbiertoSchema, input);
 
     const userId = ctx.session.user.id;
 
@@ -79,9 +79,9 @@ export const rechazarReservaProcedure = protectedProcedure
   });
 
 export const cancelarReservaProcedure = protectedProcedure
-  .input(inputRechazarReservaLaboratorioAbierto)
+  .input(inputCancelarReservaLaboratorioAbierto)
   .mutation(async ({ ctx, input }) => {
-    validarInput(inputRechazarReservaLaboratorioAbierto, input);
+    validarInput(inputCancelarReservaLaboratorioAbierto, input);
 
     const userId = ctx.session.user.id;
 
@@ -110,6 +110,8 @@ export const inputCrearReservaLaboratorioAbiertoProcedure = protectedProcedure
     const userId = ctx.session.user.id;
 
     const reserva = await crearReservaLaboratorioAbierto(ctx, input, userId);
+
+    revalidatePath("/");
 
     return reserva;
   });
