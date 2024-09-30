@@ -11,6 +11,7 @@ DB_NAME="sge2"
 REPO_SGE2="/Users/scastelli/Projects/Personal/final-project/sge2-nextjs"
 REPO_MIGRACION="/Users/scastelli/Projects/Personal/sge2-data-migration"
 OLD_SQL_PATH="$REPO_SGE2/prisma/old.sql"
+POPULATE_SQL_PATH="$REPO_SGE2/prisma/populate.sql" # Ruta para el archivo de salida
 
 # Función para verificar el estado de los comandos
 check_command() {
@@ -92,9 +93,14 @@ echo "Ejecutando script.ts en migración..."
 npx ts-node scripts/script.ts
 check_command "npx ts-node scripts/script.ts en migración"
 
-# Paso 6: Eliminar el esquema old al finalizar la migración
+# Paso 6: Eliminar el esquema old después de la migración
 echo "Eliminando el esquema old después de la migración..."
 PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c "DROP SCHEMA old CASCADE;"
 check_command "Eliminar esquema old post-migración"
 
-echo "Migración completada exitosamente."
+# Paso 7: Exportar la base de datos a un archivo populate.sql con pg_dump
+echo "Exportando la base de datos a $POPULATE_SQL_PATH..."
+PGPASSWORD=$DB_PASSWORD pg_dump --clean --if-exists -h $DB_HOST -U $DB_USER -d $DB_NAME -f "$POPULATE_SQL_PATH" -O
+check_command "Exportar base de datos a populate.sql"
+
+echo "Migración y exportación completadas exitosamente."
