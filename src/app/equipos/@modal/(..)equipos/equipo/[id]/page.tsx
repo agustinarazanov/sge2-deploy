@@ -12,8 +12,6 @@ type PageProps = {
 export default function PageDetails({ params: { id } }: PageProps) {
   const [open, setOpen] = useState(true);
 
-  // const utils = api.useUtils();
-
   const router = useRouter();
 
   const handleOpenChange = (open: boolean) => {
@@ -24,6 +22,7 @@ export default function PageDetails({ params: { id } }: PageProps) {
   };
 
   const handleClickSave = () => {
+    setOpen(false);
     router.refresh();
   };
 
