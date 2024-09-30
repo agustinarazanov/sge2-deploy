@@ -63,7 +63,7 @@ export const LABORATORIO_ROUTE = {
   ],
 };
 
-export const LABORATORIO_ABIERTO_ROUTE: AppRoute = {
+export const LABORATORIO_ABIERTO_ROUTE = {
   href: "/laboratorio_abierto",
   label: "Laboratorio abierto",
   isPublic: false,

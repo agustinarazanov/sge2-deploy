@@ -16,6 +16,8 @@ import { type LaboratorioAbiertoType } from "../_components/laboratorios";
 import { Slider } from "@/components/ui/slider";
 import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
 import { getDateISOString, getTimeISOString } from "@/shared/get-date";
+import { SelectEspecialidadForm } from "@/app/_components/select-especialidad";
+import { FormInputPoliticas } from "@/app/_components/input-form-politicas";
 
 type Props = {
   onSubmit: () => void;
@@ -40,11 +42,13 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
     },
   );
 
+  const esTLA = tipo === "TLA" || reservaData?.laboratorioAbiertoTipo === "TLA";
+
   const formHook = useForm<FormReservarLaboratorioAbiertoType>({
     mode: "onChange",
     defaultValues: {
       id: reservaId,
-      tipo: esNuevo ? tipo! : reservaData?.reserva.tipo,
+      tipo: esNuevo ? tipo! : reservaData?.laboratorioAbiertoTipo,
       aceptoTerminos: false,
       concurrentes: esNuevo ? 1 : reservaData?.concurrentes,
       equipoRequerido: [],
@@ -52,7 +56,7 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
       horaInicio: esNuevo ? undefined : getTimeISOString(reservaData?.reserva.fechaHoraInicio as unknown as Date),
       horaFin: esNuevo ? undefined : getTimeISOString(reservaData?.reserva.fechaHoraFin as unknown as Date),
       observaciones: esNuevo ? "" : (reservaData?.descripcion ?? ""),
-      sedeId: esNuevo ? 1 : reservaData?.sedeId,
+      sedeId: esNuevo ? undefined : String(reservaData?.sedeId),
     },
     resolver: zodResolver(esNuevo ? inputReservaLaboratorioAbierto : inputEditarReservaLaboratorioAbiertoSchema),
   });
@@ -63,7 +67,7 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
     if (reservaData) {
       formHook.reset({
         id: reservaId,
-        tipo: esNuevo ? tipo! : reservaData?.reserva.tipo,
+        tipo: esNuevo ? tipo! : reservaData?.laboratorioAbiertoTipo,
         aceptoTerminos: false,
         concurrentes: esNuevo ? 1 : reservaData?.concurrentes,
         equipoRequerido: [],
@@ -71,7 +75,7 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
         horaInicio: esNuevo ? undefined : getTimeISOString(reservaData?.reserva.fechaHoraInicio as unknown as Date),
         horaFin: esNuevo ? undefined : getTimeISOString(reservaData?.reserva.fechaHoraFin as unknown as Date),
         observaciones: esNuevo ? "" : (reservaData?.descripcion ?? ""),
-        sedeId: esNuevo ? 1 : reservaData?.sedeId,
+        sedeId: esNuevo ? undefined : String(reservaData?.sedeId),
       });
     }
   }, [esNuevo, formHook, reservaData, reservaId, tipo]);
@@ -153,6 +157,8 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
 
   const concurrentes = formHook.watch("concurrentes");
 
+  console.log(formHook.formState.errors);
+
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
@@ -176,7 +182,6 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
                   name="fechaReserva"
                   className="mt-2"
                   type={"date"}
-                  required
                 />
               </div>
             </div>
@@ -189,31 +194,24 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
                   name="horaInicio"
                   className="mt-2"
                   type={"time"}
-                  required
                 />
               </div>
               <div className="mt-4 basis-1/2">
-                <FormInput
-                  label={"Hora de fin"}
-                  control={control}
-                  name="horaFin"
-                  className="mt-2"
-                  type={"time"}
-                  required
-                />
+                <FormInput label={"Hora de fin"} control={control} name="horaFin" className="mt-2" type={"time"} />
               </div>
             </div>
 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4 w-full">
-                <label htmlFor="">¿Cuántas personas concurrirán al Laboratorio?</label>
+                <label htmlFor="concurrentes">¿Cuántas personas concurrirán al Laboratorio?</label>
                 <Controller
                   control={control}
                   name="concurrentes"
                   render={({ field }) => (
                     <Slider
+                      id="concurrentes"
                       value={[field.value]}
-                      min={0}
+                      min={1}
                       max={8}
                       step={1}
                       className={"w-full"}
@@ -225,13 +223,24 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
               </div>
             </div>
 
-            <div className="flex w-full flex-col justify-end gap-y-4 lg:justify-between">
-              <div className="items-top flex space-x-2">
+            <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              {esTLA && (
+                <div className="mt-4 w-full">
+                  <SelectEspecialidadForm
+                    name="especialidad"
+                    label={"Especialidad"}
+                    control={control}
+                    className="mt-2"
+                    placeholder={"Selecciona una especialidad"}
+                  />
+                </div>
+              )}
+              <div className="mt-4 w-full">
                 <SelectSedeForm
                   name="sedeId"
+                  label={"Sede"}
                   control={control}
                   className="mt-2"
-                  label={"Sede"}
                   placeholder={"Selecciona una sede"}
                 />
               </div>
@@ -303,18 +312,7 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4">
                 <div className="items-top flex space-x-2">
-                  <Checkbox id="aceptoTerminos" name="aceptoTerminos" className="mt-2" />
-                  <div className="grid gap-1.5 leading-none">
-                    <label
-                      htmlFor="terms1"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      <b> Declaro conocer las nuevas políticas de uso de laboratorio</b>
-                    </label>
-                    <p className="text-sm text-muted-foreground">
-                      La política de uso de laboratorio ha cambiado, TODO: LINK
-                    </p>
-                  </div>
+                  <FormInputPoliticas name="aceptoTerminos" control={control} />
                 </div>
               </div>
             </div>

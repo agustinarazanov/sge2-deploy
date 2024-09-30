@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import {
   getReservaPorUsuarioId,
   getAllReservas,
@@ -18,6 +19,7 @@ import {
   inputRechazarReservaLaboratorioAbierto,
   inputGetReservaLaboratorioPorUsuarioId,
   inputGetReservaLaboratorioPorId,
+  inputCancelarReservaLaboratorioAbierto,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
 
 export const getReservaLaboratorioAbiertoPorUserProcedure = protectedProcedure
@@ -77,9 +79,9 @@ export const rechazarReservaProcedure = protectedProcedure
   });
 
 export const cancelarReservaProcedure = protectedProcedure
-  .input(inputRechazarReservaLaboratorioAbierto)
+  .input(inputCancelarReservaLaboratorioAbierto)
   .mutation(async ({ ctx, input }) => {
-    validarInput(inputRechazarReservaLaboratorioAbierto, input);
+    validarInput(inputCancelarReservaLaboratorioAbierto, input);
 
     const userId = ctx.session.user.id;
 
@@ -108,6 +110,8 @@ export const inputCrearReservaLaboratorioAbiertoProcedure = protectedProcedure
     const userId = ctx.session.user.id;
 
     const reserva = await crearReservaLaboratorioAbierto(ctx, input, userId);
+
+    revalidatePath("/");
 
     return reserva;
   });

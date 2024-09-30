@@ -36,16 +36,16 @@ export const inputReservaLaboratorioCerrado = z
   .merge(inputReservaLaboratorioDiscrecionalBase);
 
 export const inputReservaLaboratorioAbierto = z.object({
-  tipo: z.string().min(1, { message: "Requerido" }),
+  tipo: z.enum(["LA", "TLA", "TLA_BASICA"]),
   fechaReserva: z.string().min(1, { message: "Requerido" }),
   horaInicio: z.string().min(1, { message: "Requerido" }),
   horaFin: z.string().min(1, { message: "Requerido" }),
   concurrentes: z.number().min(1, { message: "Requerido" }),
-  sedeId: z.number().min(1, { message: "Requerido" }),
+  sedeId: z.string().refine((value) => parseInt(value) >= 0, { message: "Debe seleccionar una sede" }),
   equipoRequerido: z.array(inputEquipoRequerido).default([]),
   observaciones: z.string().default(""),
   especialidad: z.string().optional().default(""),
-  aceptoTerminos: z.boolean().default(false),
+  aceptoTerminos: z.boolean().refine((value) => value === true, { message: "Debe aceptar los términos y condiciones" }),
 });
 
 export const inputAprobarReservaLaboratorioAbiertoSchema = z.object({
@@ -88,6 +88,11 @@ export const inputGetAllSolicitudesReservaLaboratorioAbierto = z.object({
 });
 
 export const inputRechazarReservaLaboratorioAbierto = z.object({
+  id: z.number().positive().min(1, { message: "Requerido" }),
+  motivo: z.string().min(1, { message: "Requerido" }),
+});
+
+export const inputCancelarReservaLaboratorioAbierto = z.object({
   id: z.number().positive().min(1, { message: "Requerido" }),
 });
 

@@ -9,6 +9,7 @@ import {
   getTutorPorIdProcedure,
   getTodosLosUsuariosProcedure,
   getUsuarioPorIdProcedure,
+  getAllTutoresEspecialidadesProcedure,
 } from "../../services/admin/usuarios-admin.service";
 
 export const usuariosRouter = createTRPCRouter({
@@ -21,5 +22,6 @@ export const usuariosRouter = createTRPCRouter({
   editarTutor: editarTutorProcedure,
   eliminarTutor: eliminarTutorProcedure,
   getAllTutores: getAllTutoresProcedure,
+  getAllTutoresEspecialidades: getAllTutoresEspecialidadesProcedure,
   getAllProfesores: getAllProfesoresProcedure,
 });
