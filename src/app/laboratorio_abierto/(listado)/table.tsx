@@ -3,15 +3,15 @@
 import { Button, DataTable } from "@/components/ui";
 import { type RouterOutputs } from "@/trpc/react";
 import { type z } from "zod";
-
 import { DataTablePaginationStandalone } from "@/components/ui/table/table-pagination-standalone";
 import { type SortingState } from "@tanstack/react-table";
 import { useReservasLaboratorioAbiertoQueryParam } from "../_hooks/use-reserva-laboratorio-abierto-query-param";
-import { type inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reservas-filter.schema";
+
 import { getColumnasReservasLaboratorioAbierto } from "./columns-reserva";
 import { PrinterIcon, TrashIcon } from "lucide-react";
 import { VerReservaModal } from "./ver-reserva";
 import EditarReservaModal from "./editar-reserva-modal";
+import { type inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reserva-laboratorio-filter.schema";
 
 type LaboratorioAbiertoReservaData = RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getAll"];
 type reservaFilters = z.infer<typeof inputGetAllSolicitudesReservaLaboratorioAbierto>;
