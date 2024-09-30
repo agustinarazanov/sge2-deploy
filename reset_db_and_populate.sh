@@ -6,6 +6,7 @@ DB_USER="postgres"
 DB_PASSWORD="password"
 DB_HOST="localhost"
 DB_NAME="sge2"
+CLEAN_USERS=true  # Cambiar a false si no queres limpiar usuarios
 
 # Cambia estas variables según las rutas de tus repositorios
 REPO_SGE2="/Users/scastelli/Projects/Personal/final-project/sge2-nextjs"
@@ -98,9 +99,33 @@ echo "Eliminando el esquema old después de la migración..."
 PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c "DROP SCHEMA old CASCADE;"
 check_command "Eliminar esquema old post-migración"
 
+# Paso 6.1: Limpiar usuarios si está habilitado
+if [ "$CLEAN_USERS" = true ]; then
+  echo "Limpiando usuarios después de la migración..."
+  PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c "
+    do \$\$
+    declare
+        profesor_id text := (select id from \"public\".\"User\" where name = 'hspataro');
+        ayudante_id text := (select id from \"public\".\"User\" where name = 'spalozzo');
+    begin
+        delete from \"CursoAyudante\" where \"cursoId\" in (select \"cursoId\" from \"CursoAyudante\" group by \"cursoId\" having count(*) > 1);
+        update \"CursoAyudante\" set \"userId\" = ayudante_id;
+        update \"Curso\" set \"profesorId\" = profesor_id;
+        update \"Materia\" set \"directorUsuarioId\" = profesor_id where \"directorUsuarioId\" is not null;
+        delete from \"MateriaJefeTp\" where \"materiaId\" in (select \"materiaId\" from \"MateriaJefeTp\" group by \"materiaId\" having count(*) > 1);
+        update \"MateriaJefeTp\" set \"jefeTrabajoPracticoUsuarioId\" = profesor_id;
+        delete from \"User\" where name <> 'hspataro' and \"name\" <> 'spalozzo' and name <> 'alumno';
+    end\$\$;
+  "
+  check_command "Limpiar usuarios"
+else
+  echo "La limpieza de usuarios está deshabilitada."
+fi
+
+
 # Paso 7: Exportar la base de datos a un archivo populate.sql con pg_dump
 echo "Exportando la base de datos a $POPULATE_SQL_PATH..."
-PGPASSWORD=$DB_PASSWORD pg_dump --clean --if-exists -h $DB_HOST -U $DB_USER -d $DB_NAME -f "$POPULATE_SQL_PATH" -O
+PGPASSWORD=$DB_PASSWORD pg_dump --clean --inserts -h $DB_HOST -U $DB_USER -d $DB_NAME --file="$POPULATE_SQL_PATH" --if-exists -O
 check_command "Exportar base de datos a populate.sql"
 
 echo "Migración y exportación completadas exitosamente."
