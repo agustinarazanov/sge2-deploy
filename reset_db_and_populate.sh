@@ -34,7 +34,7 @@ if [ ! -d "$REPO_MIGRACION" ]; then
 fi
 
 if [ ! -f "$OLD_SQL_PATH" ]; then
-  echo "Error: El archivo old.sql no existe: $OLD_SQL_PATH"
+  echo "Error: El archivo old.sql no existe en la ruta: $OLD_SQL_PATH"
   exit 1
 fi
 
@@ -43,12 +43,24 @@ echo "Borrando todas las tablas en el esquema public..."
 PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
 check_command "Borrar tablas en el esquema public"
 
-# Paso 2: Ejecutar old.sql para crear el esquema old
+# Paso 2: Verificar si existe el esquema old y eliminarlo
+echo "Verificando si existe el esquema old..."
+EXISTS_OLD_SCHEMA=$(PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -tAc "SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'old';")
+
+if [ "$EXISTS_OLD_SCHEMA" == "old" ]; then
+  echo "El esquema old ya existe. Eliminándolo..."
+  PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c "DROP SCHEMA old CASCADE;"
+  check_command "Eliminar esquema old"
+else
+  echo "Esquema old no encontrado, no es necesario eliminar."
+fi
+
+# Paso 3: Ejecutar old.sql para crear el esquema old
 echo "Ejecutando old.sql para crear el esquema old..."
 PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -f "$OLD_SQL_PATH"
 check_command "old.sql"
 
-# Paso 3: Cambiar al repo sge-2 y ejecutar prisma generate y db push
+# Paso 4: Cambiar al repo sge-2 y ejecutar prisma generate y db push
 echo "Cambiando al repo sge-2 en la ruta: $REPO_SGE2"
 cd "$REPO_SGE2" || { echo "Error: no se pudo cambiar al directorio $REPO_SGE2"; exit 1; }
 
@@ -60,7 +72,7 @@ echo "Ejecutando npx prisma db push en sge-2..."
 npx prisma db push
 check_command "npx prisma db push en sge-2"
 
-# Paso 4: Cambiar al repo de migración y ejecutar los comandos
+# Paso 5: Cambiar al repo de migración y ejecutar los comandos
 echo "Cambiando al repo de migración en la ruta: $REPO_MIGRACION"
 cd "$REPO_MIGRACION" || { echo "Error: no se pudo cambiar al directorio $REPO_MIGRACION"; exit 1; }
 
@@ -79,5 +91,10 @@ check_command "npx prisma generate --sql en migración"
 echo "Ejecutando script.ts en migración..."
 npx ts-node scripts/script.ts
 check_command "npx ts-node scripts/script.ts en migración"
+
+# Paso 6: Eliminar el esquema old al finalizar la migración
+echo "Eliminando el esquema old después de la migración..."
+PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c "DROP SCHEMA old CASCADE;"
+check_command "Eliminar esquema old post-migración"
 
 echo "Migración completada exitosamente."
