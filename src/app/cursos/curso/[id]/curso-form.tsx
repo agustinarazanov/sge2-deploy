@@ -81,10 +81,10 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
     );
   }, [ayudantesData]);
 
-  const { data: sedesData } = api.admin.laboratorios.getAllSedes.useQuery();
-  const sedes = useMemo(() => {
-    return sedesData?.map((item) => ({ id: item.id, label: item.nombre })) ?? [];
-  }, [sedesData]);
+  // const { data: sedesData } = api.admin.laboratorios.getAllSedes.useQuery();
+  // const sedes = useMemo(() => {
+  //   return sedesData?.map((item) => ({ id: item.id, label: item.nombre })) ?? [];
+  // }, [sedesData]);
 
   const cursoId = parseInt(id ?? "");
   const { data: curso, isLoading, isError } = api.cursos.cursoPorId.useQuery({ id: cursoId }, { enabled: !!id });
@@ -230,7 +230,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
               </div>
 
               <div className="mt-4 basis-1/3">
-                <FormSelect label={"Sede"} control={control} name="sedeId" className="mt-2" items={sedes} />
+                {/* <FormSelect label={"Sede"} control={control} name="sedeId" className="mt-2" items={sedes} /> */}
               </div>
             </div>
 

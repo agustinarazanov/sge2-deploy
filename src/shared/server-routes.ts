@@ -63,7 +63,7 @@ export const LABORATORIO_ROUTE = {
   ],
 };
 
-export const LABORATORIO_ABIERTO_ROUTE: AppRoute = {
+export const LABORATORIO_ABIERTO_ROUTE = {
   href: "/laboratorio_abierto",
   label: "Laboratorio abierto",
   isPublic: false,
@@ -71,6 +71,11 @@ export const LABORATORIO_ABIERTO_ROUTE: AppRoute = {
     {
       href: "/laboratorio_abierto/reservar",
       label: "Reservar",
+      isPublic: false,
+    },
+    {
+      href: "/laboratorio_abierto/solicitudes",
+      label: "Solicitudes",
       isPublic: false,
     },
     {

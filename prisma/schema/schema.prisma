@@ -52,8 +52,10 @@ model Sede {
 
     nombre String @unique
 
-    cursos       Curso[]
-    equipos      Equipo[]
-    laboratorios Laboratorio[]
-    libros       Libro[]
+    cursos                    Curso[]
+    equipos                   Equipo[]
+    laboratorios              Laboratorio[]
+    libros                    Libro[]
+    ReservaLaboratorioAbierto ReservaLaboratorioAbierto[]
+    ReservaLaboratorioCerrado ReservaLaboratorioCerrado[]
 }

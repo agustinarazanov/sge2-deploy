@@ -158,9 +158,6 @@ export const crearPrestamoEquipo = async (
             create: {
               fechaEntregado: getDateISO(input.fechaInicio),
               equipoId: input.equipoId,
-
-              numeroReserva: 123456, // TODO: que dato va aca?
-
               usuarioCreadorId: userId,
               usuarioModificadorId: userId,
             },

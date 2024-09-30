@@ -1,9 +1,20 @@
 import { z } from "zod";
+import { enumReservaEstatus } from "./reservas-filter.schema";
 
 const inputEquipoRequerido = z.object({ idTipo: z.string(), cantidad: z.number() });
 
+export const inputGetReservaLaboratorioPorUsuarioId = z.object({
+  id: z.string().min(1),
+});
+
+export const inputGetReservaLaboratorioPorId = z.object({
+  id: z.number().positive().min(1, { message: "Requerido" }),
+});
+
 const inputReservaLaboratorioDiscrecionalBase = z.object({
   fechaReserva: z.string().min(1, { message: "Requerido" }),
+  horaInicio: z.string().min(1, { message: "Requerido" }),
+  horaFin: z.string().min(1, { message: "Requerido" }),
   requierePc: z.boolean().default(false),
   requiereProyector: z.boolean().default(false),
   requiereEquipo: z.boolean().default(false),
@@ -25,13 +36,104 @@ export const inputReservaLaboratorioCerrado = z
   .merge(inputReservaLaboratorioDiscrecionalBase);
 
 export const inputReservaLaboratorioAbierto = z.object({
-  tipo: z.string().min(1, { message: "Requerido" }),
+  tipo: z.enum(["LA", "TLA", "TLA_BASICA"]),
   fechaReserva: z.string().min(1, { message: "Requerido" }),
   horaInicio: z.string().min(1, { message: "Requerido" }),
   horaFin: z.string().min(1, { message: "Requerido" }),
   concurrentes: z.number().min(1, { message: "Requerido" }),
-  sedeId: z.number().min(1, { message: "Requerido" }),
+  sedeId: z.string().refine((value) => parseInt(value) >= 0, { message: "Debe seleccionar una sede" }),
   equipoRequerido: z.array(inputEquipoRequerido).default([]),
   observaciones: z.string().default(""),
-  aceptoTerminos: z.boolean().default(false),
+  especialidad: z.string().optional().default(""),
+  aceptoTerminos: z.boolean().refine((value) => value === true, { message: "Debe aceptar los términos y condiciones" }),
+});
+
+export const inputAprobarReservaLaboratorioAbiertoSchema = z.object({
+  id: z.number().positive().min(1, { message: "Requerido" }),
+  tutorId: z.string().optional(),
+  inventarioRevisado: z.array(z.string()),
+  laboratorioId: z.number().optional(),
+  equipoRequerido: z.array(inputEquipoRequerido).default([]),
+});
+
+export const inputEditarReservaLaboratorioAbiertoSchema = z
+  .object({
+    id: z.number().positive().min(1, { message: "Requerido" }),
+  })
+  .merge(inputReservaLaboratorioAbierto);
+
+export const inputGetAllSolicitudesReservaLaboratorioAbierto = z.object({
+  pageSize: z.enum(["10", "20", "30", "40", "50"]).default("10").catch("10"),
+  pageIndex: z
+    .string()
+    .default("0")
+    .refine((value) => parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
+    .catch("0"),
+  orderBy: z
+    .enum([
+      "id",
+      "laboratorioId",
+      "sede",
+      "reserva_fechaCreacion",
+      "reserva_fechaHoraInicio",
+      "reserva_fechaHoraFin",
+      "reserva_usuarioSolicito_apellido",
+    ])
+    .default("id")
+    .catch("id"),
+  orderDirection: z.enum(["asc", "desc"]).default("desc").catch("desc"),
+  searchText: z.string().default(""),
+  estatus: enumReservaEstatus.default("").catch(""),
+  filtrByUserId: z.enum(["true", "false"]).optional(),
+});
+
+export const inputRechazarReservaLaboratorioAbierto = z.object({
+  id: z.number().positive().min(1, { message: "Requerido" }),
+  motivo: z.string().min(1, { message: "Requerido" }),
+});
+
+export const inputCancelarReservaLaboratorioAbierto = z.object({
+  id: z.number().positive().min(1, { message: "Requerido" }),
+});
+
+export const inputAprobarReservaLaboratorioCerradoSchema = z.object({
+  id: z.number().positive().min(1, { message: "Requerido" }),
+  inventarioRevisado: z.array(z.string()),
+  laboratorioId: z.number().optional(),
+  equipoRequerido: z.array(inputEquipoRequerido).default([]),
+});
+
+export const inputEditarReservaLaboratorioCerradoSchema = z
+  .object({
+    id: z.number().positive().min(1, { message: "Requerido" }),
+  })
+  .merge(inputReservaLaboratorioCerrado);
+
+export const inputGetAllSolicitudesReservaLaboratorioCerrado = z.object({
+  pageSize: z.enum(["10", "20", "30", "40", "50"]).default("10").catch("10"),
+  pageIndex: z
+    .string()
+    .default("0")
+    .refine((value) => parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
+    .catch("0"),
+  orderBy: z
+    .enum([
+      "id",
+      "laboratorioId",
+      "sede",
+      "reserva_fechaCreacion",
+      "reserva_fechaHoraInicio",
+      "reserva_fechaHoraFin",
+      "reserva_usuarioSolicito_apellido",
+    ])
+    .default("id")
+    .catch("id"),
+  orderDirection: z.enum(["asc", "desc"]).default("desc").catch("desc"),
+  searchText: z.string().default(""),
+  estatus: enumReservaEstatus.default("").catch(""),
+  filtrByUserId: z.enum(["true", "false"]).optional(),
+});
+
+export const inputRechazarReservaLaboratorioCerrado = z.object({
+  id: z.number().positive().min(1, { message: "Requerido" }),
 });

@@ -1,7 +1,7 @@
 import { useMemo, useState, type ReactElement } from "react";
 import { type Path, type FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
+import { type IsMulti, type SelectItemAutocomplete } from "@/components/ui/autocomplete";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FormAutocomplete, type FormAutocompleteProps, Select, SelectTrigger, SelectValue } from "@/components/ui";
 import { estaDentroDe } from "@/shared/string-compare";
@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export const SelectAutoresForm = <
   T extends FieldValues,
-  TType extends SelectItem | string,
+  TType extends SelectItemAutocomplete | string,
   TMulti extends IsMulti = undefined,
 >({
   name,
