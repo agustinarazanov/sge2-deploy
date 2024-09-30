@@ -9,8 +9,8 @@ DB_NAME="sge2"
 CLEAN_USERS=true  # Cambiar a false si no queres limpiar usuarios
 
 # Cambia estas variables según las rutas de tus repositorios
-REPO_SGE2="/Users/scastelli/Projects/Personal/final-project/sge2-nextjs"
-REPO_MIGRACION="/Users/scastelli/Projects/Personal/sge2-data-migration"
+REPO_SGE2="$PWD"
+REPO_MIGRACION="$PWD/../sge2-data-migration"
 OLD_SQL_PATH="$REPO_SGE2/prisma/old.sql"
 POPULATE_SQL_PATH="$REPO_SGE2/prisma/populate.sql" # Ruta para el archivo de salida
 

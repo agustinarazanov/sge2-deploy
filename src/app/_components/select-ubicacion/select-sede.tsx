@@ -1,21 +1,16 @@
 import { useMemo, type ReactElement } from "react";
-import { Controller, type FieldValues } from "react-hook-form";
+import { type FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { type FormSelectProps, type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
+import { FormSelect, type FormSelectProps } from "@/components/ui/autocomplete";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui";
-import { cn } from "@/components/utils";
 
-export const SelectSedeForm = <
-  T extends FieldValues,
-  TType extends SelectItem | string,
-  TMulti extends IsMulti = undefined,
->({
+export const SelectSedeForm = <T extends FieldValues, TType extends string>({
   name,
   control,
   className,
-  // ...props
-}: Omit<FormSelectProps<T, TType, TMulti>, "items">): ReactElement => {
+  ...props
+}: Omit<FormSelectProps<T, TType>, "items">): ReactElement => {
   const { data, isLoading, isError } = api.admin.laboratorios.getAllSedes.useQuery();
 
   const sedes = useMemo(() => {
@@ -26,7 +21,7 @@ export const SelectSedeForm = <
 
       return {
         label,
-        id,
+        id: String(id),
       };
     });
   }, [data]);
@@ -56,33 +51,14 @@ export const SelectSedeForm = <
   }
 
   return (
-    <Controller
+    <FormSelect
+      isLoading={isLoading}
+      className={className}
       name={name}
       control={control}
-      render={({ field }) => {
-        return (
-          <select
-            className={cn(
-              "h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover",
-              className,
-            )}
-            name={name}
-            onChange={field.onChange}
-            value={field.value}
-          >
-            {sedes.map((item) => {
-              return (
-                <option key={item.id} value={item.id}>
-                  {item.label}
-                </option>
-              );
-            })}
-          </select>
-        );
-      }}
+      items={sedes}
+      label={"Selecciona una sede"}
+      {...props}
     />
   );
-
-  // // @ts-expect-error - The expected type comes from property 'items' which is declared on type 'FormSelectProps<...>'
-  // return <FormSelect className={className} name={name} control={control} items={sedes} {...props} />;
 };

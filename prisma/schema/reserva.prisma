@@ -6,6 +6,8 @@ model Reserva {
     fechaHoraFin    DateTime
     tipo            ReservaTipo
 
+    motivoRechazo String?
+
     // Usuario que hace la reserva
     usuarioSolicitoId String
     usuarioSolicito   User   @relation(fields: [usuarioSolicitoId], references: [id], name: "reservasSolicitadas", onDelete: Restrict)
@@ -133,9 +135,10 @@ model ReservaLaboratorioCerradoEquipo {
 model ReservaLaboratorioAbierto {
     id Int @id @default(autoincrement())
 
-    especialidad String
-    descripcion  String
-    concurrentes Int
+    especialidad           String
+    descripcion            String
+    concurrentes           Int
+    laboratorioAbiertoTipo LaboratorioAbiertoTipo
 
     reservaId Int     @unique
     reserva   Reserva @relation(fields: [reservaId], references: [id], onDelete: Cascade)
