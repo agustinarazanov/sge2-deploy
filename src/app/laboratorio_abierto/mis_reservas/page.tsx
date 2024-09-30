@@ -2,8 +2,8 @@ import { type ReadonlyURLSearchParams } from "next/navigation";
 import { Suspense, useMemo } from "react";
 import { ActionButtonsPrestamos } from "../(listado)/action-redirect-prestamos";
 import LoadingBibliotecaPrestamosTable from "../(listado)/loading-laboratorio-abierto-reservas-table";
-import { inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reservas-filter.schema";
 import LaboratorioAbiertoSolicitudesTableContainer from "../(listado)/reservas-table-container";
+import { inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reserva-laboratorio-filter.schema";
 
 type PageProps = {
   searchParams: ReadonlyURLSearchParams;

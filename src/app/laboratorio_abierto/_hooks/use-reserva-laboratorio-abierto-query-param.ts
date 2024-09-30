@@ -2,8 +2,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { type z } from "zod";
 import { type PaginationState, type SortingState } from "@tanstack/react-table";
 import { useCallback } from "react";
-import { inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reservas-filter.schema";
 import { type RouterOutputs } from "@/trpc/react";
+import { inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reserva-laboratorio-filter.schema";
 
 type EstadoReservaType =
   RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getAll"]["reservas"][number]["reserva"]["estatus"];
