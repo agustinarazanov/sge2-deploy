@@ -47,3 +47,4 @@ yarn-error.log*
 
 # others
 /public/imagenes
+.pre-commit-config.yaml
