@@ -1,7 +1,7 @@
 import { api } from "@/trpc/server";
 import { type z } from "zod";
-import { type inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reservas-filter.schema";
 import { LaboratorioAbiertoReservaTable } from "./table";
+import { type inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reserva-laboratorio-filter.schema";
 
 type LaboratorioAbiertoReservaFilters = z.infer<typeof inputGetAllSolicitudesReservaLaboratorioAbierto>;
 

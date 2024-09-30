@@ -1,20 +1,19 @@
 import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
-import type {
-  inputGetAllSolicitudesReservaLaboratorioAbierto,
-  inputGetReservaPorId,
-  inputGetReservaPorUsuarioId,
-  inputRechazarReservaLaboratorioAbierto,
-} from "@/shared/filters/reservas-filter.schema";
 import type { PrismaClient, Prisma } from "@prisma/client";
 import type { z } from "zod";
 import { informacionUsuario } from "../usuario-helper";
 import type {
   inputEditarReservaLaboratorioAbiertoSchema,
-  inputAprobarReservaSchema,
+  inputAprobarReservaLaboratorioAbiertoSchema,
   inputReservaLaboratorioAbierto,
+  inputGetAllSolicitudesReservaLaboratorioAbierto,
+  inputGetReservaLaboratorioPorId,
+  inputGetReservaLaboratorioPorUsuarioId,
+  inputRechazarReservaLaboratorioAbierto,
+  inputCancelarReservaLaboratorioAbierto,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
 
-type InputGetPorUsuarioID = z.infer<typeof inputGetReservaPorUsuarioId>;
+type InputGetPorUsuarioID = z.infer<typeof inputGetReservaLaboratorioPorUsuarioId>;
 export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: InputGetPorUsuarioID) => {
   const { id } = input;
 
@@ -90,6 +89,9 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
             usuarioRecibio: {
               select: informacionUsuario,
             },
+            usuarioTutor: {
+              select: informacionUsuario,
+            },
           },
         },
         laboratorio: true,
@@ -107,7 +109,7 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
   };
 };
 
-type InputGetById = z.infer<typeof inputGetReservaPorId>;
+type InputGetById = z.infer<typeof inputGetReservaLaboratorioPorId>;
 export const getReservaPorId = async (ctx: { db: PrismaClient }, input: InputGetById) => {
   const { id } = input;
 
@@ -129,7 +131,7 @@ export const getReservaPorId = async (ctx: { db: PrismaClient }, input: InputGet
   return reserva;
 };
 
-type InputAprobarORechazarReserva = z.infer<typeof inputAprobarReservaSchema>;
+type InputAprobarORechazarReserva = z.infer<typeof inputAprobarReservaLaboratorioAbiertoSchema>;
 export const aprobarReserva = async (
   ctx: { db: PrismaClient },
   input: InputAprobarORechazarReserva,
@@ -269,6 +271,7 @@ export const rechazarReserva = async (
           estatus: "RECHAZADA",
           fechaRechazo: new Date(),
           usuarioTutorId: null,
+          motivoRechazo: input.motivo,
           reservaLaboratorioAbierto: {
             update: {
               laboratorioId: null,
@@ -287,9 +290,10 @@ export const rechazarReserva = async (
   }
 };
 
+type InputCancelarReservaLaboratorioAbierto = z.infer<typeof inputCancelarReservaLaboratorioAbierto>;
 export const cancelarReserva = async (
   ctx: { db: PrismaClient },
-  input: InputRechazarReservaLaboratorioAbierto,
+  input: InputCancelarReservaLaboratorioAbierto,
   userId: string,
 ) => {
   try {
@@ -361,8 +365,9 @@ const getReservaAbiertaCreateArgs = (input: InputCrearReservaLaboratorioAbierto,
       tipo: "LABORATORIO_ABIERTO",
       reservaLaboratorioAbierto: {
         create: {
-          sedeId: input.sedeId,
+          sedeId: Number(input.sedeId),
           laboratorioId: null,
+          laboratorioAbiertoTipo: input.tipo,
           descripcion: input.observaciones?.trim() ?? "",
           usuarioCreadorId: userId,
           usuarioModificadorId: userId,

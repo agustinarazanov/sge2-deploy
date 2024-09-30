@@ -13,6 +13,8 @@ pnpm-lock.yaml
 /prisma/db.sqlite
 /prisma/db.sqlite-journal
 db.sqlite
+/prisma/populate.sql
+/prisma/old.sql
 
 # next.js
 /.next/
@@ -47,3 +49,4 @@ yarn-error.log*
 
 # others
 /public/imagenes
+.pre-commit-config.yaml

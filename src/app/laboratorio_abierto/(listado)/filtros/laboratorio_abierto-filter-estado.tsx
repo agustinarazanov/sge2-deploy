@@ -2,11 +2,11 @@
 
 import { type z } from "zod";
 import { useState } from "react";
-import { type inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reservas-filter.schema";
 import { useReservasLaboratorioAbiertoQueryParam } from "../../_hooks/use-reserva-laboratorio-abierto-query-param";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { type RouterOutputs } from "@/trpc/react";
 import { cn } from "@/components/utils";
+import { type inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reserva-laboratorio-filter.schema";
 
 type LaboratorioAbiertoReservaFilters = z.infer<typeof inputGetAllSolicitudesReservaLaboratorioAbierto>;
 type EstadoReservaType =

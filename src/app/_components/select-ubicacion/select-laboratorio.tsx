@@ -1,21 +1,17 @@
 import { useMemo, useState, type ReactElement } from "react";
 import type { Path, FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { type FormSelectProps, type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
+import { type FormSelectProps } from "@/components/ui/autocomplete";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FormAutocomplete, Select, SelectTrigger, SelectValue } from "@/components/ui";
 import { estaDentroDe } from "@/shared/string-compare";
 
-export const SelectLaboratorioForm = <
-  T extends FieldValues,
-  TType extends SelectItem | string,
-  TMulti extends IsMulti = undefined,
->({
+export const SelectLaboratorioForm = <T extends FieldValues, TType extends string>({
   name,
   control,
   className,
   ...props
-}: Omit<FormSelectProps<T, TType, TMulti>, "items"> & { sedeId?: number; realNameId?: Path<T> }): ReactElement => {
+}: Omit<FormSelectProps<T, TType>, "items"> & { sedeId?: number; realNameId?: Path<T> }): ReactElement => {
   const [query, setQuery] = useState("");
   const { data, isLoading, isError } = api.admin.laboratorios.getAll.useQuery({ sedeId: props.sedeId?.toString() });
 

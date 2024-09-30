@@ -226,6 +226,27 @@ export const getAllTutores = async (ctx: { db: PrismaClient }) => {
   return tutores;
 };
 
+export const getAllTutoresEspecialidades = async (ctx: { db: PrismaClient }) => {
+  const modelos = await ctx.db.tutor.findMany({
+    orderBy: {
+      especialidad: "asc",
+    },
+    select: {
+      especialidad: true,
+    },
+    distinct: ["especialidad"],
+    where: {
+      especialidad: {
+        not: "",
+      },
+    },
+  });
+
+  const modelosMapped = modelos.map(({ especialidad }) => especialidad);
+
+  return modelosMapped;
+};
+
 type InputEliminarTutor = z.infer<typeof inputEliminarUsuario>;
 export const eliminarTutor = async (ctx: { db: PrismaClient }, input: InputEliminarTutor) => {
   try {

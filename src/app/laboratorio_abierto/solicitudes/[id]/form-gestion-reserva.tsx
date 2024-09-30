@@ -4,15 +4,17 @@ import { ReservaAprobacion } from "@/app/laboratorio_abierto/_components/reserva
 
 interface ReservaViewAdminProps {
   reservaId: number;
+  onAprobar: () => void;
+  onRechazar: () => void;
   onCancel: () => void;
 }
 
-export const ReservaViewAdmin = ({ reservaId, onCancel }: ReservaViewAdminProps) => {
+export const ReservaViewAdmin = ({ reservaId, onCancel, onAprobar, onRechazar }: ReservaViewAdminProps) => {
   return (
     <ScrollArea className="max-h-[calc(100vh_-_10%)]">
       <div className="container mx-auto space-y-8 p-4">
         <ReservaDetalle reservaId={reservaId} />
-        <ReservaAprobacion reservaId={reservaId} onCancel={onCancel} onAprobar={onCancel} />
+        <ReservaAprobacion reservaId={reservaId} onCancel={onCancel} onAprobar={onAprobar} onRechazar={onRechazar} />
       </div>
     </ScrollArea>
   );

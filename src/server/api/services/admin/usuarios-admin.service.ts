@@ -17,6 +17,7 @@ import {
   getAllTutores,
   getAllUsuarios,
   getUsuarioPorId,
+  getAllTutoresEspecialidades,
 } from "../../repositories/admin/usuarios-admin.repository";
 
 export const getTodosLosUsuariosProcedure = protectedProcedure.input(inputGetUsuarios).query(async ({ ctx, input }) => {
@@ -71,6 +72,12 @@ export const getAllTutoresProcedure = protectedProcedure.query(async ({ ctx }) =
   const tutores = await getAllTutores(ctx);
 
   return tutores;
+});
+
+export const getAllTutoresEspecialidadesProcedure = protectedProcedure.query(async ({ ctx }) => {
+  const especialidades = await getAllTutoresEspecialidades(ctx);
+
+  return especialidades;
 });
 
 export const eliminarTutorProcedure = protectedProcedure

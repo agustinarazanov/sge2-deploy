@@ -14,27 +14,18 @@ export const getColumnasReservasLaboratorioAbierto = ({ filterByUser }: { filter
     colHelper.accessor("id", {
       header: "Reserva #",
     }),
-    colHelper.accessor("laboratorio.id", {
-      header: "Laboratorio ID",
-    }),
-    colHelper.accessor("laboratorio.nombre", {
-      header: "Nombre Laboratorio",
-    }),
-    colHelper.accessor("laboratorio.sedeId", {
-      header: "sede",
-    }),
-    colHelper.accessor("reserva.fechaCreacion", {
-      header: "Fecha de solicitud",
+    colHelper.display({
+      header: "Fecha",
       cell: ({ row }) => {
         const { reserva } = row.original;
 
-        const fecha = getDateISOString(reserva.fechaCreacion);
+        const fecha = getDateISOString(reserva.fechaHoraInicio);
 
-        return fecha;
+        return `${fecha} - TODO`;
       },
     }),
     colHelper.accessor("reserva.fechaHoraInicio", {
-      header: "Inicio de reserva",
+      header: "Hora Inicio",
       cell: ({ row }) => {
         const { reserva } = row.original;
 
@@ -43,8 +34,8 @@ export const getColumnasReservasLaboratorioAbierto = ({ filterByUser }: { filter
         return fecha;
       },
     }),
-    colHelper.accessor("reserva.fechaHoraFin", {
-      header: "Fin de reserva",
+    colHelper.accessor("reserva.fechaHoraInicio", {
+      header: "Hora Fin",
       cell: ({ row }) => {
         const { reserva } = row.original;
 
@@ -53,13 +44,45 @@ export const getColumnasReservasLaboratorioAbierto = ({ filterByUser }: { filter
         return fecha;
       },
     }),
-    colHelper.accessor("reserva.usuarioSolicito.apellido", {
-      header: "Solicitado por",
+    colHelper.accessor("concurrentes", {
+      header: "Cant. Personas",
+    }),
+    colHelper.accessor("laboratorioAbiertoTipo", {
+      header: "Tipo Laboratorio",
+    }),
+    colHelper.accessor("reserva.usuarioTutor.apellido", {
+      header: "Tutor",
       cell: ({ row }) => {
         const { reserva } = row.original;
-        const { usuarioSolicito } = reserva;
+        const { usuarioTutor } = reserva;
 
-        return <DatoUsuarioReserva usuario={usuarioSolicito} />;
+        if (!usuarioTutor) {
+          return <span className="text-center">No asignado</span>;
+        }
+
+        return <DatoUsuarioReserva usuario={usuarioTutor} />;
+      },
+    }),
+    colHelper.accessor("especialidad", {
+      header: "Especialidad",
+    }),
+    colHelper.accessor("laboratorio.nombre", {
+      header: "Laboratorio",
+      cell: ({ row }) => {
+        const { laboratorio, reserva } = row.original;
+        const { estatus } = reserva;
+
+        if (estatus === "CANCELADA") {
+          return <span className="text-center">Cancelada</span>;
+        }
+        if (estatus === "RECHAZADA") {
+          return <span className="text-center">Rechazada</span>;
+        }
+        if (!laboratorio) {
+          return <span className="text-center">Sin informar</span>;
+        }
+
+        return laboratorio.nombre;
       },
     }),
 

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input, Label, ScrollArea, toast } from "@/components/ui";
 import { SelectTutorForm } from "@/app/_components/select-tutor";
 import { useEffect, useState } from "react";
-import { inputAprobarReservaSchema } from "@/shared/filters/reserva-laboratorio-filter.schema";
+import { inputAprobarReservaLaboratorioAbiertoSchema } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { type z } from "zod";
 import { SelectLaboratorioForm } from "@/app/_components/select-ubicacion/select-laboratorio";
 import { api } from "@/trpc/react";
@@ -13,21 +13,23 @@ import { Switch } from "@/components/ui/switch";
 import { MinusIcon } from "lucide-react";
 import { EquipoTipoSelector } from "@/app/laboratorios/_components/filtros/equipo-tipo-selector";
 import { ReservaEstatus } from "@prisma/client";
+import { AdminLaboratoriosNuevoLaboratorio } from "./alerta-rechazar";
 
 type FormHelperType = {
   tutor: { id: string; label: string };
   laboratorio: { id: number; label: string };
 };
 
-type AprobarReservaFormData = z.infer<typeof inputAprobarReservaSchema> & FormHelperType;
+type AprobarReservaFormData = z.infer<typeof inputAprobarReservaLaboratorioAbiertoSchema> & FormHelperType;
 
 interface ReservaAprobacionProps {
   reservaId: number;
   onAprobar: () => void;
   onCancel: () => void;
+  onRechazar: () => void;
 }
 
-export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel }: ReservaAprobacionProps) => {
+export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }: ReservaAprobacionProps) => {
   const { isPending: estaAprobando, mutate: aprobarReserva } =
     api.reservas.reservaLaboratorioAbierto.aprobarReserva.useMutation();
   const { isPending: estaRechazando, mutate: rechazarReserva } =
@@ -41,7 +43,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel }: ReservaApr
 
   const formHook = useForm<AprobarReservaFormData>({
     mode: "onChange",
-    resolver: zodResolver(inputAprobarReservaSchema),
+    resolver: zodResolver(inputAprobarReservaLaboratorioAbiertoSchema),
     defaultValues: {
       id: reservaId,
       inventarioRevisado: [],
@@ -55,11 +57,31 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel }: ReservaApr
         id: reservaData?.reserva.usuarioTutorId ?? undefined,
         label: `${reservaData?.reserva?.usuarioTutor?.apellido ?? ""} ${reservaData?.reserva?.usuarioTutor?.nombre ?? ""}`,
       },
-      equipoRequerido: [],
+      equipoRequerido: reservaData?.equipoReservado ?? [],
     },
   });
 
   const { handleSubmit, control, watch, setValue } = formHook;
+
+  useEffect(() => {
+    if (reservaData) {
+      formHook.reset({
+        id: reservaId,
+        inventarioRevisado: [],
+        laboratorioId: reservaData?.laboratorioId ?? undefined,
+        laboratorio: {
+          id: reservaData?.laboratorioId ?? undefined,
+          label: reservaData?.laboratorio?.nombre ?? "",
+        },
+        tutorId: reservaData?.reserva.usuarioTutorId ?? undefined,
+        tutor: {
+          id: reservaData?.reserva.usuarioTutorId ?? undefined,
+          label: `${reservaData?.reserva?.usuarioTutor?.apellido ?? ""} ${reservaData?.reserva?.usuarioTutor?.nombre ?? ""}`,
+        },
+        equipoRequerido: reservaData?.equipoReservado ?? [],
+      });
+    }
+  }, [formHook, reservaData, reservaId]);
 
   const onSubmit = async (data: AprobarReservaFormData) => {
     aprobarReserva(data, {
@@ -74,13 +96,13 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel }: ReservaApr
     });
   };
 
-  const handleRechazo = async () => {
+  const handleRechazo = async (motivo: string) => {
     rechazarReserva(
-      { id: reservaId },
+      { id: reservaId, motivo },
       {
         onSuccess: () => {
           toast.success("Reserva rechazada con éxito");
-          onCancel();
+          onRechazar();
         },
         onError: (error) => {
           toast.error("Error al rechazar la reserva");
@@ -245,17 +267,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel }: ReservaApr
           >
             Cancelar
           </Button>
-          <Button
-            title="Rechazar"
-            type="button"
-            variant="default"
-            color="danger"
-            onClick={handleRechazo}
-            isLoading={estaRechazando}
-            className="w-full"
-          >
-            {estaRechazando ? "Rechazando..." : "Rechazar"}
-          </Button>
+          <AdminLaboratoriosNuevoLaboratorio estaRechazando={estaRechazando} handleRechazo={handleRechazo} />
           <Button
             title="Aprobar"
             type="submit"

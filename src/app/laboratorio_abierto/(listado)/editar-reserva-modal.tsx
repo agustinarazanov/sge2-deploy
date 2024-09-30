@@ -5,17 +5,25 @@ import { Button } from "@/components/ui";
 import { EditIcon } from "lucide-react";
 import { useState } from "react";
 import { LaboratorioAbiertoForm } from "../reservar/[tipo]/reserva-form";
+import { useRouter } from "next/navigation";
 
 type PageProps = {
   params: { id: number };
 };
 
 export default function EditarReservaModal({ params: { id } }: PageProps) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
 
-  const handleClickCancel = () => setOpen(false);
+  const handleClickCancel = () => {
+    setOpen(false);
+    router.refresh();
+  };
 
-  const handleClickSave = () => setOpen(false);
+  const handleClickSave = () => {
+    setOpen(false);
+    router.refresh();
+  };
 
   return (
     <ModalDrawer

@@ -25,6 +25,7 @@ export default function PageDetails({ params: { tipo } }: PageProps) {
 
   const handleClickSave = () => {
     router.refresh();
+    handleOpenChange(false);
   };
 
   const handleClickCancel = () => handleOpenChange(false);
@@ -32,7 +33,7 @@ export default function PageDetails({ params: { tipo } }: PageProps) {
   return (
     <ModalDrawer
       titulo={"Reservar"}
-      description={"Reservar laboratorio"}
+      description={"Reservar laboratorio abierto"}
       open={open}
       onOpenChange={handleOpenChange}
       trigger={<></>}
