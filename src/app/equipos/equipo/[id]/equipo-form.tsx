@@ -23,6 +23,7 @@ type Props = {
 
 type FormHelperType = {
   marca: { id: number; label: string };
+  laboratorio: { id: number; label: string };
   tipo: { id: number; label: string };
   modeloForm: { id: number; label: string };
 };
@@ -63,6 +64,10 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
       estadoId: equipo.estadoId,
       sedeId: equipo.sedeId,
       laboratorioId: equipo.laboratorioId,
+      laboratorio: {
+        id: equipo.laboratorioId,
+        label: equipo.laboratorio?.nombre ?? "",
+      },
       armarioId: equipo.armarioId,
       estanteId: equipo.estanteId,
       observaciones: equipo.observaciones ?? "",
@@ -78,10 +83,16 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
 
   const { handleSubmit, control, watch } = formHook;
 
-  const [sedeId, laboratorioId, armarioId] = watch(["sedeId", "laboratorioId", "armarioId"]);
+  const [sedeId, laboratorioId, armarioId, laboratorio] = watch([
+    "sedeId",
+    "laboratorioId",
+    "armarioId",
+    "laboratorio",
+  ]);
   const [marca, tipo] = watch(["marca", "tipo"]);
 
   useEffect(() => formHook.reset(equipoBase), [formHook, equipoBase]);
+  useEffect(() => laboratorio && formHook.setValue("laboratorioId", laboratorio?.id), [formHook, laboratorio]);
   useEffect(() => formHook.setValue("marcaId", marca?.id), [formHook, marca]);
   useEffect(() => formHook.setValue("tipoId", tipo?.id), [formHook, tipo]);
 
@@ -233,7 +244,8 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
 
                 <div className="mt-4 basis-1/2">
                   <SelectLaboratorioForm
-                    name="laboratorioId"
+                    name="laboratorio"
+                    realNameId="laboratorioId"
                     control={control}
                     className="mt-2"
                     label={"Laboratorio"}

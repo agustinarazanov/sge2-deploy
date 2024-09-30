@@ -10,13 +10,12 @@ import {
   inputReservaLaboratorioDiscrecional,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { FormTextarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { MinusIcon } from "lucide-react";
 import { EquipoTipoSelector } from "./filtros/equipo-tipo-selector";
 import { CursoTurno, turnosValues } from "@/app/_components/turno-text";
 import { Switch } from "@/components/ui/switch";
-import { PoliticasPrivacidadModal } from "@/app/_components/politicas-privacidad";
 import { FormSelect } from "@/components/ui/autocomplete";
+import { FormInputPoliticas } from "@/app/_components/input-form-politicas";
 
 type Props = {
   cursoId?: string;
@@ -347,36 +346,7 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4">
                 <div className="items-top flex space-x-2">
-                  <Controller
-                    control={control}
-                    name="aceptoTerminos"
-                    render={({ field, fieldState }) => (
-                      <>
-                        <div className="grid gap-1.5 leading-none">
-                          <label
-                            htmlFor="aceptoTerminos"
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            <Checkbox
-                              id="aceptoTerminos"
-                              name="aceptoTerminos"
-                              className="mt-2"
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                            <b> Declaro conocer las nuevas políticas de uso de laboratorio</b>
-                          </label>
-                          <p className="text-sm text-muted-foreground">
-                            La política de uso de laboratorio ha cambiado,{" "}
-                            <PoliticasPrivacidadModal triggerText="presione aquí para verla" />
-                          </p>
-                          <div className="min-h-4 text-sm text-danger">
-                            {fieldState.error && fieldState.error.message}
-                          </div>
-                        </div>
-                      </>
-                    )}
-                  />
+                  <FormInputPoliticas name="aceptoTerminos" control={control} />
                 </div>
               </div>
             </div>

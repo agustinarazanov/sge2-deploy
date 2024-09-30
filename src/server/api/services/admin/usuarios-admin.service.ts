@@ -5,14 +5,19 @@ import {
   inputEliminarUsuario,
   inputGetUsuario,
   inputGetUsuarios,
+  inputGetTutor,
+  inputEditarTutor,
 } from "@/shared/filters/admin-usuarios-filter.schema";
 import {
   editarUsuario,
+  eliminarTutor,
+  editarTutor,
   eliminarUsuario,
   getAllProfesores,
   getAllTutores,
   getAllUsuarios,
   getUsuarioPorId,
+  getAllTutoresEspecialidades,
 } from "../../repositories/admin/usuarios-admin.repository";
 
 export const getTodosLosUsuariosProcedure = protectedProcedure.input(inputGetUsuarios).query(async ({ ctx, input }) => {
@@ -29,6 +34,10 @@ export const getUsuarioPorIdProcedure = protectedProcedure.input(inputGetUsuario
   const usuario = await getUsuarioPorId(ctx, input);
 
   return usuario;
+});
+
+export const getTutorPorIdProcedure = protectedProcedure.input(inputGetTutor).query(async ({ ctx, input }) => {
+  console.log(ctx, input);
 });
 
 export const eliminarUsuarioProcedure = protectedProcedure
@@ -51,11 +60,35 @@ export const editarUsuarioProcedure = protectedProcedure.input(inputEditarUsuari
   return usuario;
 });
 
+export const editarTutorProcedure = protectedProcedure.input(inputEditarTutor).mutation(async ({ ctx, input }) => {
+  validarInput(inputEditarTutor, input);
+
+  const tutor = await editarTutor(ctx, input);
+
+  return tutor;
+});
+
 export const getAllTutoresProcedure = protectedProcedure.query(async ({ ctx }) => {
   const tutores = await getAllTutores(ctx);
 
   return tutores;
 });
+
+export const getAllTutoresEspecialidadesProcedure = protectedProcedure.query(async ({ ctx }) => {
+  const especialidades = await getAllTutoresEspecialidades(ctx);
+
+  return especialidades;
+});
+
+export const eliminarTutorProcedure = protectedProcedure
+  .input(inputEliminarUsuario)
+  .mutation(async ({ ctx, input }) => {
+    validarInput(inputEliminarUsuario, input);
+
+    const usuario = await eliminarTutor(ctx, input);
+
+    return usuario;
+  });
 
 export const getAllProfesoresProcedure = protectedProcedure.query(async ({ ctx }) => {
   return await getAllProfesores(ctx);

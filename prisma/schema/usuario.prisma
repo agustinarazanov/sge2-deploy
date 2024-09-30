@@ -78,6 +78,7 @@ model Tutor {
     usuarioCreadorId String
 
     @@id([userId])
+    @@index([especialidad])
 }
 
 model UsuarioRol {

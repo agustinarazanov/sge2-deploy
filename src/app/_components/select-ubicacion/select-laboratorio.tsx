@@ -1,34 +1,34 @@
-import { useMemo, type ReactElement } from "react";
-import { type FieldValues } from "react-hook-form";
+import { useMemo, useState, type ReactElement } from "react";
+import type { Path, FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { FormSelect, type FormSelectProps, type IsMulti, type SelectItem } from "@/components/ui/autocomplete";
+import { type FormSelectProps } from "@/components/ui/autocomplete";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Select, SelectTrigger, SelectValue } from "@/components/ui";
+import { FormAutocomplete, Select, SelectTrigger, SelectValue } from "@/components/ui";
+import { estaDentroDe } from "@/shared/string-compare";
 
-export const SelectLaboratorioForm = <
-  T extends FieldValues,
-  TType extends SelectItem | string,
-  TMulti extends IsMulti = undefined,
->({
+export const SelectLaboratorioForm = <T extends FieldValues, TType extends string>({
   name,
   control,
   className,
   ...props
-}: Omit<FormSelectProps<T, TType, TMulti>, "items"> & { sedeId?: number }): ReactElement => {
+}: Omit<FormSelectProps<T, TType>, "items"> & { sedeId?: number; realNameId?: Path<T> }): ReactElement => {
+  const [query, setQuery] = useState("");
   const { data, isLoading, isError } = api.admin.laboratorios.getAll.useQuery({ sedeId: props.sedeId?.toString() });
 
   const laboratorios = useMemo(() => {
     if (!data) return [];
 
-    return data.laboratorios.map((laboratorio) => {
-      const { id, nombre: label } = laboratorio;
+    return data.laboratorios
+      .map((laboratorio) => {
+        const { id, nombre: label } = laboratorio;
 
-      return {
-        label,
-        id,
-      };
-    });
-  }, [data]);
+        return {
+          label,
+          id,
+        };
+      })
+      .filter((item) => !query || estaDentroDe(query, item.label));
+  }, [data, query]);
 
   if (isLoading) {
     return (
@@ -54,6 +54,24 @@ export const SelectLaboratorioForm = <
     );
   }
 
-  // @ts-expect-error - The expected type comes from property 'items' which is declared on type 'FormSelectProps<...>'
-  return <FormSelect className={className} name={name} control={control} items={laboratorios} {...props} />;
+  return (
+    <FormAutocomplete
+      async
+      items={laboratorios}
+      noOptionsComponent={
+        <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm text-white">
+          <span>No se encontró el laboratorio</span>
+        </div>
+      }
+      className={className}
+      onQueryChange={setQuery}
+      isLoading={isLoading}
+      placeholder="Buscar por laboratorio"
+      clearable
+      debounceTime={0}
+      control={control}
+      name={name}
+      {...props}
+    />
+  );
 };

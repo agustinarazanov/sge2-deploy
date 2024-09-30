@@ -1,27 +1,47 @@
-# docker compose for running the application with the database
-
 services:
   db:
-    image: postgres:12
+    image: postgres:14-alpine
     hostname: db
-    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 15s
+      retries: 5
+      start_period: 3s
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: sge2
+    volumes:
+      - sge2-db-data:/var/lib/postgresql/data
+      - ./pg_dump.sql:/docker-entrypoint-initdb.d/pg_dump.sql
+    networks:
+      - sge2
 
-  web:
-    build: .
-    hostname: web
+  app:
+    image: registry.frba.utn.edu.ar/tst/sge2
+    hostname: app
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/sge2
+      DATABASE_URL: postgres://postgres:postgres@db:5432/sge2
+      NEXTAUTH_URL: http://localhost:8000/
+    networks:
+      - sge2
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   proxy:
-    image: nginx:alpine
+    image: nginx:1.27-alpine
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "8000:80"
+    networks:
+      - sge2
     depends_on:
-      - web
+      - app
+
+networks:
+  sge2:
+
+volumes:
+  sge2-db-data:

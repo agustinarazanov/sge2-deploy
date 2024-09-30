@@ -23,6 +23,7 @@ type Props = {
 type FormHelperType = {
   autor: { id: number; label: string };
   editorial: { id: number; label: string };
+  laboratorio: { id: number; label: string };
 };
 
 type FormEditarLibroType = z.infer<typeof inputEditBooks> & FormHelperType;
@@ -46,6 +47,10 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
       inventarioId: libro.inventarioId,
       idiomaId: libro.idiomaId,
       laboratorioId: libro.laboratorioId,
+      laboratorio: {
+        id: libro.laboratorioId,
+        label: libro.laboratorio?.nombre ?? "",
+      },
       armarioId: libro.armarioId,
       estanteId: libro.estanteId,
       sedeId: libro.sedeId,
@@ -73,7 +78,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   const { handleSubmit, control, watch } = formHook;
 
   const [sedeId, laboratorioId, armarioId] = watch(["sedeId", "laboratorioId", "armarioId"]);
-  const [autor, editorial] = watch(["autor", "editorial"]);
+  const [autor, editorial, laboratorio] = watch(["autor", "editorial", "laboratorio"]);
 
   useEffect(() => formHook.reset(libroBase), [formHook, libroBase]);
 
@@ -107,8 +112,9 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
     onCancel();
   };
 
-  useEffect(() => formHook.setValue("autorId", autor?.id), [formHook, autor]);
-  useEffect(() => formHook.setValue("editorialId", editorial?.id), [formHook, editorial]);
+  useEffect(() => autor && formHook.setValue("autorId", autor?.id), [formHook, autor]);
+  useEffect(() => editorial && formHook.setValue("editorialId", editorial?.id), [formHook, editorial]);
+  useEffect(() => laboratorio && formHook.setValue("laboratorioId", laboratorio?.id), [formHook, laboratorio]);
 
   if (!esNuevo && isNaN(libroId)) {
     return <div>Error al cargar...</div>;
@@ -206,7 +212,8 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
 
                 <div className="mt-4 basis-1/2">
                   <SelectLaboratorioForm
-                    name="laboratorioId"
+                    name="laboratorio"
+                    realNameId="laboratorioId"
                     control={control}
                     className="mt-2 text-sm"
                     label={"Laboratorio"}

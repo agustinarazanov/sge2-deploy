@@ -4,6 +4,8 @@ import {
   type inputEliminarUsuario,
   type inputGetUsuarios,
   type inputEditarUsuario,
+  type inputEditarTutor,
+  type inputGetTutor,
 } from "@/shared/filters/admin-usuarios-filter.schema";
 import { type Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
@@ -128,6 +130,15 @@ export const getUsuarioPorId = async (ctx: { db: PrismaClient }, input: InputGet
   return usuario;
 };
 
+type InputGetTutorPorId = z.infer<typeof inputGetTutor>;
+export const getTutorPorId = async (ctx: { db: PrismaClient }, input: InputGetTutorPorId) => {
+  const { id } = input;
+
+  console.log(id);
+
+  return;
+};
+
 type InputEditarUsuario = z.infer<typeof inputEditarUsuario>;
 export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEditarUsuario, userId: string) => {
   try {
@@ -185,19 +196,70 @@ export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEdita
   }
 };
 
+type InputEditarTutor = z.infer<typeof inputEditarTutor>;
+export const editarTutor = async (ctx: { db: PrismaClient }, input: InputEditarTutor) => {
+  try {
+    const tutorActualizado = await ctx.db.tutor.update({
+      data: {
+        diasHorarios: input.diasHorarios,
+        sede: input.sede,
+        especialidad: input.especialidad,
+      },
+      where: {
+        userId: input.id,
+      },
+    });
+
+    return tutorActualizado;
+  } catch (error) {
+    throw new Error(`Error modificando tutor con ID ${input.id}`);
+  }
+};
+
 export const getAllTutores = async (ctx: { db: PrismaClient }) => {
-  const tutores = await ctx.db.user.findMany({
-    select: {
-      id: true,
-      nombre: true,
-      apellido: true,
-      email: true,
-      legajo: true,
-      image: true,
+  const tutores = await ctx.db.tutor.findMany({
+    include: {
+      usuario: true,
     },
   });
 
   return tutores;
+};
+
+export const getAllTutoresEspecialidades = async (ctx: { db: PrismaClient }) => {
+  const modelos = await ctx.db.tutor.findMany({
+    orderBy: {
+      especialidad: "asc",
+    },
+    select: {
+      especialidad: true,
+    },
+    distinct: ["especialidad"],
+    where: {
+      especialidad: {
+        not: "",
+      },
+    },
+  });
+
+  const modelosMapped = modelos.map(({ especialidad }) => especialidad);
+
+  return modelosMapped;
+};
+
+type InputEliminarTutor = z.infer<typeof inputEliminarUsuario>;
+export const eliminarTutor = async (ctx: { db: PrismaClient }, input: InputEliminarTutor) => {
+  try {
+    const tutor = await ctx.db.user.delete({
+      where: {
+        id: input.id,
+      },
+    });
+
+    return tutor;
+  } catch (error) {
+    throw new Error(`Error eliminando tutor ${input.id}`);
+  }
 };
 
 export const getAllProfesores = async (ctx: { db: PrismaClient }) => {
