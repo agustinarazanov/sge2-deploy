@@ -59,15 +59,26 @@ export const getDateISOString = (date: Date | undefined) => {
 export const getTimeISOString = (date: Date | undefined) => {
   if (!date) return "";
 
-  const dateIso = date.toISOString();
+  return new Date(date ?? "").toLocaleTimeString("es-AR", {
+    hour12: false,
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
 
-  const dateISOSplit = dateIso.split("T");
+/**
+ * Devuelve true si la fecha pasada es una fecha pasada
+ * @param fecha fecha a comprobar
+ * @returns true si la fecha pasada es una fecha pasada
+ * @example
+ * esFechaPasada("2023-01-01"); // false
+ */
+export const esFechaPasada = (fecha: string | Date | undefined) => {
+  if (!fecha) return false;
 
-  const hhmmss = dateISOSplit[1];
+  const date = new Date(fecha);
 
-  if (hhmmss) {
-    return hhmmss;
-  }
+  const now = new Date();
 
-  return "";
+  return date < now;
 };

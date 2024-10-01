@@ -19,6 +19,7 @@ export const inputGetTipos = z.object({
     .refine((value) => value && parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
     .catch(""),
   fromFilter: z.enum(["true", "false"]).optional().default("false").catch("false"),
+  getAll: z.boolean().optional().default(false).catch(false),
 });
 
 export const inputEliminarTipo = z.object({ id: z.number() });

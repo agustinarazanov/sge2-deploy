@@ -1,13 +1,25 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CalendarIcon, ClockIcon, MapPinIcon } from "lucide-react";
+import {
+  CalendarIcon,
+  ClockIcon,
+  MapPinIcon,
+  PersonStandingIcon,
+  SearchIcon,
+  TextIcon,
+  WrenchIcon,
+  XIcon,
+} from "lucide-react";
 import { Label } from "@/components/ui";
 import { api } from "@/trpc/react";
 import { BadgeEstatusReserva } from "@/app/_components/badge-estatus-reserva";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getDateISOString, getTimeISOString } from "@/shared/get-date";
+import { DatoUsuarioReserva } from "@/app/_components/datos-usuario";
 
 type ReservaDetalleProps = {
   reservaId: number;
+  mostrarCompleto?: boolean;
 };
 
 export const ReservaDetalle = ({ reservaId }: ReservaDetalleProps) => {
@@ -37,8 +49,6 @@ export const ReservaDetalle = ({ reservaId }: ReservaDetalleProps) => {
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
           <div className="flex-grow text-center sm:text-left">
             <CardTitle className="mb-1 text-2xl">Reserva #{reserva.id}</CardTitle>
-            <p className="mb-1">{reserva.especialidad}</p>
-            <p className="mb-2 text-sm">{reserva.descripcion}</p>
             <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
               <BadgeEstatusReserva estatus={reserva.reserva.estatus} />
               <Badge color="secondary">{reserva.reserva.tipo}</Badge>
@@ -47,42 +57,82 @@ export const ReservaDetalle = ({ reservaId }: ReservaDetalleProps) => {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
           <div className="space-y-2">
             <Label className="flex items-center font-semibold">
               <CalendarIcon className="mr-2 h-4 w-4" />
-              Fecha de Inicio
+              Fecha
             </Label>
-            <p>{new Date(reserva.reserva.fechaHoraInicio ?? "").toLocaleDateString()}</p>
+            <p>{getDateISOString(reserva.reserva.fechaHoraInicio)}</p>
           </div>
           <div className="space-y-2">
             <Label className="flex items-center font-semibold">
               <ClockIcon className="mr-2 h-4 w-4" />
               Hora de Inicio
             </Label>
-            <p>{new Date(reserva.reserva.fechaHoraInicio ?? "").toLocaleTimeString()}</p>
-          </div>
-          <div className="space-y-2">
-            <Label className="flex items-center font-semibold">
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              Fecha de Fin
-            </Label>
-            <p>{new Date(reserva.reserva.fechaHoraFin ?? "").toLocaleDateString()}</p>
+            <p>{getTimeISOString(reserva.reserva.fechaHoraInicio)}</p>
           </div>
           <div className="space-y-2">
             <Label className="flex items-center font-semibold">
               <ClockIcon className="mr-2 h-4 w-4" />
               Hora de Fin
             </Label>
-            <p>{new Date(reserva.reserva.fechaHoraFin ?? "").toLocaleTimeString()}</p>
+            <p>{getTimeISOString(reserva.reserva.fechaHoraFin)}</p>
           </div>
+
           <div className="space-y-2">
             <Label className="flex items-center font-semibold">
               <MapPinIcon className="mr-2 h-4 w-4" />
-              Laboratorio Actual
+              Laboratorio
             </Label>
             <p>{reserva?.laboratorio?.nombre ?? "Sin asignar"}</p>
           </div>
+          <div className="space-y-2">
+            <Label className="flex items-center font-semibold">
+              <SearchIcon className="mr-2 h-4 w-4" />
+              Especialidad
+            </Label>
+            <p>{reserva?.especialidad ?? "Sin asignar"}</p>
+          </div>
+          <div className="space-y-2">
+            <Label className="flex items-center font-semibold">
+              <PersonStandingIcon className="mr-2 h-4 w-4" />
+              Tutor
+            </Label>
+            <DatoUsuarioReserva usuario={reserva?.reserva.usuarioTutor} />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="flex items-center font-semibold">
+              <WrenchIcon className="mr-2 h-4 w-4" />
+              Equipo
+            </Label>
+            <ul className="list-disc pl-2">
+              {reserva.equipoReservado.map((equipo) => {
+                return (
+                  <li key={equipo.id} className="flex flex-row space-x-2">
+                    {equipo.equipo.tipo.nombre} x {equipo.cantidad}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div className="col-span-3 space-y-2">
+            <Label className="flex items-center font-semibold">
+              <TextIcon className="mr-2 h-4 w-4" />
+              Observaciones
+            </Label>
+            <p>{reserva.descripcion ?? "Sin informar"}</p>
+          </div>
+          {reserva.reserva.motivoRechazo && (
+            <div className="col-span-3 space-y-2">
+              <Label className="flex items-center font-semibold">
+                <XIcon className="mr-2 h-4 w-4" />
+                Motivo Rechazo
+              </Label>
+              <p>{reserva.reserva.motivoRechazo ?? "Sin informar"}</p>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

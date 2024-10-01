@@ -1,19 +1,18 @@
-import { useForm, Controller, FormProvider } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input, Label, ScrollArea, toast } from "@/components/ui";
+import { toast } from "@/components/ui";
 import { SelectTutorForm } from "@/app/_components/select-tutor";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { inputAprobarReservaLaboratorioAbiertoSchema } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { type z } from "zod";
 import { SelectLaboratorioForm } from "@/app/_components/select-ubicacion/select-laboratorio";
 import { api } from "@/trpc/react";
-import { Switch } from "@/components/ui/switch";
-import { MinusIcon } from "lucide-react";
-import { EquipoTipoSelector } from "@/app/laboratorios/_components/filtros/equipo-tipo-selector";
+import { FormEquipoTipoSelector } from "@/app/laboratorios/_components/filtros/equipo-tipo-selector";
 import { ReservaEstatus } from "@prisma/client";
 import { AdminLaboratoriosNuevoLaboratorio } from "./alerta-rechazar";
+import { esFechaPasada } from "@/shared/get-date";
 
 type FormHelperType = {
   tutor: { id: string; label: string };
@@ -34,12 +33,9 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
     api.reservas.reservaLaboratorioAbierto.aprobarReserva.useMutation();
   const { isPending: estaRechazando, mutate: rechazarReserva } =
     api.reservas.reservaLaboratorioAbierto.rechazarReserva.useMutation();
-  const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery({ tipoId: undefined });
   const { data: reservaData } = api.reservas.reservaLaboratorioAbierto.getReservaPorID.useQuery({
     id: reservaId,
   });
-
-  const [requiereInstrumental, setRequiereInstrumental] = useState(false);
 
   const formHook = useForm<AprobarReservaFormData>({
     mode: "onChange",
@@ -57,11 +53,11 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
         id: reservaData?.reserva.usuarioTutorId ?? undefined,
         label: `${reservaData?.reserva?.usuarioTutor?.apellido ?? ""} ${reservaData?.reserva?.usuarioTutor?.nombre ?? ""}`,
       },
-      equipoRequerido: reservaData?.equipoReservado ?? [],
+      equipoReservado: reservaData?.equipoReservado ?? [],
     },
   });
 
-  const { handleSubmit, control, watch, setValue } = formHook;
+  const { handleSubmit, control, watch } = formHook;
 
   useEffect(() => {
     if (reservaData) {
@@ -78,7 +74,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
           id: reservaData?.reserva.usuarioTutorId ?? undefined,
           label: `${reservaData?.reserva?.usuarioTutor?.apellido ?? ""} ${reservaData?.reserva?.usuarioTutor?.nombre ?? ""}`,
         },
-        equipoRequerido: reservaData?.equipoReservado ?? [],
+        equipoReservado: reservaData?.equipoReservado ?? [],
       });
     }
   }, [formHook, reservaData, reservaId]);
@@ -113,44 +109,25 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
   };
 
   const [tutor, laboratorio] = watch(["tutor", "laboratorio"]);
-  useEffect(() => tutor && formHook.setValue("tutorId", tutor.id), [formHook, tutor]);
-  useEffect(() => laboratorio && formHook.setValue("laboratorioId", laboratorio?.id), [formHook, laboratorio]);
-
   useEffect(() => {
-    if (reservaData) {
-      const equiposReservados = reservaData.equipoReservado.map((equipo) => ({
-        idTipo: equipo.equipoId.toString(),
-        cantidad: equipo.cantidad,
-      }));
-
-      setValue("equipoRequerido", equiposReservados);
-      setRequiereInstrumental(equiposReservados.length > 0);
-    }
-  }, [reservaData, setValue]);
-
-  const onEquipoTipoDelete = (equipoTipoId: string) => {
-    const equipos = formHook.getValues("equipoRequerido");
-
-    formHook.setValue(
-      "equipoRequerido",
-      equipos.filter((equipo) => equipo.idTipo !== equipoTipoId),
-    );
-  };
-
-  const onEquipoTipoChange = (equipoTipoId: string) => {
-    const equipos = formHook.getValues("equipoRequerido");
-
-    const existeEquipo = equipos.find((equipo) => equipo.idTipo === equipoTipoId);
-
-    if (existeEquipo) {
-      return;
+    if (tutor) {
+      formHook.setValue("tutorId", tutor.id);
     } else {
-      formHook.setValue("equipoRequerido", [...equipos, { idTipo: equipoTipoId, cantidad: 1 }]);
-      return;
+      formHook.setValue("tutorId", undefined);
     }
-  };
+  }, [formHook, tutor]);
+  useEffect(() => {
+    if (laboratorio) {
+      formHook.setValue("laboratorioId", laboratorio.id);
+    } else {
+      formHook.setValue("laboratorioId", undefined);
+    }
+  }, [formHook, laboratorio]);
 
-  const currentEquipoTipo = formHook.watch("equipoRequerido");
+  const estaEstatusPendiente = reservaData?.reserva.estatus === ReservaEstatus.PENDIENTE;
+  const estaEstatusAprobada = reservaData?.reserva.estatus === ReservaEstatus.FINALIZADA;
+
+  const esReservaPasada = esFechaPasada(reservaData?.reserva?.fechaHoraInicio);
 
   return (
     <FormProvider {...formHook}>
@@ -182,75 +159,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
             </div>
 
             <div>
-              <Label htmlFor="inventarioRevisado">Revisar inventario</Label>
-              <div className="mt-2">
-                <div className="items-top flex space-x-2">
-                  <Controller
-                    name="equipoRequerido"
-                    control={control}
-                    render={({ field }) => (
-                      <Switch
-                        id="equipoRequerido"
-                        checked={requiereInstrumental}
-                        onCheckedChange={(checked) => {
-                          setRequiereInstrumental(checked);
-                          if (!checked) {
-                            field.onChange([]);
-                          }
-                        }}
-                      />
-                    )}
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <label htmlFor="equipoRequerido">Requiere instumental</label>
-                  </div>
-                </div>
-                {requiereInstrumental && (
-                  <div className="mt-4 w-full">
-                    <EquipoTipoSelector onEquipoTipoChange={onEquipoTipoChange} />
-                  </div>
-                )}
-              </div>
-              {requiereInstrumental && (
-                <div className="mt-4 w-full">
-                  <ScrollArea className="max-h-80 w-full">
-                    <div className="flex w-full flex-col">
-                      {currentEquipoTipo?.map((equipoTipo) => (
-                        <div key={equipoTipo.idTipo} className="flex w-full flex-row gap-x-4 pl-4">
-                          <Input
-                            readOnly
-                            value={
-                              todosLosEquiposTipo?.tipos?.find((equipo) => String(equipo.id) === equipoTipo.idTipo)
-                                ?.nombre ?? ""
-                            }
-                            className="mt-2 grow basis-2/3"
-                          />
-                          <Input
-                            value={equipoTipo.cantidad}
-                            type="number"
-                            className="mt-2 grow basis-1/3"
-                            onChange={(e) => {
-                              const newEquipos = currentEquipoTipo.map((eq) =>
-                                eq.idTipo === equipoTipo.idTipo ? { ...eq, cantidad: Number(e.target.value) } : eq,
-                              );
-                              formHook.setValue("equipoRequerido", newEquipos);
-                            }}
-                          />
-                          <Button
-                            type="button"
-                            variant={"icon"}
-                            icon={MinusIcon}
-                            size="sm"
-                            className="mt-2 rounded-md border-none"
-                            onClick={() => onEquipoTipoDelete(equipoTipo.idTipo)}
-                            title={`Eliminar ${equipoTipo.idTipo} equipo`}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                </div>
-              )}
+              <FormEquipoTipoSelector name="equipoReservado" />
             </div>
           </CardContent>
         </Card>
@@ -267,18 +176,22 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
           >
             Cancelar
           </Button>
-          <AdminLaboratoriosNuevoLaboratorio estaRechazando={estaRechazando} handleRechazo={handleRechazo} />
-          <Button
-            title="Aprobar"
-            type="submit"
-            variant="default"
-            color="primary"
-            disabled={estaAprobando}
-            isLoading={estaAprobando}
-            className="w-full"
-          >
-            {reservaData?.reserva.estatus === ReservaEstatus.FINALIZADA ? "Modificar" : "Aprobar"}
-          </Button>
+          {estaEstatusPendiente && !esReservaPasada && (
+            <AdminLaboratoriosNuevoLaboratorio estaRechazando={estaRechazando} handleRechazo={handleRechazo} />
+          )}
+          {(estaEstatusAprobada || estaEstatusPendiente) && !esReservaPasada && (
+            <Button
+              title="Aprobar"
+              type="submit"
+              variant="default"
+              color="primary"
+              disabled={estaAprobando}
+              isLoading={estaAprobando}
+              className="w-full"
+            >
+              {estaEstatusAprobada ? "Modificar" : "Aprobar"}
+            </Button>
+          )}
         </div>
       </form>
     </FormProvider>

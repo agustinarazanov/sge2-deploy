@@ -43,10 +43,6 @@ export const AdminLaboratoriosNuevoLaboratorio = ({ estaRechazando, handleRechaz
       }
       className={"max-h-[calc(100vh_-_10%)]"}
       isAlertDialog
-      //   cancelText="Cancelar"
-      //   submitText="Si, rechazar"
-      //   onCancel={handleCancel}
-      //   onSubmit={handleSave}
     >
       <div className="flex w-full flex-col gap-y-4">
         <div className="flex max-h-max w-full flex-col  gap-4">Está seguro que desea rechazar la solicitud?</div>

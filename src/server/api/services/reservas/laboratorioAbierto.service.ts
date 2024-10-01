@@ -10,7 +10,7 @@ import {
   editarReserva,
 } from "../../repositories/reservas/laboratorioAbierto.repository";
 import { protectedProcedure } from "../../trpc";
-import { validarInput } from "../helper";
+import { validarFechaReserva, validarInput } from "../helper";
 import {
   inputAprobarReservaLaboratorioAbiertoSchema,
   inputReservaLaboratorioAbierto,
@@ -94,6 +94,7 @@ export const editarReservaProcedure = protectedProcedure
   .input(inputEditarReservaLaboratorioAbiertoSchema)
   .mutation(async ({ ctx, input }) => {
     validarInput(inputEditarReservaLaboratorioAbiertoSchema, input);
+    validarFechaReserva(new Date(`${input.fechaReserva}T${input.horaInicio}`));
 
     const userId = ctx.session.user.id;
 
@@ -106,6 +107,7 @@ export const inputCrearReservaLaboratorioAbiertoProcedure = protectedProcedure
   .input(inputReservaLaboratorioAbierto)
   .mutation(async ({ ctx, input }) => {
     validarInput(inputReservaLaboratorioAbierto, input);
+    validarFechaReserva(new Date(`${input.fechaReserva}T${input.horaInicio}`));
 
     const userId = ctx.session.user.id;
 

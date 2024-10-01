@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { enumReservaEstatus } from "./reservas-filter.schema";
 
-const inputEquipoRequerido = z.object({ idTipo: z.string(), cantidad: z.number() });
+const inputEquipoReservado = z.object({ id: z.number(), cantidad: z.number() });
 
 export const inputGetReservaLaboratorioPorUsuarioId = z.object({
   id: z.string().min(1),
@@ -18,7 +18,7 @@ const inputReservaLaboratorioDiscrecionalBase = z.object({
   requierePc: z.boolean().default(false),
   requiereProyector: z.boolean().default(false),
   requiereEquipo: z.boolean().default(false),
-  equipoRequerido: z.array(inputEquipoRequerido).default([]),
+  equipoReservado: z.array(inputEquipoReservado).default([]),
   observaciones: z.string().max(250, { message: "Máximo 250 caracteres" }).default(""),
   aceptoTerminos: z.boolean().refine((value) => value === true, { message: "Debe aceptar los términos y condiciones" }),
 });
@@ -42,7 +42,7 @@ export const inputReservaLaboratorioAbierto = z.object({
   horaFin: z.string().min(1, { message: "Requerido" }),
   concurrentes: z.number().min(1, { message: "Requerido" }),
   sedeId: z.string().refine((value) => parseInt(value) >= 0, { message: "Debe seleccionar una sede" }),
-  equipoRequerido: z.array(inputEquipoRequerido).default([]),
+  equipoReservado: z.array(inputEquipoReservado).default([]),
   observaciones: z.string().default(""),
   especialidad: z.string().optional().default(""),
   aceptoTerminos: z.boolean().refine((value) => value === true, { message: "Debe aceptar los términos y condiciones" }),
@@ -53,7 +53,7 @@ export const inputAprobarReservaLaboratorioAbiertoSchema = z.object({
   tutorId: z.string().optional(),
   inventarioRevisado: z.array(z.string()),
   laboratorioId: z.number().optional(),
-  equipoRequerido: z.array(inputEquipoRequerido).default([]),
+  equipoReservado: z.array(inputEquipoReservado).default([]),
 });
 
 export const inputEditarReservaLaboratorioAbiertoSchema = z
@@ -100,7 +100,7 @@ export const inputAprobarReservaLaboratorioCerradoSchema = z.object({
   id: z.number().positive().min(1, { message: "Requerido" }),
   inventarioRevisado: z.array(z.string()),
   laboratorioId: z.number().optional(),
-  equipoRequerido: z.array(inputEquipoRequerido).default([]),
+  equipoRequerido: z.array(inputEquipoReservado).default([]),
 });
 
 export const inputEditarReservaLaboratorioCerradoSchema = z

@@ -1,35 +1,36 @@
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { Button, FormInput, Input, ScrollArea, toast } from "@/components/ui";
+import { Button, FormInput, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   inputEditarReservaLaboratorioAbiertoSchema,
   inputReservaLaboratorioAbierto,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
-import { FormTextarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { MinusIcon } from "lucide-react";
-import { EquipoTipoSelector } from "@/app/laboratorios/_components/filtros/equipo-tipo-selector";
+import { FormTextarea, Textarea } from "@/components/ui/textarea";
+import { FormEquipoTipoSelector } from "@/app/laboratorios/_components/filtros/equipo-tipo-selector";
 import { type LaboratorioAbiertoType } from "../_components/laboratorios";
 import { Slider } from "@/components/ui/slider";
 import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
-import { getDateISOString, getTimeISOString } from "@/shared/get-date";
+import { esFechaPasada, getDateISOString, getTimeISOString } from "@/shared/get-date";
 import { SelectEspecialidadForm } from "@/app/_components/select-especialidad";
 import { FormInputPoliticas } from "@/app/_components/input-form-politicas";
+import { ReservaEstatus } from "@prisma/client";
+import { ReservaAprobacion } from "../../_components/reserva-gestion";
+import { ReservaViewAdmin } from "../../solicitudes/[id]/form-gestion-reserva";
+import { ReservaDetalle } from "../../_components/info-basica-reserva";
 
 type Props = {
   onSubmit: () => void;
   onCancel: () => void;
 } & ({ reservaId: number; tipo?: undefined } | { reservaId?: undefined; tipo: LaboratorioAbiertoType });
 
-type FormReservarLaboratorioAbiertoType = z.infer<typeof inputEditarReservaLaboratorioAbiertoSchema>;
+export type FormReservarLaboratorioAbiertoType = z.infer<typeof inputEditarReservaLaboratorioAbiertoSchema>;
 
 export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: Props) => {
   const esNuevo = reservaId === undefined;
 
-  const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery({ tipoId: undefined });
   const crearReservaLaboratorioAbierto = api.reservas.reservaLaboratorioAbierto.crearReserva.useMutation();
   const modificarReservaLaboratorioAbierto = api.reservas.reservaLaboratorioAbierto.editarReserva.useMutation();
   const cancelarReservaLaboratorioAbierto = api.reservas.reservaLaboratorioAbierto.cancelarReserva.useMutation();
@@ -42,6 +43,9 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
     },
   );
 
+  const estaEstatusAprobada = reservaData?.reserva.estatus === ReservaEstatus.FINALIZADA;
+  const estaEstatusCancelada = reservaData?.reserva.estatus === ReservaEstatus.CANCELADA;
+
   const esTLA = tipo === "TLA" || reservaData?.laboratorioAbiertoTipo === "TLA";
 
   const formHook = useForm<FormReservarLaboratorioAbiertoType>({
@@ -51,14 +55,27 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
       tipo: esNuevo ? tipo! : reservaData?.laboratorioAbiertoTipo,
       aceptoTerminos: false,
       concurrentes: esNuevo ? 1 : reservaData?.concurrentes,
-      equipoRequerido: [],
+      equipoReservado: esNuevo ? [] : (reservaData?.equipoReservado ?? []),
       fechaReserva: esNuevo ? undefined : getDateISOString(reservaData?.reserva.fechaHoraInicio as unknown as Date),
       horaInicio: esNuevo ? undefined : getTimeISOString(reservaData?.reserva.fechaHoraInicio as unknown as Date),
       horaFin: esNuevo ? undefined : getTimeISOString(reservaData?.reserva.fechaHoraFin as unknown as Date),
       observaciones: esNuevo ? "" : (reservaData?.descripcion ?? ""),
       sedeId: esNuevo ? undefined : String(reservaData?.sedeId),
     },
-    resolver: zodResolver(esNuevo ? inputReservaLaboratorioAbierto : inputEditarReservaLaboratorioAbiertoSchema),
+    resolver: zodResolver(
+      (esNuevo ? inputReservaLaboratorioAbierto : inputEditarReservaLaboratorioAbiertoSchema).refine(
+        ({ fechaReserva, horaInicio, horaFin }) => {
+          const date1 = new Date(`${fechaReserva}T${horaInicio}`);
+          const date2 = new Date(`${fechaReserva}T${horaFin}`);
+
+          return date1 < date2;
+        },
+        {
+          message: "Debe ser mayor a hora de inicio",
+          path: ["horaFin"],
+        },
+      ),
+    ),
   });
 
   const { handleSubmit, control, setValue } = formHook;
@@ -70,7 +87,7 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
         tipo: esNuevo ? tipo! : reservaData?.laboratorioAbiertoTipo,
         aceptoTerminos: false,
         concurrentes: esNuevo ? 1 : reservaData?.concurrentes,
-        equipoRequerido: [],
+        equipoReservado: esNuevo ? [] : (reservaData?.equipoReservado ?? []),
         fechaReserva: esNuevo ? undefined : getDateISOString(reservaData?.reserva.fechaHoraInicio as unknown as Date),
         horaInicio: esNuevo ? undefined : getTimeISOString(reservaData?.reserva.fechaHoraInicio as unknown as Date),
         horaFin: esNuevo ? undefined : getTimeISOString(reservaData?.reserva.fechaHoraFin as unknown as Date),
@@ -80,7 +97,6 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
     }
   }, [esNuevo, formHook, reservaData, reservaId, tipo]);
 
-  const [requiereInstrumental, setRequiereInstrumental] = useState<boolean>(false); // Nuevo
   useEffect(() => {
     if (esNuevo) {
       setValue("tipo", tipo!);
@@ -133,31 +149,19 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
     );
   };
 
-  const onEquipoTipoChange = (equipoTipoId: string) => {
-    const equipos = formHook.getValues("equipoRequerido");
-    const existeEquipo = equipos.find((equipo) => equipo.idTipo === equipoTipoId);
-
-    if (existeEquipo) {
-      return;
-    } else {
-      formHook.setValue("equipoRequerido", [...equipos, { idTipo: equipoTipoId, cantidad: 1 }]);
-      return;
-    }
-  };
-
-  const onEquipoTipoDelete = (equipoTipoId: string) => {
-    const equipos = formHook.getValues("equipoRequerido");
-    formHook.setValue(
-      "equipoRequerido",
-      equipos.filter((equipo) => equipo.idTipo !== equipoTipoId),
-    );
-  };
-
-  const currentEquipoTipo = formHook.watch("equipoRequerido");
-
   const concurrentes = formHook.watch("concurrentes");
 
-  console.log(formHook.formState.errors);
+  const haSidoRechazada = !!(
+    reservaData &&
+    reservaData?.reserva?.motivoRechazo &&
+    reservaData.reserva.motivoRechazo.length > 0
+  );
+
+  const esReservaPasada = esFechaPasada(reservaData?.reserva?.fechaHoraInicio);
+
+  if (reservaId && esReservaPasada) {
+    return <ReservaDetalle reservaId={reservaId} mostrarCompleto />;
+  }
 
   return (
     <FormProvider {...formHook}>
@@ -247,60 +251,7 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
             </div>
 
             <div className="flex w-full flex-col justify-end gap-y-4 lg:justify-between">
-              <div className="items-top flex space-x-2">
-                <Checkbox
-                  id="equipoRequerido"
-                  name="equipoRequerido"
-                  onCheckedChange={(checked) => {
-                    if (checked === "indeterminate") {
-                      // No hacer nada o manejar según tu lógica
-                    } else {
-                      setRequiereInstrumental(checked); // Aquí solo se asigna true o false
-                    }
-                  }}
-                />
-                <div className="grid gap-1.5 leading-none">
-                  <label htmlFor="equipoRequerido">Requiere instumental</label>
-                </div>
-              </div>
-
-              {/* TODO: Habilitar seccion solo si requiere instrumental = true */}
-              {requiereInstrumental && (
-                <div className="mt-4 w-full">
-                  <EquipoTipoSelector onEquipoTipoChange={onEquipoTipoChange} />
-                </div>
-              )}
-
-              {requiereInstrumental && (
-                <div className="mt-4 w-full">
-                  <ScrollArea className="max-h-80 w-full">
-                    <div className="flex w-full flex-col">
-                      {currentEquipoTipo?.map((equipoTipo) => (
-                        <div key={equipoTipo.idTipo} className="flex w-full flex-row gap-x-4 pl-4">
-                          <Input
-                            readOnly
-                            value={
-                              todosLosEquiposTipo?.tipos?.find((equipo) => String(equipo.id) === equipoTipo.idTipo)
-                                ?.nombre ?? ""
-                            }
-                            className="mt-2 grow basis-2/3"
-                          />
-                          <Input readOnly value={equipoTipo.cantidad} type="number" className="mt-2 grow basis-1/3" />
-                          <Button
-                            type="button"
-                            variant={"icon"}
-                            icon={MinusIcon}
-                            size="sm"
-                            className="mt-2 rounded-md border-none"
-                            onClick={() => onEquipoTipoDelete(equipoTipo.idTipo)}
-                            title={`Eliminar ${equipoTipo.idTipo} equipo`}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                </div>
-              )}
+              <FormEquipoTipoSelector name="equipoReservado" />
             </div>
 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
@@ -308,6 +259,20 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
                 <FormTextarea label={"Observaciones"} control={control} name="observaciones" className="mt-2 w-full" />
               </div>
             </div>
+
+            {haSidoRechazada && (
+              <div className="flex w-full flex-col justify-end gap-y-4 lg:justify-between">
+                <div className="mt-4 w-full">
+                  <Textarea
+                    label={"Motivo de rechazo"}
+                    className="max-h-10 w-full"
+                    placeholder="Escribí el motivo de rechazo"
+                    readOnly
+                    value={reservaData?.reserva.motivoRechazo ?? ""}
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4">
@@ -322,7 +287,7 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
           <Button title="Cerrar" type="button" variant="default" color="secondary" onClick={handleCancel}>
             Cerrar
           </Button>
-          {!esNuevo && (
+          {!esNuevo && !estaEstatusCancelada && !esReservaPasada && (
             <Button
               title="Cancelar Reserva"
               type="button"
@@ -333,9 +298,11 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
               Cancelar Reserva
             </Button>
           )}
-          <Button title="Guardar" type="submit" variant="default" color="primary">
-            Guardar
-          </Button>
+          {!estaEstatusCancelada && !esReservaPasada && (
+            <Button title="Guardar" type="submit" variant="default" color="primary">
+              {estaEstatusAprobada ? "Modificar" : "Guardar"}
+            </Button>
+          )}
         </div>
       </form>
     </FormProvider>

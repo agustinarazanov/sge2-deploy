@@ -120,11 +120,27 @@ export const getReservaPorId = async (ctx: { db: PrismaClient }, input: InputGet
     include: {
       reserva: {
         include: {
-          usuarioTutor: true,
+          usuarioTutor: {
+            select: informacionUsuario,
+          },
         },
       },
       laboratorio: true,
-      equipoReservado: true,
+      equipoReservado: {
+        select: {
+          id: true,
+          cantidad: true,
+          equipo: {
+            select: {
+              tipo: {
+                select: {
+                  nombre: true,
+                },
+              },
+            },
+          },
+        },
+      },
     },
   });
 
@@ -165,10 +181,10 @@ export const aprobarReserva = async (
           usuarioAprobadorId: userId,
           estatus: "FINALIZADA",
           fechaAprobacion: new Date(),
-          usuarioTutorId: input.tutorId,
+          usuarioTutorId: input.tutorId ? input.tutorId : null,
           reservaLaboratorioAbierto: {
             update: {
-              laboratorioId: input.laboratorioId,
+              laboratorioId: input.laboratorioId ? input.laboratorioId : null,
               usuarioModificadorId: userId,
             },
           },
@@ -375,9 +391,9 @@ const getReservaAbiertaCreateArgs = (input: InputCrearReservaLaboratorioAbierto,
           concurrentes: input.concurrentes ?? 1,
           equipoReservado: {
             createMany: {
-              data: input.equipoRequerido.map((equipo) => ({
+              data: input.equipoReservado.map((equipo) => ({
                 cantidad: equipo.cantidad,
-                equipoId: parseInt(equipo.idTipo),
+                equipoId: equipo.id,
                 usuarioCreadorId: userId,
                 usuarioModificadorId: userId,
               })),

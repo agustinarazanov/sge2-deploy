@@ -45,7 +45,7 @@ export const getTipoPorId = async (ctx: { db: PrismaClient }, input: InputGetTip
 
 type InputTipoGetAll = z.infer<typeof inputGetTipos>;
 export const getAllTipos = async (ctx: { db: PrismaClient }, input: InputTipoGetAll) => {
-  const { pageIndex, pageSize, orderDirection, searchText, fromFilter } = input;
+  const { pageIndex, pageSize, orderDirection, searchText, fromFilter, getAll } = input;
 
   const [count, tipos] = await ctx.db.$transaction([
     ctx.db.equipoTipo.count(),
@@ -71,8 +71,13 @@ export const getAllTipos = async (ctx: { db: PrismaClient }, input: InputTipoGet
       orderBy: {
         nombre: orderDirection,
       },
-      skip: fromFilter === "false" ? parseInt(pageIndex) * parseInt(pageSize) : undefined,
-      take: fromFilter === "false" ? parseInt(pageSize) : undefined,
+
+      ...(!getAll
+        ? {
+            skip: fromFilter === "false" ? parseInt(pageIndex) * parseInt(pageSize) : undefined,
+            take: fromFilter === "false" ? parseInt(pageSize) : undefined,
+          }
+        : {}),
     }),
   ]);
 

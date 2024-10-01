@@ -36,6 +36,8 @@ export const Input = memo(
       const focusInput = (): void => {
         const input = document.getElementById(id);
         if (input instanceof HTMLInputElement && "showPicker" in input) {
+          if (props.readOnly) return;
+
           // TODO: weird error happening here. tsc is failing for some reason
           // error TS2339: Property 'showPicker' does not exist on type 'never'.
           // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
