@@ -1,7 +1,7 @@
 import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { DatoUsuarioReserva } from "@/app/_components/datos-usuario";
-import { getDateISOString } from "@/shared/get-date";
+import { getDateISOString, getTimeISOString } from "@/shared/get-date";
 import { BadgeEstatusReserva } from "@/app/_components/badge-estatus-reserva";
 
 type LaboratorioAbiertoReservaData =
@@ -21,7 +21,7 @@ export const getColumnasReservasLaboratorioAbierto = ({ filterByUser }: { filter
 
         const fecha = getDateISOString(reserva.fechaHoraInicio);
 
-        return `${fecha} - TODO`;
+        return `${fecha}`;
       },
     }),
     colHelper.accessor("reserva.fechaHoraInicio", {
@@ -29,17 +29,17 @@ export const getColumnasReservasLaboratorioAbierto = ({ filterByUser }: { filter
       cell: ({ row }) => {
         const { reserva } = row.original;
 
-        const fecha = getDateISOString(reserva.fechaHoraInicio);
+        const fecha = getTimeISOString(reserva.fechaHoraInicio);
 
         return fecha;
       },
     }),
-    colHelper.accessor("reserva.fechaHoraInicio", {
+    colHelper.accessor("reserva.fechaHoraFin", {
       header: "Hora Fin",
       cell: ({ row }) => {
         const { reserva } = row.original;
 
-        const fecha = getDateISOString(reserva.fechaHoraFin);
+        const fecha = getTimeISOString(reserva.fechaHoraFin);
 
         return fecha;
       },
