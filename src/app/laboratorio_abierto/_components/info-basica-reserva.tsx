@@ -22,7 +22,7 @@ type ReservaDetalleProps = {
   mostrarCompleto?: boolean;
 };
 
-export const ReservaDetalle = ({ reservaId }: ReservaDetalleProps) => {
+export const ReservaDetalle = ({ reservaId, mostrarCompleto }: ReservaDetalleProps) => {
   const {
     data: reserva,
     isLoading,
@@ -94,44 +94,48 @@ export const ReservaDetalle = ({ reservaId }: ReservaDetalleProps) => {
             </Label>
             <p>{reserva?.especialidad ?? "Sin asignar"}</p>
           </div>
-          <div className="space-y-2">
-            <Label className="flex items-center font-semibold">
-              <PersonStandingIcon className="mr-2 h-4 w-4" />
-              Tutor
-            </Label>
-            <DatoUsuarioReserva usuario={reserva?.reserva.usuarioTutor} />
-          </div>
 
-          <div className="space-y-2">
-            <Label className="flex items-center font-semibold">
-              <WrenchIcon className="mr-2 h-4 w-4" />
-              Equipo
-            </Label>
-            <ul className="list-disc pl-2">
-              {reserva.equipoReservado.map((equipo) => {
-                return (
-                  <li key={equipo.id} className="flex flex-row space-x-2">
-                    {equipo.equipo.tipo.nombre} x {equipo.cantidad}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-          <div className="col-span-3 space-y-2">
-            <Label className="flex items-center font-semibold">
-              <TextIcon className="mr-2 h-4 w-4" />
-              Observaciones
-            </Label>
-            <p>{reserva.descripcion ?? "Sin informar"}</p>
-          </div>
-          {reserva.reserva.motivoRechazo && (
-            <div className="col-span-3 space-y-2">
-              <Label className="flex items-center font-semibold">
-                <XIcon className="mr-2 h-4 w-4" />
-                Motivo Rechazo
-              </Label>
-              <p>{reserva.reserva.motivoRechazo ?? "Sin informar"}</p>
-            </div>
+          {mostrarCompleto && (
+            <>
+              <div className="space-y-2">
+                <Label className="flex items-center font-semibold">
+                  <PersonStandingIcon className="mr-2 h-4 w-4" />
+                  Tutor
+                </Label>
+                <DatoUsuarioReserva usuario={reserva?.reserva.usuarioTutor} />
+              </div>
+              <div className="space-y-2">
+                <Label className="flex items-center font-semibold">
+                  <WrenchIcon className="mr-2 h-4 w-4" />
+                  Equipo
+                </Label>
+                <ul className="list-disc pl-2">
+                  {reserva.equipoReservado.map((equipo) => {
+                    return (
+                      <li key={equipo.id} className="flex flex-row space-x-2">
+                        {equipo.equipo.tipo.nombre} x {equipo.cantidad}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+              <div className="col-span-3 space-y-2">
+                <Label className="flex items-center font-semibold">
+                  <TextIcon className="mr-2 h-4 w-4" />
+                  Observaciones
+                </Label>
+                <p>{reserva.descripcion ?? "Sin informar"}</p>
+              </div>
+              {reserva.reserva.motivoRechazo && (
+                <div className="col-span-3 space-y-2">
+                  <Label className="flex items-center font-semibold">
+                    <XIcon className="mr-2 h-4 w-4" />
+                    Motivo Rechazo
+                  </Label>
+                  <p>{reserva.reserva.motivoRechazo ?? "Sin informar"}</p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </CardContent>

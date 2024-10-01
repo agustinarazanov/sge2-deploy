@@ -17,8 +17,6 @@ import { esFechaPasada, getDateISOString, getTimeISOString } from "@/shared/get-
 import { SelectEspecialidadForm } from "@/app/_components/select-especialidad";
 import { FormInputPoliticas } from "@/app/_components/input-form-politicas";
 import { ReservaEstatus } from "@prisma/client";
-import { ReservaAprobacion } from "../../_components/reserva-gestion";
-import { ReservaViewAdmin } from "../../solicitudes/[id]/form-gestion-reserva";
 import { ReservaDetalle } from "../../_components/info-basica-reserva";
 
 type Props = {
