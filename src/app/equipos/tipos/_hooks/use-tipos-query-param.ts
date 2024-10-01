@@ -8,7 +8,7 @@ type TiposFilters = z.infer<typeof inputGetTipos>;
 type OrderByType = z.infer<typeof inputGetTipos>["orderBy"];
 type PageSizeType = z.infer<typeof inputGetTipos>["pageSize"];
 
-const createQueryString = (filters: TiposFilters) => {
+const createQueryString = (filters: Omit<TiposFilters, "getAll">) => {
   const params = new URLSearchParams(filters);
 
   return params.toString();
