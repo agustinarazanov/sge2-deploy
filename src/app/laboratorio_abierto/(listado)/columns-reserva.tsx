@@ -103,7 +103,7 @@ export const getColumnasReservasLaboratorioAbierto = ({ filterByUser }: { filter
 
 export const getColumnasResevaNames = () => {
   return [
-    "Prestamo #",
+    "Préstamo #",
     "Laboratorio",
     "Nombre Laboratorio",
     "Sede",

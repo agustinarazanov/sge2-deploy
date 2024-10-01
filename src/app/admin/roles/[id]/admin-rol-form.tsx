@@ -137,7 +137,7 @@ export const AdminRolForm = ({ id, onSubmit, onCancel }: Props) => {
             <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
               <div className="mt-4 w-full">
                 <FormInput
-                  label={"Titulo"}
+                  label={"Título"}
                   control={control}
                   name="nombre"
                   type={"text"}

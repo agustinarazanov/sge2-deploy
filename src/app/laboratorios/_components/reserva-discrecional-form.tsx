@@ -23,7 +23,7 @@ export default function ReservaDiscrecionalModal() {
     <ModalDrawer
       titulo={"Reserva Discrecional de Laboratorio"}
       description={
-        "Estas reservas de laboratorio no estan sujetas a ningun curso y/o materia. El unico requisito es que al docente que se le asigne esta reservación debería de estar dado de alta en el SGE."
+        "Estas reservas de laboratorio no estan sujetas a ningún curso y/o materia. El único requisito es que al docente que se le asigne esta reservación debería de estar dado de alta en el SGE."
       }
       open={open}
       onOpenChange={setOpen}

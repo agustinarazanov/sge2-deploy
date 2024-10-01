@@ -158,7 +158,7 @@ export const FormEquipoTipoSelector = <T extends FieldValues>({ name: nombre }: 
           htmlFor={name}
           className="flex w-full items-center justify-between rounded-md border border-white p-2 hover:cursor-pointer hover:bg-gray-500"
         >
-          <div className="text-base">Requiere instumental</div>
+          <div className="text-base">Requiere instrumental</div>
           <Switch id={name} checked={requiereInstrumental} onCheckedChange={setRequiereInstrumental} />
         </label>
       </div>
