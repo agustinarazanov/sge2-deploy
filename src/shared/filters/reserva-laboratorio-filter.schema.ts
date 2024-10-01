@@ -136,4 +136,5 @@ export const inputGetAllSolicitudesReservaLaboratorioCerrado = z.object({
 
 export const inputRechazarReservaLaboratorioCerrado = z.object({
   id: z.number().positive().min(1, { message: "Requerido" }),
+  motivo: z.string().min(1, { message: "Requerido" }),
 });
