@@ -24,12 +24,12 @@ export const BIBLIOTECA_ROUTE = {
     },
     {
       href: "/biblioteca/prestamos",
-      label: "Prestamos",
+      label: "Préstamos",
       isPublic: false,
     },
     {
       href: "/biblioteca/mis_prestamos",
-      label: "Mis prestamos",
+      label: "Mis préstamos",
       isPublic: false,
     },
   ],
@@ -108,7 +108,7 @@ export const EQUIPOS_ROUTE: AppRoute = {
     },
     {
       href: "/equipos/prestamos",
-      label: "Prestamos",
+      label: "Préstamos",
       isPublic: false,
     },
     {

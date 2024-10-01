@@ -19,7 +19,7 @@ export const getColumns = () => {
       },
     }),
     colHelper.accessor("titulo", {
-      header: "Titulo",
+      header: "Título",
     }),
     colHelper.accessor("autor.autorNombre", {
       header: "Autor",
@@ -63,7 +63,7 @@ export const getColumns = () => {
 };
 
 export const getColumnsNames = () => {
-  return ["Biblioteca ID", "Inventario", "Titulo", "Autor", "Año", "Editorial", "Idioma", "ISBN", "Estado"];
+  return ["Biblioteca ID", "Inventario", "Título", "Autor", "Año", "Editorial", "Idioma", "ISBN", "Estado"];
 };
 
 const MateriasColumnar = ({ materiasLibro }: { materiasLibro: string[] }) => {

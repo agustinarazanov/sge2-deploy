@@ -12,7 +12,7 @@ export const getColumnasPrestamo = ({ filterByUser }: { filterByUser?: boolean }
 
   const columnasBasicas = [
     colHelper.accessor("id", {
-      header: "Prestamo #",
+      header: "Préstamo #",
     }),
     colHelper.accessor("libro.inventarioId", {
       header: "Libro Inventario ID",
@@ -30,7 +30,7 @@ export const getColumnasPrestamo = ({ filterByUser }: { filterByUser?: boolean }
       },
     }),
     colHelper.accessor("reserva.fechaHoraInicio", {
-      header: "Fecha del Prestamo",
+      header: "Fecha del Préstamo",
       cell: ({ row }) => {
         const { reserva } = row.original;
 
@@ -59,7 +59,7 @@ export const getColumnasPrestamo = ({ filterByUser }: { filterByUser?: boolean }
       },
     }),
     colHelper.accessor("reserva.usuarioRenovo.apellido", {
-      header: "Renovo",
+      header: "Renovó",
       cell: ({ row }) => {
         const { reserva } = row.original;
 
@@ -105,7 +105,7 @@ export const getColumnasPrestamo = ({ filterByUser }: { filterByUser?: boolean }
       },
     }),
     colHelper.accessor("reserva.usuarioRecibio.apellido", {
-      header: "Recibio",
+      header: "Recibió",
       cell: ({ row }) => {
         const { reserva, libroId } = row.original;
         const { usuarioRecibio, estatus } = reserva;
@@ -141,15 +141,15 @@ export const getColumnasPrestamo = ({ filterByUser }: { filterByUser?: boolean }
 
 export const getColumnasPrestamoNames = () => {
   return [
-    "Prestamo #",
+    "Préstamo #",
     "Libro",
     "Título",
     "Prestado A",
-    "Fecha del Prestamo",
+    "Fecha del Préstamo",
     "Fecha de Finalización",
     "Presto",
-    "Renovo",
+    "Renovó",
     "Renovar",
-    "Recibio",
+    "Recibió",
   ];
 };
