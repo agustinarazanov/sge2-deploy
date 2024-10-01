@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { Button, FormInput, Input, ScrollArea, toast } from "@/components/ui";
+import { Button, FormInput, Input, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { useEffect } from "react";
@@ -10,8 +10,7 @@ import {
   inputReservaLaboratorioDiscrecional,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { FormTextarea } from "@/components/ui/textarea";
-import { MinusIcon } from "lucide-react";
-import { EquipoTipoSelector } from "./filtros/equipo-tipo-selector";
+import { FormEquipoTipoSelector } from "./filtros/equipo-tipo-selector";
 import { CursoTurno, turnosValues } from "@/app/_components/turno-text";
 import { Switch } from "@/components/ui/switch";
 import { FormSelect } from "@/components/ui/autocomplete";
@@ -35,15 +34,13 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
     isError,
   } = api.cursos.cursoPorId.useQuery({ id: Number(cursoId!) }, { enabled: !esDiscrecional });
 
-  const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery({ tipoId: undefined });
-
   const formHook = useForm<FormReservarLaboratorioType>({
     mode: "onChange",
     defaultValues: {
       cursoId: cursoId ? Number(cursoId) : undefined,
       aceptoTerminos: false,
       requiereEquipo: false,
-      equipoRequerido: [],
+      equipoReservado: [],
       fechaReserva: undefined,
       requierePc: false,
       requiereProyector: false,
@@ -58,7 +55,7 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
     formHook.reset({
       cursoId: Number(cursoId),
       aceptoTerminos: false,
-      equipoRequerido: [],
+      equipoReservado: [],
       fechaReserva: undefined,
       requierePc: false,
       requiereProyector: false,
@@ -85,45 +82,6 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
     formHook.reset();
     onCancel();
   };
-
-  const onEquipoTipoChange = (equipoTipoId: string) => {
-    const equipos = formHook.getValues("equipoRequerido");
-
-    const existeEquipo = equipos.find((equipo) => equipo.idTipo === equipoTipoId);
-
-    if (existeEquipo) {
-      return;
-    } else {
-      formHook.setValue("equipoRequerido", [...equipos, { idTipo: equipoTipoId, cantidad: 1 }]);
-      return;
-    }
-  };
-
-  const onEquipoTipoDelete = (equipoTipoId: string) => {
-    const equipos = formHook.getValues("equipoRequerido");
-
-    formHook.setValue(
-      "equipoRequerido",
-      equipos.filter((equipo) => equipo.idTipo !== equipoTipoId),
-    );
-  };
-
-  const onEquipoCambiarCantidad = (equipoTipoId: string, cantidad: number) => {
-    const equipos = formHook.getValues("equipoRequerido");
-
-    const newEquipos = equipos.map((equipo) => {
-      if (equipo.idTipo === equipoTipoId) {
-        return { ...equipo, cantidad };
-      }
-
-      return equipo;
-    });
-
-    formHook.setValue("equipoRequerido", newEquipos);
-  };
-
-  const currentEquipoTipo = formHook.watch("equipoRequerido");
-  const requiereEquipo = formHook.watch("requiereEquipo");
 
   return (
     <FormProvider {...formHook}>
@@ -259,73 +217,7 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
             </div>
 
             <div className="flex w-full flex-col justify-end gap-y-4 lg:justify-between">
-              <div className="items-top flex space-x-2">
-                <Controller
-                  control={control}
-                  name="requiereEquipo"
-                  render={({ field }) => (
-                    <label
-                      htmlFor="requiereEquipo"
-                      className="flex w-full items-center justify-between rounded-md border border-white p-2 hover:cursor-pointer hover:bg-gray-500"
-                    >
-                      <div className="text-base">Requiere instumental</div>
-                      <Switch id="requiereEquipo" checked={field.value} onCheckedChange={field.onChange} />
-                    </label>
-                  )}
-                />
-              </div>
-
-              {requiereEquipo && (
-                <>
-                  <div className="mt-4 w-full">
-                    <EquipoTipoSelector onEquipoTipoChange={onEquipoTipoChange} />
-                  </div>
-
-                  <div className="mt-4 w-full">
-                    <ScrollArea className="max-h-80 w-full">
-                      <div className="flex w-full flex-col">
-                        {currentEquipoTipo?.map((equipoTipo) => {
-                          const currentEquipo = todosLosEquiposTipo?.tipos?.find(
-                            (equipo) => String(equipo.id) === equipoTipo.idTipo,
-                          );
-
-                          return (
-                            <div key={equipoTipo.idTipo} className="flex w-full flex-row gap-x-4 pl-4">
-                              <Input readOnly value={currentEquipo?.nombre ?? ""} className="mt-2 grow basis-2/3" />
-                              <Input
-                                value={equipoTipo.cantidad}
-                                onChange={(event) => {
-                                  const value = event.target.value;
-
-                                  if (value === "") {
-                                    onEquipoCambiarCantidad(equipoTipo.idTipo, 0);
-                                    return;
-                                  }
-
-                                  onEquipoCambiarCantidad(equipoTipo.idTipo, Number(value));
-                                }}
-                                type="number"
-                                className="mt-2 grow basis-1/3"
-                                min={1}
-                                step={1}
-                              />
-                              <Button
-                                type="button"
-                                variant={"icon"}
-                                icon={MinusIcon}
-                                size="sm"
-                                className="mt-2 rounded-md border-none"
-                                onClick={() => onEquipoTipoDelete(equipoTipo.idTipo)}
-                                title={`Eliminar ${currentEquipo?.nombre} de la reserva`}
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </ScrollArea>
-                  </div>
-                </>
-              )}
+              <FormEquipoTipoSelector name="equipoReservado" />
             </div>
 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">

@@ -1,6 +1,8 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ReservaDetalle } from "@/app/laboratorio_abierto/_components/info-basica-reserva";
 import { ReservaAprobacion } from "@/app/laboratorio_abierto/_components/reserva-gestion";
+import { api } from "@/trpc/react";
+import { esFechaPasada } from "@/shared/get-date";
 
 interface ReservaViewAdminProps {
   reservaId: number;
@@ -10,11 +12,19 @@ interface ReservaViewAdminProps {
 }
 
 export const ReservaViewAdmin = ({ reservaId, onCancel, onAprobar, onRechazar }: ReservaViewAdminProps) => {
+  const { data: reservaData } = api.reservas.reservaLaboratorioAbierto.getReservaPorID.useQuery({
+    id: Number(reservaId),
+  });
+
+  const esReservaPasada = esFechaPasada(reservaData?.reserva?.fechaHoraInicio);
+
   return (
     <ScrollArea className="max-h-[calc(100vh_-_10%)]">
       <div className="container mx-auto space-y-8 p-4">
-        <ReservaDetalle reservaId={reservaId} />
-        <ReservaAprobacion reservaId={reservaId} onCancel={onCancel} onAprobar={onAprobar} onRechazar={onRechazar} />
+        <ReservaDetalle reservaId={reservaId} mostrarCompleto={esReservaPasada} />
+        {!esReservaPasada && (
+          <ReservaAprobacion reservaId={reservaId} onCancel={onCancel} onAprobar={onAprobar} onRechazar={onRechazar} />
+        )}
       </div>
     </ScrollArea>
   );
