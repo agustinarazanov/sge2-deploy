@@ -23,6 +23,7 @@ type LaboratorioDropdownType = {
   error?: string;
 };
 
+/*TEST aMMend     */
 export const LaboratorioDropdownMultiple = (props: LaboratorioDropdownType): ReactElement => {
   const { className, defaultValue, onValueChange, error } = props;
 
