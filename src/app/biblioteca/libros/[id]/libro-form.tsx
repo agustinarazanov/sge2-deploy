@@ -23,7 +23,6 @@ type Props = {
 type FormHelperType = {
   autor: { id: number; label: string };
   editorial: { id: number; label: string };
-  laboratorio: { id: number; label: string };
 };
 
 type FormEditarLibroType = z.infer<typeof inputEditBooks> & FormHelperType;
@@ -47,10 +46,6 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
       inventarioId: libro.inventarioId,
       idiomaId: libro.idiomaId,
       laboratorioId: libro.laboratorioId,
-      laboratorio: {
-        id: libro.laboratorioId,
-        label: libro.laboratorio?.nombre ?? "",
-      },
       armarioId: libro.armarioId,
       estanteId: libro.estanteId,
       sedeId: libro.sedeId,
@@ -78,7 +73,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   const { handleSubmit, control, watch } = formHook;
 
   const [sedeId, laboratorioId, armarioId] = watch(["sedeId", "laboratorioId", "armarioId"]);
-  const [autor, editorial, laboratorio] = watch(["autor", "editorial", "laboratorio"]);
+  const [autor, editorial] = watch(["autor", "editorial"]);
 
   useEffect(() => formHook.reset(libroBase), [formHook, libroBase]);
 
@@ -112,9 +107,8 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
     onCancel();
   };
 
-  useEffect(() => autor && formHook.setValue("autorId", autor?.id), [formHook, autor]);
-  useEffect(() => editorial && formHook.setValue("editorialId", editorial?.id), [formHook, editorial]);
-  useEffect(() => laboratorio && formHook.setValue("laboratorioId", laboratorio?.id), [formHook, laboratorio]);
+  useEffect(() => formHook.setValue("autorId", autor?.id), [formHook, autor]);
+  useEffect(() => formHook.setValue("editorialId", editorial?.id), [formHook, editorial]);
 
   if (!esNuevo && isNaN(libroId)) {
     return <div>Error al cargar...</div>;
@@ -131,12 +125,12 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
-        <ScrollArea className="max-h-[calc(100vh_-_20%)] w-full pr-4 md:max-h-[calc(100vh_-_30%)] lg:max-h-[calc(100vh_-_30%)]">
-          <div className="flex w-full flex-col items-center justify-center">
+        <ScrollArea className="max-h-[calc(100vh_-_20%)] w-full pr-4 md:max-h-[calc(100vh_-_30%)] lg:max-h-[calc(100vh_-_25%)]">
+          <div className="flex w-full flex-col items-stretch justify-center sm:items-stretch md:items-center lg:items-center">
             <div className="flex flex-col space-y-4 px-0 md:px-6">
               <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
                 <div className="mt-4 w-full">
-                  <FormInput label={"Título"} control={control} name="titulo" type={"text"} className="mt-2" />
+                  <FormInput label={"Titulo"} control={control} name="titulo" type={"text"} className="mt-2" />
                 </div>
               </div>
 
@@ -212,8 +206,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
 
                 <div className="mt-4 basis-1/2">
                   <SelectLaboratorioForm
-                    name="laboratorio"
-                    realNameId="laboratorioId"
+                    name="laboratorioId"
                     control={control}
                     className="mt-2 text-sm"
                     label={"Laboratorio"}

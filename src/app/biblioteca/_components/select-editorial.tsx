@@ -71,7 +71,7 @@ export const SelectEditorialForm = <T extends FieldValues, TType extends string>
       className={className}
       onQueryChange={setQuery}
       isLoading={isLoading}
-      placeholder="Buscar por nombre de editorial"
+      placeholder="Buscar por editorial"
       clearable
       debounceTime={0}
       control={control}
