@@ -112,8 +112,8 @@ export const ReservaDetalle = ({ reservaId, mostrarCompleto }: ReservaDetallePro
                 <ul className="list-disc pl-2">
                   {reserva.equipoReservado.map((equipo) => {
                     return (
-                      <li key={equipo.id} className="flex flex-row space-x-2">
-                        {equipo.equipo.tipo.nombre} x {equipo.cantidad}
+                      <li key={equipo.equipoId} className="flex flex-row space-x-2">
+                        {equipo.equipoTipo.nombre} x {equipo.cantidad}
                       </li>
                     );
                   })}

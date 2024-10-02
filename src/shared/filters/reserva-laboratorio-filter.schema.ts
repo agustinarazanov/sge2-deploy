@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { enumReservaEstatus } from "./reservas-filter.schema";
 
-const inputEquipoReservado = z.object({ id: z.number(), cantidad: z.number() });
+const inputEquipoReservado = z.object({ equipoId: z.number(), cantidad: z.number() });
 
 export const inputGetReservaLaboratorioPorUsuarioId = z.object({
   id: z.string().min(1),
