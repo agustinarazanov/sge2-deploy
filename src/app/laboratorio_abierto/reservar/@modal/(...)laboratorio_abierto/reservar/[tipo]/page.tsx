@@ -25,10 +25,13 @@ export default function PageDetails({ params: { tipo } }: PageProps) {
 
   const handleClickSave = () => {
     router.refresh();
-    handleOpenChange(false);
+    setTimeout(() => router.back(), 100); // Hack para que primero recargue la pagina y luego haga el back, de otra forma el back cancela el refresh
   };
 
-  const handleClickCancel = () => handleOpenChange(false);
+  const handleClickCancel = () => {
+    router.refresh();
+    setTimeout(() => router.back(), 100); // Hack para que primero recargue la pagina y luego haga el back, de otra forma el back cancela el refresh
+  };
 
   return (
     <ModalDrawer

@@ -13,6 +13,7 @@ import { VerReservaModal } from "./ver-reserva";
 import EditarReservaModal from "./editar-reserva-modal";
 import { type inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { ReservaEstatus } from "@prisma/client";
+import { CancelarReservaLaboratorioAbierto } from "../_components/cancelar-reserva";
 
 type LaboratorioAbiertoReservaData = RouterOutputs["reservas"]["reservaLaboratorioAbierto"]["getAll"];
 type reservaFilters = z.infer<typeof inputGetAllSolicitudesReservaLaboratorioAbierto>;
@@ -24,7 +25,8 @@ type LaboratorioAbiertoTableProps = {
 };
 
 export const LaboratorioAbiertoReservaTable = ({ data, filters, filterByUser }: LaboratorioAbiertoTableProps) => {
-  const { pagination, sorting, onSortingChange, onPaginationChange } = useReservasLaboratorioAbiertoQueryParam(filters);
+  const { refresh, pagination, sorting, onSortingChange, onPaginationChange } =
+    useReservasLaboratorioAbiertoQueryParam(filters);
 
   const columns = getColumnasReservasLaboratorioAbierto({ filterByUser });
 
@@ -49,7 +51,8 @@ export const LaboratorioAbiertoReservaTable = ({ data, filters, filterByUser }: 
             return (
               <>
                 {!filterByUser && <VerReservaModal reservaID={original.reserva.id} />}
-                {filterByUser && !estaCancelada && <EditarReservaModal params={{ id: original.reserva.id }} />}
+
+                {filterByUser && !estaCancelada && <EditarReservaModal id={original.reserva.id} onSubmit={refresh} />}
 
                 <Button
                   title="Imprimir"
@@ -59,8 +62,9 @@ export const LaboratorioAbiertoReservaTable = ({ data, filters, filterByUser }: 
                   onClick={() => window.print()}
                 />
 
-                {/* TODO CREAR COMPONENTE CON ALERT DIALOG */}
-                {/* {filterByUser && <Button title="Cancelar reserva" variant="icon" color="danger" icon={TrashIcon} />} */}
+                {filterByUser && !estaCancelada && (
+                  <CancelarReservaLaboratorioAbierto reservaId={original.reserva.id} refresh={refresh} />
+                )}
               </>
             );
           },
