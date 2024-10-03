@@ -4,6 +4,7 @@ import CursoTableContainer from "./(listado)/curso-table-container";
 import { Suspense, useMemo } from "react";
 import LoadingCursosTable from "./(listado)/loading-curso-table";
 import { inputGetCursos } from "@/shared/filters/cursos-filter.schema";
+import React from "react";
 
 type PageProps = {
   searchParams: ReadonlyURLSearchParams;
