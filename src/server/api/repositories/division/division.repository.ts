@@ -59,6 +59,9 @@ export const eliminarDivision = async (ctx: { db: PrismaClient }, input: InputEl
 
 type InputAgregarDivision = z.infer<typeof inputAgregarDivision>;
 export const agregarDivision = async (ctx: { db: PrismaClient }, input: InputAgregarDivision, userId: string) => {
+  if (input.anio === undefined) {
+    throw new Error("El campo 'anio' es requerido.");
+  }
   const existeDivision = await ctx.db.division.findFirst({
     where: {
       nombre: input.nombre,
