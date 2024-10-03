@@ -125,8 +125,8 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
-        <ScrollArea className="max-h-[calc(100vh_-_20%)] w-full pr-4 md:max-h-[calc(100vh_-_30%)] lg:max-h-[calc(100vh_-_25%)]">
-          <div className="flex w-full flex-col items-stretch justify-center sm:items-stretch md:items-center lg:items-center">
+        <ScrollArea className="max-h-[calc(100vh_-_20%)] w-full pr-4 md:max-h-[calc(100vh_-_20%)] lg:max-h-[calc(100vh_-_25%)]">
+          <div className="flex w-full flex-col items-stretch justify-center sm:items-stretch md:items-stretch lg:items-center">
             <div className="flex flex-col space-y-4 px-0 md:px-6">
               <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
                 <div className="mt-4 w-full">
