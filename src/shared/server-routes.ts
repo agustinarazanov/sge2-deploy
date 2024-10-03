@@ -24,12 +24,12 @@ export const BIBLIOTECA_ROUTE = {
     },
     {
       href: "/biblioteca/prestamos",
-      label: "Préstamos",
+      label: "Prestamos",
       isPublic: false,
     },
     {
       href: "/biblioteca/mis_prestamos",
-      label: "Mis préstamos",
+      label: "Mis prestamos",
       isPublic: false,
     },
   ],
@@ -108,7 +108,7 @@ export const EQUIPOS_ROUTE: AppRoute = {
     },
     {
       href: "/equipos/prestamos",
-      label: "Préstamos",
+      label: "Prestamos",
       isPublic: false,
     },
     {
@@ -119,7 +119,7 @@ export const EQUIPOS_ROUTE: AppRoute = {
   ],
 };
 
-export const CURSOS_ROUTE: AppRoute = {
+export const CURSOS_ROUTE = {
   href: "/cursos",
   label: "Cursos",
   isPublic: false,
@@ -132,6 +132,11 @@ export const CURSOS_ROUTE: AppRoute = {
     {
       href: "/cursos/mis_cursos",
       label: "Mis cursos",
+      isPublic: false,
+    },
+    {
+      href: "/cursos/divisiones",
+      label: "Divisiones",
       isPublic: false,
     },
   ],
