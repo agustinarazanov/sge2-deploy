@@ -1,10 +1,9 @@
-import { useMemo, useState, type ReactElement } from "react";
+import { useMemo, type ReactElement } from "react";
 import type { Path, FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { type FormSelectProps } from "@/components/ui/autocomplete";
+import { FormSelect, type FormSelectProps } from "@/components/ui/autocomplete";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FormAutocomplete, Select, SelectTrigger, SelectValue } from "@/components/ui";
-import { estaDentroDe } from "@/shared/string-compare";
+import { Select, SelectTrigger, SelectValue } from "@/components/ui";
 
 export const SelectLaboratorioForm = <T extends FieldValues, TType extends string>({
   name,
@@ -12,7 +11,6 @@ export const SelectLaboratorioForm = <T extends FieldValues, TType extends strin
   className,
   ...props
 }: Omit<FormSelectProps<T, TType>, "items"> & { sedeId?: number; realNameId?: Path<T> }): ReactElement => {
-  const [query, setQuery] = useState("");
   const { data, isLoading, isError } = api.admin.laboratorios.getAll.useQuery({ sedeId: props.sedeId?.toString() });
 
   const laboratorios = useMemo(() => {
@@ -24,11 +22,10 @@ export const SelectLaboratorioForm = <T extends FieldValues, TType extends strin
 
         return {
           label,
-          id,
+          id: String(id),
         };
-      })
-      .filter((item) => !query || estaDentroDe(query, item.label));
-  }, [data, query]);
+      });
+  }, [data]);
 
   if (isLoading) {
     return (
@@ -55,23 +52,14 @@ export const SelectLaboratorioForm = <T extends FieldValues, TType extends strin
   }
 
   return (
-    <FormAutocomplete
-      async
-      items={laboratorios}
-      noOptionsComponent={
-        <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm text-white">
-          <span>No se encontró el laboratorio</span>
-        </div>
-      }
-      className={className}
-      onQueryChange={setQuery}
+    <FormSelect
       isLoading={isLoading}
-      placeholder="Buscar por laboratorio"
-      clearable
-      debounceTime={0}
-      control={control}
+      className={className}
       name={name}
+      control={control}
+      items={laboratorios}
+      label={"Seleccioná un laboratorio"}
       {...props}
     />
-  );
+  )
 };

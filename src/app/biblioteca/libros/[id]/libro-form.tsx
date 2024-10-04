@@ -44,21 +44,23 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
       isbn: libro.isbn ?? "",
       bibliotecaId: libro.bibliotecaId ?? "",
       inventarioId: libro.inventarioId,
-      idiomaId: libro.idiomaId,
-      laboratorioId: libro.laboratorioId,
-      armarioId: libro.armarioId,
-      estanteId: libro.estanteId,
-      sedeId: libro.sedeId,
+      idiomaId: String(libro.idiomaId),
+      laboratorioId: String(libro.laboratorioId),
+      armarioId: String(libro.armarioId),
+      estanteId: String(libro.estanteId),
+      sedeId: String(libro.sedeId),
       autorId: libro.autor.id,
       autor: {
         id: libro.autor.id,
         label: libro.autor.autorNombre,
       },
+
       editorialId: libro.editorial.id,
       editorial: {
         id: libro.editorial.id,
         label: libro.editorial.editorial,
       },
+
       anio: libro.anio,
       materias: libro.materias.map((materia) => String(materia.materia.id)),
     };
@@ -210,7 +212,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     className="mt-2 text-sm"
                     label={"Laboratorio"}
-                    sedeId={sedeId}
+                    sedeId={sedeId ? Number(sedeId) : undefined}
                     disabled={!sedeId}
                     placeholder={!sedeId ? "Selecciona una sede" : "Selecciona un laboratorio"}
                     onChange={() => {
@@ -228,7 +230,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     className="mt-2 text-sm"
                     label={"Armario"}
-                    laboratorioId={laboratorioId}
+                    laboratorioId={laboratorioId ? Number(laboratorioId) : undefined}
                     placeholder={!laboratorioId ? "Selecciona un laboratorio" : "Selecciona un armario"}
                     onChange={() => {
                       formHook.setValue("estanteId", undefined);
@@ -242,7 +244,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     className="mt-2 text-sm"
                     label={"Estante"}
-                    armarioId={armarioId}
+                    armarioId={armarioId ? Number(armarioId) : undefined}
                     placeholder={!armarioId ? "Selecciona un armario" : "Selecciona una estante"}
                   />
                 </div>
@@ -260,6 +262,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
 
                 <div className="mt-4 basis-1/2">
+                  {JSON.stringify({ idioma: formHook.watch("idiomaId"), idioma2: libro?.idiomaId })}
                   <SelectIdiomasForm
                     name="idiomaId"
                     control={control}
