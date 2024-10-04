@@ -65,10 +65,9 @@ export const LibroFormPrestarORenovar = ({ libroId, onSubmit, onCancel, renovar 
     return sendEmailMutation.mutate({
       to: "alexanderarmua1@gmail.com",
       subject: "Notificación Reserva",
-      text: `Hola ${usuarioSolicitante.label}, has reservado el libro: ${libroId}`,
+      usuarioSolicitante: usuarioSolicitante.label,
     });
   };
-
   const { handleSubmit, control, watch, trigger } = formHook;
 
   const onFormSubmit = async (formData: FormPrestarLibroType) => {
