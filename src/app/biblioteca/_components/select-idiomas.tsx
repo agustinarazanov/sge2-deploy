@@ -21,7 +21,7 @@ export const SelectIdiomasForm = <T extends FieldValues, TType extends string>({
 
       return {
         label,
-        id,
+        id: String(id),
       };
     });
   }, [data]);
@@ -50,6 +50,5 @@ export const SelectIdiomasForm = <T extends FieldValues, TType extends string>({
     );
   }
 
-  // @ts-expect-error - The expected type comes from property 'items' which is declared on type 'FormSelectProps<...>'
   return <FormSelect className={className} name={name} control={control} items={idiomas} {...props} />;
 };

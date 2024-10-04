@@ -26,7 +26,7 @@ export const SelectEstanteForm = <T extends FieldValues, TType extends string>({
 
       return {
         label,
-        id,
+        id: String(id),
       };
     });
 
