@@ -52,12 +52,30 @@ export const LibroFormPrestarORenovar = ({ libroId, onSubmit, onCancel, renovar 
 
   console.log({ errors: formHook.formState.errors, renovar });
 
+  const sendEmailMutation = api.email.sendEmail.useMutation({
+    onSuccess: (data) => {
+      console.log("Email sent successfully:", data);
+    },
+    onError: (error) => {
+      console.error("Error sending email:", error);
+    },
+  });
+
+  const sendEmail = () => {
+    return sendEmailMutation.mutate({
+      to: "alexanderarmua1@gmail.com",
+      subject: "Notificación Reserva",
+      text: `Hola ${usuarioSolicitante.label}, has reservado el libro: ${libroId}`,
+    });
+  };
+
   const { handleSubmit, control, watch, trigger } = formHook;
 
   const onFormSubmit = async (formData: FormPrestarLibroType) => {
     if (renovar) {
       await handleRenovarLibro(formData);
     } else {
+      sendEmail();
       await handlePrestarLibro(formData);
     }
   };
