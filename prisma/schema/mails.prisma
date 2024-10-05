@@ -1,0 +1,11 @@
+model Mails {
+    id Int @unique
+
+    emisor    String
+    para      String
+    cc        String
+    cco       String
+    contenido String
+
+    fechaEnvio DateTime
+}

@@ -32,9 +32,7 @@ model Equipo {
 
     disponible Boolean @default(true)
 
-    reservas                        ReservaEquipo[]
-    reservaLaboratorioCerradoEquipo ReservaLaboratorioCerradoEquipo[]
-    reservaLaboratorioAbiertoEquipo ReservaLaboratorioAbiertoEquipo[]
+    reservas ReservaEquipo[]
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @default(now()) @updatedAt
@@ -68,6 +66,9 @@ model EquipoTipo {
     usuarioCreadorId String
 
     equipos Equipo[]
+
+    reservaLaboratorioCerradoEquipo ReservaLaboratorioCerradoEquipo[]
+    reservaLaboratorioAbiertoEquipo ReservaLaboratorioAbiertoEquipo[]
 
     @@index([nombre(sort: Asc)])
 }

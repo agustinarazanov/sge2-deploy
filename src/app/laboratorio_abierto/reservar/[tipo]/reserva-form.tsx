@@ -127,7 +127,7 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
     });
   };
 
-  const handleCancel = () => {
+  const handleClickClose = () => {
     formHook.reset();
     onCancel();
   };
@@ -282,7 +282,7 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
           </div>
         </div>
         <div className="flex w-full flex-row items-end justify-end space-x-4">
-          <Button title="Cerrar" type="button" variant="default" color="secondary" onClick={handleCancel}>
+          <Button title="Cerrar" type="button" variant="default" color="secondary" onClick={handleClickClose}>
             Cerrar
           </Button>
           {!esNuevo && !estaEstatusCancelada && !esReservaPasada && (

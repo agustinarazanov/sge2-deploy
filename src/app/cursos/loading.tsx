@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui";
 import { Skeleton } from "@/components/ui/skeleton";
 import LoadingCursosTable from "./(listado)/loading-curso-table";
+import React from "react";
 
 export default function CursoLoading() {
   return (

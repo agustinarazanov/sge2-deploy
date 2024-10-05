@@ -17,14 +17,10 @@ type Props = {
 export interface FormInputEquipoProps<T extends FieldValues> extends React.TextareaHTMLAttributes<HTMLSelectElement> {
   control: Control<T>;
   name: Path<T>;
-  currentEquipoTipo: {
-    id: number;
-    cantidad: number;
-  }[];
 }
 
 export const EquipoTipoSelector = ({ onEquipoTipoChange, label, disabled }: Props) => {
-  const { data, isLoading, isError } = api.equipos.getAllTipos.useQuery({ tipoId: undefined });
+  const { data, isLoading, isError } = api.equipos.getAllTipos.useQuery({ tipoId: undefined, getAll: true });
 
   const [query, setQuery] = useState("");
 
@@ -96,6 +92,8 @@ export const EquipoTipoSelector = ({ onEquipoTipoChange, label, disabled }: Prop
 };
 
 export const FormEquipoTipoSelector = <T extends FieldValues>({ name: nombre }: { name: Path<T> }) => {
+  const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery({ tipoId: undefined, getAll: true });
+
   if (nombre !== "equipoReservado") {
     // Hack: Si el nombre del campo es diferente a "equipoReservado", lanza una excepción para que el usuario sepa que debe usar el componente con el nombre correcto
     throw new Error("El nombre del campo debe ser 'equipoReservado'");
@@ -113,17 +111,15 @@ export const FormEquipoTipoSelector = <T extends FieldValues>({ name: nombre }: 
     setRequiereInstrumental(currentEquipoTipo.length > 0);
   }, [currentEquipoTipo]);
 
-  const { data: todosLosEquiposTipo } = api.equipos.getAllTipos.useQuery({ tipoId: undefined, getAll: true });
-
   const onEquipoTipoChange = (equipoTipoId: number) => {
     const equipos = formHook.getValues(name);
 
-    const existeEquipo = equipos.find((equipo) => equipo.id === equipoTipoId);
+    const existeEquipo = equipos.find((equipo) => equipo.equipoId === equipoTipoId);
 
     if (existeEquipo) {
       return;
     } else {
-      formHook.setValue(name, [...equipos, { id: equipoTipoId, cantidad: 1 }]);
+      formHook.setValue(name, [...equipos, { equipoId: equipoTipoId, cantidad: 1 }]);
       return;
     }
   };
@@ -133,7 +129,7 @@ export const FormEquipoTipoSelector = <T extends FieldValues>({ name: nombre }: 
 
     formHook.setValue(
       name,
-      equipos.filter((equipo) => equipo.id !== equipoTipoId),
+      equipos.filter((equipo) => equipo.equipoId !== equipoTipoId),
     );
   };
 
@@ -141,7 +137,7 @@ export const FormEquipoTipoSelector = <T extends FieldValues>({ name: nombre }: 
     const equipos = formHook.getValues(name);
 
     const newEquipos = equipos.map((equipo) => {
-      if (equipo.id === equipoTipoId) {
+      if (equipo.equipoId === equipoTipoId) {
         return { ...equipo, cantidad };
       }
 
@@ -158,7 +154,7 @@ export const FormEquipoTipoSelector = <T extends FieldValues>({ name: nombre }: 
           htmlFor={name}
           className="flex w-full items-center justify-between rounded-md border border-white p-2 hover:cursor-pointer hover:bg-gray-500"
         >
-          <div className="text-base">Requiere instumental</div>
+          <div className="text-base">Requiere instrumental</div>
           <Switch id={name} checked={requiereInstrumental} onCheckedChange={setRequiereInstrumental} />
         </label>
       </div>
@@ -172,41 +168,45 @@ export const FormEquipoTipoSelector = <T extends FieldValues>({ name: nombre }: 
           <div className="mt-4 w-full">
             <ScrollArea className="max-h-80 w-full">
               <div className="flex w-full flex-col">
-                {currentEquipoTipo?.map((equipoTipo) => {
-                  const currentEquipo = todosLosEquiposTipo?.tipos?.find((equipo) => equipo.id === equipoTipo.id);
+                {currentEquipoTipo
+                  .filter((equipo) => !!equipo)
+                  .map((equipoTipo) => {
+                    const currentEquipo = todosLosEquiposTipo?.tipos?.find(
+                      (equipo) => equipo.id === equipoTipo.equipoId,
+                    );
 
-                  return (
-                    <div key={equipoTipo.id} className="flex w-full flex-row gap-x-4 pl-4">
-                      <Input readOnly value={currentEquipo?.nombre ?? ""} className="mt-2 grow basis-2/3" />
-                      <Input
-                        value={equipoTipo.cantidad}
-                        onChange={(event) => {
-                          const value = event.target.value;
+                    return (
+                      <div key={equipoTipo.equipoId} className="flex w-full flex-row gap-x-4 pl-4">
+                        <Input readOnly value={currentEquipo?.nombre ?? ""} className="mt-2 grow basis-2/3" />
+                        <Input
+                          value={equipoTipo.cantidad}
+                          onChange={(event) => {
+                            const value = event.target.value;
 
-                          if (value === "") {
-                            onEquipoCambiarCantidad(equipoTipo.id, 0);
-                            return;
-                          }
+                            if (value === "") {
+                              onEquipoCambiarCantidad(equipoTipo.equipoId, 0);
+                              return;
+                            }
 
-                          onEquipoCambiarCantidad(equipoTipo.id, Number(value));
-                        }}
-                        type="number"
-                        className="mt-2 grow basis-1/3"
-                        min={1}
-                        step={1}
-                      />
-                      <Button
-                        type="button"
-                        variant={"icon"}
-                        icon={MinusIcon}
-                        size="sm"
-                        className="mt-2 rounded-md border-none"
-                        onClick={() => onEquipoTipoDelete(equipoTipo.id)}
-                        title={`Eliminar ${currentEquipo?.nombre} de la reserva`}
-                      />
-                    </div>
-                  );
-                })}
+                            onEquipoCambiarCantidad(equipoTipo.equipoId, Number(value));
+                          }}
+                          type="number"
+                          className="mt-2 grow basis-1/3"
+                          min={1}
+                          step={1}
+                        />
+                        <Button
+                          type="button"
+                          variant={"icon"}
+                          icon={MinusIcon}
+                          size="sm"
+                          className="mt-2 rounded-md border-none"
+                          onClick={() => onEquipoTipoDelete(equipoTipo.equipoId)}
+                          title={`Eliminar ${currentEquipo?.nombre} de la reserva`}
+                        />
+                      </div>
+                    );
+                  })}
               </div>
             </ScrollArea>
           </div>

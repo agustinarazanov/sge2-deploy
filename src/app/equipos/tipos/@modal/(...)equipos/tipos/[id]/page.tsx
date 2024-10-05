@@ -22,6 +22,8 @@ export default function PageDetails({ params: { id } }: PageProps) {
   };
 
   const handleClickSave = () => {
+    setOpen(false);
+    router.replace("/equipos/tipos");
     router.refresh();
   };
 

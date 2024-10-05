@@ -4,7 +4,7 @@ import { ActionButtonsPrestamos } from "../(listado)/action-redirect-prestamos";
 import LoadingBibliotecaPrestamosTable from "../(listado)/loading-biblioteca-prestamos-table";
 import { inputGetAllPrestamosLibros } from "@/shared/filters/reservas-filter.schema";
 import BibliotecaPrestamosTableContainer from "../prestamos/_components/prestamos-table-container";
-
+import React from "react";
 type PageProps = {
   searchParams: ReadonlyURLSearchParams;
 };
