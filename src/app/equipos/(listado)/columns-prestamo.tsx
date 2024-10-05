@@ -12,7 +12,7 @@ export const getColumnasPrestamo = ({ filterByUser }: { filterByUser?: boolean }
 
   const columnasBasicas = [
     colHelper.accessor("id", {
-      header: "Prestamo #",
+      header: "Préstamo #",
     }),
     colHelper.accessor("equipo.inventarioId", {
       header: "Equipo Inventario",
@@ -30,7 +30,7 @@ export const getColumnasPrestamo = ({ filterByUser }: { filterByUser?: boolean }
       },
     }),
     colHelper.accessor("reserva.fechaHoraInicio", {
-      header: "Fecha del Prestamo",
+      header: "Fecha del Préstamo",
       cell: ({ row }) => {
         const { reserva } = row.original;
 
@@ -50,7 +50,7 @@ export const getColumnasPrestamo = ({ filterByUser }: { filterByUser?: boolean }
       },
     }),
     colHelper.accessor("reserva.usuarioAprobador.apellido", {
-      header: "Presto",
+      header: "Prestó",
       cell: ({ row }) => {
         const { reserva } = row.original;
         const { usuarioAprobador } = reserva;
@@ -59,7 +59,7 @@ export const getColumnasPrestamo = ({ filterByUser }: { filterByUser?: boolean }
       },
     }),
     colHelper.accessor("reserva.usuarioRenovo.apellido", {
-      header: "Renovo",
+      header: "Renovó",
       cell: ({ row }) => {
         const { reserva } = row.original;
 
@@ -105,7 +105,7 @@ export const getColumnasPrestamo = ({ filterByUser }: { filterByUser?: boolean }
       },
     }),
     colHelper.accessor("reserva.usuarioRecibio.apellido", {
-      header: "Recibio",
+      header: "Recibió",
       cell: ({ row }) => {
         const { reserva, equipoId } = row.original;
         const { usuarioRecibio, estatus } = reserva;
@@ -141,16 +141,16 @@ export const getColumnasPrestamo = ({ filterByUser }: { filterByUser?: boolean }
 
 export const getColumnasPrestamoNames = () => {
   return [
-    "Prestamo #",
+    "Préstamo #",
     "Equipo Inventario",
     "Tipo",
     "Prestado A",
-    "Fecha del Prestamo",
+    "Fecha del Préstamo",
     "Fecha de Finalización",
-    "Presto",
-    "Renovo",
+    "Prestó",
+    "Renovó",
     "Renovar",
     "Devolver",
-    "Recibio",
+    "Recibió",
   ];
 };

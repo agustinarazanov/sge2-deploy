@@ -98,7 +98,7 @@ const MultiSelectFormField = React.forwardRef<HTMLButtonElement, MultiSelectForm
             color={"secondary"}
           >
             {selectedValues.length > 0 ? (
-              <div className="flex w-full items-start justify-between">
+              <div className="flex w-full max-w-lg items-start justify-between">
                 <div className="flex flex-wrap items-center">
                   {selectedValues.map((value) => {
                     const option = options.find((o) => o.value === value);
@@ -149,7 +149,7 @@ const MultiSelectFormField = React.forwardRef<HTMLButtonElement, MultiSelectForm
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="z-10 w-full p-0 drop-shadow-sm"
+          className="z-10 w-full overflow-y-hidden rounded-md border-2 border-stone-400 p-0 drop-shadow-sm lg:w-[500px]"
           align="start"
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
           onInteractOutside={(event) => {
@@ -205,7 +205,7 @@ const MultiSelectFormField = React.forwardRef<HTMLButtonElement, MultiSelectForm
                             pointerEvents: "auto",
                             opacity: 1,
                           }}
-                          className="flex-1 cursor-pointer justify-center"
+                          className="w-48 cursor-pointer justify-center border-2 border-primary"
                         >
                           Limpiar
                         </CommandItem>
@@ -219,7 +219,7 @@ const MultiSelectFormField = React.forwardRef<HTMLButtonElement, MultiSelectForm
                         pointerEvents: "auto",
                         opacity: 1,
                       }}
-                      className="flex-1 cursor-pointer justify-center"
+                      className="w-48 cursor-pointer justify-center border-2 border-primary"
                     >
                       Cerrar
                     </CommandItem>

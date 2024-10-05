@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactElement } from "react";
-import { type FieldValues } from "react-hook-form";
+import { type Path, type FieldValues } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { type FormSelectProps } from "@/components/ui/autocomplete";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,7 +11,7 @@ export const SelectTipoForm = <T extends FieldValues, TType extends string>({
   control,
   className,
   ...props
-}: Omit<FormSelectProps<T, TType>, "items"> & { tipoId?: number }): ReactElement => {
+}: Omit<FormSelectProps<T, TType>, "items"> & { tipoId?: number } & { realNameId?: Path<T> }): ReactElement => {
   const { data, isLoading, isError } = api.equipos.getAllTipos.useQuery({ tipoId: props.tipoId, fromFilter: "true" });
 
   const [query, setQuery] = useState("");

@@ -77,7 +77,7 @@ export const PoliticasPrivacidadModal = ({ triggerText }: { triggerText: string 
                     horario extra académico en caso en que lo hayan solicitado por los medios de reserva disponibles. Si
                     hubiese lugar disponible en los mismos, los Laboratorios Abiertos podrán utilizarse para atención de
                     consultas y corrección de proyectos por parte del cuerpo docente, previa solicitud al personal de
-                    Paíol, y teniendo en cuenta que los mismos no cuentan con la capacidad de un laboratorio aula.
+                    Pañol, y teniendo en cuenta que los mismos no cuentan con la capacidad de un laboratorio aula.
                   </p>
                 </li>
                 <li>
@@ -85,11 +85,11 @@ export const PoliticasPrivacidadModal = ({ triggerText }: { triggerText: string 
                     Los laboratorios pertenecientes al Departamento no están asignados de manera fija a ninguna materia
                     de la carrera. Por una cuestión administrativa, la Subsecretaria de Gestión suele solicitar al
                     inicio de cada año una cantidad de laboratorios para distribución de cursos debido a la
-                    superpoblación reinante, y por una cuestión de orden bedeléa asigna uno u otro curso. Debe
+                    superpoblación reinante, y por una cuestión de orden bedelía asigna uno u otro curso. Debe
                     entenderse que la utilización de los laboratorios está supeditada a los puntos antes mencionados, y
                     los mismos son evaluados por el personal responsable del Departamento, motivo por el cual es
                     indispensable realizar la reserva de laboratorio pertinente independientemente de lo publicado por
-                    bedeléa, pudiendo luego variar el lugar de dictado de la clase (aula o laboratorio) en función de la
+                    bedelía, pudiendo luego variar el lugar de dictado de la clase (aula o laboratorio) en función de la
                     disponibilidad.
                   </p>
                 </li>

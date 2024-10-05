@@ -7,6 +7,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { type RouterOutputs } from "@/trpc/react";
 import { cn } from "@/components/utils";
 import { type inputGetAllSolicitudesReservaLaboratorioAbierto } from "@/shared/filters/reserva-laboratorio-filter.schema";
+import { ReservaEstatus } from "@prisma/client";
 
 type LaboratorioAbiertoReservaFilters = z.infer<typeof inputGetAllSolicitudesReservaLaboratorioAbierto>;
 type EstadoReservaType =
@@ -29,20 +30,36 @@ export const ReservaLaboratorioAbiertoEstadoFilter = ({ filters }: Props) => {
   return (
     <ToggleGroup type="single" className="flex flex-row">
       <ToggleGroupItem
-        value={"PENDIENTE" as EstadoReservaType}
+        value={ReservaEstatus.CANCELADA}
         aria-label="Cambiar a pendientes"
-        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstatus === "PENDIENTE" })}
-        onClick={() => handleTextChange("PENDIENTE")}
+        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstatus === ReservaEstatus.CANCELADA })}
+        onClick={() => handleTextChange(ReservaEstatus.CANCELADA)}
+      >
+        Canceladas
+      </ToggleGroupItem>
+      <ToggleGroupItem
+        value={ReservaEstatus.RECHAZADA}
+        aria-label="Cambiar a pendientes"
+        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstatus === ReservaEstatus.RECHAZADA })}
+        onClick={() => handleTextChange(ReservaEstatus.RECHAZADA)}
+      >
+        Rechazadas
+      </ToggleGroupItem>
+      <ToggleGroupItem
+        value={ReservaEstatus.PENDIENTE}
+        aria-label="Cambiar a pendientes"
+        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstatus === ReservaEstatus.PENDIENTE })}
+        onClick={() => handleTextChange(ReservaEstatus.PENDIENTE)}
       >
         Pendientes
       </ToggleGroupItem>
       <ToggleGroupItem
-        value={"FINALIZADA" as EstadoReservaType}
+        value={ReservaEstatus.FINALIZADA}
         aria-label="Cambiar a finalizadas"
-        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstatus === "FINALIZADA" })}
-        onClick={() => handleTextChange("FINALIZADA")}
+        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstatus === ReservaEstatus.FINALIZADA })}
+        onClick={() => handleTextChange(ReservaEstatus.FINALIZADA)}
       >
-        Finalizados
+        Finalizadas
       </ToggleGroupItem>
       <ToggleGroupItem
         value={"" as EstadoReservaType}
@@ -50,7 +67,7 @@ export const ReservaLaboratorioAbiertoEstadoFilter = ({ filters }: Props) => {
         className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstatus === "" })}
         onClick={() => handleTextChange("")}
       >
-        Ambos
+        Todas
       </ToggleGroupItem>
     </ToggleGroup>
   );

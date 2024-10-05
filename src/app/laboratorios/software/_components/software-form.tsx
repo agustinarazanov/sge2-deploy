@@ -103,7 +103,7 @@ export const SoftwareForm = ({ softwareId, onSubmit, onCancel }: Props) => {
                   <FormInput label={"Nombre"} control={control} name="nombre" type={"text"} className="mt-2" />
                 </div>
                 <div className="mt-4 w-full">
-                  <FormInput label={"Version"} control={control} name="version" type={"text"} className="mt-2" />
+                  <FormInput label={"Versión"} control={control} name="version" type={"text"} className="mt-2" />
                 </div>
                 <div className="mt-4 w-full">
                   <FormInput label={"Estado"} control={control} name="estado" type={"text"} className="mt-2" />

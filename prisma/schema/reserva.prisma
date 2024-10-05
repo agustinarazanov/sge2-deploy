@@ -123,8 +123,8 @@ model ReservaLaboratorioCerradoEquipo {
     reservaLaboratorioCerradoId Int
     reservaLaboratorioCerrado   ReservaLaboratorioCerrado @relation(fields: [reservaLaboratorioCerradoId], references: [id])
 
-    equipoId Int
-    equipo   Equipo @relation(fields: [equipoId], references: [id], onDelete: Cascade)
+    equipoId   Int
+    equipoTipo EquipoTipo @relation(fields: [equipoId], references: [id], onDelete: Cascade)
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @default(now()) @updatedAt
@@ -167,8 +167,8 @@ model ReservaLaboratorioAbiertoEquipo {
     reservaLaboratorioAbiertoId Int
     reservaLaboratorioAbierto   ReservaLaboratorioAbierto @relation(fields: [reservaLaboratorioAbiertoId], references: [id], onDelete: Cascade)
 
-    equipoId Int
-    equipo   Equipo @relation(fields: [equipoId], references: [id], onDelete: Cascade)
+    equipoId   Int
+    equipoTipo EquipoTipo @relation(fields: [equipoId], references: [id], onDelete: Cascade)
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @default(now()) @updatedAt

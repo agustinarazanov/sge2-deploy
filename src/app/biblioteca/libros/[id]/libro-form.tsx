@@ -23,7 +23,6 @@ type Props = {
 type FormHelperType = {
   autor: { id: number; label: string };
   editorial: { id: number; label: string };
-  laboratorio: { id: number; label: string };
 };
 
 type FormEditarLibroType = z.infer<typeof inputEditBooks> & FormHelperType;
@@ -45,25 +44,23 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
       isbn: libro.isbn ?? "",
       bibliotecaId: libro.bibliotecaId ?? "",
       inventarioId: libro.inventarioId,
-      idiomaId: libro.idiomaId,
-      laboratorioId: libro.laboratorioId,
-      laboratorio: {
-        id: libro.laboratorioId,
-        label: libro.laboratorio?.nombre ?? "",
-      },
-      armarioId: libro.armarioId,
-      estanteId: libro.estanteId,
-      sedeId: libro.sedeId,
+      idiomaId: String(libro.idiomaId),
+      laboratorioId: String(libro.laboratorioId),
+      armarioId: String(libro.armarioId),
+      estanteId: String(libro.estanteId),
+      sedeId: String(libro.sedeId),
       autorId: libro.autor.id,
       autor: {
         id: libro.autor.id,
         label: libro.autor.autorNombre,
       },
+
       editorialId: libro.editorial.id,
       editorial: {
         id: libro.editorial.id,
         label: libro.editorial.editorial,
       },
+
       anio: libro.anio,
       materias: libro.materias.map((materia) => String(materia.materia.id)),
     };
@@ -78,7 +75,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   const { handleSubmit, control, watch } = formHook;
 
   const [sedeId, laboratorioId, armarioId] = watch(["sedeId", "laboratorioId", "armarioId"]);
-  const [autor, editorial, laboratorio] = watch(["autor", "editorial", "laboratorio"]);
+  const [autor, editorial] = watch(["autor", "editorial"]);
 
   useEffect(() => formHook.reset(libroBase), [formHook, libroBase]);
 
@@ -112,9 +109,8 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
     onCancel();
   };
 
-  useEffect(() => autor && formHook.setValue("autorId", autor?.id), [formHook, autor]);
-  useEffect(() => editorial && formHook.setValue("editorialId", editorial?.id), [formHook, editorial]);
-  useEffect(() => laboratorio && formHook.setValue("laboratorioId", laboratorio?.id), [formHook, laboratorio]);
+  useEffect(() => formHook.setValue("autorId", autor?.id), [formHook, autor]);
+  useEffect(() => formHook.setValue("editorialId", editorial?.id), [formHook, editorial]);
 
   if (!esNuevo && isNaN(libroId)) {
     return <div>Error al cargar...</div>;
@@ -131,8 +127,8 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
-        <ScrollArea className="max-h-[calc(100vh_-_20%)] w-full pr-4 md:max-h-[calc(100vh_-_30%)] lg:max-h-[calc(100vh_-_30%)]">
-          <div className="flex w-full flex-col items-center justify-center">
+        <ScrollArea className="max-h-[calc(100vh_-_20%)] w-full pr-4 md:max-h-[calc(100vh_-_20%)] lg:max-h-[calc(100vh_-_25%)]">
+          <div className="flex w-full flex-col items-stretch justify-center sm:items-stretch md:items-stretch lg:items-center">
             <div className="flex flex-col space-y-4 px-0 md:px-6">
               <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
                 <div className="mt-4 w-full">
@@ -212,12 +208,11 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
 
                 <div className="mt-4 basis-1/2">
                   <SelectLaboratorioForm
-                    name="laboratorio"
-                    realNameId="laboratorioId"
+                    name="laboratorioId"
                     control={control}
                     className="mt-2 text-sm"
                     label={"Laboratorio"}
-                    sedeId={sedeId}
+                    sedeId={sedeId ? Number(sedeId) : undefined}
                     disabled={!sedeId}
                     placeholder={!sedeId ? "Selecciona una sede" : "Selecciona un laboratorio"}
                     onChange={() => {
@@ -235,7 +230,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     className="mt-2 text-sm"
                     label={"Armario"}
-                    laboratorioId={laboratorioId}
+                    laboratorioId={laboratorioId ? Number(laboratorioId) : undefined}
                     placeholder={!laboratorioId ? "Selecciona un laboratorio" : "Selecciona un armario"}
                     onChange={() => {
                       formHook.setValue("estanteId", undefined);
@@ -249,7 +244,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     className="mt-2 text-sm"
                     label={"Estante"}
-                    armarioId={armarioId}
+                    armarioId={armarioId ? Number(armarioId) : undefined}
                     placeholder={!armarioId ? "Selecciona un armario" : "Selecciona una estante"}
                   />
                 </div>
@@ -267,6 +262,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
 
                 <div className="mt-4 basis-1/2">
+                  {JSON.stringify({ idioma: formHook.watch("idiomaId"), idioma2: libro?.idiomaId })}
                   <SelectIdiomasForm
                     name="idiomaId"
                     control={control}
