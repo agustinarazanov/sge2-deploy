@@ -1,6 +1,5 @@
-import { armarFechaReserva } from "@/shared/get-date";
-import { PrismaClient, Prisma, ReservaEstatus } from "@prisma/client";
-import { DefaultArgs } from "@prisma/client/runtime/library";
+import { type PrismaClient, type Prisma, ReservaEstatus } from "@prisma/client";
+import type { DefaultArgs } from "@prisma/client/runtime/library";
 import { z } from "zod";
 import { getErrorLaboratorioOcupado } from "../../services/helper";
 

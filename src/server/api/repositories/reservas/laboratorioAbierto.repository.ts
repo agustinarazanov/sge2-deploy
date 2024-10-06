@@ -13,8 +13,7 @@ import type {
   inputCancelarReservaLaboratorioAbierto,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { armarFechaReserva } from "@/shared/get-date";
-import { estaEnUsoLaboratorio, lanzarErrorSiLaboratorioOcupado } from "./laboratorioEnUso.repository";
-import { getErrorLaboratorioOcupado } from "../../services/helper";
+import { lanzarErrorSiLaboratorioOcupado } from "./laboratorioEnUso.repository";
 
 type InputGetPorUsuarioID = z.infer<typeof inputGetReservaLaboratorioPorUsuarioId>;
 export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: InputGetPorUsuarioID) => {
