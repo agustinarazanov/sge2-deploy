@@ -31,6 +31,19 @@ export const getDateISO = (day: string) => {
 };
 
 /**
+ * Devuelve una fecha con el formato yyyy-MM-dd HH:mm
+ * @param day fecha con el formato Date
+ * @returns fecha con el formato yyyy-MM-dd HH:mm
+ * @example
+ * getDateTimeISO(new Date("2023-01-01T10:00")); // Devuelve "2023-01-01 10:00"
+ */
+export const getDateTimeISO = (day: Date) => {
+  const dateISOSplit = day.toISOString().split("T");
+
+  return `${dateISOSplit[0]} ${dateISOSplit[1]}`;
+};
+
+/**
  * Devuelve una fecha con el formato yyyy-MM-dd
  * @param date fecha con el formato Date
  * @returns fecha con el formato yyyy-MM-dd
@@ -81,4 +94,16 @@ export const esFechaPasada = (fecha: string | Date | undefined) => {
   const now = new Date();
 
   return date < now;
+};
+
+/**
+ * Devuelve una fecha en formato Date
+ * @param fecha Fecha en formato yyyy-MM-dd
+ * @param hora Hora en formato HH:mm
+ * @returns fecha en formato Date
+ * @example
+ * armarFechaReserva("2023-01-01", "10:00"); // Devuelve Date("2023-01-01T10:00")
+ */
+export const armarFechaReserva = (fecha: string, hora: string) => {
+  return new Date(`${fecha}T${hora}`);
 };

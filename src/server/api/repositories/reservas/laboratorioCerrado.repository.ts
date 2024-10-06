@@ -11,6 +11,7 @@ import type { PrismaClient, Prisma } from "@prisma/client";
 import type { z } from "zod";
 import { informacionUsuario } from "../usuario-helper";
 import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
+import { lanzarErrorSiLaboratorioOcupado } from "./laboratorioEnUso.repository";
 
 type InputGetPorUsuarioID = z.infer<typeof inputGetReservaLaboratorioPorUsuarioId>;
 export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: InputGetPorUsuarioID) => {
@@ -143,6 +144,16 @@ export const aprobarReserva = async (ctx: { db: PrismaClient }, input: InputApro
       if (reserva.estatus === "RECHAZADA" || reserva.estatus === "CANCELADA") {
         throw new Error("La reserva ya fue rechazada o cancelada");
       }
+
+      await lanzarErrorSiLaboratorioOcupado(
+        { db: tx },
+        {
+          fechaHoraInicio: reserva.fechaHoraInicio,
+          fechaHoraFin: reserva.fechaHoraFin,
+          laboratorioId: input.laboratorioId,
+          reservaId: reserva.id,
+        },
+      );
 
       await tx.reserva.update({
         where: {
