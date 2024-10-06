@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { emailTemplate } from "@/server/api/utils/emailTemplate";
 
 export const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -10,12 +11,12 @@ export const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendEmail = async (to: string, subject: string, text: string) => {
+export const sendEmail = async (to: string, subject: string, usuarioSolicitante: string) => {
   const mailOptions = {
     from: '"Sistema UTN" <testutn88@gmail.com>',
     to,
     subject,
-    text,
+    html: emailTemplate(usuarioSolicitante),
   };
 
   try {

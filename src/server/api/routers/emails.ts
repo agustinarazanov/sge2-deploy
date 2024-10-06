@@ -8,12 +8,12 @@ export const emailRouter = createTRPCRouter({
       z.object({
         to: z.string().email(),
         subject: z.string(),
-        text: z.string(),
+        usuarioSolicitante: z.string(),
       }),
     )
     .mutation(async ({ input }) => {
-      const { to, subject, text } = input;
-      const result = await sendEmail(to, subject, text);
+      const { to, subject, usuarioSolicitante } = input;
+      const result = await sendEmail(to, subject, usuarioSolicitante);
       return { success: true, messageId: result.messageId };
     }),
 });
