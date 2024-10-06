@@ -42,7 +42,7 @@ export const DivisionForm = ({ id, onSubmit, onCancel }: Props) => {
     resolver: zodResolver(id ? inputEditarDivision : inputAgregarDivision),
   });
 
-  const { handleSubmit, control, watch } = formHook;
+  const { handleSubmit, control } = formHook;
 
   useEffect(() => formHook.reset(divisionBase), [formHook, divisionBase]);
 

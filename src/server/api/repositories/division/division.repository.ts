@@ -77,6 +77,7 @@ export const agregarDivision = async (ctx: { db: PrismaClient }, input: InputAgr
       nombre: input.nombre,
       anio: input.anio,
       usuarioCreadorId: userId,
+      usuarioModificadorId: userId,
     },
   });
 
@@ -102,6 +103,7 @@ export const editarDivision = async (ctx: { db: PrismaClient }, input: InputEdit
     data: {
       nombre: input.nombre,
       anio: input.anio,
+      usuarioModificadorId: userId,
     },
     where: {
       id: input.id,

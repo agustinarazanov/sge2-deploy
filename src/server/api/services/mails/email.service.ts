@@ -20,6 +20,10 @@ export const sendEmail = async (to: string, subject: string, usuarioSolicitante:
   };
 
   try {
+    if (!transporter) {
+      throw new Error("No se pudo crear el transporte de correo");
+    }
+
     const info = await transporter.sendMail(mailOptions);
     console.log("Correo enviado: %s", info.messageId);
     return info;
