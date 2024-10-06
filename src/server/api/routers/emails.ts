@@ -14,6 +14,9 @@ export const emailRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const { to, subject, usuarioSolicitante } = input;
       const result = await sendEmail(to, subject, usuarioSolicitante);
-      return { success: true, messageId: result.messageId };
+
+      if (result && result.messageId) {
+        return { success: true, messageId: result?.messageId ?? "" };
+      }
     }),
 });
