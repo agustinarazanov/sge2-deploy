@@ -16,7 +16,7 @@ export const SelectArmarioForm = <T extends FieldValues, TType extends string>({
     { enabled: !!props.laboratorioId },
   );
 
-  const armarios: { id: number | null; label: string }[] = useMemo(() => {
+  const armarios: { id: string | null; label: string }[] = useMemo(() => {
     if (!data) return [];
 
     const nullArmario = { id: null, label: "Vacío" };
