@@ -179,7 +179,7 @@ export const aprobarReserva = async (
           fechaHoraInicio: reserva.fechaHoraInicio,
           fechaHoraFin: reserva.fechaHoraFin,
           laboratorioId: laboratorioId,
-          reservaId: reserva.id,
+          excepcionReservaId: reserva.id,
         },
       );
 

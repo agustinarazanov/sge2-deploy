@@ -14,6 +14,10 @@ import { ReservaEstatus } from "@prisma/client";
 import { AdminLaboratoriosNuevoLaboratorio } from "./alerta-rechazar";
 import { esFechaPasada } from "@/shared/get-date";
 import { getMensajeError } from "@/shared/error";
+import { LaboratorioOcupado } from "@/app/_components/laboratorio-ocupado";
+import { LABORATORIO_ABIERTO_ROUTE } from "@/shared/server-routes";
+
+const RUTA_RESERVA = LABORATORIO_ABIERTO_ROUTE.subRutas[1]?.href ?? "";
 
 type FormHelperType = {
   tutor: { id: string; label: string };
@@ -36,6 +40,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
   const { data: reservaData } = api.reservas.reservaLaboratorioAbierto.getReservaPorID.useQuery({
     id: reservaId,
   });
+  const utils = api.useUtils();
 
   const formHook = useForm<AprobarReservaFormData>({
     mode: "onChange",
@@ -76,6 +81,12 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
       onSuccess: () => {
         toast.success("Reserva aprobada con éxito");
         onAprobar();
+
+        // Durante el desarrollo funciono sin esto, pero no entendí porque.
+        // Se supone que react-query cachea queries de tipo `get` entonces si cambia el laboratorio id de una reserva, deberiamos invalidar para que un cache no de mala información
+        utils.reservas.laboratorioEnUso.obtenerReservasExistentesDeLaboratorio.invalidate().catch((err) => {
+          console.error(err);
+        });
       },
       onError: (err) => {
         const mensaje = getMensajeError(err, "Error al aprobar la reserva");
@@ -102,7 +113,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
     );
   };
 
-  const [tutor] = watch(["tutor"]);
+  const [tutor, laboratorioId] = watch(["tutor", "laboratorioId"]);
   useEffect(() => {
     if (tutor) {
       formHook.setValue("tutorId", tutor.id);
@@ -134,7 +145,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
               />
             </div>
 
-            <div>
+            <div className="flex w-full flex-col gap-y-4">
               <SelectLaboratorioForm
                 name="laboratorioId"
                 control={control}
@@ -142,6 +153,15 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
                 label="Laboratorio"
                 placeholder="Selecciona un laboratorio"
               />
+              {reservaData?.reserva?.fechaHoraInicio && reservaData?.reserva?.fechaHoraFin && laboratorioId && (
+                <LaboratorioOcupado
+                  laboratorioId={Number(laboratorioId)}
+                  excepcionReservaId={reservaId}
+                  fechaHoraInicio={reservaData?.reserva?.fechaHoraInicio}
+                  fechaHoraFin={reservaData?.reserva?.fechaHoraFin}
+                  rutaBase={RUTA_RESERVA}
+                />
+              )}
             </div>
 
             <div>

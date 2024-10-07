@@ -1,17 +1,11 @@
 import { type PrismaClient, type Prisma, ReservaEstatus } from "@prisma/client";
 import type { DefaultArgs } from "@prisma/client/runtime/library";
-import { z } from "zod";
 import { getErrorLaboratorioOcupado } from "../../services/helper";
+import { type inputGetReservasExistentesDeLaboratorio } from "@/shared/filters/laboratorio-en-uso.schema";
+import { type z } from "zod";
 
-const estaLaboratorioEnUso = z.object({
-  laboratorioId: z.number().positive().min(1, { message: "Requerido" }),
-  fechaHoraInicio: z.date(),
-  fechaHoraFin: z.date(),
-  reservaId: z.number().optional(),
-});
-
-type InputEstaEnUso = z.infer<typeof estaLaboratorioEnUso>;
-export const estaEnUsoLaboratorio = async (
+type InputEstaEnUso = z.infer<typeof inputGetReservasExistentesDeLaboratorio>;
+export const obtenerReservasExistentesDeLaboratorio = async (
   ctx: {
     db: Omit<
       PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
@@ -29,7 +23,7 @@ export const estaEnUsoLaboratorio = async (
         in: ["LABORATORIO_CERRADO", "LABORATORIO_ABIERTO"],
       },
       estatus: ReservaEstatus.FINALIZADA,
-      ...(input.reservaId ? { id: { not: input.reservaId } } : {}),
+      ...(input.excepcionReservaId ? { id: { not: input.excepcionReservaId } } : {}),
       AND: [
         {
           OR: [
@@ -105,13 +99,13 @@ export const lanzarErrorSiLaboratorioOcupado = async (
 
   if (input.laboratorioId) {
     // Esta ocupado el laboratorio en ese mismo horario
-    const existenReservas = await estaEnUsoLaboratorio(
+    const existenReservas = await obtenerReservasExistentesDeLaboratorio(
       { db: ctx.db },
       {
         fechaHoraInicio: input.fechaHoraInicio,
         fechaHoraFin: input.fechaHoraFin,
         laboratorioId: input.laboratorioId,
-        reservaId: input.reservaId,
+        excepcionReservaId: input.excepcionReservaId,
       },
     );
 
