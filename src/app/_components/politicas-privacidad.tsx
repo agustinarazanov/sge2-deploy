@@ -83,7 +83,7 @@ export const PoliticasPrivacidadModal = ({ triggerText }: { triggerText: string 
                 <li>
                   <p className="text-sm text-muted-foreground">
                     Los laboratorios pertenecientes al Departamento no están asignados de manera fija a ninguna materia
-                    de la carrera. Por una cuestión administrativa, la Subsecretaria de Gestión suele solicitar al
+                    de la carrera. Por una cuestión administrativa, la Subsecretaría de Gestión suele solicitar al
                     inicio de cada año una cantidad de laboratorios para distribución de cursos debido a la
                     superpoblación reinante, y por una cuestión de orden bedelía asigna uno u otro curso. Debe
                     entenderse que la utilización de los laboratorios está supeditada a los puntos antes mencionados, y
