@@ -43,8 +43,25 @@ export const getColumnasReservasLaboratorioCerrado = ({ filterByUser }: { filter
         return fecha;
       },
     }),
-    colHelper.accessor("cursoId", {
-      header: "Curso",
+    colHelper.accessor("curso.division.nombre", {
+      header: "Division",
+      cell: ({ row }) => {
+        return row.original.curso.division.nombre;
+      },
+    }),
+
+    colHelper.accessor("curso.materia.nombre", {
+      header: "Materia",
+      cell: ({ row }) => {
+        return row.original.curso.materia.nombre;
+      },
+    }),
+
+    colHelper.accessor("curso.sede.nombre", {
+      header: "Sede",
+      cell: ({ row }) => {
+        return row.original.curso.sede.nombre;
+      },
     }),
     colHelper.accessor("laboratorio.nombre", {
       header: "Laboratorio",
