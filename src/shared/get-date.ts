@@ -82,3 +82,82 @@ export const esFechaPasada = (fecha: string | Date | undefined) => {
 
   return date < now;
 };
+
+// Mapeo de horarios por turno
+const horariosTurnos: { [turno: string]: { [hora: number]: string } } = {
+  MANANA: {
+    0: "07:45",
+    1: "08:30",
+    2: "09:15",
+    3: "10:15",
+    4: "11:00",
+    5: "11:45",
+    6: "12:30",
+  },
+  TARDE: {
+    0: "13:30",
+    1: "14:15",
+    2: "15:00",
+    3: "16:00",
+    4: "16:45",
+    5: "17:30",
+    6: "18:15",
+  },
+  NOCHE: {
+    0: "18:15",
+    1: "19:00",
+    2: "19:45",
+    3: "20:45",
+    4: "21:30",
+    5: "22:15",
+    6: "23:00",
+  },
+};
+
+// Función para obtener la hora en formato HH:mm según el turno y la hora (entero)
+export function obtenerHoraInicioFin(hora: number, turno: string): { horaInicio: string; horaFin: string } {
+  const horaInicio = horariosTurnos[turno]?.[hora];
+  const horaFin = horariosTurnos[turno]?.[hora + 1];
+
+  if (!horaInicio || !horaFin) {
+    throw new Error(`Hora de inicio o fin inválida para el turno ${turno} y hora ${hora}`);
+  }
+
+  return { horaInicio, horaFin };
+}
+
+/**
+ * Establece las horas en una fecha dada
+ * @param date Fecha original
+ * @param hours Horas a establecer
+ * @returns Nueva fecha con la hora establecida
+ */
+export const setHours = (date: Date, hours: number): Date => {
+  const newDate = new Date(date);
+  newDate.setHours(hours);
+  return newDate;
+};
+
+/**
+ * Establece los minutos en una fecha dada
+ * @param date Fecha original
+ * @param minutes Minutos a establecer
+ * @returns Nueva fecha con los minutos establecidos
+ */
+export const setMinutes = (date: Date, minutes: number): Date => {
+  const newDate = new Date(date);
+  newDate.setMinutes(minutes);
+  return newDate;
+};
+
+/**
+ * Añade minutos a una fecha dada
+ * @param date Fecha original
+ * @param minutes Minutos a añadir
+ * @returns Nueva fecha con los minutos añadidos
+ */
+export const addMinutes = (date: Date, minutes: number): Date => {
+  const newDate = new Date(date);
+  newDate.setMinutes(newDate.getMinutes() + minutes);
+  return newDate;
+};

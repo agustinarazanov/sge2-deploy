@@ -26,7 +26,7 @@ export const SelectArmarioForm = <T extends FieldValues, TType extends string>({
 
       return {
         label,
-        id: String(id),
+        id,
       };
     });
 
