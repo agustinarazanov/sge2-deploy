@@ -23,6 +23,7 @@ export type ITRPCError = {
   name: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getMensajeError = (error: Error | TRPCClientErrorLike<any>, defaultError?: string): string => {
   if (error instanceof Error) {
     return error.message;
@@ -40,6 +41,7 @@ export const getMensajeError = (error: Error | TRPCClientErrorLike<any>, default
     const shape = error.shape;
 
     if (Object.hasOwn(shape, "message")) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       return shape?.message ?? defaultError ?? "Error desconocido";
     }
   }
