@@ -16,12 +16,12 @@ export default function PageLibroDetails({ params: { id } }: PageProps) {
 
   const handleClickAprobar = () => {
     router.refresh();
-    // TODO: NO ANDA
+    setTimeout(() => router.back(), 100);
   };
 
   const handleClickRechazar = () => {
     router.refresh();
-    // TODO: NO ANDA
+    setTimeout(() => router.back(), 100);
   };
 
   return (

@@ -174,7 +174,7 @@ export const aprobarReserva = async (ctx: { db: PrismaClient }, input: InputApro
           fechaHoraInicio: reserva.fechaHoraInicio,
           fechaHoraFin: reserva.fechaHoraFin,
           laboratorioId: input.laboratorioId,
-          reservaId: reserva.id,
+          excepcionReservaId: reserva.id,
         },
       );
 

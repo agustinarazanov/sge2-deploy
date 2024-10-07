@@ -13,10 +13,14 @@ import { FormEquipoTipoSelector } from "@/app/laboratorios/_components/filtros/e
 import { ReservaEstatus } from "@prisma/client";
 import { AdminLaboratoriosNuevoLaboratorio } from "./alerta-rechazar";
 import { esFechaPasada } from "@/shared/get-date";
+import { getMensajeError } from "@/shared/error";
+import { LaboratorioOcupado } from "@/app/_components/laboratorio-ocupado";
+import { LABORATORIO_ABIERTO_ROUTE } from "@/shared/server-routes";
+
+const RUTA_RESERVA = LABORATORIO_ABIERTO_ROUTE.subRutas[1]?.href ?? "";
 
 type FormHelperType = {
   tutor: { id: string; label: string };
-  laboratorio: { id: number; label: string };
 };
 
 type AprobarReservaFormData = z.infer<typeof inputAprobarReservaLaboratorioAbiertoSchema> & FormHelperType;
@@ -36,6 +40,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
   const { data: reservaData } = api.reservas.reservaLaboratorioAbierto.getReservaPorID.useQuery({
     id: reservaId,
   });
+  const utils = api.useUtils();
 
   const formHook = useForm<AprobarReservaFormData>({
     mode: "onChange",
@@ -43,11 +48,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
     defaultValues: {
       id: reservaId,
       inventarioRevisado: [],
-      laboratorioId: reservaData?.laboratorioId ?? undefined,
-      laboratorio: {
-        id: reservaData?.laboratorioId ?? undefined,
-        label: reservaData?.laboratorio?.nombre ?? "",
-      },
+      laboratorioId: reservaData?.laboratorioId ? String(reservaData?.laboratorioId) : undefined,
       tutorId: reservaData?.reserva.usuarioTutorId ?? undefined,
       tutor: {
         id: reservaData?.reserva.usuarioTutorId ?? undefined,
@@ -64,11 +65,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
       formHook.reset({
         id: reservaId,
         inventarioRevisado: [],
-        laboratorioId: reservaData?.laboratorioId ?? undefined,
-        laboratorio: {
-          id: reservaData?.laboratorioId ?? undefined,
-          label: reservaData?.laboratorio?.nombre ?? "",
-        },
+        laboratorioId: reservaData?.laboratorioId ? String(reservaData?.laboratorioId) : undefined,
         tutorId: reservaData?.reserva.usuarioTutorId ?? undefined,
         tutor: {
           id: reservaData?.reserva.usuarioTutorId ?? undefined,
@@ -84,10 +81,17 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
       onSuccess: () => {
         toast.success("Reserva aprobada con éxito");
         onAprobar();
+
+        // Durante el desarrollo funciono sin esto, pero no entendí porque.
+        // Se supone que react-query cachea queries de tipo `get` entonces si cambia el laboratorio id de una reserva, deberiamos invalidar para que un cache no de mala información
+        utils.reservas.laboratorioEnUso.obtenerReservasExistentesDeLaboratorio.invalidate().catch((err) => {
+          console.error(err);
+        });
       },
-      onError: (error) => {
-        toast.error("Error al aprobar la reserva");
-        console.error(error);
+      onError: (err) => {
+        const mensaje = getMensajeError(err, "Error al aprobar la reserva");
+
+        toast.error(mensaje);
       },
     });
   };
@@ -100,15 +104,16 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
           toast.success("Reserva rechazada con éxito");
           onRechazar();
         },
-        onError: (error) => {
-          toast.error("Error al rechazar la reserva");
-          console.error(error);
+        onError: (err) => {
+          const mensaje = getMensajeError(err, "Error al rechazar la reserva");
+
+          toast.error(mensaje);
         },
       },
     );
   };
 
-  const [tutor, laboratorio] = watch(["tutor", "laboratorio"]);
+  const [tutor, laboratorioId] = watch(["tutor", "laboratorioId"]);
   useEffect(() => {
     if (tutor) {
       formHook.setValue("tutorId", tutor.id);
@@ -116,13 +121,6 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
       formHook.setValue("tutorId", undefined);
     }
   }, [formHook, tutor]);
-  useEffect(() => {
-    if (laboratorio) {
-      formHook.setValue("laboratorioId", laboratorio.id);
-    } else {
-      formHook.setValue("laboratorioId", undefined);
-    }
-  }, [formHook, laboratorio]);
 
   const estaEstatusPendiente = reservaData?.reserva.estatus === ReservaEstatus.PENDIENTE;
   const estaEstatusAprobada = reservaData?.reserva.estatus === ReservaEstatus.FINALIZADA;
@@ -147,15 +145,23 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
               />
             </div>
 
-            <div>
+            <div className="flex w-full flex-col gap-y-4">
               <SelectLaboratorioForm
-                name="laboratorio"
-                realNameId="laboratorioId"
+                name="laboratorioId"
                 control={control}
                 className="mt-2"
                 label="Laboratorio"
                 placeholder="Selecciona un laboratorio"
               />
+              {reservaData?.reserva?.fechaHoraInicio && reservaData?.reserva?.fechaHoraFin && laboratorioId && (
+                <LaboratorioOcupado
+                  laboratorioId={Number(laboratorioId)}
+                  excepcionReservaId={reservaId}
+                  fechaHoraInicio={reservaData?.reserva?.fechaHoraInicio}
+                  fechaHoraFin={reservaData?.reserva?.fechaHoraFin}
+                  rutaBase={RUTA_RESERVA}
+                />
+              )}
             </div>
 
             <div>

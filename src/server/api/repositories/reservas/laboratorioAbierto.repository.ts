@@ -13,8 +13,7 @@ import type {
   inputCancelarReservaLaboratorioAbierto,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { armarFechaReserva } from "@/shared/get-date";
-import { estaEnUsoLaboratorio, lanzarErrorSiLaboratorioOcupado } from "./laboratorioEnUso.repository";
-import { getErrorLaboratorioOcupado } from "../../services/helper";
+import { lanzarErrorSiLaboratorioOcupado } from "./laboratorioEnUso.repository";
 
 type InputGetPorUsuarioID = z.infer<typeof inputGetReservaLaboratorioPorUsuarioId>;
 export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: InputGetPorUsuarioID) => {
@@ -153,6 +152,8 @@ export const aprobarReserva = async (
   userId: string,
 ) => {
   try {
+    const laboratorioId = input.laboratorioId ? Number(input.laboratorioId) : undefined;
+
     const reserva = await ctx.db.$transaction(async (tx) => {
       const reserva = await tx.reserva.findUnique({
         where: {
@@ -177,8 +178,8 @@ export const aprobarReserva = async (
         {
           fechaHoraInicio: reserva.fechaHoraInicio,
           fechaHoraFin: reserva.fechaHoraFin,
-          laboratorioId: input.laboratorioId,
-          reservaId: reserva.id,
+          laboratorioId: laboratorioId,
+          excepcionReservaId: reserva.id,
         },
       );
 
@@ -193,7 +194,7 @@ export const aprobarReserva = async (
           usuarioTutorId: input.tutorId ? input.tutorId : null,
           reservaLaboratorioAbierto: {
             update: {
-              laboratorioId: input.laboratorioId ? input.laboratorioId : null,
+              laboratorioId: laboratorioId ?? null,
               usuarioModificadorId: userId,
               equipoReservado: {
                 deleteMany: {},

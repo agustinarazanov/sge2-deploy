@@ -1,18 +1,11 @@
-import { armarFechaReserva } from "@/shared/get-date";
-import { PrismaClient, Prisma, ReservaEstatus } from "@prisma/client";
-import { DefaultArgs } from "@prisma/client/runtime/library";
-import { z } from "zod";
+import { type PrismaClient, type Prisma, ReservaEstatus } from "@prisma/client";
+import type { DefaultArgs } from "@prisma/client/runtime/library";
 import { getErrorLaboratorioOcupado } from "../../services/helper";
+import { type inputGetReservasExistentesDeLaboratorio } from "@/shared/filters/laboratorio-en-uso.schema";
+import { type z } from "zod";
 
-const estaLaboratorioEnUso = z.object({
-  laboratorioId: z.number().positive().min(1, { message: "Requerido" }),
-  fechaHoraInicio: z.date(),
-  fechaHoraFin: z.date(),
-  reservaId: z.number().optional(),
-});
-
-type InputEstaEnUso = z.infer<typeof estaLaboratorioEnUso>;
-export const estaEnUsoLaboratorio = async (
+type InputEstaEnUso = z.infer<typeof inputGetReservasExistentesDeLaboratorio>;
+export const obtenerReservasExistentesDeLaboratorio = async (
   ctx: {
     db: Omit<
       PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
@@ -30,7 +23,7 @@ export const estaEnUsoLaboratorio = async (
         in: ["LABORATORIO_CERRADO", "LABORATORIO_ABIERTO"],
       },
       estatus: ReservaEstatus.FINALIZADA,
-      ...(input.reservaId ? { id: { not: input.reservaId } } : {}),
+      ...(input.excepcionReservaId ? { id: { not: input.excepcionReservaId } } : {}),
       AND: [
         {
           OR: [
@@ -86,6 +79,11 @@ export const lanzarErrorSiLaboratorioOcupado = async (
   },
   input: Omit<InputEstaEnUso, "laboratorioId"> & { laboratorioId?: number | undefined },
 ) => {
+  if (!input.laboratorioId) {
+    // No hay laboratorio elegido
+    return;
+  }
+
   const laboratorioElegido = await ctx.db.laboratorio.findUnique({
     where: {
       id: input.laboratorioId,
@@ -101,18 +99,23 @@ export const lanzarErrorSiLaboratorioOcupado = async (
 
   if (input.laboratorioId) {
     // Esta ocupado el laboratorio en ese mismo horario
-    const existenReservas = await estaEnUsoLaboratorio(
+    const existenReservas = await obtenerReservasExistentesDeLaboratorio(
       { db: ctx.db },
       {
         fechaHoraInicio: input.fechaHoraInicio,
         fechaHoraFin: input.fechaHoraFin,
         laboratorioId: input.laboratorioId,
-        reservaId: input.reservaId,
+        excepcionReservaId: input.excepcionReservaId,
       },
     );
 
     if (existenReservas.length > 0) {
-      throw getErrorLaboratorioOcupado(laboratorioElegido.nombre, input.fechaHoraInicio, input.fechaHoraFin);
+      const reservaQueExiste = existenReservas[0];
+
+      const fechaInicio = reservaQueExiste?.fechaHoraInicio ?? input.fechaHoraInicio;
+      const fechaFin = reservaQueExiste?.fechaHoraFin ?? input.fechaHoraFin;
+
+      throw getErrorLaboratorioOcupado(laboratorioElegido.nombre, fechaInicio, fechaFin);
     }
   }
 };
