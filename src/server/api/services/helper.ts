@@ -1,3 +1,4 @@
+import { getTimeISOString } from "@/shared/get-date";
 import { TRPCError } from "@trpc/server";
 import { type z } from "zod";
 
@@ -19,12 +20,19 @@ export const validarFechaReserva = (fecha: string | Date) => {
   const fechaHoy = new Date();
   const fechaReserva = new Date(fecha);
 
-  console.log({ fechaReserva, fechaHoy });
-
   if (fechaReserva < fechaHoy) {
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: `La fecha de reserva no puede ser anterior a la fecha actual`,
     });
   }
+};
+
+export const getErrorLaboratorioOcupado = (laboratorioNombre: string, fechaHoraInicio: Date, fechaHoraFin: Date) => {
+  return new TRPCError({
+    code: "CONFLICT",
+    message: `El laboratorio ${laboratorioNombre} está ocupado en el horario de ${getTimeISOString(fechaHoraInicio)} a ${getTimeISOString(
+      fechaHoraFin,
+    )}`,
+  });
 };
