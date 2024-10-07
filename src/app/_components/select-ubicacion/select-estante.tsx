@@ -16,7 +16,7 @@ export const SelectEstanteForm = <T extends FieldValues, TType extends string>({
     { enabled: !!props.armarioId },
   );
 
-  const estantes: { id: number | null; label: string }[] = useMemo(() => {
+  const estantes: { id: string | null; label: string }[] = useMemo(() => {
     if (!data) return [];
 
     const nullEstante = { id: null, label: "Vacío" };

@@ -10,13 +10,13 @@ export const SelectArmarioForm = <T extends FieldValues, TType extends string>({
   control,
   className,
   ...props
-}: Omit<FormSelectProps<T, TType>, "items"> & { laboratorioId?: number }): ReactElement => {
+}: Omit<FormSelectProps<T, TType>, "items"> & { laboratorioId?: string | number }): ReactElement => {
   const { data, isLoading, isError } = api.admin.laboratorios.getAllArmarios.useQuery(
-    { laboratorioId: props.laboratorioId! },
+    { laboratorioId: Number(props.laboratorioId!) },
     { enabled: !!props.laboratorioId },
   );
 
-  const armarios: { id: number | null; label: string }[] = useMemo(() => {
+  const armarios: { id: string | null; label: string }[] = useMemo(() => {
     if (!data) return [];
 
     const nullArmario = { id: null, label: "Vacío" };
