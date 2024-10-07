@@ -65,6 +65,9 @@ model Division {
     fechaCreacion    DateTime @default(now())
     usuarioCreadorId String
 
+    fechaModificacion    DateTime @default(now()) @updatedAt
+    usuarioModificadorId String
+
     cursos Curso[]
 
     @@index([anio(sort: Asc)])

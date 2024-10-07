@@ -12,6 +12,9 @@ import type {
   inputRechazarReservaLaboratorioAbierto,
   inputCancelarReservaLaboratorioAbierto,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
+import { armarFechaReserva } from "@/shared/get-date";
+import { estaEnUsoLaboratorio, lanzarErrorSiLaboratorioOcupado } from "./laboratorioEnUso.repository";
+import { getErrorLaboratorioOcupado } from "../../services/helper";
 
 type InputGetPorUsuarioID = z.infer<typeof inputGetReservaLaboratorioPorUsuarioId>;
 export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: InputGetPorUsuarioID) => {
@@ -168,6 +171,16 @@ export const aprobarReserva = async (
       if (reserva.estatus === "RECHAZADA" || reserva.estatus === "CANCELADA") {
         throw new Error("La reserva ya se encuentra rechazada o cancelada");
       }
+
+      await lanzarErrorSiLaboratorioOcupado(
+        { db: tx },
+        {
+          fechaHoraInicio: reserva.fechaHoraInicio,
+          fechaHoraFin: reserva.fechaHoraFin,
+          laboratorioId: input.laboratorioId,
+          reservaId: reserva.id,
+        },
+      );
 
       await tx.reserva.update({
         where: {
@@ -383,8 +396,8 @@ const getReservaAbiertaCreateArgs = (input: InputCrearReservaLaboratorioAbierto,
   return {
     data: {
       estatus: "PENDIENTE",
-      fechaHoraInicio: new Date(`${input.fechaReserva}T${input.horaInicio}`),
-      fechaHoraFin: new Date(`${input.fechaReserva}T${input.horaFin}`),
+      fechaHoraInicio: armarFechaReserva(input.fechaReserva, input.horaInicio),
+      fechaHoraFin: armarFechaReserva(input.fechaReserva, input.horaFin),
       tipo: "LABORATORIO_ABIERTO",
       reservaLaboratorioAbierto: {
         create: {

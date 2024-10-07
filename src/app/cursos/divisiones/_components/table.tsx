@@ -1,11 +1,8 @@
 "use client";
 
-import { DataTable } from "@/components/ui"; // Asegúrate de que esto sea correcto
-import { type RouterOutputs } from "@/trpc/react"; // Asegúrate de que esto sea correcto
-import { type z } from "zod";
-import { DataTablePaginationStandalone } from "@/components/ui/table/table-pagination-standalone";
-import { getColumns } from "./columns"; // Asegúrate de definir las columnas para divisiones
-import { type SortingState } from "@tanstack/react-table";
+import { DataTable } from "@/components/ui";
+import { type RouterOutputs } from "@/trpc/react";
+import { getColumns } from "./columns";
 import RemoveDivisionModal from "./remove-division";
 import EditDivisionModal from "./edit-division";
 import { useRouter } from "next/navigation";
