@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { useEffect } from "react";
 import {
+  inputEditarReservaLaboratorioCerradoSchema,
   inputReservaLaboratorioCerrado,
   inputReservaLaboratorioDiscrecional,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
@@ -20,19 +21,28 @@ type Props = {
   cursoId?: string;
   onSubmit: () => void;
   onCancel: () => void;
-};
+} & ({ reservaId: number } | { reservaId?: undefined });
 
 type FormReservarLaboratorioType =
-  | z.infer<typeof inputReservaLaboratorioCerrado>
+  | z.infer<typeof inputEditarReservaLaboratorioCerradoSchema>
   | z.infer<typeof inputReservaLaboratorioDiscrecional>;
 
-export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
+export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel }: Props) => {
+  const esNuevo = reservaId === undefined;
   const esDiscrecional = !cursoId;
   const {
     data: curso,
     isLoading,
     isError,
   } = api.cursos.cursoPorId.useQuery({ id: Number(cursoId!) }, { enabled: !esDiscrecional });
+
+  const crearReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.crearReserva.useMutation();
+  const modificarReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.editarReserva.useMutation();
+  // const cancelarReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.cancelarReserva.useMutation();
+  const { data: reservaData } = api.reservas.reservarLaboratorioCerrado.getReservaPorID.useQuery(
+    { id: reservaId! },
+    { enabled: !esNuevo },
+  );
 
   const formHook = useForm<FormReservarLaboratorioType>({
     mode: "onChange",
@@ -46,21 +56,34 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
       requiereProyector: false,
       turno: curso?.turno ?? "MANANA",
     },
-    resolver: zodResolver(esDiscrecional ? inputReservaLaboratorioDiscrecional : inputReservaLaboratorioCerrado),
+    resolver: zodResolver(
+      esDiscrecional
+        ? inputReservaLaboratorioDiscrecional
+        : esNuevo
+          ? inputReservaLaboratorioCerrado
+          : inputEditarReservaLaboratorioCerradoSchema,
+    ),
   });
 
-  const { handleSubmit, control } = formHook;
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = formHook;
 
   useEffect(() => {
-    formHook.reset({
-      cursoId: Number(cursoId),
-      aceptoTerminos: false,
-      equipoReservado: [],
-      fechaReserva: undefined,
-      requierePc: false,
-      requiereProyector: false,
-    });
-  }, [formHook, cursoId]);
+    console.log("Errores de validación:", errors);
+  }, [errors]);
+
+  useEffect(() => {
+    if (reservaData) {
+      formHook.reset({
+        ...reservaData,
+        cursoId: Number(cursoId),
+        aceptoTerminos: false,
+      });
+    }
+  }, [formHook, cursoId, reservaData]);
 
   if (isLoading) {
     return <div>Cargando...</div>;
@@ -70,12 +93,38 @@ export const LaboratorioCerradoForm = ({ cursoId, onCancel }: Props) => {
     return <div>Error al cargar...</div>;
   }
 
-  const onFormSubmit = (_formData: FormReservarLaboratorioType) => {
+  const onFormSubmit = async (formData: FormReservarLaboratorioType) => {
+    console.log("Formulario enviado con datos:", formData);
+    if (esNuevo) {
+      crearReservaLaboratorio.mutate(
+        { ...formData, cursoId: Number(cursoId) },
+        {
+          onSuccess: () => {
+            toast.success("Reserva creada con éxito.");
+            onSubmit();
+          },
+          onError: (error) => {
+            toast.error(error?.message ?? "Error al crear la reserva");
+          },
+        },
+      );
+      return;
+    }
     if (esDiscrecional) {
       toast.success("Reserva discrecional creada con éxito.");
-    } else {
-      toast.success("Reserva creada con éxito.");
     }
+    modificarReservaLaboratorio.mutate(
+      { ...formData, id: reservaId, cursoId: Number(cursoId) },
+      {
+        onSuccess: () => {
+          toast.success("Reserva modificada con éxito.");
+          onSubmit();
+        },
+        onError: (error) => {
+          toast.error(error?.message ?? "Error al modificar la reserva");
+        },
+      },
+    );
   };
 
   const handleCancel = () => {

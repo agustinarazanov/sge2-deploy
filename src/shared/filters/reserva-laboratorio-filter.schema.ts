@@ -13,8 +13,6 @@ export const inputGetReservaLaboratorioPorId = z.object({
 
 const inputReservaLaboratorioDiscrecionalBase = z.object({
   fechaReserva: z.string().min(1, { message: "Requerido" }),
-  horaInicio: z.string().min(1, { message: "Requerido" }),
-  horaFin: z.string().min(1, { message: "Requerido" }),
   requierePc: z.boolean().default(false),
   requiereProyector: z.boolean().default(false),
   requiereEquipo: z.boolean().default(false),
@@ -38,8 +36,6 @@ export const inputReservaLaboratorioCerrado = z
 export const inputReservaLaboratorioAbierto = z.object({
   tipo: z.enum(["LA", "TLA", "TLA_BASICA"]),
   fechaReserva: z.string().min(1, { message: "Requerido" }),
-  horaInicio: z.string().min(1, { message: "Requerido" }),
-  horaFin: z.string().min(1, { message: "Requerido" }),
   concurrentes: z.number().min(1, { message: "Requerido" }),
   sedeId: z.string().refine((value) => parseInt(value) >= 0, { message: "Debe seleccionar una sede" }),
   equipoReservado: z.array(inputEquipoReservado).default([]),
@@ -117,15 +113,7 @@ export const inputGetAllSolicitudesReservaLaboratorioCerrado = z.object({
     .refine((value) => parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
     .catch("0"),
   orderBy: z
-    .enum([
-      "id",
-      "laboratorioId",
-      "sede",
-      "reserva_fechaCreacion",
-      "reserva_fechaHoraInicio",
-      "reserva_fechaHoraFin",
-      "reserva_usuarioSolicito_apellido",
-    ])
+    .enum(["id", "laboratorioId", "sede", "reserva_fechaCreacion", "reserva_usuarioSolicito_apellido"])
     .default("id")
     .catch("id"),
   orderDirection: z.enum(["asc", "desc"]).default("desc").catch("desc"),
