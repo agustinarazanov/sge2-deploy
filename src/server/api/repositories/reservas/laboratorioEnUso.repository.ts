@@ -85,6 +85,11 @@ export const lanzarErrorSiLaboratorioOcupado = async (
   },
   input: Omit<InputEstaEnUso, "laboratorioId"> & { laboratorioId?: number | undefined },
 ) => {
+  if (!input.laboratorioId) {
+    // No hay laboratorio elegido
+    return;
+  }
+
   const laboratorioElegido = await ctx.db.laboratorio.findUnique({
     where: {
       id: input.laboratorioId,
@@ -111,7 +116,12 @@ export const lanzarErrorSiLaboratorioOcupado = async (
     );
 
     if (existenReservas.length > 0) {
-      throw getErrorLaboratorioOcupado(laboratorioElegido.nombre, input.fechaHoraInicio, input.fechaHoraFin);
+      const reservaQueExiste = existenReservas[0];
+
+      const fechaInicio = reservaQueExiste?.fechaHoraInicio ?? input.fechaHoraInicio;
+      const fechaFin = reservaQueExiste?.fechaHoraFin ?? input.fechaHoraFin;
+
+      throw getErrorLaboratorioOcupado(laboratorioElegido.nombre, fechaInicio, fechaFin);
     }
   }
 };

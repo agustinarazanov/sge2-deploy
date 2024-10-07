@@ -152,6 +152,8 @@ export const aprobarReserva = async (
   userId: string,
 ) => {
   try {
+    const laboratorioId = input.laboratorioId ? Number(input.laboratorioId) : undefined;
+
     const reserva = await ctx.db.$transaction(async (tx) => {
       const reserva = await tx.reserva.findUnique({
         where: {
@@ -176,7 +178,7 @@ export const aprobarReserva = async (
         {
           fechaHoraInicio: reserva.fechaHoraInicio,
           fechaHoraFin: reserva.fechaHoraFin,
-          laboratorioId: input.laboratorioId,
+          laboratorioId: laboratorioId,
           reservaId: reserva.id,
         },
       );
@@ -192,7 +194,7 @@ export const aprobarReserva = async (
           usuarioTutorId: input.tutorId ? input.tutorId : null,
           reservaLaboratorioAbierto: {
             update: {
-              laboratorioId: input.laboratorioId ? input.laboratorioId : null,
+              laboratorioId: laboratorioId ?? null,
               usuarioModificadorId: userId,
               equipoReservado: {
                 deleteMany: {},
