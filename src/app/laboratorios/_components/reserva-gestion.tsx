@@ -47,7 +47,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
         id: reservaData?.laboratorioId ?? undefined,
         label: reservaData?.laboratorio?.nombre ?? "",
       },
-      // equipoReservado: reservaData?.equipoReservado ?? [],
+      equipoReservado: reservaData?.equipoReservado ?? [],
     },
   });
 
@@ -63,7 +63,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
           id: reservaData?.laboratorioId ?? undefined,
           label: reservaData?.laboratorio?.nombre ?? "",
         },
-        // equipoReservado: reservaData?.equipoReservado ?? [],
+        equipoReservado: reservaData?.equipoReservado ?? [],
       });
     }
   }, [formHook, reservaData, reservaId]);

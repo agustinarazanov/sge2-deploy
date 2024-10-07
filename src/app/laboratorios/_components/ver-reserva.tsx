@@ -6,7 +6,7 @@ type VerReservaModalProps = {
   reservaID: number;
 };
 
-const rutaSolicitud = LABORATORIO_ROUTE.subRutas[1];
+const rutaSolicitud = LABORATORIO_ROUTE.subRutas[5];
 
 export const VerReservaModal = (props: VerReservaModalProps) => {
   return (

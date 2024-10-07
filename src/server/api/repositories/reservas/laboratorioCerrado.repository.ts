@@ -13,6 +13,7 @@ import { informacionUsuario } from "../usuario-helper";
 import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 import { lanzarErrorSiLaboratorioOcupado } from "./laboratorioEnUso.repository";
 import { obtenerHoraInicioFin, addMinutes, setHours, setMinutes } from "@/shared/get-date";
+import { includes } from "lodash";
 
 type InputGetPorUsuarioID = z.infer<typeof inputGetReservaLaboratorioPorUsuarioId>;
 export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: InputGetPorUsuarioID) => {
@@ -47,6 +48,17 @@ export const getReservaPorId = async (ctx: { db: PrismaClient }, input: InputGet
     include: {
       reserva: true,
       laboratorio: true,
+      equipoReservado: {
+        select: {
+          equipoId: true,
+          cantidad: true,
+          equipoTipo: {
+            select: {
+              nombre: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -93,6 +105,16 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
     }),
     ctx.db.reservaLaboratorioCerrado.findMany({
       include: {
+        curso: {
+          include: {
+            sede: true,
+            division: true,
+            materia: true,
+          },
+        },
+        equipoReservado: true,
+        sede: true,
+
         reserva: {
           include: {
             usuarioSolicito: {
@@ -418,7 +440,13 @@ const getReservaCerradaCreateArgs = (
           usuarioModificadorId: userId,
           laboratorioId: null,
           cursoId: input.cursoId,
-          //TODO EQUIPO RESERVADO
+          equipoReservado: {
+            create: input.equipoReservado.map((equipo) => ({
+              ...equipo,
+              usuarioCreadorId: userId,
+              usuarioModificadorId: userId,
+            })),
+          },
         },
       },
     },
