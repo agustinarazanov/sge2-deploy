@@ -13,10 +13,10 @@ import { FormEquipoTipoSelector } from "@/app/laboratorios/_components/filtros/e
 import { ReservaEstatus } from "@prisma/client";
 import { AdminLaboratoriosNuevoLaboratorio } from "./alerta-rechazar";
 import { esFechaPasada } from "@/shared/get-date";
+import { getMensajeError } from "@/shared/error";
 
 type FormHelperType = {
   tutor: { id: string; label: string };
-  laboratorio: { id: number; label: string };
 };
 
 type AprobarReservaFormData = z.infer<typeof inputAprobarReservaLaboratorioAbiertoSchema> & FormHelperType;
@@ -43,11 +43,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
     defaultValues: {
       id: reservaId,
       inventarioRevisado: [],
-      laboratorioId: reservaData?.laboratorioId ?? undefined,
-      laboratorio: {
-        id: reservaData?.laboratorioId ?? undefined,
-        label: reservaData?.laboratorio?.nombre ?? "",
-      },
+      laboratorioId: reservaData?.laboratorioId ? String(reservaData?.laboratorioId) : undefined,
       tutorId: reservaData?.reserva.usuarioTutorId ?? undefined,
       tutor: {
         id: reservaData?.reserva.usuarioTutorId ?? undefined,
@@ -64,11 +60,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
       formHook.reset({
         id: reservaId,
         inventarioRevisado: [],
-        laboratorioId: reservaData?.laboratorioId ?? undefined,
-        laboratorio: {
-          id: reservaData?.laboratorioId ?? undefined,
-          label: reservaData?.laboratorio?.nombre ?? "",
-        },
+        laboratorioId: reservaData?.laboratorioId ? String(reservaData?.laboratorioId) : undefined,
         tutorId: reservaData?.reserva.usuarioTutorId ?? undefined,
         tutor: {
           id: reservaData?.reserva.usuarioTutorId ?? undefined,
@@ -85,9 +77,10 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
         toast.success("Reserva aprobada con éxito");
         onAprobar();
       },
-      onError: (error) => {
-        toast.error("Error al aprobar la reserva");
-        console.error(error);
+      onError: (err) => {
+        const mensaje = getMensajeError(err, "Error al aprobar la reserva");
+
+        toast.error(mensaje);
       },
     });
   };
@@ -100,15 +93,16 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
           toast.success("Reserva rechazada con éxito");
           onRechazar();
         },
-        onError: (error) => {
-          toast.error("Error al rechazar la reserva");
-          console.error(error);
+        onError: (err) => {
+          const mensaje = getMensajeError(err, "Error al rechazar la reserva");
+
+          toast.error(mensaje);
         },
       },
     );
   };
 
-  const [tutor, laboratorio] = watch(["tutor", "laboratorio"]);
+  const [tutor] = watch(["tutor"]);
   useEffect(() => {
     if (tutor) {
       formHook.setValue("tutorId", tutor.id);
@@ -116,13 +110,6 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
       formHook.setValue("tutorId", undefined);
     }
   }, [formHook, tutor]);
-  useEffect(() => {
-    if (laboratorio) {
-      formHook.setValue("laboratorioId", laboratorio.id);
-    } else {
-      formHook.setValue("laboratorioId", undefined);
-    }
-  }, [formHook, laboratorio]);
 
   const estaEstatusPendiente = reservaData?.reserva.estatus === ReservaEstatus.PENDIENTE;
   const estaEstatusAprobada = reservaData?.reserva.estatus === ReservaEstatus.FINALIZADA;
@@ -149,8 +136,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
 
             <div>
               <SelectLaboratorioForm
-                name="laboratorio"
-                realNameId="laboratorioId"
+                name="laboratorioId"
                 control={control}
                 className="mt-2"
                 label="Laboratorio"
