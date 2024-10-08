@@ -9,11 +9,12 @@ export const emailRouter = createTRPCRouter({
         to: z.string().email(),
         subject: z.string(),
         usuarioSolicitante: z.string(),
+        libroNombre: z.string(),
       }),
     )
     .mutation(async ({ input }) => {
-      const { to, subject, usuarioSolicitante } = input;
-      const result = await sendEmail(to, subject, usuarioSolicitante);
+      const { to, subject, usuarioSolicitante, libroNombre } = input;
+      const result = await sendEmail(to, subject, usuarioSolicitante, libroNombre);
 
       if (result && result.messageId) {
         return { success: true, messageId: result?.messageId ?? "" };
