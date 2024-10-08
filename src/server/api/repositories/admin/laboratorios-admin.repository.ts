@@ -6,6 +6,7 @@ import type {
   inputEliminarLaboratorio,
   inputGetLaboratorio,
   inputGetLaboratorios,
+  inputGetLaboratoriosConEstadoReserva,
 } from "@/shared/filters/admin-laboratorios-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
@@ -13,24 +14,7 @@ import { obtenerTodasLasReservasEnHorario } from "../reservas/laboratorioEnUso.r
 
 type InputGetAll = z.infer<typeof inputGetLaboratorios>;
 export const getAllLaboratorios = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
-  console.log(input);
-
-  const { searchText, sedeId, notificarOcupados } = input;
-
-  if (notificarOcupados && input.fechaHoraInicio && input.fechaHoraFin) {
-    const res = await obtenerTodasLasReservasEnHorario(ctx, {
-      fechaHoraFin: input.fechaHoraFin,
-      fechaHoraInicio: input.fechaHoraInicio,
-      excepcionReservaId: input.excepcionReservaId,
-      searchText,
-      sedeId: sedeId ? Number(sedeId) : undefined,
-    });
-
-    return {
-      count: res.length,
-      laboratorios: res,
-    };
-  }
+  const { searchText, sedeId } = input;
 
   const laboratorios = await ctx.db.laboratorio.findMany({
     include: {
@@ -62,7 +46,32 @@ export const getAllLaboratorios = async (ctx: { db: PrismaClient }, input: Input
 
   return {
     count: laboratorios.length,
-    laboratorios,
+    laboratorios: laboratorios,
+  };
+};
+
+type InputGetAllConEstado = z.infer<typeof inputGetLaboratoriosConEstadoReserva>;
+export const getAllLaboratoriosConEstadoReserva = async (ctx: { db: PrismaClient }, input: InputGetAllConEstado) => {
+  const { searchText, sedeId, fechaHoraFin, fechaHoraInicio, excepcionReservaId } = input;
+
+  if (!fechaHoraFin || !fechaHoraInicio) {
+    return {
+      count: 0,
+      laboratorios: [],
+    };
+  }
+
+  const res = await obtenerTodasLasReservasEnHorario(ctx, {
+    fechaHoraFin: fechaHoraFin,
+    fechaHoraInicio: fechaHoraInicio,
+    excepcionReservaId: excepcionReservaId,
+    searchText,
+    sedeId: sedeId ? Number(sedeId) : undefined,
+  });
+
+  return {
+    count: res.length,
+    laboratorios: res,
   };
 };
 

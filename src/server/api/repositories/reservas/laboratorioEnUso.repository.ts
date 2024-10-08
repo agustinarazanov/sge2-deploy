@@ -1,10 +1,8 @@
-import { type PrismaClient, Prisma, ReservaEstatus, ReservaTipo } from "@prisma/client";
+import { type PrismaClient, type LaboratorioAbiertoTipo, Prisma, ReservaEstatus } from "@prisma/client";
 import type { DefaultArgs } from "@prisma/client/runtime/library";
 import { getErrorLaboratorioOcupado } from "../../services/helper";
 import { type inputGetReservasExistentesDeLaboratorio } from "@/shared/filters/laboratorio-en-uso.schema";
 import { type z } from "zod";
-
-const tiposReservaLaboratorio = [ReservaTipo.LABORATORIO_CERRADO, ReservaTipo.LABORATORIO_ABIERTO];
 
 type InputLaboratoriosEnUso = z.infer<typeof inputGetReservasExistentesDeLaboratorio>;
 export const reservaExistenteQuery = ({
@@ -134,6 +132,9 @@ export const lanzarErrorSiLaboratorioOcupado = async (
 type Laboratorio = {
   id: number;
   nombre: string;
+  tienePc: boolean;
+  esReservable: boolean;
+  laboratorioAbiertoTipo: LaboratorioAbiertoTipo;
   sedeId: number;
   estaOcupado: boolean;
   armarios: {
@@ -146,6 +147,14 @@ type Laboratorio = {
   };
 };
 
+/**
+ * Realiza una query nativa de sql para obtener todos los laboratorios y notificar si estan ocupadas
+ * No se pudo realizar con Prisma nativo, porque es una query muy compleja para el ORM y para evitar
+ * hacer multiples queries y transformaciones. Opté por realizar una query nativa para obtener los datos
+ * @param ctx Context query
+ * @param input Input de la query
+ * @returns Array de laboratorios con estaOcupado
+ */
 export const obtenerTodasLasReservasEnHorario = async (
   ctx: {
     db: Omit<
@@ -162,6 +171,9 @@ export const obtenerTodasLasReservasEnHorario = async (
         "l"."id",
         "l"."nombre",
         "l"."sedeId",
+        "l"."tienePc",
+        "l"."esReservable",
+        "l"."laboratorioAbiertoTipo",
         CASE
             WHEN "r"."laboratorioId" IS NOT NULL THEN true
             ELSE false

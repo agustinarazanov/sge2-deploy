@@ -3,12 +3,15 @@ import { z } from "zod";
 export const inputGetLaboratorios = z.object({
   searchText: z.string().default(""),
   sedeId: z.string().optional(),
-
-  notificarOcupados: z.boolean().default(false),
-  fechaHoraInicio: z.date().optional(),
-  fechaHoraFin: z.date().optional(),
-  excepcionReservaId: z.number().optional(),
 });
+
+export const inputGetLaboratoriosConEstadoReserva = inputGetLaboratorios.merge(
+  z.object({
+    fechaHoraInicio: z.date().optional(),
+    fechaHoraFin: z.date().optional(),
+    excepcionReservaId: z.number().optional(),
+  }),
+);
 
 export const inputGetLaboratorio = z.object({
   id: z.number(),
