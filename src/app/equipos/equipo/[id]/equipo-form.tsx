@@ -239,7 +239,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     className="mt-2"
                     label={"Laboratorio"}
-                    sedeId={sedeId}
+                    sedeId={sedeId ? String(sedeId) : undefined}
                     disabled={!sedeId}
                     placeholder={!sedeId ? "Seleccione una sede" : "Seleccione un laboratorio"}
                     onChange={() => {
