@@ -152,6 +152,11 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
                 className="mt-2"
                 label="Laboratorio"
                 placeholder="Selecciona un laboratorio"
+                sedeId={reservaData?.sedeId ? String(reservaData?.sedeId) : undefined}
+                excepcionReservaId={reservaId}
+                fechaHoraInicio={reservaData?.reserva?.fechaHoraInicio}
+                fechaHoraFin={reservaData?.reserva?.fechaHoraFin}
+                notificarOcupados
               />
               {reservaData?.reserva?.fechaHoraInicio && reservaData?.reserva?.fechaHoraFin && laboratorioId && (
                 <LaboratorioOcupado
