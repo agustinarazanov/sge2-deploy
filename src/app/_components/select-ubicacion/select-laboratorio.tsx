@@ -1,30 +1,42 @@
 import { useMemo, type ReactElement } from "react";
-import type { Path, FieldValues } from "react-hook-form";
-import { api } from "@/trpc/react";
+import type { FieldValues } from "react-hook-form";
+import { api, type RouterInputs } from "@/trpc/react";
 import { FormSelect, type FormSelectProps } from "@/components/ui/autocomplete";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui";
+
+type Props = RouterInputs["admin"]["laboratorios"]["getAll"];
 
 export const SelectLaboratorioForm = <T extends FieldValues, TType extends string>({
   name,
   control,
   className,
   ...props
-}: Omit<FormSelectProps<T, TType>, "items"> & { sedeId?: number; realNameId?: Path<T> }): ReactElement => {
-  const { data, isLoading, isError } = api.admin.laboratorios.getAll.useQuery({ sedeId: props.sedeId?.toString() });
+}: Omit<FormSelectProps<T, TType>, "items"> & Props): ReactElement => {
+  const propsQuery: Props = {
+    excepcionReservaId: props.excepcionReservaId,
+    fechaHoraFin: props.fechaHoraFin,
+    fechaHoraInicio: props.fechaHoraInicio,
+    searchText: undefined,
+    sedeId: props.sedeId,
+    notificarOcupados: props.notificarOcupados,
+  };
+
+  console.log({ propsQuery, props });
+
+  const { data, isLoading, isError } = api.admin.laboratorios.getAll.useQuery(propsQuery);
 
   const laboratorios = useMemo(() => {
     if (!data) return [];
 
-    return data.laboratorios
-      .map((laboratorio) => {
-        const { id, nombre: label } = laboratorio;
+    return data.laboratorios.map((laboratorio) => {
+      const { id, nombre: label, estaOcupado } = laboratorio;
 
-        return {
-          label,
-          id: String(id),
-        };
-      });
+      return {
+        label: `${label} (${estaOcupado ? "Ocupado" : "Libre"})`,
+        id: String(id),
+      };
+    });
   }, [data]);
 
   if (isLoading) {
@@ -61,5 +73,5 @@ export const SelectLaboratorioForm = <T extends FieldValues, TType extends strin
       label={"Seleccioná un laboratorio"}
       {...props}
     />
-  )
+  );
 };
