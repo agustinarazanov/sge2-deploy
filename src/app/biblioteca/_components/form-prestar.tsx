@@ -11,6 +11,7 @@ import { getDate } from "@/shared/get-date";
 
 type Props = {
   libroId: number;
+  libroNombre: string;
   onSubmit: () => void;
   onCancel: () => void;
   renovar?: boolean;
@@ -22,7 +23,7 @@ type FormHelperType = {
 
 type FormPrestarLibroType = z.infer<typeof inputPrestarLibro> & FormHelperType;
 
-export const LibroFormPrestarORenovar = ({ libroId, onSubmit, onCancel, renovar }: Props) => {
+export const LibroFormPrestarORenovar = ({ libroId, libroNombre, onSubmit, onCancel, renovar }: Props) => {
   const prestarLibro = api.reservas.reservaBiblioteca.crearReserva.useMutation(); // Se usa por efecto si `renovar=false`
   const renovarLibro = api.reservas.reservaBiblioteca.renovarLibro.useMutation(); // Se usa por efecto si `renovar=true`
 
@@ -62,10 +63,12 @@ export const LibroFormPrestarORenovar = ({ libroId, onSubmit, onCancel, renovar 
   });
 
   const sendEmail = () => {
-    return sendEmailMutation.mutate({
+    const usuarioSolicitante = formHook.watch("usuarioSolicitante").label;
+    sendEmailMutation.mutate({
       to: "alexanderarmua1@gmail.com",
       subject: "Notificación Reserva",
-      usuarioSolicitante: usuarioSolicitante.label,
+      usuarioSolicitante: usuarioSolicitante,
+      libroNombre: libroNombre,
     });
   };
   const { handleSubmit, control, watch, trigger } = formHook;

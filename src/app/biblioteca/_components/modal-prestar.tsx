@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-
 import { Button } from "@/components/ui";
-
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
 import { LibroInformacionBasica } from "../libros/_components/info-basica-libro";
 import { Separator } from "@radix-ui/react-separator";
 import { LibroFormPrestarORenovar } from "./form-prestar";
 import { HandHelping } from "lucide-react";
+import { api } from "@/trpc/react";
 
 type PrestarLibroModalProps = {
   libroId: number;
@@ -17,9 +16,14 @@ type PrestarLibroModalProps = {
 export default function PrestarLibroModal({ libroId }: PrestarLibroModalProps) {
   const [open, setOpen] = useState(false);
 
-  const handleSubmit = () => setOpen(false);
+  const { data: libro, isLoading, isError } = api.biblioteca.libroPorId.useQuery({ libroId });
 
+  const handleSubmit = () => setOpen(false);
   const handleCancel = () => setOpen(false);
+
+  if (isError) {
+    return <div>Error al cargar información del libro...</div>;
+  }
 
   return (
     <ModalDrawer
@@ -44,7 +48,14 @@ export default function PrestarLibroModal({ libroId }: PrestarLibroModalProps) {
 
         <Separator className="my-8 border-2" />
 
-        <LibroFormPrestarORenovar libroId={libroId} onCancel={handleCancel} onSubmit={handleSubmit} />
+        {!isLoading && libro && (
+          <LibroFormPrestarORenovar
+            libroId={libroId}
+            libroNombre={libro.titulo}
+            onCancel={handleCancel}
+            onSubmit={handleSubmit}
+          />
+        )}
       </div>
     </ModalDrawer>
   );
