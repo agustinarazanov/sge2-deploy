@@ -212,7 +212,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     className="mt-2 text-sm"
                     label={"Laboratorio"}
-                    sedeId={sedeId ? Number(sedeId) : undefined}
+                    sedeId={sedeId ? String(sedeId) : undefined}
                     disabled={!sedeId}
                     placeholder={!sedeId ? "Selecciona una sede" : "Selecciona un laboratorio"}
                     onChange={() => {

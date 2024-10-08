@@ -5,6 +5,14 @@ export const inputGetLaboratorios = z.object({
   sedeId: z.string().optional(),
 });
 
+export const inputGetLaboratoriosConEstadoReserva = inputGetLaboratorios.merge(
+  z.object({
+    fechaHoraInicio: z.date().optional(),
+    fechaHoraFin: z.date().optional(),
+    excepcionReservaId: z.number().optional(),
+  }),
+);
+
 export const inputGetLaboratorio = z.object({
   id: z.number(),
 });

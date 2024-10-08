@@ -8,6 +8,7 @@ import {
   inputGetEstantes,
   inputGetLaboratorio,
   inputGetLaboratorios,
+  inputGetLaboratoriosConEstadoReserva,
 } from "@/shared/filters/admin-laboratorios-filter.schema";
 import {
   agregarLaboratorio,
@@ -18,6 +19,7 @@ import {
   getLaboratorioPorId,
   getAllArmarios,
   getAllEstantes,
+  getAllLaboratoriosConEstadoReserva,
 } from "../../repositories/admin/laboratorios-admin.repository";
 
 export const getTodosLosLaboratoriosProcedure = protectedProcedure
@@ -26,6 +28,16 @@ export const getTodosLosLaboratoriosProcedure = protectedProcedure
     validarInput(inputGetLaboratorios, input);
 
     const laboratorios = await getAllLaboratorios(ctx, input);
+
+    return laboratorios;
+  });
+
+export const getTodosLosLaboratoriosConEstadoReservaProcedure = protectedProcedure
+  .input(inputGetLaboratoriosConEstadoReserva)
+  .query(async ({ ctx, input }) => {
+    validarInput(inputGetLaboratoriosConEstadoReserva, input);
+
+    const laboratorios = await getAllLaboratoriosConEstadoReserva(ctx, input);
 
     return laboratorios;
   });
