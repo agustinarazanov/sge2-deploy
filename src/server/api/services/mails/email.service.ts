@@ -11,12 +11,12 @@ export const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendEmail = async (to: string, subject: string, usuarioSolicitante: string) => {
+export const sendEmail = async (to: string, subject: string, usuarioSolicitante: string, libroNombre: string) => {
   const mailOptions = {
     from: '"Sistema UTN" <testutn88@gmail.com>',
     to,
     subject,
-    html: emailTemplate(usuarioSolicitante),
+    html: emailTemplate(usuarioSolicitante, libroNombre),
   };
 
   try {
