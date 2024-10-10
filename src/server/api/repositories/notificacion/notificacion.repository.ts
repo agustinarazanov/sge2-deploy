@@ -29,7 +29,7 @@ export const getAllPendientesNotificaciones = async (
 
 export const getReservasPendientesAprobacion = async (
   ctx: { db: PrismaClient },
-  userId: string,
+  _userId: string,
 ): Promise<Notificacion[]> => {
   const puedeAprobarCerrado = true; // TODO @Alex: Hacer peticion por permiso
   const puedeAprobarAbierto = true; // TODO @Alex: Hacer peticion por permiso
