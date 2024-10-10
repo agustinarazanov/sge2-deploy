@@ -1,6 +1,6 @@
 import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { getDateISOString, getTimeISOString } from "@/shared/get-date";
+import { esFechaPasada, getDateISOString, getTimeISOString } from "@/shared/get-date";
 import { BadgeEstatusReserva } from "@/app/_components/badge-estatus-reserva";
 
 type LaboratorioCerradoReservaData =
@@ -73,6 +73,10 @@ export const getColumnasReservasLaboratorioCerrado = ({ filterByUser }: { filter
           return <span className="text-center">Cancelada</span>;
         }
         if (estatus === "RECHAZADA") {
+          return <span className="text-center">Rechazada</span>;
+        }
+
+        if (estatus === "PENDIENTE" && esFechaPasada(reserva.fechaHoraInicio)) {
           return <span className="text-center">Rechazada</span>;
         }
         if (!laboratorio) {
