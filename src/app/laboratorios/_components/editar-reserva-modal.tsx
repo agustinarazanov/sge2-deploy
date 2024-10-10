@@ -8,10 +8,10 @@ import { useRouter } from "next/navigation";
 import { LaboratorioCerradoForm } from "./reserva-form";
 
 type PageProps = {
-  params: { id: number };
+  params: { id: number; cursoId: string };
 };
 
-export default function EditarReservaModal({ params: { id } }: PageProps) {
+export default function EditarReservaModal({ params: { id, cursoId } }: PageProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
@@ -35,7 +35,12 @@ export default function EditarReservaModal({ params: { id } }: PageProps) {
       className="max-h-[calc(100vh_-_10%)]"
     >
       <div className="flex max-h-max w-full flex-col gap-4">
-        <LaboratorioCerradoForm reservaId={id} onCancel={handleClickCancel} onSubmit={handleClickSave} />
+        <LaboratorioCerradoForm
+          reservaId={id}
+          cursoId={cursoId}
+          onCancel={handleClickCancel}
+          onSubmit={handleClickSave}
+        />
       </div>
     </ModalDrawer>
   );

@@ -275,8 +275,8 @@ export const editarReserva = async (ctx: { db: PrismaClient }, input: InputEdita
         throw new Error("Reserva no encontrada");
       }
 
-      if (reserva.estatus === "RECHAZADA" || reserva.estatus === "CANCELADA") {
-        throw new Error("La reserva ya fue rechazada o cancelada");
+      if (reserva.estatus === "CANCELADA") {
+        throw new Error("La reserva ya fue cancelada");
       }
 
       await tx.reservaLaboratorioCerrado.delete({
