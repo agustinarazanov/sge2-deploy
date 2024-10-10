@@ -2,10 +2,10 @@ import { Badge } from "@/components/ui/badge";
 import { type RouterOutputs } from "@/trpc/react";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
-type LibroData = RouterOutputs["admin"]["laboratorios"]["getAll"]["laboratorios"][number];
+type LaboratorioData = RouterOutputs["admin"]["laboratorios"]["getAll"]["laboratorios"][number];
 
 export const getColumns = () => {
-  const colHelper = createColumnHelper<LibroData>();
+  const colHelper = createColumnHelper<LaboratorioData>();
 
   return [
     colHelper.accessor("nombre", {
@@ -65,7 +65,7 @@ export const getColumns = () => {
         },
       },
     }),
-  ] as ColumnDef<LibroData>[];
+  ] as ColumnDef<LaboratorioData>[];
 };
 
 export const adminLaboratoriosColumnas = [

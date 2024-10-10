@@ -16,7 +16,7 @@ import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
 import { esFechaPasada, getDateISOString, getTimeISOString } from "@/shared/get-date";
 import { SelectEspecialidadForm } from "@/app/_components/select-especialidad";
 import { FormInputPoliticas } from "@/app/_components/input-form-politicas";
-import { ReservaEstatus } from "@prisma/client";
+import { LaboratorioAbiertoTipo, ReservaEstatus } from "@prisma/client";
 import { ReservaDetalle } from "../../_components/info-basica-reserva";
 
 type Props = {
@@ -44,7 +44,8 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
   const estaEstatusAprobada = reservaData?.reserva.estatus === ReservaEstatus.FINALIZADA;
   const estaEstatusCancelada = reservaData?.reserva.estatus === ReservaEstatus.CANCELADA;
 
-  const esTLA = tipo === "TLA" || reservaData?.laboratorioAbiertoTipo === "TLA";
+  const esTLA =
+    tipo === LaboratorioAbiertoTipo.LA || reservaData?.laboratorioAbiertoTipo === LaboratorioAbiertoTipo.TLA;
 
   const formHook = useForm<FormReservarLaboratorioAbiertoType>({
     mode: "onChange",

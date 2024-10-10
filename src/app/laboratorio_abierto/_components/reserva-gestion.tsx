@@ -7,17 +7,13 @@ import { SelectTutorForm } from "@/app/_components/select-tutor";
 import { useEffect } from "react";
 import { inputAprobarReservaLaboratorioAbiertoSchema } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { type z } from "zod";
-import { SelectLaboratorioForm } from "@/app/_components/select-ubicacion/select-laboratorio";
+import { SelectLaboratorioFormConEstadoReservaForm } from "@/app/_components/select-ubicacion/select-laboratorio";
 import { api } from "@/trpc/react";
 import { FormEquipoTipoSelector } from "@/app/laboratorios/_components/filtros/equipo-tipo-selector";
 import { ReservaEstatus } from "@prisma/client";
 import { AdminLaboratoriosNuevoLaboratorio } from "./alerta-rechazar";
 import { esFechaPasada } from "@/shared/get-date";
 import { getMensajeError } from "@/shared/error";
-import { LaboratorioOcupado } from "@/app/_components/laboratorio-ocupado";
-import { LABORATORIO_ABIERTO_ROUTE } from "@/shared/server-routes";
-
-const RUTA_RESERVA = LABORATORIO_ABIERTO_ROUTE.subRutas[1]?.href ?? "";
 
 type FormHelperType = {
   tutor: { id: string; label: string };
@@ -146,22 +142,18 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
             </div>
 
             <div className="flex w-full flex-col gap-y-4">
-              <SelectLaboratorioForm
+              <SelectLaboratorioFormConEstadoReservaForm
                 name="laboratorioId"
                 control={control}
                 className="mt-2"
                 label="Laboratorio"
                 placeholder="Selecciona un laboratorio"
+                sedeId={reservaData?.sedeId ? String(reservaData?.sedeId) : undefined}
+                excepcionReservaId={reservaId}
+                fechaHoraInicio={reservaData?.reserva?.fechaHoraInicio}
+                fechaHoraFin={reservaData?.reserva?.fechaHoraFin}
+                laboratorioId={laboratorioId}
               />
-              {reservaData?.reserva?.fechaHoraInicio && reservaData?.reserva?.fechaHoraFin && laboratorioId && (
-                <LaboratorioOcupado
-                  laboratorioId={Number(laboratorioId)}
-                  excepcionReservaId={reservaId}
-                  fechaHoraInicio={reservaData?.reserva?.fechaHoraInicio}
-                  fechaHoraFin={reservaData?.reserva?.fechaHoraFin}
-                  rutaBase={RUTA_RESERVA}
-                />
-              )}
             </div>
 
             <div>

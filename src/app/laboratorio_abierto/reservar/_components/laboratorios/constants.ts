@@ -40,7 +40,7 @@ export const tiposReserva = [
     alerta:
       "Asegurarse por medio de la grilla horaria la disponibilidad de un Tutor en el horario deseado; si no, no se podrá cursar el pedido.",
     contenido:
-      "Para acceder a la TLA debe hacer la reserva, <b>indicando en observaciones que solicita tutoria básica</b>. Aguardar la conformidad por correo electrónico. Concurrir a recepción en la fecha y hora acordadas. Al retirarse, dar aviso.",
+      "Para acceder a la TLA debe hacer la reserva, <b>indicando en observaciones que solicita tutoría básica</b>. Aguardar la conformidad por correo electrónico. Concurrir a recepción en la fecha y hora acordadas. Al retirarse, dar aviso.",
   },
   {
     tipo: "TLA",
