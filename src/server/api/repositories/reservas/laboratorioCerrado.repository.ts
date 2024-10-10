@@ -13,7 +13,6 @@ import { informacionUsuario } from "../usuario-helper";
 import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 import { lanzarErrorSiLaboratorioOcupado } from "./laboratorioEnUso.repository";
 import { obtenerHoraInicioFin, addMinutes, setHours, setMinutes } from "@/shared/get-date";
-import { includes } from "lodash";
 
 type InputGetPorUsuarioID = z.infer<typeof inputGetReservaLaboratorioPorUsuarioId>;
 export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: InputGetPorUsuarioID) => {
@@ -48,6 +47,7 @@ export const getReservaPorId = async (ctx: { db: PrismaClient }, input: InputGet
     include: {
       reserva: true,
       laboratorio: true,
+      curso: true,
       equipoReservado: {
         select: {
           equipoId: true,
@@ -253,6 +253,7 @@ export const rechazarReserva = async (ctx: { db: PrismaClient }, input: InputRec
 type InputEditarReserva = z.infer<typeof inputEditarReservaLaboratorioCerradoSchema>;
 export const editarReserva = async (ctx: { db: PrismaClient }, input: InputEditarReserva, userId: string) => {
   try {
+    console.log("input", input);
     const reserva = await ctx.db.$transaction(async (tx) => {
       const reserva = await tx.reserva.findUnique({
         where: {
@@ -262,6 +263,11 @@ export const editarReserva = async (ctx: { db: PrismaClient }, input: InputEdita
           usuarioCreadorId: true,
           usuarioSolicitoId: true,
           estatus: true,
+          reservaLaboratorioCerrado: {
+            select: {
+              curso: true,
+            },
+          },
         },
       });
 
@@ -279,11 +285,19 @@ export const editarReserva = async (ctx: { db: PrismaClient }, input: InputEdita
         },
       });
 
+      const { fechaHoraInicio, fechaHoraFin } = obtenerFechaHoraInicio(reserva.reservaLaboratorioCerrado?.curso, input);
+
       await tx.reserva.update({
         where: {
           id: input.id,
         },
-        ...getReservaCerradaCreateArgs(input, userId), //TODO
+        ...getReservaCerradaCreateArgs(
+          input,
+          userId,
+          fechaHoraInicio,
+          fechaHoraFin,
+          reserva.reservaLaboratorioCerrado?.curso.sedeId,
+        ),
       });
       return reserva;
     });
@@ -360,48 +374,7 @@ export const crearReservaLaboratorioCerrado = async (
       throw new Error(`Curso no encontrado para el ID ${input.cursoId}`);
     }
 
-    // Obtener el día de la fecha de reserva
-    const fechaReserva = new Date(input.fechaReserva);
-    const diaReserva = fechaReserva.getDay(); // Esto devolverá 0-6
-    const diaReservaAjustado = diaReserva;
-
-    const diaReservaFinal = obtenerCursoDia(diaReservaAjustado);
-
-    console.log("Fecha de la reserva:", fechaReserva);
-    const diaSemana = obtenerDiaSemana(fechaReserva);
-    console.log("Día de la semana (ajustado):", diaSemana);
-
-    const cursoDiaReserva = obtenerCursoDia(diaSemana); // Convertir el número al formato de día del curso
-    console.log("Día del curso esperado:", cursoDiaReserva);
-
-    // Determinar si la reserva es para el dia1 o dia2 del curso
-    let horaInicioStr: string | undefined;
-    let duracionStr: string | undefined;
-
-    if (diaReservaFinal === curso.dia1) {
-      // Si el día de la reserva coincide con dia1
-      horaInicioStr = curso.horaInicio1;
-      duracionStr = curso.duracion1;
-    } else if (diaReservaFinal === curso.dia2) {
-      // Si el día de la reserva coincide con dia2
-      horaInicioStr = curso.horaInicio2 ?? undefined;
-      duracionStr = curso.duracion2 ?? undefined;
-    }
-
-    // Validar si el curso tiene clases ese día
-    if (!horaInicioStr || !duracionStr) {
-      throw new Error(`El curso no tiene clases el día ${diaReservaFinal}`);
-    }
-
-    const horaInicioNumero = parseInt(curso.horaInicio1); // '1'
-    const { horaInicio, horaFin } = obtenerHoraInicioFin(horaInicioNumero, curso.turno);
-    console.log(horaInicio);
-    console.log(horaFin);
-
-    // Calcular las fechas finales basadas en la hora de inicio y duración
-    const fechaHoraInicio = calcularFechaHora(fechaReserva, horaInicio);
-    const fechaHoraFin = calcularFechaFin(fechaHoraInicio, duracionStr);
-
+    const { fechaHoraInicio, fechaHoraFin } = obtenerFechaHoraInicio(curso, input);
     // Crear la reserva
     const reserva = await ctx.db.$transaction(async (tx) => {
       const reserva = await tx.reserva.create({
@@ -453,6 +426,41 @@ const getReservaCerradaCreateArgs = (
   } as Prisma.ReservaCreateArgs;
 };
 
+function obtenerFechaHoraInicio(curso: any, input: InputCrearReserva) {
+  // Obtener el día de la fecha de reserva
+  const fechaReserva = new Date(input.fechaReserva);
+  const diaReserva = fechaReserva.getDay(); // Esto devolverá 0-6
+  const diaReservaFinal = obtenerCursoDia(diaReserva);
+
+  // Determinar si la reserva es para el dia1 o dia2 del curso
+  let horaInicioStr: string | undefined;
+  let duracionStr: string | undefined;
+
+  if (diaReservaFinal === curso.dia1) {
+    // Si el día de la reserva coincide con dia1
+    horaInicioStr = curso.horaInicio1;
+    duracionStr = curso.duracion1;
+  } else if (diaReservaFinal === curso.dia2) {
+    // Si el día de la reserva coincide con dia2
+    horaInicioStr = curso.horaInicio2 ?? undefined;
+    duracionStr = curso.duracion2 ?? undefined;
+  }
+
+  // Validar si el curso tiene clases ese día
+  if (!horaInicioStr || !duracionStr) {
+    throw new Error(`El curso no tiene clases el día ${diaReservaFinal}`);
+  }
+
+  const horaInicioNumero = parseInt(curso.horaInicio1); // '1'
+  const duracionNumero = parseInt(duracionStr);
+  const { horaInicio, horaFin } = obtenerHoraInicioFin(horaInicioNumero, curso.turno, duracionNumero);
+
+  // Calcular las fechas finales basadas en la hora de inicio y duración
+  const fechaHoraInicio = calcularFechaHora(fechaReserva, horaInicio);
+  const fechaHoraFin = calcularFechaHora(fechaReserva, horaFin);
+  return { fechaHoraInicio, fechaHoraFin };
+}
+
 // Función para obtener el día en formato CursoDia en base al día de la semana
 function obtenerCursoDia(dia: number): CursoDia {
   const dias = ["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO"];
@@ -483,27 +491,4 @@ function calcularFechaHora(fechaReserva: Date, horaInicio: string): Date {
   }
 
   return fechaHoraInicio;
-}
-
-// Función para calcular la fecha de finalización en base a la duración
-function calcularFechaFin(fechaHoraInicio: Date, duracion: string): Date {
-  const duracionEnMinutos = parseInt(duracion);
-
-  if (isNaN(duracionEnMinutos)) {
-    throw new Error(`Duración inválida: ${duracion}`);
-  }
-
-  const fechaHoraFin = addMinutes(fechaHoraInicio, duracionEnMinutos);
-
-  if (isNaN(fechaHoraFin.getTime())) {
-    throw new Error(`Error al calcular fecha de fin: ${fechaHoraFin.toISOString()}`);
-  }
-
-  return fechaHoraFin;
-}
-
-function obtenerDiaSemana(fecha: Date): number {
-  const dia = fecha.getDay(); // 0 = domingo, 1 = lunes, ..., 6 = sábado
-  console.log("Día original obtenido de la fecha:", dia);
-  return dia === 0 ? 6 : dia;
 }

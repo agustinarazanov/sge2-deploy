@@ -16,13 +16,14 @@ import { CursoTurno, turnosValues } from "@/app/_components/turno-text";
 import { Switch } from "@/components/ui/switch";
 import { FormSelect } from "@/components/ui/autocomplete";
 import { FormInputPoliticas } from "@/app/_components/input-form-politicas";
+import { getDateISOString } from "@/shared/get-date";
 
 type Props = {
   cursoId?: string;
+  reservaId?: number;
   onSubmit: () => void;
   onCancel: () => void;
-} & ({ reservaId: number } | { reservaId?: undefined });
-
+};
 type FormReservarLaboratorioType =
   | z.infer<typeof inputEditarReservaLaboratorioCerradoSchema>
   | z.infer<typeof inputReservaLaboratorioDiscrecional>;
@@ -43,18 +44,20 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
     { id: reservaId! },
     { enabled: !esNuevo },
   );
+  console.log("reservaData", reservaData);
 
   const formHook = useForm<FormReservarLaboratorioType>({
     mode: "onChange",
     defaultValues: {
-      cursoId: cursoId ? Number(cursoId) : undefined,
+      id: reservaId,
+      cursoId: Number(cursoId),
       aceptoTerminos: false,
       requiereEquipo: false,
-      equipoReservado: [],
-      fechaReserva: undefined,
+      equipoReservado: esNuevo ? [] : (reservaData?.equipoReservado ?? []),
+      fechaReserva: esNuevo ? undefined : getDateISOString(reservaData?.reserva.fechaHoraInicio as unknown as Date),
       requierePc: false,
       requiereProyector: false,
-      turno: curso?.turno ?? "MANANA",
+      turno: esNuevo ? "MANANA" : reservaData?.curso.turno,
     },
     resolver: zodResolver(
       esDiscrecional

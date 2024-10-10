@@ -1,4 +1,5 @@
 import { type RouterOutputs } from "@/trpc/react";
+import exp from "constants";
 
 export type LaboratorioAbiertoType =
   RouterOutputs["admin"]["laboratorios"]["getAll"]["laboratorios"][number]["laboratorioAbiertoTipo"];

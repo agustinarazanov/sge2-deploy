@@ -140,9 +140,13 @@ const horariosTurnos: { [turno: string]: { [hora: number]: string } } = {
 };
 
 // Función para obtener la hora en formato HH:mm según el turno y la hora (entero)
-export function obtenerHoraInicioFin(hora: number, turno: string): { horaInicio: string; horaFin: string } {
+export function obtenerHoraInicioFin(
+  hora: number,
+  turno: string,
+  duracion: number,
+): { horaInicio: string; horaFin: string } {
   const horaInicio = horariosTurnos[turno]?.[hora];
-  const horaFin = horariosTurnos[turno]?.[hora + 1];
+  const horaFin = horariosTurnos[turno]?.[duracion];
 
   if (!horaInicio || !horaFin) {
     throw new Error(`Hora de inicio o fin inválida para el turno ${turno} y hora ${hora}`);
