@@ -8,6 +8,7 @@ import { reservasRouter } from "@/server/api/routers/reservas";
 import { divisionRouter } from "./routers/division";
 import { softwareRouter } from "./routers/software";
 import { emailRouter } from "./routers/emails";
+import { notificacionRouter } from "./routers/notificaciones";
 
 /**
  * This is the primary router for your server.
@@ -24,6 +25,7 @@ export const appRouter = createTRPCRouter({
   division: divisionRouter,
   software: softwareRouter,
   email: emailRouter,
+  notificacion: notificacionRouter,
 });
 
 // export type definition of API
