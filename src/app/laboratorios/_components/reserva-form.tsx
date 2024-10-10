@@ -10,13 +10,14 @@ import {
   inputReservaLaboratorioCerrado,
   inputReservaLaboratorioDiscrecional,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
-import { FormTextarea } from "@/components/ui/textarea";
+import { FormTextarea, Textarea } from "@/components/ui/textarea";
 import { FormEquipoTipoSelector } from "./filtros/equipo-tipo-selector";
 import { CursoTurno, turnosValues } from "@/app/_components/turno-text";
 import { Switch } from "@/components/ui/switch";
 import { FormSelect } from "@/components/ui/autocomplete";
 import { FormInputPoliticas } from "@/app/_components/input-form-politicas";
-import { getDateISOString } from "@/shared/get-date";
+import { esFechaPasada, getDateISOString } from "@/shared/get-date";
+import { ReservaEstatus } from "@prisma/client";
 
 type Props = {
   cursoId?: string;
@@ -39,12 +40,21 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
 
   const crearReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.crearReserva.useMutation();
   const modificarReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.editarReserva.useMutation();
-  // const cancelarReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.cancelarReserva.useMutation();
+  const cancelarReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.cancelarReserva.useMutation();
   const { data: reservaData } = api.reservas.reservarLaboratorioCerrado.getReservaPorID.useQuery(
     { id: reservaId! },
     { enabled: !esNuevo },
   );
   console.log("reservaData", reservaData);
+  const estaEstatusAprobada = reservaData?.reserva.estatus === ReservaEstatus.FINALIZADA;
+  const estaEstatusCancelada = reservaData?.reserva.estatus === ReservaEstatus.CANCELADA;
+  const haSidoRechazada = !!(
+    reservaData &&
+    reservaData?.reserva?.motivoRechazo &&
+    reservaData.reserva.motivoRechazo.length > 0
+  );
+
+  const esReservaPasada = esFechaPasada(reservaData?.reserva?.fechaHoraInicio);
 
   const formHook = useForm<FormReservarLaboratorioType>({
     mode: "onChange",
@@ -115,9 +125,10 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
     }
     if (esDiscrecional) {
       toast.success("Reserva discrecional creada con éxito.");
+      return;
     }
     modificarReservaLaboratorio.mutate(
-      { ...formData, id: reservaId, cursoId: Number(cursoId) },
+      { ...formData, id: reservaId, cursoId: Number(reservaData?.cursoId) },
       {
         onSuccess: () => {
           toast.success("Reserva modificada con éxito.");
@@ -130,11 +141,20 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
     );
   };
 
-  const handleCancel = () => {
-    formHook.reset();
-    onCancel();
+  const handleCancelReserva = () => {
+    cancelarReservaLaboratorio.mutate(
+      { id: reservaId!, motivo: "Cancelada por el usuario" },
+      {
+        onSuccess: () => {
+          toast.success("Reserva cancelada con éxito.");
+          onCancel();
+        },
+        onError: (error) => {
+          toast.error(error?.message ?? "Error al cancelar la reserva");
+        },
+      },
+    );
   };
-
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
@@ -287,6 +307,20 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
               </div>
             </div>
 
+            {haSidoRechazada && (
+              <div className="flex w-full flex-col justify-end gap-y-4 lg:justify-between">
+                <div className="mt-4 w-full">
+                  <Textarea
+                    label={"Motivo de rechazo"}
+                    className="max-h-10 w-full"
+                    placeholder="Escribí el motivo de rechazo"
+                    readOnly
+                    value={reservaData?.reserva.motivoRechazo ?? ""}
+                  />
+                </div>
+              </div>
+            )}
+
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               <div className="mt-4">
                 <div className="items-top flex space-x-2">
@@ -297,12 +331,22 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
           </div>
         </div>
         <div className="flex w-full flex-row items-end justify-end space-x-4">
-          <Button title="Cancelar" type="button" variant="default" color="secondary" onClick={handleCancel}>
-            Cancelar
-          </Button>
-          <Button title="Guardar" type="submit" variant="default" color="primary">
-            Realizar reserva
-          </Button>
+          {!esNuevo && !estaEstatusCancelada && !esReservaPasada && (
+            <Button
+              title="Cancelar Reserva"
+              type="button"
+              variant="default"
+              color="danger"
+              onClick={handleCancelReserva}
+            >
+              Cancelar Reserva
+            </Button>
+          )}
+          {!estaEstatusCancelada && !esReservaPasada && (
+            <Button title="Guardar" type="submit" variant="default" color="primary">
+              {estaEstatusAprobada ? "Modificar" : "Guardar"}
+            </Button>
+          )}
         </div>
       </form>
     </FormProvider>
