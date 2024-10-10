@@ -6,36 +6,72 @@ import type {
   inputEliminarLaboratorio,
   inputGetLaboratorio,
   inputGetLaboratorios,
+  inputGetLaboratoriosConEstadoReserva,
 } from "@/shared/filters/admin-laboratorios-filter.schema";
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
+import { obtenerTodasLasReservasEnHorario } from "../reservas/laboratorioEnUso.repository";
 
 type InputGetAll = z.infer<typeof inputGetLaboratorios>;
 export const getAllLaboratorios = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
   const { searchText, sedeId } = input;
 
-  const [count, laboratorios] = await ctx.db.$transaction([
-    ctx.db.laboratorio.count(),
-    ctx.db.laboratorio.findMany({
-      include: {
-        armarios: true,
-        equipos: true,
-        libros: true,
-        sede: true,
-      },
-      where: {
-        nombre: {
-          contains: searchText ?? undefined,
-          mode: "insensitive",
+  const laboratorios = await ctx.db.laboratorio.findMany({
+    include: {
+      armarios: {
+        select: {
+          id: true,
+          nombre: true,
         },
-        sedeId: sedeId ? parseInt(sedeId) : undefined,
       },
-    }),
-  ]);
+      sede: {
+        select: {
+          id: true,
+          nombre: true,
+        },
+      },
+    },
+    where: {
+      nombre: {
+        contains: searchText ?? undefined,
+        mode: "insensitive",
+      },
+      ...(sedeId !== undefined && sedeId !== null
+        ? {
+            sedeId: Number(sedeId),
+          }
+        : {}),
+    },
+  });
 
   return {
-    count,
-    laboratorios,
+    count: laboratorios.length,
+    laboratorios: laboratorios,
+  };
+};
+
+type InputGetAllConEstado = z.infer<typeof inputGetLaboratoriosConEstadoReserva>;
+export const getAllLaboratoriosConEstadoReserva = async (ctx: { db: PrismaClient }, input: InputGetAllConEstado) => {
+  const { searchText, sedeId, fechaHoraFin, fechaHoraInicio, excepcionReservaId } = input;
+
+  if (!fechaHoraFin || !fechaHoraInicio) {
+    return {
+      count: 0,
+      laboratorios: [],
+    };
+  }
+
+  const res = await obtenerTodasLasReservasEnHorario(ctx, {
+    fechaHoraFin: fechaHoraFin,
+    fechaHoraInicio: fechaHoraInicio,
+    excepcionReservaId: excepcionReservaId,
+    searchText,
+    sedeId: sedeId ? Number(sedeId) : undefined,
+  });
+
+  return {
+    count: res.length,
+    laboratorios: res,
   };
 };
 

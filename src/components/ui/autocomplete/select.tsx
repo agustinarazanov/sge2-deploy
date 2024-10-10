@@ -71,7 +71,7 @@ export const CustomSelect = <TType extends ISelectItem | string>({
         <SelectTrigger className="w-full">
           {isLoading ? <SelectValue placeholder={"Cargando..."} /> : <SelectValue placeholder={placeholder ?? ""} />}
         </SelectTrigger>
-        <SelectContent id={id}>
+        <SelectContent id={id} className="max-h-[300px] overflow-y-auto">
           {props.items.map((item) => {
             if (typeof item === "string") {
               return (
@@ -83,7 +83,10 @@ export const CustomSelect = <TType extends ISelectItem | string>({
 
             return (
               <SelectItem key={item.id} value={String(item.id)}>
-                {item.label}
+                <div className="flex w-full flex-row items-center gap-x-4">
+                  {item.icon}
+                  {item.label}
+                </div>
               </SelectItem>
             );
           })}
