@@ -484,7 +484,7 @@ function calcularFechaHora(fechaReserva: Date, horaInicio: string): Date {
   }
 
   // Ajustar la fecha con la hora y minutos
-  const fechaHoraInicio = setHours(setMinutes(fechaReserva, minutos), horas);
+  const fechaHoraInicio = addMinutes(setHours(setMinutes(fechaReserva, minutos), horas), 1440);
 
   if (isNaN(fechaHoraInicio.getTime())) {
     throw new Error(`Error al calcular fecha de inicio con hora: ${fechaHoraInicio.toISOString()}`);
