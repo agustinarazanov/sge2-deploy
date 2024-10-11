@@ -6,9 +6,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui";
 import { CheckIcon, XIcon } from "lucide-react";
 import { LaboratorioOcupado } from "../laboratorio-ocupado";
-import { LABORATORIO_ABIERTO_ROUTE } from "@/shared/server-routes";
+import { LABORATORIO_ABIERTO_ROUTE, LABORATORIO_ROUTE } from "@/shared/server-routes";
 
-const RUTA_RESERVA = LABORATORIO_ABIERTO_ROUTE.subRutas[1]?.href ?? "";
+const RUTA_RESERVA_ABIERTO = LABORATORIO_ABIERTO_ROUTE.subRutas[1]?.href ?? "";
+const RUTA_RESERVA_CERRADO = LABORATORIO_ROUTE.subRutas[5]?.href ?? "";
 
 type Props = RouterInputs["admin"]["laboratorios"]["getAll"];
 export const SelectLaboratorioForm = <T extends FieldValues, TType extends string>({
@@ -60,7 +61,7 @@ export const SelectLaboratorioFormConEstadoReservaForm = <T extends FieldValues,
   className,
   ...props
 }: Omit<FormSelectProps<T, TType>, "items"> &
-  PropsConEstadoReserva & { laboratorioId: string | null | undefined }): ReactElement => {
+  PropsConEstadoReserva & { laboratorioId: string | null | undefined; esAbierto?: boolean }): ReactElement => {
   const propsQuery: PropsConEstadoReserva = {
     excepcionReservaId: props.excepcionReservaId,
     fechaHoraFin: props.fechaHoraFin,
@@ -109,7 +110,7 @@ export const SelectLaboratorioFormConEstadoReservaForm = <T extends FieldValues,
           excepcionReservaId={props.excepcionReservaId}
           fechaHoraInicio={props.fechaHoraInicio}
           fechaHoraFin={props.fechaHoraFin}
-          rutaBase={RUTA_RESERVA}
+          rutaBase={props.esAbierto ? RUTA_RESERVA_ABIERTO : RUTA_RESERVA_CERRADO}
         />
       )}
     </>

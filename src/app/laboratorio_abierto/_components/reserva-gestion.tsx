@@ -120,6 +120,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
 
   const estaEstatusPendiente = reservaData?.reserva.estatus === ReservaEstatus.PENDIENTE;
   const estaEstatusAprobada = reservaData?.reserva.estatus === ReservaEstatus.FINALIZADA;
+  const estaCancelada = reservaData?.reserva.estatus === ReservaEstatus.CANCELADA;
 
   const esReservaPasada = esFechaPasada(reservaData?.reserva?.fechaHoraInicio);
 
@@ -153,6 +154,7 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
                 fechaHoraInicio={reservaData?.reserva?.fechaHoraInicio}
                 fechaHoraFin={reservaData?.reserva?.fechaHoraFin}
                 laboratorioId={laboratorioId}
+                esAbierto
               />
             </div>
 
@@ -174,10 +176,10 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
           >
             Cancelar
           </Button>
-          {estaEstatusPendiente && !esReservaPasada && (
+          {(estaEstatusPendiente || estaEstatusAprobada) && !esReservaPasada && (
             <AdminLaboratoriosNuevoLaboratorio estaRechazando={estaRechazando} handleRechazo={handleRechazo} />
           )}
-          {(estaEstatusAprobada || estaEstatusPendiente) && !esReservaPasada && (
+          {!estaCancelada && !esReservaPasada && (
             <Button
               title="Aprobar"
               type="submit"

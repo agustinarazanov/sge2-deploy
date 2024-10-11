@@ -3,6 +3,7 @@ import { api } from "@/trpc/react";
 import { esFechaPasada } from "@/shared/get-date";
 import { ReservaDetalle } from "../../_components/info-basica-reserva";
 import { ReservaAprobacion } from "../../_components/reserva-gestion";
+import { ReservaEstatus } from "@prisma/client";
 
 interface ReservaViewAdminProps {
   reservaId: number;
@@ -18,11 +19,13 @@ export const ReservaViewAdmin = ({ reservaId, onCancel, onAprobar, onRechazar }:
 
   const esReservaPasada = esFechaPasada(reservaData?.reserva?.fechaHoraInicio);
 
+  const estaCancelada = reservaData?.reserva.estatus === ReservaEstatus.CANCELADA;
+
   return (
     <ScrollArea className="max-h-[calc(100vh_-_10%)]">
       <div className="container mx-auto space-y-8 p-4">
-        <ReservaDetalle reservaId={reservaId} mostrarCompleto={esReservaPasada} />
-        {!esReservaPasada && (
+        <ReservaDetalle reservaId={reservaId} mostrarCompleto={true} />
+        {!esReservaPasada && !estaCancelada && (
           <ReservaAprobacion reservaId={reservaId} onCancel={onCancel} onAprobar={onAprobar} onRechazar={onRechazar} />
         )}
       </div>
