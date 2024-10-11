@@ -413,9 +413,13 @@ const getReservaCerradaCreateArgs = (
           usuarioModificadorId: userId,
           laboratorioId: null,
           cursoId: input.cursoId,
+          requierePC: input.requierePc,
+          requiereProyector: input.requiereProyector,
+          descripcion: input.observaciones,
           equipoReservado: {
             create: input.equipoReservado.map((equipo) => ({
-              ...equipo,
+              equipoId: equipo.equipoId,
+              cantidad: equipo.cantidad,
               usuarioCreadorId: userId,
               usuarioModificadorId: userId,
             })),

@@ -4,7 +4,7 @@ import { api } from "@/trpc/react";
 import { Button, FormInput, Input, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import {
   inputEditarReservaLaboratorioCerradoSchema,
   inputReservaLaboratorioCerrado,
@@ -17,7 +17,7 @@ import { Switch } from "@/components/ui/switch";
 import { FormSelect } from "@/components/ui/autocomplete";
 import { FormInputPoliticas } from "@/app/_components/input-form-politicas";
 import { esFechaPasada, getDateISOString } from "@/shared/get-date";
-import { ReservaEstatus } from "@prisma/client";
+import { ReservaEstatus, TurnoCurso } from "@prisma/client";
 
 type Props = {
   cursoId?: string;
@@ -32,20 +32,21 @@ type FormReservarLaboratorioType =
 export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel }: Props) => {
   const esNuevo = reservaId === undefined;
   const esDiscrecional = !cursoId;
+
   const {
     data: curso,
     isLoading,
     isError,
   } = api.cursos.cursoPorId.useQuery({ id: Number(cursoId!) }, { enabled: !esDiscrecional });
-
-  const crearReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.crearReserva.useMutation();
-  const modificarReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.editarReserva.useMutation();
-  const cancelarReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.cancelarReserva.useMutation();
   const { data: reservaData } = api.reservas.reservarLaboratorioCerrado.getReservaPorID.useQuery(
     { id: reservaId! },
     { enabled: !esNuevo },
   );
-  console.log("reservaData", reservaData);
+
+  const crearReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.crearReserva.useMutation();
+  const modificarReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.editarReserva.useMutation();
+  const cancelarReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.cancelarReserva.useMutation();
+
   const estaEstatusAprobada = reservaData?.reserva.estatus === ReservaEstatus.FINALIZADA;
   const estaEstatusCancelada = reservaData?.reserva.estatus === ReservaEstatus.CANCELADA;
   const haSidoRechazada = !!(
@@ -56,19 +57,25 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
 
   const esReservaPasada = esFechaPasada(reservaData?.reserva?.fechaHoraInicio);
 
-  const formHook = useForm<FormReservarLaboratorioType>({
-    mode: "onChange",
-    defaultValues: {
+  const reservaBase: FormReservarLaboratorioType = useMemo(() => {
+    if (!reservaData) return {};
+
+    return {
       id: reservaId,
-      cursoId: Number(cursoId),
+      cursoId: cursoId ? Number(cursoId) : undefined,
       aceptoTerminos: false,
-      requiereEquipo: false,
       equipoReservado: esNuevo ? [] : (reservaData?.equipoReservado ?? []),
       fechaReserva: esNuevo ? undefined : getDateISOString(reservaData?.reserva.fechaHoraInicio as unknown as Date),
-      requierePc: false,
-      requiereProyector: false,
-      turno: esNuevo ? "MANANA" : reservaData?.curso.turno,
-    },
+      requierePc: reservaData.requierePC,
+      requiereProyector: reservaData.requiereProyector,
+      turno: esNuevo ? TurnoCurso.MANANA : reservaData?.curso.turno,
+      observaciones: reservaData?.descripcion ?? "",
+    };
+  }, [cursoId, esNuevo, reservaData, reservaId]);
+
+  const formHook = useForm<FormReservarLaboratorioType>({
+    mode: "onChange",
+    defaultValues: reservaBase,
     resolver: zodResolver(
       esDiscrecional
         ? inputReservaLaboratorioDiscrecional
@@ -77,6 +84,8 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
           : inputEditarReservaLaboratorioCerradoSchema,
     ),
   });
+
+  useEffect(() => formHook.reset(reservaBase), [formHook, reservaBase]);
 
   const {
     handleSubmit,
@@ -87,16 +96,6 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
   useEffect(() => {
     console.log("Errores de validación:", errors);
   }, [errors]);
-
-  useEffect(() => {
-    if (reservaData) {
-      formHook.reset({
-        ...reservaData,
-        cursoId: Number(cursoId),
-        aceptoTerminos: false,
-      });
-    }
-  }, [formHook, cursoId, reservaData]);
 
   if (isLoading) {
     return <div>Cargando...</div>;
@@ -155,8 +154,13 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
       },
     );
   };
+
+  const caracteresEnObservaciones = formHook.watch("observaciones")?.length ?? 0;
+  const requierePC = formHook.watch("requierePc");
+
   return (
     <FormProvider {...formHook}>
+      <code>{JSON.stringify({ REQUIEREPC: requierePC }, null, 4)}</code>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
         <div className="flex w-full flex-col items-center justify-center">
           <div className="flex flex-col space-y-4 px-0 md:px-6">
@@ -302,7 +306,7 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
                   maxLength={250}
                 />
                 <small className="text-sm text-muted-foreground">
-                  {250 - formHook.watch("observaciones")?.length} caracteres restantes
+                  {250 - caracteresEnObservaciones} caracteres restantes
                 </small>
               </div>
             </div>

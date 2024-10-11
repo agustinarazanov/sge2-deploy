@@ -77,7 +77,7 @@ const NotificationItems = ({
     <>
       {notificaciones.map((notificacion) => {
         return (
-          <MenuItem key={notificacion.link} as="div">
+          <MenuItem key={`${notificacion.link}-${notificacion.id}`} as="div">
             <NotificationItem notificacion={notificacion} />
           </MenuItem>
         );

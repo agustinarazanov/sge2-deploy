@@ -17,12 +17,12 @@ export default function EditarReservaModal({ params: { id, cursoId } }: PageProp
 
   const handleClickCancel = () => {
     setOpen(false);
-    router.refresh();
+    setTimeout(() => router.refresh(), 100); // Hack para que primero recargue la pagina y luego haga el back, de otra forma el back cancela el refresh
   };
 
   const handleClickSave = () => {
     setOpen(false);
-    router.refresh();
+    setTimeout(() => router.refresh(), 100); // Hack para que primero recargue la pagina y luego haga el back, de otra forma el back cancela el refresh
   };
 
   return (

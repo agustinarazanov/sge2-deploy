@@ -117,6 +117,8 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
 
   const { handleSubmit, control } = formHook;
 
+  console.log(formHook.formState.errors);
+
   // TODO: Separar componente de formulario y logica de carga y actualización de curso
   useEffect(() => {
     if (curso) {
