@@ -95,6 +95,10 @@ model ReservaLibro {
 model ReservaLaboratorioCerrado {
     id Int @id @default(autoincrement())
 
+    descripcion       String  @default("")
+    requierePC        Boolean @default(false)
+    requiereProyector Boolean @default(false)
+
     reservaId Int     @unique
     reserva   Reserva @relation(fields: [reservaId], references: [id], onDelete: Cascade)
 
@@ -136,7 +140,7 @@ model ReservaLaboratorioAbierto {
     id Int @id @default(autoincrement())
 
     especialidad           String
-    descripcion            String
+    descripcion            String                 @default("")
     concurrentes           Int
     laboratorioAbiertoTipo LaboratorioAbiertoTipo
 
