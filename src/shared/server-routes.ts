@@ -60,6 +60,16 @@ export const LABORATORIO_ROUTE = {
       label: "Pantalla de Reservas",
       isPublic: false,
     },
+    {
+      href: "/laboratorios/mis_reservas",
+      label: "Pantalla de mis reservas",
+      isPublic: false,
+    },
+    {
+      href: "/laboratorios/solicitudes",
+      label: "Pantalla de solicitudes de reserva",
+      isPublic: false,
+    },
   ],
 };
 

@@ -1,21 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  CalendarIcon,
-  ClockIcon,
-  MapPinIcon,
-  PersonStandingIcon,
-  SearchIcon,
-  TextIcon,
-  WrenchIcon,
-  XIcon,
-} from "lucide-react";
+import { CalendarIcon, ClockIcon, MapPinIcon, TextIcon, WrenchIcon, XIcon } from "lucide-react";
 import { Label } from "@/components/ui";
 import { api } from "@/trpc/react";
 import { BadgeEstatusReserva } from "@/app/_components/badge-estatus-reserva";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getDateISOString, getTimeISOString } from "@/shared/get-date";
-import { DatoUsuarioReserva } from "@/app/_components/datos-usuario";
 
 type ReservaDetalleProps = {
   reservaId: number;
@@ -27,7 +17,7 @@ export const ReservaDetalle = ({ reservaId, mostrarCompleto }: ReservaDetallePro
     data: reserva,
     isLoading,
     isError,
-  } = api.reservas.reservaLaboratorioAbierto.getReservaPorID.useQuery({
+  } = api.reservas.reservarLaboratorioCerrado.getReservaPorID.useQuery({
     id: Number(reservaId),
   });
 
@@ -87,6 +77,7 @@ export const ReservaDetalle = ({ reservaId, mostrarCompleto }: ReservaDetallePro
             </Label>
             <p>{reserva.sede.nombre ?? "Sin asignar"}</p>
           </div>
+
           <div className="space-y-2">
             <Label className="flex items-center font-semibold">
               <MapPinIcon className="mr-2 h-4 w-4" />
@@ -94,23 +85,9 @@ export const ReservaDetalle = ({ reservaId, mostrarCompleto }: ReservaDetallePro
             </Label>
             <p>{reserva?.laboratorio?.nombre ?? "Sin asignar"}</p>
           </div>
-          <div className="space-y-2">
-            <Label className="flex items-center font-semibold">
-              <SearchIcon className="mr-2 h-4 w-4" />
-              Especialidad
-            </Label>
-            <p>{reserva?.especialidad ?? "Sin asignar"}</p>
-          </div>
 
           {mostrarCompleto && (
             <>
-              <div className="space-y-2">
-                <Label className="flex items-center font-semibold">
-                  <PersonStandingIcon className="mr-2 h-4 w-4" />
-                  Tutor
-                </Label>
-                <DatoUsuarioReserva usuario={reserva?.reserva.usuarioTutor} />
-              </div>
               <div className="space-y-2">
                 <Label className="flex items-center font-semibold">
                   <WrenchIcon className="mr-2 h-4 w-4" />
@@ -126,13 +103,15 @@ export const ReservaDetalle = ({ reservaId, mostrarCompleto }: ReservaDetallePro
                   })}
                 </ul>
               </div>
-              <div className="col-span-3 space-y-2">
-                <Label className="flex items-center font-semibold">
-                  <TextIcon className="mr-2 h-4 w-4" />
-                  Observaciones
-                </Label>
-                <p>{reserva.descripcion ?? "Sin informar"}</p>
-              </div>
+              {reserva.descripcion && (
+                <div className="col-span-3 space-y-2">
+                  <Label className="flex items-center font-semibold">
+                    <TextIcon className="mr-2 h-4 w-4" />
+                    Observaciones
+                  </Label>
+                  <p>{reserva.descripcion ?? "Sin informar"}</p>
+                </div>
+              )}
               {reserva.reserva.motivoRechazo && (
                 <div className="col-span-3 space-y-2">
                   <Label className="flex items-center font-semibold">

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { enumReservaEstatus } from "./reservas-filter.schema";
+import { TurnoCurso } from "@prisma/client";
 
 const inputEquipoReservado = z.object({ equipoId: z.number(), cantidad: z.number() });
 
@@ -13,11 +14,8 @@ export const inputGetReservaLaboratorioPorId = z.object({
 
 const inputReservaLaboratorioDiscrecionalBase = z.object({
   fechaReserva: z.string().min(1, { message: "Requerido" }),
-  horaInicio: z.string().min(1, { message: "Requerido" }),
-  horaFin: z.string().min(1, { message: "Requerido" }),
   requierePc: z.boolean().default(false),
   requiereProyector: z.boolean().default(false),
-  requiereEquipo: z.boolean().default(false),
   equipoReservado: z.array(inputEquipoReservado).default([]),
   observaciones: z.string().max(250, { message: "Máximo 250 caracteres" }).default(""),
   aceptoTerminos: z.boolean().refine((value) => value === true, { message: "Debe aceptar los términos y condiciones" }),
@@ -25,7 +23,19 @@ const inputReservaLaboratorioDiscrecionalBase = z.object({
 
 export const inputReservaLaboratorioDiscrecional = z
   .object({
-    turno: z.enum(["MANANA", "TARDE", "NOCHE"]).default("MANANA").catch("MANANA"),
+    id: z
+      .number()
+      .optional()
+      .refine((value) => value === undefined, { message: "No debe tener valor, se utilizo para Typecheck" }),
+    cursoId: z
+      .number()
+      .optional()
+      .refine((value) => value === undefined, { message: "No debe tener valor, se utilizo para Typecheck" }),
+
+    turno: z
+      .enum([TurnoCurso.MANANA, TurnoCurso.TARDE, TurnoCurso.NOCHE])
+      .default(TurnoCurso.MANANA)
+      .catch(TurnoCurso.MANANA),
   })
   .merge(inputReservaLaboratorioDiscrecionalBase);
 
@@ -38,8 +48,6 @@ export const inputReservaLaboratorioCerrado = z
 export const inputReservaLaboratorioAbierto = z.object({
   tipo: z.enum(["LA", "TLA", "TLA_BASICA"]),
   fechaReserva: z.string().min(1, { message: "Requerido" }),
-  horaInicio: z.string().min(1, { message: "Requerido" }),
-  horaFin: z.string().min(1, { message: "Requerido" }),
   concurrentes: z.number().min(1, { message: "Requerido" }),
   sedeId: z.string().refine((value) => parseInt(value) >= 0, { message: "Debe seleccionar una sede" }),
   equipoReservado: z.array(inputEquipoReservado).default([]),
@@ -99,8 +107,9 @@ export const inputCancelarReservaLaboratorioAbierto = z.object({
 export const inputAprobarReservaLaboratorioCerradoSchema = z.object({
   id: z.number().positive().min(1, { message: "Requerido" }),
   inventarioRevisado: z.array(z.string()),
-  laboratorioId: z.number().optional(),
+  laboratorioId: z.string().optional(),
   equipoRequerido: z.array(inputEquipoReservado).default([]),
+  equipoReservado: z.array(inputEquipoReservado).default([]),
 });
 
 export const inputEditarReservaLaboratorioCerradoSchema = z
@@ -117,15 +126,7 @@ export const inputGetAllSolicitudesReservaLaboratorioCerrado = z.object({
     .refine((value) => parseInt(value) >= 0, { message: "Debe ser mayor o igual a 0" })
     .catch("0"),
   orderBy: z
-    .enum([
-      "id",
-      "laboratorioId",
-      "sede",
-      "reserva_fechaCreacion",
-      "reserva_fechaHoraInicio",
-      "reserva_fechaHoraFin",
-      "reserva_usuarioSolicito_apellido",
-    ])
+    .enum(["id", "laboratorioId", "sede", "reserva_fechaCreacion", "reserva_usuarioSolicito_apellido"])
     .default("id")
     .catch("id"),
   orderDirection: z.enum(["asc", "desc"]).default("desc").catch("desc"),
@@ -136,4 +137,5 @@ export const inputGetAllSolicitudesReservaLaboratorioCerrado = z.object({
 
 export const inputRechazarReservaLaboratorioCerrado = z.object({
   id: z.number().positive().min(1, { message: "Requerido" }),
+  motivo: z.string().min(1, { message: "Requerido" }),
 });

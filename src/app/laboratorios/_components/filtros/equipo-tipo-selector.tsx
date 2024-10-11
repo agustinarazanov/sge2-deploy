@@ -108,7 +108,7 @@ export const FormEquipoTipoSelector = <T extends FieldValues>({ name: nombre }: 
   const [requiereInstrumental, setRequiereInstrumental] = useState(false);
 
   useEffect(() => {
-    setRequiereInstrumental(currentEquipoTipo.length > 0);
+    setRequiereInstrumental(currentEquipoTipo?.length > 0);
   }, [currentEquipoTipo]);
 
   const onEquipoTipoChange = (equipoTipoId: number) => {

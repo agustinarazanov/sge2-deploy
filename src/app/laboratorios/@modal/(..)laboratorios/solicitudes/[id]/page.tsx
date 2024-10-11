@@ -1,7 +1,7 @@
 "use client";
 
 import ModalDrawer from "@/app/_components/modal/modal-drawer";
-import { ReservaViewAdmin } from "@/app/laboratorio_abierto/solicitudes/[id]/form-gestion-reserva";
+import { ReservaViewAdmin } from "@/app/laboratorios/solicitudes/[id]/form-gestion-reserva";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -38,7 +38,7 @@ export default function VerReservaModal({ params: { id } }: PageProps) {
   return (
     <ModalDrawer
       titulo="Detalle de Reserva"
-      description="Detalles de la reserva de laboratorio abierto."
+      description="Detalles de la reserva de laboratorio."
       open={open}
       onOpenChange={handleOpenChange}
       trigger={<></>}
