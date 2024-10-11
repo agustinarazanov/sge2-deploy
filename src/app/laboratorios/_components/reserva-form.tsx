@@ -18,6 +18,7 @@ import { FormSelect } from "@/components/ui/autocomplete";
 import { FormInputPoliticas } from "@/app/_components/input-form-politicas";
 import { esFechaPasada, getDateISOString } from "@/shared/get-date";
 import { ReservaEstatus, TurnoCurso } from "@prisma/client";
+import { ReservaDetalle } from "./info-basica-reserva";
 
 type Props = {
   cursoId?: string;
@@ -57,20 +58,18 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
 
   const esReservaPasada = esFechaPasada(reservaData?.reserva?.fechaHoraInicio);
 
-  const reservaBase: FormReservarLaboratorioType = useMemo(() => {
-    if (!reservaData) return {};
-
+  const reservaBase = useMemo(() => {
     return {
-      id: reservaId,
+      id: reservaId ?? undefined,
       cursoId: cursoId ? Number(cursoId) : undefined,
       aceptoTerminos: false,
       equipoReservado: esNuevo ? [] : (reservaData?.equipoReservado ?? []),
       fechaReserva: esNuevo ? undefined : getDateISOString(reservaData?.reserva.fechaHoraInicio as unknown as Date),
-      requierePc: reservaData.requierePC,
-      requiereProyector: reservaData.requiereProyector,
+      requierePc: reservaData?.requierePC ?? false,
+      requiereProyector: reservaData?.requiereProyector ?? false,
       turno: esNuevo ? TurnoCurso.MANANA : reservaData?.curso.turno,
       observaciones: reservaData?.descripcion ?? "",
-    };
+    } as FormReservarLaboratorioType;
   }, [cursoId, esNuevo, reservaData, reservaId]);
 
   const formHook = useForm<FormReservarLaboratorioType>({
@@ -85,7 +84,9 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
     ),
   });
 
-  useEffect(() => formHook.reset(reservaBase), [formHook, reservaBase]);
+  useEffect(() => {
+    formHook.reset(reservaBase);
+  }, [formHook, reservaBase]);
 
   const {
     handleSubmit,
@@ -156,11 +157,13 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
   };
 
   const caracteresEnObservaciones = formHook.watch("observaciones")?.length ?? 0;
-  const requierePC = formHook.watch("requierePc");
+
+  if (reservaId && esReservaPasada) {
+    return <ReservaDetalle reservaId={reservaId} mostrarCompleto />;
+  }
 
   return (
     <FormProvider {...formHook}>
-      <code>{JSON.stringify({ REQUIEREPC: requierePC }, null, 4)}</code>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
         <div className="flex w-full flex-col items-center justify-center">
           <div className="flex flex-col space-y-4 px-0 md:px-6">

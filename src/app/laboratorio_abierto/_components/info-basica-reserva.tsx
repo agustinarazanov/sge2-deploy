@@ -83,6 +83,13 @@ export const ReservaDetalle = ({ reservaId, mostrarCompleto }: ReservaDetallePro
           <div className="space-y-2">
             <Label className="flex items-center font-semibold">
               <MapPinIcon className="mr-2 h-4 w-4" />
+              Sede
+            </Label>
+            <p>{reserva.sede.nombre ?? "Sin asignar"}</p>
+          </div>
+          <div className="space-y-2">
+            <Label className="flex items-center font-semibold">
+              <MapPinIcon className="mr-2 h-4 w-4" />
               Laboratorio
             </Label>
             <p>{reserva?.laboratorio?.nombre ?? "Sin asignar"}</p>

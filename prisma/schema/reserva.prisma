@@ -125,7 +125,7 @@ model ReservaLaboratorioCerradoEquipo {
     cantidad Int
 
     reservaLaboratorioCerradoId Int
-    reservaLaboratorioCerrado   ReservaLaboratorioCerrado @relation(fields: [reservaLaboratorioCerradoId], references: [id])
+    reservaLaboratorioCerrado   ReservaLaboratorioCerrado @relation(fields: [reservaLaboratorioCerradoId], references: [id], onDelete: Cascade)
 
     equipoId   Int
     equipoTipo EquipoTipo @relation(fields: [equipoId], references: [id], onDelete: Cascade)

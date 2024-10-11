@@ -107,7 +107,7 @@ export const inputCancelarReservaLaboratorioAbierto = z.object({
 export const inputAprobarReservaLaboratorioCerradoSchema = z.object({
   id: z.number().positive().min(1, { message: "Requerido" }),
   inventarioRevisado: z.array(z.string()),
-  laboratorioId: z.number().optional(),
+  laboratorioId: z.string().optional(),
   equipoRequerido: z.array(inputEquipoReservado).default([]),
   equipoReservado: z.array(inputEquipoReservado).default([]),
 });

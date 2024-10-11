@@ -26,13 +26,13 @@ export default function VerReservaModal({ params: { id } }: PageProps) {
   };
 
   const handleClickAprobar = () => {
-    router.back();
     router.refresh();
+    setTimeout(() => router.back(), 100);
   };
 
   const handleClickRechazar = () => {
-    router.back();
     router.refresh();
+    setTimeout(() => router.back(), 100);
   };
 
   return (

@@ -73,6 +73,14 @@ export const ReservaDetalle = ({ reservaId, mostrarCompleto }: ReservaDetallePro
           <div className="space-y-2">
             <Label className="flex items-center font-semibold">
               <MapPinIcon className="mr-2 h-4 w-4" />
+              Sede
+            </Label>
+            <p>{reserva.sede.nombre ?? "Sin asignar"}</p>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="flex items-center font-semibold">
+              <MapPinIcon className="mr-2 h-4 w-4" />
               Laboratorio
             </Label>
             <p>{reserva?.laboratorio?.nombre ?? "Sin asignar"}</p>
@@ -85,23 +93,25 @@ export const ReservaDetalle = ({ reservaId, mostrarCompleto }: ReservaDetallePro
                   <WrenchIcon className="mr-2 h-4 w-4" />
                   Equipo
                 </Label>
-                {/* <ul className="list-disc pl-2">
+                <ul className="list-disc pl-2">
                   {reserva.equipoReservado.map((equipo) => {
                     return (
-                      <li key={equipo.id} className="flex flex-row space-x-2">
-                        {equipo.equipo.tipo.nombre} x {equipo.cantidad}
+                      <li key={equipo.equipoId} className="flex flex-row space-x-2">
+                        {equipo.equipoTipo.nombre} x {equipo.cantidad}
                       </li>
                     );
                   })}
-                </ul> */}{" "}
+                </ul>
               </div>
-              <div className="col-span-3 space-y-2">
-                <Label className="flex items-center font-semibold">
-                  <TextIcon className="mr-2 h-4 w-4" />
-                  Observaciones
-                </Label>
-                {/* <p>{reserva.descripcion ?? "Sin informar"}</p> */}
-              </div>
+              {reserva.descripcion && (
+                <div className="col-span-3 space-y-2">
+                  <Label className="flex items-center font-semibold">
+                    <TextIcon className="mr-2 h-4 w-4" />
+                    Observaciones
+                  </Label>
+                  <p>{reserva.descripcion ?? "Sin informar"}</p>
+                </div>
+              )}
               {reserva.reserva.motivoRechazo && (
                 <div className="col-span-3 space-y-2">
                   <Label className="flex items-center font-semibold">

@@ -109,7 +109,7 @@ export const armarFechaReserva = (fecha: string, hora: string) => {
 };
 
 // Mapeo de horarios por turno
-const horariosTurnos: { [turno: string]: { [hora: number]: string } } = {
+const horariosTurnos: Record<string, Record<number, string>> = {
   MANANA: {
     0: "07:45",
     1: "08:30",

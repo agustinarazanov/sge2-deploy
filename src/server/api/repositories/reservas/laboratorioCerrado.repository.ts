@@ -7,7 +7,7 @@ import type {
   inputRechazarReservaLaboratorioCerrado,
   inputReservaLaboratorioCerrado,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
-import type { PrismaClient, Prisma, CursoDia } from "@prisma/client";
+import { type PrismaClient, type Prisma, type CursoDia, ReservaEstatus } from "@prisma/client";
 import type { z } from "zod";
 import { informacionUsuario } from "../usuario-helper";
 import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
@@ -45,6 +45,7 @@ export const getReservaPorId = async (ctx: { db: PrismaClient }, input: InputGet
       reservaId: id,
     },
     include: {
+      sede: true,
       reserva: true,
       laboratorio: true,
       curso: true,
@@ -164,16 +165,18 @@ export const aprobarReserva = async (ctx: { db: PrismaClient }, input: InputApro
         throw new Error("Reserva no encontrada");
       }
 
-      if (reserva.estatus === "RECHAZADA" || reserva.estatus === "CANCELADA") {
-        throw new Error("La reserva ya fue rechazada o cancelada");
+      if (reserva.estatus === "CANCELADA") {
+        throw new Error("La reserva ya fue cancelada");
       }
+
+      const laboratorioId = input.laboratorioId ? Number(input.laboratorioId) : undefined;
 
       await lanzarErrorSiLaboratorioOcupado(
         { db: tx },
         {
           fechaHoraInicio: reserva.fechaHoraInicio,
           fechaHoraFin: reserva.fechaHoraFin,
-          laboratorioId: input.laboratorioId,
+          laboratorioId: laboratorioId,
           excepcionReservaId: reserva.id,
         },
       );
@@ -188,12 +191,24 @@ export const aprobarReserva = async (ctx: { db: PrismaClient }, input: InputApro
           fechaAprobacion: new Date(),
           reservaLaboratorioCerrado: {
             update: {
-              laboratorioId: input.laboratorioId,
+              laboratorioId: laboratorioId,
               usuarioModificadorId: userId,
+              equipoReservado: {
+                deleteMany: {},
+                createMany: {
+                  data: input.equipoReservado.map((equipo) => ({
+                    cantidad: equipo.cantidad,
+                    equipoId: equipo.equipoId,
+                    usuarioCreadorId: userId,
+                    usuarioModificadorId: userId,
+                  })),
+                },
+              },
             },
           },
         },
       });
+
       return reserva;
     });
 
@@ -233,6 +248,7 @@ export const rechazarReserva = async (ctx: { db: PrismaClient }, input: InputRec
           estatus: "RECHAZADA",
           usuarioRechazadoId: userId,
           fechaRechazo: new Date(),
+          motivoRechazo: input.motivo,
           reservaLaboratorioCerrado: {
             update: {
               usuarioModificadorId: userId,
@@ -241,6 +257,7 @@ export const rechazarReserva = async (ctx: { db: PrismaClient }, input: InputRec
           },
         },
       });
+
       return reserva;
     });
 
@@ -253,7 +270,6 @@ export const rechazarReserva = async (ctx: { db: PrismaClient }, input: InputRec
 type InputEditarReserva = z.infer<typeof inputEditarReservaLaboratorioCerradoSchema>;
 export const editarReserva = async (ctx: { db: PrismaClient }, input: InputEditarReserva, userId: string) => {
   try {
-    console.log("input", input);
     const reserva = await ctx.db.$transaction(async (tx) => {
       const reserva = await tx.reserva.findUnique({
         where: {
@@ -275,7 +291,7 @@ export const editarReserva = async (ctx: { db: PrismaClient }, input: InputEdita
         throw new Error("Reserva no encontrada");
       }
 
-      if (reserva.estatus === "CANCELADA") {
+      if (reserva.estatus === ReservaEstatus.CANCELADA) {
         throw new Error("La reserva ya fue cancelada");
       }
 
@@ -417,12 +433,14 @@ const getReservaCerradaCreateArgs = (
           requiereProyector: input.requiereProyector,
           descripcion: input.observaciones,
           equipoReservado: {
-            create: input.equipoReservado.map((equipo) => ({
-              equipoId: equipo.equipoId,
-              cantidad: equipo.cantidad,
-              usuarioCreadorId: userId,
-              usuarioModificadorId: userId,
-            })),
+            createMany: {
+              data: input.equipoReservado.map((equipo) => ({
+                equipoId: equipo.equipoId,
+                cantidad: equipo.cantidad,
+                usuarioCreadorId: userId,
+                usuarioModificadorId: userId,
+              })),
+            },
           },
         },
       },
@@ -430,7 +448,23 @@ const getReservaCerradaCreateArgs = (
   } as Prisma.ReservaCreateArgs;
 };
 
-function obtenerFechaHoraInicio(curso: any, input: InputCrearReserva) {
+// Funcionalidades
+// 1. Recibe un curso y una fecha
+// 2. Valida que la fecha elegida sea alguno de los 2 posibles dias del curso
+// 3. Toma el turno del curso
+// 4. Devuelve la hora inicio y la hora fin para el dia del curso elegido
+function obtenerFechaHoraInicio(
+  curso: {
+    dia1: string | null | undefined;
+    dia2: string | null | undefined;
+    horaInicio1: string;
+    horaInicio2: string;
+    duracion1: string;
+    duracion2: string;
+    turno: string;
+  },
+  input: InputCrearReserva,
+) {
   // Obtener el día de la fecha de reserva
   const fechaReserva = new Date(input.fechaReserva);
   const diaReserva = fechaReserva.getDay(); // Esto devolverá 0-6

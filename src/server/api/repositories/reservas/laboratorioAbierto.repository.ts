@@ -120,6 +120,7 @@ export const getReservaPorId = async (ctx: { db: PrismaClient }, input: InputGet
       reservaId: id,
     },
     include: {
+      sede: true,
       reserva: {
         include: {
           usuarioTutor: {
@@ -169,8 +170,8 @@ export const aprobarReserva = async (
         throw new Error("La reserva no existe");
       }
 
-      if (reserva.estatus === "RECHAZADA" || reserva.estatus === "CANCELADA") {
-        throw new Error("La reserva ya se encuentra rechazada o cancelada");
+      if (reserva.estatus === "CANCELADA") {
+        throw new Error("La reserva ya se encuentra cancelada");
       }
 
       await lanzarErrorSiLaboratorioOcupado(
