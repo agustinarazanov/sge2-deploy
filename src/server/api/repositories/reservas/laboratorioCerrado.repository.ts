@@ -7,11 +7,12 @@ import type {
   inputRechazarReservaLaboratorioCerrado,
   inputReservaLaboratorioCerrado,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
-import type { PrismaClient, Prisma } from "@prisma/client";
+import { type PrismaClient, type Prisma, type CursoDia, ReservaEstatus } from "@prisma/client";
 import type { z } from "zod";
 import { informacionUsuario } from "../usuario-helper";
 import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 import { lanzarErrorSiLaboratorioOcupado } from "./laboratorioEnUso.repository";
+import { obtenerHoraInicioFin, addMinutes, setHours, setMinutes } from "@/shared/get-date";
 
 type InputGetPorUsuarioID = z.infer<typeof inputGetReservaLaboratorioPorUsuarioId>;
 export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: InputGetPorUsuarioID) => {
@@ -44,8 +45,21 @@ export const getReservaPorId = async (ctx: { db: PrismaClient }, input: InputGet
       reservaId: id,
     },
     include: {
+      sede: true,
       reserva: true,
       laboratorio: true,
+      curso: true,
+      equipoReservado: {
+        select: {
+          equipoId: true,
+          cantidad: true,
+          equipoTipo: {
+            select: {
+              nombre: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -92,6 +106,16 @@ export const getAllReservas = async (ctx: { db: PrismaClient }, input: InputGetA
     }),
     ctx.db.reservaLaboratorioCerrado.findMany({
       include: {
+        curso: {
+          include: {
+            sede: true,
+            division: true,
+            materia: true,
+          },
+        },
+        equipoReservado: true,
+        sede: true,
+
         reserva: {
           include: {
             usuarioSolicito: {
@@ -141,16 +165,18 @@ export const aprobarReserva = async (ctx: { db: PrismaClient }, input: InputApro
         throw new Error("Reserva no encontrada");
       }
 
-      if (reserva.estatus === "RECHAZADA" || reserva.estatus === "CANCELADA") {
-        throw new Error("La reserva ya fue rechazada o cancelada");
+      if (reserva.estatus === "CANCELADA") {
+        throw new Error("La reserva ya fue cancelada");
       }
+
+      const laboratorioId = input.laboratorioId ? Number(input.laboratorioId) : undefined;
 
       await lanzarErrorSiLaboratorioOcupado(
         { db: tx },
         {
           fechaHoraInicio: reserva.fechaHoraInicio,
           fechaHoraFin: reserva.fechaHoraFin,
-          laboratorioId: input.laboratorioId,
+          laboratorioId: laboratorioId,
           excepcionReservaId: reserva.id,
         },
       );
@@ -165,12 +191,24 @@ export const aprobarReserva = async (ctx: { db: PrismaClient }, input: InputApro
           fechaAprobacion: new Date(),
           reservaLaboratorioCerrado: {
             update: {
-              laboratorioId: input.laboratorioId,
+              laboratorioId: laboratorioId,
               usuarioModificadorId: userId,
+              equipoReservado: {
+                deleteMany: {},
+                createMany: {
+                  data: input.equipoReservado.map((equipo) => ({
+                    cantidad: equipo.cantidad,
+                    equipoId: equipo.equipoId,
+                    usuarioCreadorId: userId,
+                    usuarioModificadorId: userId,
+                  })),
+                },
+              },
             },
           },
         },
       });
+
       return reserva;
     });
 
@@ -210,6 +248,7 @@ export const rechazarReserva = async (ctx: { db: PrismaClient }, input: InputRec
           estatus: "RECHAZADA",
           usuarioRechazadoId: userId,
           fechaRechazo: new Date(),
+          motivoRechazo: input.motivo,
           reservaLaboratorioCerrado: {
             update: {
               usuarioModificadorId: userId,
@@ -218,6 +257,7 @@ export const rechazarReserva = async (ctx: { db: PrismaClient }, input: InputRec
           },
         },
       });
+
       return reserva;
     });
 
@@ -239,6 +279,11 @@ export const editarReserva = async (ctx: { db: PrismaClient }, input: InputEdita
           usuarioCreadorId: true,
           usuarioSolicitoId: true,
           estatus: true,
+          reservaLaboratorioCerrado: {
+            select: {
+              curso: true,
+            },
+          },
         },
       });
 
@@ -246,8 +291,8 @@ export const editarReserva = async (ctx: { db: PrismaClient }, input: InputEdita
         throw new Error("Reserva no encontrada");
       }
 
-      if (reserva.estatus === "RECHAZADA" || reserva.estatus === "CANCELADA") {
-        throw new Error("La reserva ya fue rechazada o cancelada");
+      if (reserva.estatus === ReservaEstatus.CANCELADA) {
+        throw new Error("La reserva ya fue cancelada");
       }
 
       await tx.reservaLaboratorioCerrado.delete({
@@ -256,11 +301,19 @@ export const editarReserva = async (ctx: { db: PrismaClient }, input: InputEdita
         },
       });
 
+      const { fechaHoraInicio, fechaHoraFin } = obtenerFechaHoraInicio(reserva.reservaLaboratorioCerrado?.curso, input);
+
       await tx.reserva.update({
         where: {
           id: input.id,
         },
-        ...getReservaCerradaCreateArgs(input, userId),
+        ...getReservaCerradaCreateArgs(
+          input,
+          userId,
+          fechaHoraInicio,
+          fechaHoraFin,
+          reserva.reservaLaboratorioCerrado?.curso.sedeId,
+        ),
       });
       return reserva;
     });
@@ -328,9 +381,20 @@ export const crearReservaLaboratorioCerrado = async (
   userId: string,
 ) => {
   try {
+    // Buscar el curso con los días y horas
+    const curso = await ctx.db.curso.findUnique({
+      where: { id: input.cursoId },
+    });
+
+    if (!curso) {
+      throw new Error(`Curso no encontrado para el ID ${input.cursoId}`);
+    }
+
+    const { fechaHoraInicio, fechaHoraFin } = obtenerFechaHoraInicio(curso, input);
+    // Crear la reserva
     const reserva = await ctx.db.$transaction(async (tx) => {
       const reserva = await tx.reserva.create({
-        ...getReservaCerradaCreateArgs(input, userId),
+        ...getReservaCerradaCreateArgs(input, userId, fechaHoraInicio, fechaHoraFin, curso.sedeId),
       });
 
       return reserva;
@@ -342,25 +406,127 @@ export const crearReservaLaboratorioCerrado = async (
   }
 };
 
-const getReservaCerradaCreateArgs = (input: InputCrearReserva, userId: string) => {
+const getReservaCerradaCreateArgs = (
+  input: InputCrearReserva,
+  userId: string,
+  fechaHoraInicio?: Date,
+  fechaHoraFin?: Date,
+  sedeId?: number,
+) => {
   return {
     data: {
       estatus: "PENDIENTE",
-      fechaHoraInicio: new Date(`${input.fechaReserva}T${input.horaInicio}`),
-      fechaHoraFin: new Date(`${input.fechaReserva}T${input.horaFin}`),
       tipo: "LABORATORIO_CERRADO",
+      fechaHoraInicio: fechaHoraInicio,
+      fechaHoraFin: fechaHoraFin,
       usuarioSolicitoId: userId,
       usuarioCreadorId: userId,
       usuarioModificadorId: userId,
       reservaLaboratorioCerrado: {
         create: {
+          sedeId: sedeId,
           usuarioCreadorId: userId,
           usuarioModificadorId: userId,
           laboratorioId: null,
           cursoId: input.cursoId,
-          //TODO EQUIPO RESERVADO
+          requierePC: input.requierePc,
+          requiereProyector: input.requiereProyector,
+          descripcion: input.observaciones,
+          equipoReservado: {
+            createMany: {
+              data: input.equipoReservado.map((equipo) => ({
+                equipoId: equipo.equipoId,
+                cantidad: equipo.cantidad,
+                usuarioCreadorId: userId,
+                usuarioModificadorId: userId,
+              })),
+            },
+          },
         },
       },
     },
   } as Prisma.ReservaCreateArgs;
 };
+
+// Funcionalidades
+// 1. Recibe un curso y una fecha
+// 2. Valida que la fecha elegida sea alguno de los 2 posibles dias del curso
+// 3. Toma el turno del curso
+// 4. Devuelve la hora inicio y la hora fin para el dia del curso elegido
+function obtenerFechaHoraInicio(
+  curso: {
+    dia1: string | null | undefined;
+    dia2: string | null | undefined;
+    horaInicio1: string;
+    horaInicio2: string;
+    duracion1: string;
+    duracion2: string;
+    turno: string;
+  },
+  input: InputCrearReserva,
+) {
+  // Obtener el día de la fecha de reserva
+  const fechaReserva = new Date(input.fechaReserva);
+  const diaReserva = fechaReserva.getDay(); // Esto devolverá 0-6
+  const diaReservaFinal = obtenerCursoDia(diaReserva);
+
+  // Determinar si la reserva es para el dia1 o dia2 del curso
+  let horaInicioStr: string | undefined;
+  let duracionStr: string | undefined;
+
+  if (diaReservaFinal === curso.dia1) {
+    // Si el día de la reserva coincide con dia1
+    horaInicioStr = curso.horaInicio1;
+    duracionStr = curso.duracion1;
+  } else if (diaReservaFinal === curso.dia2) {
+    // Si el día de la reserva coincide con dia2
+    horaInicioStr = curso.horaInicio2 ?? undefined;
+    duracionStr = curso.duracion2 ?? undefined;
+  }
+
+  // Validar si el curso tiene clases ese día
+  if (!horaInicioStr || !duracionStr) {
+    throw new Error(`El curso no tiene clases el día ${diaReservaFinal}`);
+  }
+
+  const horaInicioNumero = parseInt(curso.horaInicio1); // '1'
+  const duracionNumero = parseInt(duracionStr);
+  const { horaInicio, horaFin } = obtenerHoraInicioFin(horaInicioNumero, curso.turno, duracionNumero);
+
+  // Calcular las fechas finales basadas en la hora de inicio y duración
+  const fechaHoraInicio = calcularFechaHora(fechaReserva, horaInicio);
+  const fechaHoraFin = calcularFechaHora(fechaReserva, horaFin);
+  return { fechaHoraInicio, fechaHoraFin };
+}
+
+// Función para obtener el día en formato CursoDia en base al día de la semana
+function obtenerCursoDia(dia: number): CursoDia {
+  const dias = ["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO"];
+  return dias[dia] as CursoDia;
+}
+
+function calcularFechaHora(fechaReserva: Date, horaInicio: string): Date {
+  // Verificar si la fecha de reserva es válida
+  if (isNaN(fechaReserva.getTime())) {
+    throw new Error(`Fecha de reserva inválida: ${fechaReserva.toISOString()}`);
+  }
+
+  // Verificar si la hora de inicio está en el formato correcto (HH:mm)
+  const [horas, minutos] = horaInicio.split(":").map(Number);
+  if (horas === undefined || minutos === undefined) {
+    throw new Error(`Hora de inicio inválida: ${horaInicio}`);
+  }
+
+  if (isNaN(horas) || isNaN(minutos)) {
+    throw new Error(`Hora de inicio inválida: ${horaInicio}`);
+  }
+
+  // Ajustar la fecha con la hora y minutos
+  const fechaHoraInicio = addMinutes(setHours(setMinutes(fechaReserva, minutos), horas), 1440);
+
+  if (isNaN(fechaHoraInicio.getTime())) {
+    throw new Error(`Error al calcular fecha de inicio con hora: ${fechaHoraInicio.toISOString()}`);
+  }
+
+  return fechaHoraInicio;
+}

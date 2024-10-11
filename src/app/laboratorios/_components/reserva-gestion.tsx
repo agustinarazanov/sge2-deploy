@@ -3,9 +3,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui";
-import { SelectTutorForm } from "@/app/_components/select-tutor";
 import { useEffect } from "react";
-import { inputAprobarReservaLaboratorioAbiertoSchema } from "@/shared/filters/reserva-laboratorio-filter.schema";
+import { inputAprobarReservaLaboratorioCerradoSchema } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { type z } from "zod";
 import { SelectLaboratorioFormConEstadoReservaForm } from "@/app/_components/select-ubicacion/select-laboratorio";
 import { api } from "@/trpc/react";
@@ -13,13 +12,13 @@ import { FormEquipoTipoSelector } from "@/app/laboratorios/_components/filtros/e
 import { ReservaEstatus } from "@prisma/client";
 import { AdminLaboratoriosNuevoLaboratorio } from "./alerta-rechazar";
 import { esFechaPasada } from "@/shared/get-date";
-import { getMensajeError } from "@/shared/error";
 
 type FormHelperType = {
   tutor: { id: string; label: string };
+  laboratorio: { id: number; label: string };
 };
 
-type AprobarReservaFormData = z.infer<typeof inputAprobarReservaLaboratorioAbiertoSchema> & FormHelperType;
+type AprobarReservaFormData = z.infer<typeof inputAprobarReservaLaboratorioCerradoSchema> & FormHelperType;
 
 interface ReservaAprobacionProps {
   reservaId: number;
@@ -30,31 +29,29 @@ interface ReservaAprobacionProps {
 
 export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }: ReservaAprobacionProps) => {
   const { isPending: estaAprobando, mutate: aprobarReserva } =
-    api.reservas.reservaLaboratorioAbierto.aprobarReserva.useMutation();
+    api.reservas.reservarLaboratorioCerrado.aprobarReserva.useMutation();
   const { isPending: estaRechazando, mutate: rechazarReserva } =
-    api.reservas.reservaLaboratorioAbierto.rechazarReserva.useMutation();
-  const { data: reservaData } = api.reservas.reservaLaboratorioAbierto.getReservaPorID.useQuery({
+    api.reservas.reservarLaboratorioCerrado.rechazarReserva.useMutation();
+  const { data: reservaData } = api.reservas.reservarLaboratorioCerrado.getReservaPorID.useQuery({
     id: reservaId,
   });
-  const utils = api.useUtils();
 
   const formHook = useForm<AprobarReservaFormData>({
     mode: "onChange",
-    resolver: zodResolver(inputAprobarReservaLaboratorioAbiertoSchema),
+    resolver: zodResolver(inputAprobarReservaLaboratorioCerradoSchema),
     defaultValues: {
       id: reservaId,
       inventarioRevisado: [],
       laboratorioId: reservaData?.laboratorioId ? String(reservaData?.laboratorioId) : undefined,
-      tutorId: reservaData?.reserva.usuarioTutorId ?? undefined,
-      tutor: {
-        id: reservaData?.reserva.usuarioTutorId ?? undefined,
-        label: `${reservaData?.reserva?.usuarioTutor?.apellido ?? ""} ${reservaData?.reserva?.usuarioTutor?.nombre ?? ""}`,
+      laboratorio: {
+        id: reservaData?.laboratorioId ?? undefined,
+        label: reservaData?.laboratorio?.nombre ?? "",
       },
       equipoReservado: reservaData?.equipoReservado ?? [],
     },
   });
 
-  const { handleSubmit, control, watch } = formHook;
+  const { handleSubmit, control } = formHook;
 
   useEffect(() => {
     if (reservaData) {
@@ -62,10 +59,9 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
         id: reservaId,
         inventarioRevisado: [],
         laboratorioId: reservaData?.laboratorioId ? String(reservaData?.laboratorioId) : undefined,
-        tutorId: reservaData?.reserva.usuarioTutorId ?? undefined,
-        tutor: {
-          id: reservaData?.reserva.usuarioTutorId ?? undefined,
-          label: `${reservaData?.reserva?.usuarioTutor?.apellido ?? ""} ${reservaData?.reserva?.usuarioTutor?.nombre ?? ""}`,
+        laboratorio: {
+          id: reservaData?.laboratorioId ?? undefined,
+          label: reservaData?.laboratorio?.nombre ?? "",
         },
         equipoReservado: reservaData?.equipoReservado ?? [],
       });
@@ -77,17 +73,10 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
       onSuccess: () => {
         toast.success("Reserva aprobada con éxito");
         onAprobar();
-
-        // Durante el desarrollo funciono sin esto, pero no entendí porque.
-        // Se supone que react-query cachea queries de tipo `get` entonces si cambia el laboratorio id de una reserva, deberiamos invalidar para que un cache no de mala información
-        utils.reservas.laboratorioEnUso.obtenerReservasExistentesDeLaboratorio.invalidate().catch((err) => {
-          console.error(err);
-        });
       },
-      onError: (err) => {
-        const mensaje = getMensajeError(err, "Error al aprobar la reserva");
-
-        toast.error(mensaje);
+      onError: (error) => {
+        toast.error("Error al aprobar la reserva");
+        console.error(error);
       },
     });
   };
@@ -100,29 +89,21 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
           toast.success("Reserva rechazada con éxito");
           onRechazar();
         },
-        onError: (err) => {
-          const mensaje = getMensajeError(err, "Error al rechazar la reserva");
-
-          toast.error(mensaje);
+        onError: (error) => {
+          toast.error("Error al rechazar la reserva");
+          console.error(error);
         },
       },
     );
   };
-
-  const [tutor, laboratorioId] = watch(["tutor", "laboratorioId"]);
-  useEffect(() => {
-    if (tutor) {
-      formHook.setValue("tutorId", tutor.id);
-    } else {
-      formHook.setValue("tutorId", undefined);
-    }
-  }, [formHook, tutor]);
 
   const estaEstatusPendiente = reservaData?.reserva.estatus === ReservaEstatus.PENDIENTE;
   const estaEstatusAprobada = reservaData?.reserva.estatus === ReservaEstatus.FINALIZADA;
   const estaCancelada = reservaData?.reserva.estatus === ReservaEstatus.CANCELADA;
 
   const esReservaPasada = esFechaPasada(reservaData?.reserva?.fechaHoraInicio);
+
+  const laboratorioId = formHook.watch("laboratorioId");
 
   return (
     <FormProvider {...formHook}>
@@ -132,16 +113,6 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
             <CardTitle>Campos para Aprobación</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div>
-              <SelectTutorForm
-                name="tutor"
-                realNameId="tutorId"
-                control={control}
-                className="mt-2"
-                label="Tutor (Opcional)"
-              />
-            </div>
-
             <div className="flex w-full flex-col gap-y-4">
               <SelectLaboratorioFormConEstadoReservaForm
                 name="laboratorioId"
@@ -154,7 +125,6 @@ export const ReservaAprobacion = ({ reservaId, onAprobar, onCancel, onRechazar }
                 fechaHoraInicio={reservaData?.reserva?.fechaHoraInicio}
                 fechaHoraFin={reservaData?.reserva?.fechaHoraFin}
                 laboratorioId={laboratorioId}
-                esAbierto
               />
             </div>
 
