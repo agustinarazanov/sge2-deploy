@@ -301,7 +301,9 @@ export const editarReserva = async (ctx: { db: PrismaClient }, input: InputEdita
         },
       });
 
-      const { fechaHoraInicio, fechaHoraFin } = obtenerFechaHoraInicio(reserva.reservaLaboratorioCerrado?.curso, input);
+      const { fechaHoraInicio, fechaHoraFin } = reserva.reservaLaboratorioCerrado
+        ? obtenerFechaHoraInicio(reserva.reservaLaboratorioCerrado.curso, input)
+        : { fechaHoraInicio: undefined, fechaHoraFin: undefined };
 
       await tx.reserva.update({
         where: {
@@ -458,9 +460,9 @@ function obtenerFechaHoraInicio(
     dia1: string | null | undefined;
     dia2: string | null | undefined;
     horaInicio1: string;
-    horaInicio2: string;
+    horaInicio2: string | null;
     duracion1: string;
-    duracion2: string;
+    duracion2: string | null;
     turno: string;
   },
   input: InputCrearReserva,
