@@ -40,10 +40,9 @@ model User {
     paisIso String?
     pais    Pais?   @relation(fields: [paisIso], references: [iso], onDelete: Restrict)
 
-    accounts       Account[]
-    sessions       Session[]
-    usuarioRol     UsuarioRol[]
-    usuarioPermiso UsuarioPermiso[]
+    accounts   Account[]
+    sessions   Session[]
+    usuarioRol UsuarioRol[]
 
     reservasSolicitadas Reserva[] @relation(name: "reservasSolicitadas")
     reservasRenovadas   Reserva[] @relation(name: "reservasRenovadas")
@@ -80,17 +79,6 @@ model Tutor {
 
     @@id([userId])
     @@index([especialidad])
-}
-
-model UsuarioPermiso {
-    userId           String
-    permisoId        Int
-    fechaCreacion    DateTime @default(now())
-    usuarioCreadorId String
-    Permiso          Permiso  @relation(fields: [permisoId], references: [id], onDelete: Cascade)
-    User             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@id([userId, permisoId])
 }
 
 model UsuarioRol {
@@ -144,11 +132,10 @@ model Permiso {
 
     rolPermiso RolPermiso[]
 
-    fechaCreacion        DateTime         @default(now())
-    fechaModificacion    DateTime         @default(now()) @updatedAt
+    fechaCreacion        DateTime @default(now())
+    fechaModificacion    DateTime @default(now()) @updatedAt
     usuarioCreadorId     String
     usuarioModificadorId String
-    UsuarioPermiso       UsuarioPermiso[]
 
     @@unique([nombre, grupo])
     @@index([nombre(sort: Asc)])
