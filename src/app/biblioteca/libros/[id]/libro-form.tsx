@@ -262,7 +262,6 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
 
                 <div className="mt-4 basis-1/2">
-                  {JSON.stringify({ idioma: formHook.watch("idiomaId"), idioma2: libro?.idiomaId })}
                   <SelectIdiomasForm
                     name="idiomaId"
                     control={control}
