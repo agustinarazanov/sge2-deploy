@@ -147,7 +147,6 @@ export const agregarEquipo = async (ctx: { db: PrismaClient }, input: InputAgreg
         data: {
           observaciones: input.observaciones,
           palabrasClave: input.palabrasClave,
-          imagen: input.imagen,
 
           inventarioId: generarEquipoInventarioId(ultimoInventarioId + 1),
 
@@ -158,11 +157,11 @@ export const agregarEquipo = async (ctx: { db: PrismaClient }, input: InputAgreg
 
           tipoId: input.tipoId,
           marcaId: input.marcaId,
-          sedeId: input.sedeId,
+          sedeId: Number(input.sedeId),
           laboratorioId: Number(input.laboratorioId),
-          armarioId: input.armarioId,
-          estanteId: input.estanteId,
-          estadoId: input.estadoId,
+          armarioId: Number(input.armarioId),
+          estanteId: Number(input.estanteId),
+          estadoId: Number(input.estadoId),
         },
       });
 
@@ -203,7 +202,6 @@ export const editarEquipo = async (ctx: { db: PrismaClient }, input: InputEditar
       data: {
         observaciones: input.observaciones,
         palabrasClave: input.palabrasClave,
-        imagen: input.imagen,
 
         modelo: input.modelo,
         numeroSerie: input.numeroSerie,
@@ -211,11 +209,11 @@ export const editarEquipo = async (ctx: { db: PrismaClient }, input: InputEditar
 
         tipoId: input.tipoId,
         marcaId: input.marcaId,
-        sedeId: input.sedeId,
+        sedeId: Number(input.sedeId),
         laboratorioId: Number(input.laboratorioId),
-        armarioId: input.armarioId,
-        estanteId: input.estanteId,
-        estadoId: input.estadoId,
+        armarioId: Number(input.armarioId),
+        estanteId: Number(input.estanteId),
+        estadoId: Number(input.estadoId),
       },
       where: {
         id: input.id,

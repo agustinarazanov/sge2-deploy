@@ -5,15 +5,14 @@ export const inputAgregarEquipo = z.object({
   numeroSerie: z.string().min(1, { message: "Requerido" }),
   observaciones: z.string().optional().default(""),
   palabrasClave: z.string().optional().default(""),
-  imagen: z.string().min(1, { message: "Requerido" }),
 
   tipoId: z.number().min(1, { message: "Requerido" }),
   marcaId: z.number().min(1, { message: "Requerido" }),
-  sedeId: z.number().min(1, { message: "Requerido" }),
+  sedeId: z.string().min(1, { message: "Requerido" }),
   laboratorioId: z.string().min(1, { message: "Requerido" }),
-  armarioId: z.number().positive().nullish(),
-  estanteId: z.number().positive().nullish(),
-  estadoId: z.number().min(1, { message: "Requerido" }),
+  armarioId: z.string().nullish(),
+  estanteId: z.string().nullish(),
+  estadoId: z.string().min(1, { message: "Requerido" }),
   inventarioId: z.string().min(1, { message: "Requerido" }),
 });
 
