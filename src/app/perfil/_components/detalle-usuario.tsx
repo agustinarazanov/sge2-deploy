@@ -25,7 +25,6 @@ function DetalleUsuario({ usuarioData }: DetalleContenedor) {
     telefonoCelular,
     telefonoLaboral,
     documentoNumero,
-    sexo,
     fechaNacimiento,
     usuarioRol,
     image,
@@ -83,7 +82,6 @@ function DetalleUsuario({ usuarioData }: DetalleContenedor) {
                 Documento
               </Label>
               <p>{documentoNumero}</p>
-              <p>Sexo: {sexo}</p>
             </div>
             <div className="space-y-2">
               <Label className="flex items-center font-semibold">

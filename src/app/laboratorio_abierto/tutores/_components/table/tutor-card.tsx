@@ -63,10 +63,10 @@ export function TutorCard({ className, ...props }: CardProps & TutorData) {
             <span className="font-bold">Nombre:</span> {nombre} {apellido}
           </CardDescription>
           <CardDescription>
-            <span className="font-bold">Días y horarios:</span> {tutor.diasHorarios}
+            <span className="font-bold">Email:</span> {tutor.usuario.email}
           </CardDescription>
           <CardDescription>
-            <span className="font-bold">Sede:</span> {tutor.sede}
+            <span className="font-bold">Días y horarios:</span> {tutor.diasHorarios}
           </CardDescription>
           <CardDescription>
             <span className="font-bold">Especialidad:</span> {tutor.especialidad}

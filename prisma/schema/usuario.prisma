@@ -2,16 +2,15 @@
 // Todas las propiedades que no esten en ingles, deben tener algun valor por defecto o aceptar nulo.
 // https://authjs.dev/getting-started/adapters/prisma#naming-conventions
 model User {
-    id            String    @id @default(cuid())
-    name          String? // Viene con la cuenta
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?   @default("/default-avatar.svg")
+    id            String   @id @default(cuid())
+    name          String // Viene con la cuenta
+    email         String   @unique
+    emailVerified Boolean?
+    image         String   @default("/default-avatar.svg")
 
     nombre          String?
     apellido        String?
-    fechaNacimiento DateTime?
-    sexo            Boolean   @default(false)
+    fechaNacimiento DateTime? @db.Date
     direccion       String?
     piso            String?
     departamento    String?
@@ -58,10 +57,10 @@ model User {
     materiasDirector Materia[]       @relation(name: "materiasDirector")
     tutor            Tutor? // 1 tutor por 1 usuario maximo
 
+    @@unique([legajo(sort: Asc)], map: "usuario_legajo_asc_idx")
     @@index([name(sort: Asc)])
     @@index([apellido(sort: Asc)])
     @@index([email(sort: Asc)])
-    @@index([legajo(sort: Asc)], map: "usuario_legajo_asc_idx")
     @@index([legajo], type: Hash, map: "usuario_legajo_hash_idx")
 }
 
@@ -70,7 +69,8 @@ model Tutor {
     usuario User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     diasHorarios String
-    sede         String
+    sede         String?
+    activo       Boolean
 
     especialidad String
 

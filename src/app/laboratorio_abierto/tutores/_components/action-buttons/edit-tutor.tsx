@@ -37,7 +37,7 @@ export const EditTutorModal = ({ isOpen, onClose, tutor }: Props) => {
       id: tutor.usuario.id,
       nombre: tutor.usuario.nombre ?? "",
       especialidad: tutor.especialidad ?? "",
-      sede: tutor.sede,
+      sede: tutor.sede ?? undefined,
       diasHorarios: tutor.diasHorarios || [],
     };
   }, [tutor]);
