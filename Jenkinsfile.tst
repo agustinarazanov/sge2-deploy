@@ -6,20 +6,21 @@ node {
     }
 
     stage('Build image') {
-        app = docker.build("tst/sge2")
+        app = docker.build("ext/sge2", "--pull .")
     }
 
-    stage('Push image to registry') {
-        docker.withRegistry('https://registry.frba.utn.edu.ar', 'registry-gitlab') {
-            app.push("latest")
-        }
+    stage('Push image') {
+	    docker.withRegistry('https://registry.frba.utn.edu.ar', 'registry-gitlab') {
+	    	app.push("latest")
+	    }
     }
 
-    stage('Update images en la MV') {
-  	    sh 'eval $(docker-machine env NOMBRE_DE_LA_VM) && docker compose pull app'
-    }
+    stage('Update images in ext-c04') {
+  	    sh 'docker --context ext-c04 compose -f docker-compose.yml pull'
+   	}
 
-    stage('Deploy TST container') {
-       sh 'eval $(docker-machine env NOMBRE_DE_LA_VM) && docker-compose up -d --force-recreate --no-deps app'
+    stage('Cleanup') {
+        step([$class: 'WsCleanup'])
     }
 }
+
