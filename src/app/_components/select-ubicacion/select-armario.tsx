@@ -12,8 +12,8 @@ export const SelectArmarioForm = <T extends FieldValues, TType extends string>({
   ...props
 }: Omit<FormSelectProps<T, TType>, "items"> & { laboratorioId?: string | number }): ReactElement => {
   const { data, isLoading, isError } = api.admin.laboratorios.getAllArmarios.useQuery(
-    { laboratorioId: Number(props.laboratorioId!) },
-    { enabled: !!props.laboratorioId },
+    { laboratorioId: Number(props.laboratorioId) },
+    { enabled: !!props.laboratorioId && props.laboratorioId !== "" },
   );
 
   const armarios: { id: string | null; label: string }[] = useMemo(() => {

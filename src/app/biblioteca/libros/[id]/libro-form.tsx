@@ -45,10 +45,10 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
       bibliotecaId: libro.bibliotecaId ?? "",
       inventarioId: libro.inventarioId,
       idiomaId: String(libro.idiomaId),
-      laboratorioId: String(libro.laboratorioId),
-      armarioId: String(libro.armarioId),
-      estanteId: String(libro.estanteId),
-      sedeId: String(libro.sedeId),
+      laboratorioId: libro.laboratorioId ? String(libro.laboratorioId) : "",
+      armarioId: libro.armarioId ? String(libro.armarioId) : "",
+      estanteId: libro.estanteId ? String(libro.estanteId) : "",
+      sedeId: libro.sedeId ? String(libro.sedeId) : "",
       autorId: libro.autor.id,
       autor: {
         id: libro.autor.id,
@@ -230,7 +230,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     className="mt-2 text-sm"
                     label={"Armario"}
-                    laboratorioId={laboratorioId ? Number(laboratorioId) : undefined}
+                    laboratorioId={laboratorioId}
                     placeholder={!laboratorioId ? "Selecciona un laboratorio" : "Selecciona un armario"}
                     onChange={() => {
                       formHook.setValue("estanteId", undefined);
@@ -244,7 +244,7 @@ export const LibroForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     className="mt-2 text-sm"
                     label={"Estante"}
-                    armarioId={armarioId ? Number(armarioId) : undefined}
+                    armarioId={armarioId}
                     placeholder={!armarioId ? "Selecciona un armario" : "Selecciona una estante"}
                   />
                 </div>

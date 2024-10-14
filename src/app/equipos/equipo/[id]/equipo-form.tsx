@@ -33,7 +33,11 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
   const esNuevo = id === undefined;
   const equipoId = parseInt(id ?? "");
 
-  const { data: equipo, isLoading, isError } = api.equipos.equipoPorId.useQuery({ id: equipoId }, { enabled: !!id });
+  const {
+    data: equipo,
+    isLoading,
+    isError,
+  } = api.equipos.equipoPorId.useQuery({ id: equipoId }, { enabled: !!id, refetchOnWindowFocus: false });
 
   const editarEquipo = api.equipos.editarEquipo.useMutation();
   const agregarEquipo = api.equipos.nuevoEquipo.useMutation();
@@ -60,11 +64,11 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
         id: equipo.tipo.id,
         label: equipo.tipo.nombre,
       },
-      estadoId: equipo.estadoId,
-      sedeId: equipo.sedeId,
+      estadoId: String(equipo.estadoId),
+      sedeId: String(equipo.sedeId),
       laboratorioId: String(equipo.laboratorioId),
-      armarioId: equipo.armarioId,
-      estanteId: equipo.estanteId,
+      armarioId: String(equipo.armarioId),
+      estanteId: String(equipo.estanteId),
       observaciones: equipo.observaciones ?? "",
       imagen: equipo.imagen ?? "",
     };
@@ -257,7 +261,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     className="mt-2"
                     label={"Armario"}
-                    laboratorioId={String(laboratorioId)}
+                    laboratorioId={laboratorioId}
                     placeholder={!laboratorioId ? "Seleccione un laboratorio" : "Seleccione un armario"}
                     onChange={() => {
                       formHook.setValue("estanteId", undefined);

@@ -48,7 +48,7 @@ export const SelectModelosForm = <T extends FieldValues, TType extends string>({
             id="selectModelo"
             className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
           >
-            <SelectValue placeholder="Error cargando marcas" />
+            <SelectValue placeholder="Error cargando modelos" />
           </SelectTrigger>
         </div>
       </Select>
@@ -61,16 +61,16 @@ export const SelectModelosForm = <T extends FieldValues, TType extends string>({
       items={modelos}
       noOptionsComponent={
         <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm text-white">
-          <span>No se encontró la marca</span>
+          <span>No se encontró el modelo</span>
           <Link href="href" className="text-primary">
-            Crear nueva marca
+            Crear nuevo modelo
           </Link>
         </div>
       }
       className={className}
       onQueryChange={setQuery}
       isLoading={isLoading}
-      placeholder="Buscar por marca de equipo"
+      placeholder="Buscar por modelo de equipo"
       clearable
       debounceTime={0}
       control={control}
