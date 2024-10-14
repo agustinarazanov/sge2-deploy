@@ -171,7 +171,14 @@ export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEdita
       if (input.esTutor) {
         await prisma.tutor.upsert({
           where: { userId: input.id },
-          create: { userId: input.id, diasHorarios: "", especialidad: "", sede: "", usuarioCreadorId: userId },
+          create: {
+            userId: input.id,
+            activo: true,
+            diasHorarios: "",
+            especialidad: "",
+            sede: "",
+            usuarioCreadorId: userId,
+          },
           update: {},
         });
       } else {
