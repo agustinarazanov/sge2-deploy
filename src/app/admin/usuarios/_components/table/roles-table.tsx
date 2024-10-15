@@ -20,7 +20,7 @@ type Props = {
 };
 
 export const AdminUsuariosTable = ({ data, filters }: Props) => {
-  const { refresh, sorting, pagination, onSortingChange, onPaginationChange } = useAdminUsuariosQueryParam(filters);
+  const { sorting, pagination, onSortingChange, onPaginationChange } = useAdminUsuariosQueryParam(filters);
 
   const columns = getColumns();
 
