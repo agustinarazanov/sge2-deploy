@@ -129,6 +129,24 @@ export const EQUIPOS_ROUTE: AppRoute = {
   ],
 };
 
+export const MATERIA_ROUTE = {
+  href: "/materias",
+  label: "Materias",
+  isPublic: false,
+  subRutas: [
+    {
+      href: "/materias",
+      label: "Listado",
+      isPublic: false,
+    },
+    {
+      href: "/materias/correlativas",
+      label: "Correlativas",
+      isPublic: false,
+    },
+  ],
+};
+
 export const CURSOS_ROUTE = {
   href: "/cursos",
   label: "Cursos",
@@ -183,6 +201,7 @@ export const APP_ROUTES: AppRoute[] = [
   LABORATORIO_ROUTE,
   LABORATORIO_ABIERTO_ROUTE,
   ADMIN_ROUTE,
+  MATERIA_ROUTE,
 ];
 
 export const APP_ROUTES_MAP = APP_ROUTES.reduce(
