@@ -4,16 +4,18 @@ export const inputAgregarMateria = z.object({
   nombre: z.string().min(1, { message: "Requerido" }).max(100, { message: "No debe superar 100 caracteres" }),
   codigo: z.string().min(1, { message: "Requerido" }).max(50, { message: "No debe superar 50 caracteres" }),
   anio: z
-    .number()
+    .string()
     .min(1, { message: "El año debe ser al menos 1" })
-    .max(6, { message: "El año debe ser como máximo 6" })
-    .int({ message: "El año debe ser un número entero" }),
+    .max(6, { message: "El año debe ser como máximo 6" }),
   duracion: z.enum(["ANUAL", "CUATRIMESTRAL", "AMBOS"], {
     required_error: "La duración es requerida",
   }),
   tipo: z.enum(["INTEGRADORA", "OBLIGATORIA", "ELECTIVA"], {
     required_error: "El tipo es requerido",
   }),
+  regularizadas: z.array(z.string()).default([]),
+  aprobadasParaCursar: z.array(z.string()).default([]),
+  aprobadasParaRendir: z.array(z.string()).default([]),
 });
 
 export const inputGetMaterias = z.object({

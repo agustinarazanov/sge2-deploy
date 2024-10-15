@@ -139,11 +139,6 @@ export const MATERIA_ROUTE = {
       label: "Listado",
       isPublic: false,
     },
-    {
-      href: "/materias/correlativas",
-      label: "Correlativas",
-      isPublic: false,
-    },
   ],
 };
 

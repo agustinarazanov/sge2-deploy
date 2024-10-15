@@ -43,8 +43,8 @@ model MateriaCorrelativa {
 
     estatusCorrelativa EstatusCorrelativa
 
-    materiaPrerequisito Materia @relation("materiaPrerequisito", fields: [materiaPrerequisitoId], references: [id])
-    correlativa         Materia @relation("correlativa", fields: [correlativaId], references: [id])
+    materiaPrerequisito Materia @relation("materiaPrerequisito", fields: [materiaPrerequisitoId], references: [id], onDelete: Cascade)
+    correlativa         Materia @relation("correlativa", fields: [correlativaId], references: [id], onDelete: Cascade)
 
     fechaCreacion        DateTime @default(now())
     fechaModificacion    DateTime @default(now()) @updatedAt
