@@ -164,6 +164,7 @@ export const getCursoPorId = async (ctx: { db: PrismaClient }, input: InputGetCu
         select: {
           usuario: {
             select: {
+              id: true,
               apellido: true,
               nombre: true,
             },

@@ -1,14 +1,17 @@
 "use client";
 
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { Autocomplete, Button, toast } from "@/components/ui";
+import { Button, toast } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { inputEditarCurso } from "@/shared/filters/cursos-filter.schema";
 import { FormSelect } from "@/components/ui/autocomplete";
 import { turnosValues } from "@/app/_components/turno-text";
+import { SelectMateriasForm } from "@/app/cursos/_components/select-materia";
+import { SelectDivisionesForm } from "../../_components/select-division";
+import { AyudantesSelectorComponent } from "../../_components/ayudante-selector";
 
 type Props = {
   id?: string;
@@ -27,7 +30,7 @@ const dias = [
   { id: "SABADO", label: "Sábado" },
 ];
 
-const horas = ["0", "1", "2", "3", "4", "5"].map((item) => ({
+const horas = ["0", "1", "2", "3", "4", "5", "6"].map((item) => ({
   id: item,
   label: item,
 }));
@@ -43,25 +46,6 @@ const ac = [
 ];
 
 export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
-  const [materia, setMateria] = useState<{ id: number; label: string; data: number } | null>(null);
-  const { data: materiasData } = api.materia.getAll.useQuery();
-  const materias = useMemo(() => {
-    return materiasData?.map((item) => ({ id: item.id, label: item.nombre, data: item.anio })) ?? [];
-  }, [materiasData]);
-
-  const [division, setDivision] = useState<{ id: number; label: string } | null>(null);
-  const { data: divisionesData } = api.division.getAll.useQuery();
-  const divisiones = useMemo(() => {
-    return (
-      divisionesData
-        ?.filter((item) => {
-          if (materia) return item.anio === materia.data;
-          return false;
-        })
-        .map((item) => ({ id: item.id, label: item.nombre })) ?? []
-    );
-  }, [divisionesData, materia]);
-
   const { data: profesoresData } = api.admin.usuarios.getAllProfesores.useQuery();
   const profesores = useMemo(() => {
     return (
@@ -70,21 +54,6 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
       }) ?? []
     );
   }, [profesoresData]);
-
-  // TODO: mejorar query
-  const { data: ayudantesData } = api.admin.usuarios.getAll.useQuery({ rol: "3" });
-  const ayudantes = useMemo(() => {
-    return (
-      ayudantesData?.usuarios.map((item) => {
-        return { id: item.id, label: item.apellido + " " + item.nombre };
-      }) ?? []
-    );
-  }, [ayudantesData]);
-
-  // const { data: sedesData } = api.admin.laboratorios.getAllSedes.useQuery();
-  // const sedes = useMemo(() => {
-  //   return sedesData?.map((item) => ({ id: item.id, label: item.nombre })) ?? [];
-  // }, [sedesData]);
 
   const cursoId = parseInt(id ?? "");
   const { data: curso, isLoading, isError } = api.cursos.cursoPorId.useQuery({ id: cursoId }, { enabled: !!id });
@@ -96,26 +65,26 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
     mode: "onChange",
     defaultValues: {
       id: curso?.id ?? undefined,
-      horaInicio1: "",
-      duracion1: "",
-      horaInicio2: "",
-      duracion2: "",
-      dia1: undefined,
-      dia2: undefined,
-      profesorUserId: "",
-      ayudanteUserId: "",
-      anioDeCarrera: undefined,
-      activo: true,
-      ac: "",
-      sedeId: undefined,
-      materiaId: undefined,
-      divisionId: undefined,
-      turnoId: undefined,
+      horaInicio1: curso?.horaInicio1 ?? "",
+      duracion1: curso?.duracion1 ?? "",
+      horaInicio2: curso?.horaInicio2 ?? "",
+      duracion2: curso?.duracion2 ?? "",
+      dia1: curso?.dia1 ?? undefined,
+      dia2: curso?.dia2 ?? undefined,
+      profesorUserId: curso?.profesorId ?? "",
+      ayudanteUsersIds: curso?.ayudantes?.map((a) => a.usuario.id) ?? [],
+      anioDeCarrera: curso?.anioDeCarrera ?? undefined,
+      activo: curso?.activo ?? true,
+      ac: curso?.ac ?? "",
+      sedeId: curso?.sedeId?.toString() ?? "",
+      materiaId: curso?.materiaId.toString() ?? "",
+      divisionId: curso?.division.id.toString() ?? "",
+      turnoId: curso?.turno ?? "",
     },
     resolver: zodResolver(inputEditarCurso),
   });
 
-  const { handleSubmit, control } = formHook;
+  const { handleSubmit, control, setValue } = formHook;
 
   console.log(formHook.formState.errors);
 
@@ -124,21 +93,21 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
     if (curso) {
       formHook.reset({
         id: curso.id,
-        horaInicio1: "",
-        duracion1: "",
-        horaInicio2: "",
-        duracion2: "",
-        dia1: undefined,
-        dia2: undefined,
-        profesorUserId: "",
-        ayudanteUserId: "",
-        anioDeCarrera: undefined,
-        activo: true,
-        ac: "",
-        sedeId: undefined,
-        materiaId: undefined,
-        divisionId: undefined,
-        turnoId: undefined,
+        horaInicio1: curso.horaInicio1,
+        duracion1: curso.duracion1,
+        horaInicio2: curso.horaInicio2 ?? "",
+        duracion2: curso.duracion2 ?? "",
+        dia1: curso.dia1,
+        dia2: curso.dia2 ?? undefined,
+        profesorUserId: curso.profesorId,
+        ayudanteUsersIds: curso.ayudantes?.map((a) => a.usuario.id) ?? [],
+        anioDeCarrera: curso.anioDeCarrera,
+        activo: curso.activo,
+        ac: curso.ac,
+        sedeId: curso.sedeId?.toString(),
+        materiaId: curso.materiaId.toString(),
+        divisionId: curso.division?.id.toString(),
+        turnoId: curso.turno,
       });
     }
   }, [formHook, curso]);
@@ -193,32 +162,19 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
           <div className="flex flex-col space-y-4 px-0 md:px-6">
             <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
               <div className="mt-4 w-full md:basis-2/3">
-                <Autocomplete
-                  items={materias}
-                  noOptionsComponent={
-                    <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm text-white">
-                      <span>No se encontró la materia</span>
-                    </div>
-                  }
-                  className="mt-2"
-                  isLoading={isLoading}
-                  clearable
-                  debounceTime={0}
-                  label="Materia"
-                  value={materia}
-                  onChange={setMateria}
+                <SelectMateriasForm
+                  label={"Materia"}
+                  control={control}
+                  name="materiaId"
+                  placeholder={"Seleccione una materia"}
                 />
               </div>
               <div className="mt-4 w-full md:basis-1/3">
-                <Autocomplete
-                  items={divisiones}
-                  className="mt-2"
-                  isLoading={isLoading}
-                  clearable
-                  debounceTime={0}
-                  label="División"
-                  value={division}
-                  onChange={setDivision}
+                <SelectDivisionesForm
+                  label={"División"}
+                  control={control}
+                  name="divisionId"
+                  placeholder={"Seleccione una división"}
                 />
               </div>
             </div>
@@ -288,12 +244,10 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
               </div>
 
               <div className="mt-4 basis-1/2">
-                <FormSelect
-                  label={"Ayudante/s"}
-                  control={control}
-                  name="ayudanteUserId"
-                  className="mt-2"
-                  items={ayudantes}
+                <AyudantesSelectorComponent
+                  cursoId={cursoId}
+                  initialAyudantes={curso?.ayudantes?.map((a) => a.usuario.id) ?? []}
+                  onChange={(ayudantes: string[]) => setValue("ayudanteUsersIds", ayudantes)}
                 />
               </div>
             </div>
