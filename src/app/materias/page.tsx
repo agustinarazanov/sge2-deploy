@@ -20,7 +20,7 @@ export default async function Page({ searchParams }: PageProps) {
       {/* Cambia el título */}
       <ActionButtons />
       <Suspense key={filter_as_key} fallback={<LoadingMateriasTable />}>
-        <MateriasTableContainer filters={filters} /> {/* Asegúrate de pasar los filtros al contenedor */}
+        <MateriasTableContainer /> {/* Asegúrate de pasar los filtros al contenedor */}
       </Suspense>
     </>
   );
