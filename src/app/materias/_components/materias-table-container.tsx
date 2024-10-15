@@ -1,11 +1,7 @@
 import { api } from "@/trpc/server";
 import { MateriasTable } from "./table";
 
-type MateriasTableContainerProps = {
-  filters: any;
-};
-
-export default async function MateriasTableContainer({ filters }: MateriasTableContainerProps) {
-  const data = await api.materia.getAll(filters);
+export default async function MateriasTableContainer() {
+  const data = await api.materia.getAll();
   return <MateriasTable data={data} />;
 }
