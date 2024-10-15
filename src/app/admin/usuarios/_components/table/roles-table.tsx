@@ -1,7 +1,6 @@
 "use client";
 
 import { DataTable } from "@/components/ui";
-import RemoverRolModal from "./remove-libro";
 import { type RouterOutputs } from "@/trpc/react";
 import { type z } from "zod";
 import { EditarUsuarioModal } from "./edit-libro";
@@ -10,7 +9,7 @@ import { getColumns } from "./columns";
 import { useAdminUsuariosQueryParam } from "../../_hooks/use-admin-usuarios-query-param";
 import { type inputGetUsuarios } from "@/shared/filters/admin-usuarios-filter.schema";
 import { DataTablePaginationStandalone } from "@/components/ui/table/table-pagination-standalone";
-import {DetallesUsuarioPage} from "@/app/admin/usuarios/_components/table/detalles-usuario";
+import { DetallesUsuarioPage } from "@/app/admin/usuarios/_components/table/detalles-usuario";
 
 type UsuariosData = RouterOutputs["admin"]["usuarios"]["getAll"];
 type AdminUsuariosFilters = z.infer<typeof inputGetUsuarios>;
@@ -44,9 +43,8 @@ export const AdminUsuariosTable = ({ data, filters }: Props) => {
           cell({ original }) {
             return (
               <>
-                <DetallesUsuarioPage usuarioId={original.id}/>
+                <DetallesUsuarioPage usuarioId={original.id} />
                 <EditarUsuarioModal usuarioId={original.id} />
-                <RemoverRolModal usuarioId={original.id} email={original.email ?? ""} onSubmit={refresh} />
               </>
             );
           },

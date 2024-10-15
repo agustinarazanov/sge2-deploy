@@ -1,4 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { getRutaImagen } from "@/shared/imagen";
 import { api } from "@/trpc/react";
 import Image from "next/image";
 
@@ -9,19 +10,26 @@ export const EquipoInformacionBasica = ({ equipoId }: { equipoId: number }) => {
     return <div>Error al cargar...</div>;
   }
 
+  const equipoImagen = getRutaImagen(equipo?.tipo.imagen ?? "");
+
   return (
     <>
       <div className="my-2 flex w-full flex-col space-y-4 px-0 text-left text-2xl md:px-6">Descripción:</div>
       <div className="flex w-full flex-col space-x-0 px-12 sm:flex-row sm:space-x-4">
         <div className="flex w-full flex-col lg:flex-col lg:justify-between">
           <div className="mt-4">
-            <Image
-              src={equipo?.tipo.imagen ?? "/no-image.svg"}
-              alt="Imagen del tipo"
-              className="rounded-xl"
-              height={100}
-              width={200}
-            />
+            <div style={{ position: "relative", width: "200px", height: "200px" }}>
+              <Image
+                src={equipoImagen}
+                alt={`Equipo ${equipo?.tipo.nombre}`}
+                className="rounded-xl"
+                sizes="200px"
+                fill
+                style={{
+                  objectFit: "contain",
+                }}
+              />
+            </div>
           </div>
         </div>
         <div className="flex w-full flex-col space-y-4 pt-2">
