@@ -36,8 +36,6 @@ export const AgregarCursoPantallaForm = ({ onSubmit, onCancel }: Props) => {
 
   useEffect(() => formHook.reset(cursoBase), [formHook, cursoBase]);
 
-  console.log(formHook.formState.errors);
-
   const onFormSubmit = (formData: FormAgregarReservaPantalla) => {
     agregarReservaPantalla.mutate(formData, {
       onSuccess: () => {
