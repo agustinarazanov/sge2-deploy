@@ -98,7 +98,7 @@ const MultiSelectFormField = React.forwardRef<HTMLButtonElement, MultiSelectForm
             color={"secondary"}
           >
             {selectedValues.length > 0 ? (
-              <div className="flex w-full max-w-lg items-start justify-between">
+              <div className="flex w-full items-start justify-between">
                 <div className="flex flex-wrap items-center">
                   {selectedValues.map((value) => {
                     const option = options.find((o) => o.value === value);
