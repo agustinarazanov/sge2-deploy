@@ -117,7 +117,7 @@ export const authOptions: NextAuthOptions = {
           codigoPostal: profile.address.postal_code,
           telefonoCelular: profile.phone_number,
           documentoNumero: profile.documento,
-          esDocente: profile.es_docente,
+          esDocente: profile.es_docente === "Docente",
           documentoTipo: {
             connect: {
               id: (await db.documentoTipo.findFirst({ where: { nombre: profile.documento_tipo } }))?.id,
