@@ -7,6 +7,7 @@ import { type z } from "zod";
 import { useCallback, useEffect, useMemo } from "react";
 import { MateriaDropdownMultipleForm } from "@/app/_components/form/materias-dropdown-multiple";
 import { EstatusCorrelativa } from "@prisma/client";
+import { SelectUsuarioForm } from "@/app/_components/select-usuario";
 
 type Props = {
   id?: string;
@@ -204,6 +205,28 @@ export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
                       </span>
                     )}
                   </div>
+                </div>
+              </div>
+
+              <div className="flex flex-row gap-4">
+                {/* Director de la materia */}
+                <div className="mt-4 basis-1/2">
+                  <SelectUsuarioForm
+                    label={"Director"}
+                    control={control}
+                    name="nombre"
+                    className="mt-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-300"
+                  />
+                </div>
+
+                {/* Jefes de Trabajos Prácticos */}
+                <div className="mt-4 basis-1/2">
+                  <SelectUsuarioForm
+                    label={"Jefes de Trabajos Prácticos"}
+                    control={control}
+                    name="nombre"
+                    className="mt-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-300"
+                  />
                 </div>
               </div>
 
