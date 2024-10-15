@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { inputEditarTipo } from "@/shared/filters/equipos-tipos-filter.schema";
 import { uploadFile } from "@/shared/upload-file";
 import Image from "next/image";
+import { getRutaImagen } from "@/shared/imagen";
 
 type Props = {
   id?: string;
@@ -20,7 +21,11 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
   const esNuevo = id === undefined;
   const tipoId = parseInt(id ?? "");
 
-  const { data: tipo, isLoading, isError } = api.equipos.tipoPorId.useQuery({ id: tipoId }, { enabled: !!id });
+  const {
+    data: tipo,
+    isLoading,
+    isError,
+  } = api.equipos.tipoPorId.useQuery({ id: tipoId }, { enabled: !!id, refetchOnWindowFocus: false });
 
   const editarTipo = api.equipos.editarTipo.useMutation();
   const agregarTipo = api.equipos.nuevoTipo.useMutation();
@@ -31,7 +36,9 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
   const tipoBase: FormEditarTipoType = useMemo(() => {
     if (!tipo) return {} as FormEditarTipoType;
 
-    setPreviewimgUrl(tipo.imagen ? `/imagenes/${tipo.imagen}` : "");
+    const rutaImagen = getRutaImagen(tipo.imagen ?? "");
+
+    setPreviewimgUrl(rutaImagen);
 
     return {
       id: tipo.id,
@@ -139,7 +146,6 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
                 <div className="mt-4 basis-1/2">
                   <Input
                     label={!previewImgUrl ? "Agregar imágen" : "Cambiar imágen"}
-                    //control={control}
                     name="imagen"
                     type={"file"}
                     accept="image/*"
@@ -151,13 +157,18 @@ export const TipoForm = ({ id, onSubmit, onCancel }: Props) => {
 
               <div className="flex w-full flex-col md:w-1/3 md:flex-row lg:justify-between">
                 <div className="mt-4">
-                  <Image
-                    src={previewImgUrl ? previewImgUrl : "/no-image.svg"}
-                    alt="Imagen del tipo"
-                    className="h-auto w-fit rounded-xl"
-                    height={100}
-                    width={250}
-                  />
+                  <div style={{ position: "relative", width: "200px", height: "200px" }}>
+                    <Image
+                      src={previewImgUrl ? previewImgUrl : "/no-image.svg"}
+                      alt={`Equipo`}
+                      className="rounded-xl"
+                      sizes="200px"
+                      fill
+                      style={{
+                        objectFit: "contain",
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
