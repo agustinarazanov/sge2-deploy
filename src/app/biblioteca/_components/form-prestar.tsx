@@ -51,8 +51,6 @@ export const LibroFormPrestarORenovar = ({ libroId, libroNombre, onSubmit, onCan
     ),
   });
 
-  console.log({ errors: formHook.formState.errors, renovar });
-
   const sendEmailMutation = api.email.sendEmail.useMutation({
     onSuccess: (data) => {
       console.log("Email sent successfully:", data);

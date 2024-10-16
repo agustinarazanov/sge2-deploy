@@ -6,6 +6,7 @@ import {
   type inputEditarMateria,
   type inputGetMateria,
 } from "@/shared/filters/materia-filter.schema";
+import { informacionUsuario } from "../usuario-helper";
 
 export const getAllMaterias = async (ctx: { db: PrismaClient }) => {
   const materias = await ctx.db.materia.findMany({
@@ -42,6 +43,18 @@ export const getMateriaById = async (ctx: { db: PrismaClient }, input: InputGetM
       anio: true,
       duracion: true,
       tipo: true,
+      directorUsuarioId: true,
+      directorUsuario: {
+        select: informacionUsuario,
+      },
+      jefeTrabajoPracticos: {
+        select: {
+          userId: true,
+          usuario: {
+            select: informacionUsuario,
+          },
+        },
+      },
       correlativa: {
         select: {
           materiaPrerequisito: {
@@ -101,6 +114,15 @@ export const agregarMateria = async (ctx: { db: PrismaClient }, input: InputAgre
         anio: Number(input.anio),
         duracion: input.duracion,
         tipo: input.tipo,
+        jefeTrabajoPracticos: {
+          createMany: {
+            data:
+              input.jefesTrabajoPracticoUserId?.map((userId) => ({
+                userId: userId,
+              })) ?? [],
+          },
+        },
+
         usuarioCreadorId: userId,
         usuarioModificadorId: userId,
       },
@@ -140,6 +162,17 @@ export const editarMateria = async (ctx: { db: PrismaClient }, input: InputEdita
         anio: Number(input.anio),
         duracion: input.duracion,
         tipo: input.tipo,
+        directorUsuarioId: input.directorUserId,
+        jefeTrabajoPracticos: {
+          deleteMany: {},
+          createMany: {
+            data:
+              input.jefesTrabajoPracticoUserId?.map((userId) => ({
+                userId: userId,
+              })) ?? [],
+          },
+        },
+
         usuarioModificadorId: userId,
       },
       where: {

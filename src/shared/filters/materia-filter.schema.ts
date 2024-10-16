@@ -16,6 +16,8 @@ export const inputAgregarMateria = z.object({
   regularizadas: z.array(z.string()).default([]),
   aprobadasParaCursar: z.array(z.string()).default([]),
   aprobadasParaRendir: z.array(z.string()).default([]),
+  directorUserId: z.string().optional(),
+  jefesTrabajoPracticoUserId: z.array(z.string()).optional(),
 });
 
 export const inputGetMaterias = z.object({
