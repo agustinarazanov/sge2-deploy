@@ -21,6 +21,8 @@ export const inputEliminarUsuario = z.object({ id: z.string() });
 
 export const inputGetUsuario = z.object({ id: z.string() });
 
+export const inputGetUsuariosPorIds = z.object({ ids: z.array(z.string()) });
+
 export const inputGetTutor = z.object({ id: z.string() });
 
 export const inputEditarUsuario = z.object({

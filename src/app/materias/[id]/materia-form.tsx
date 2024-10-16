@@ -7,6 +7,11 @@ import { type z } from "zod";
 import { useCallback, useEffect, useMemo } from "react";
 import { MateriaDropdownMultipleForm } from "@/app/_components/form/materias-dropdown-multiple";
 import { EstatusCorrelativa } from "@prisma/client";
+import {
+  getUserLabelNameForSelect,
+  SelectMultipleUsuarioForm,
+  SelectUsuarioForm,
+} from "@/app/_components/select-usuario";
 
 type Props = {
   id?: string;
@@ -14,7 +19,11 @@ type Props = {
   onCancel: () => void;
 };
 
-type FormEditarMateriaType = z.infer<typeof inputEditarMateria>;
+type FormHelperType = {
+  director: { id: string; label: string };
+};
+
+type FormEditarMateriaType = z.infer<typeof inputEditarMateria> & FormHelperType;
 
 export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
   const esNueva = id === undefined;
@@ -40,15 +49,26 @@ export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
     [materia],
   );
 
-  const materiaBase = useMemo(() => {
+  const materiaBase = useMemo((): FormEditarMateriaType => {
     if (!materia) return {} as FormEditarMateriaType;
     return {
       id: materia.id ?? undefined,
       nombre: materia.nombre ?? "",
       codigo: materia.codigo ?? "",
-      anio: materia.anio ? String(materia.anio) : undefined,
+      anio: materia.anio ? String(materia.anio) : "",
       duracion: materia.duracion ?? undefined,
       tipo: materia.tipo ?? undefined,
+
+      director: {
+        id: materia.directorUsuarioId ?? "",
+        label: materia.directorUsuario ? getUserLabelNameForSelect(materia.directorUsuario) : "",
+      },
+      directorUserId: materia.directorUsuarioId ?? undefined,
+
+      jefesTrabajoPracticoUserId: materia.jefeTrabajoPracticos
+        ? materia.jefeTrabajoPracticos.map((jtp) => jtp.userId)
+        : undefined,
+
       aprobadasParaCursar: getCorrelativasPorTipo(EstatusCorrelativa.CURSAR_APROBADA),
       aprobadasParaRendir: getCorrelativasPorTipo(EstatusCorrelativa.RENDIR_APROBADA),
       regularizadas: getCorrelativasPorTipo(EstatusCorrelativa.CURSAR_REGULARIZADA),
@@ -57,7 +77,6 @@ export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
 
   const formHook = useForm<FormEditarMateriaType>({
     mode: "onChange",
-    defaultValues: materiaBase,
     resolver: zodResolver(id ? inputEditarMateria : inputAgregarMateria),
   });
 
@@ -94,6 +113,9 @@ export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
     formHook.reset();
     onCancel();
   };
+
+  const [director] = formHook.watch(["director"]);
+  useEffect(() => formHook.setValue("directorUserId", director?.id), [formHook, director]);
 
   if (!esNueva && isNaN(materiaId)) {
     return <div>Error al cargar...</div>;
@@ -204,6 +226,31 @@ export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
                       </span>
                     )}
                   </div>
+                </div>
+              </div>
+
+              <div className="flex flex-row gap-4">
+                {/* Director de la materia */}
+                <div className="mt-4 basis-1/2">
+                  <SelectUsuarioForm
+                    label={"Director"}
+                    control={control}
+                    name="director"
+                    realNameId="directorUserId"
+                    className="mt-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-300"
+                  />
+                </div>
+
+                {/* Jefes de Trabajos Prácticos */}
+                <div className="mt-4 basis-1/2">
+                  <label htmlFor="jefesTrabajoPracticoUserId">
+                    Jefes de Trabajos Prácticos:
+                    <SelectMultipleUsuarioForm
+                      label={"Jefes de Trabajos Prácticos"}
+                      control={control}
+                      name="jefesTrabajoPracticoUserId"
+                    />
+                  </label>
                 </div>
               </div>
 
