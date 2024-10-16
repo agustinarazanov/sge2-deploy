@@ -196,19 +196,11 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
                   control={control}
                   name="horaInicio"
                   className="mt-2"
-                  step={60 * 5}
                   type={"time"}
                 />
               </div>
               <div className="mt-4 basis-1/2">
-                <FormInput
-                  label={"Hora de fin"}
-                  control={control}
-                  name="horaFin"
-                  className="mt-2"
-                  step={60 * 5}
-                  type={"time"}
-                />
+                <FormInput label={"Hora de fin"} control={control} name="horaFin" className="mt-2" type={"time"} />
               </div>
             </div>
 
