@@ -163,18 +163,12 @@ export const getCursoPorId = async (ctx: { db: PrismaClient }, input: InputGetCu
       ayudantes: {
         select: {
           usuario: {
-            select: {
-              apellido: true,
-              nombre: true,
-            },
+            select: informacionUsuario,
           },
         },
       },
       profesor: {
-        select: {
-          apellido: true,
-          nombre: true,
-        },
+        select: informacionUsuario,
       },
     },
     where: {
@@ -191,24 +185,31 @@ export const agregarCurso = async (ctx: { db: PrismaClient }, input: InputAgrega
     const curso = await ctx.db.curso.create({
       data: {
         materiaId: parseInt(input.materiaId),
-        // ayudanteUserId: userId,
-        // profesorUserId: userId,
-        sedeId: 1,
-        ac: "A",
-        dia1: "LUNES",
-        dia2: "MARTES",
-        duracion1: "4",
-        duracion2: "4",
-        horaInicio1: "1",
-        horaInicio2: "1",
-        turno: "MANANA",
+        sedeId: Number(input.sedeId),
+        ac: input.ac,
+        dia1: input.dia1,
+        dia2: input.dia2 ? input.dia2 : undefined,
+        duracion1: input.duracion1,
+        duracion2: input.duracion2 ? input.duracion2 : undefined,
+        horaInicio1: input.horaInicio1,
+        horaInicio2: input.horaInicio2 ? input.horaInicio2 : undefined,
+        turno: input.turno,
         activo: true,
-        anioDeCarrera: 1,
-        divisionId: 1,
-        // TODO: profesorId: input.profesorId,
-        profesorId: userId,
+        anioDeCarrera: Number(input.anioDeCarrera),
+        divisionId: parseInt(input.divisionId),
+        profesorId: input.profesorUserId,
         usuarioCreadorId: userId,
         usuarioModificadorId: userId,
+        ayudantes: {
+          createMany: {
+            data:
+              input.ayudanteUsersIds?.map((ayudanteId) => ({
+                usuarioCreadorId: userId,
+                usuarioModificadorId: userId,
+                userId: ayudanteId,
+              })) ?? [],
+          },
+        },
       },
     });
 
@@ -227,13 +228,13 @@ export const agregarCurso = async (ctx: { db: PrismaClient }, input: InputAgrega
 type inputEliminarCurso = z.infer<typeof inputEliminarCurso>;
 export const eliminarCurso = async (ctx: { db: PrismaClient }, input: inputEliminarCurso) => {
   try {
-    const libro = await ctx.db.libro.delete({
+    const curso = await ctx.db.curso.delete({
       where: {
         id: input.id,
       },
     });
 
-    return libro;
+    return curso;
   } catch (error) {
     throw new Error(`Error eliminando curso ${input.id}`);
   }
@@ -246,8 +247,31 @@ export const editarCurso = async (ctx: { db: PrismaClient }, input: InputEditarC
       data: {
         activo: input.activo,
 
+        sedeId: Number(input.sedeId),
+        ac: input.ac,
+        dia1: input.dia1,
+        dia2: input.dia2 ? input.dia2 : undefined,
+        duracion1: input.duracion1,
+        duracion2: input.duracion2 ? input.duracion2 : undefined,
+        horaInicio1: input.horaInicio1,
+        horaInicio2: input.horaInicio2 ? input.horaInicio2 : undefined,
+        turno: input.turno,
+        anioDeCarrera: Number(input.anioDeCarrera),
+        divisionId: parseInt(input.divisionId),
+        profesorId: input.profesorUserId,
         usuarioModificadorId: userId,
-        sedeId: 1,
+
+        ayudantes: {
+          deleteMany: {},
+          createMany: {
+            data:
+              input.ayudanteUsersIds?.map((ayudanteId) => ({
+                usuarioCreadorId: userId,
+                usuarioModificadorId: userId,
+                userId: ayudanteId,
+              })) ?? [],
+          },
+        },
       },
       where: {
         id: input.id,

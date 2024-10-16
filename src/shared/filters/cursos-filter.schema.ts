@@ -1,23 +1,41 @@
-import { z } from "zod";
+import { CursoDia, TurnoCurso } from "@prisma/client";
 
-const diaEnum = z.enum(["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO"]).default("LUNES").catch("LUNES");
+import { z } from "zod";
 
 export const inputAgregarCurso = z.object({
   horaInicio1: z.string().min(1, { message: "Requerido" }),
   duracion1: z.string().min(1, { message: "Requerido" }),
-  horaInicio2: z.string().min(1, { message: "Requerido" }),
-  duracion2: z.string().min(1, { message: "Requerido" }),
-  dia1: diaEnum,
-  dia2: diaEnum,
+  horaInicio2: z.string().optional(),
+  duracion2: z.string().optional(),
+  dia1: z.enum([
+    CursoDia.DOMINGO,
+    CursoDia.LUNES,
+    CursoDia.MARTES,
+    CursoDia.MIERCOLES,
+    CursoDia.JUEVES,
+    CursoDia.VIERNES,
+    CursoDia.SABADO,
+  ]),
+  dia2: z
+    .enum([
+      CursoDia.DOMINGO,
+      CursoDia.LUNES,
+      CursoDia.MARTES,
+      CursoDia.MIERCOLES,
+      CursoDia.JUEVES,
+      CursoDia.VIERNES,
+      CursoDia.SABADO,
+    ])
+    .optional(),
   profesorUserId: z.string().min(1, { message: "Requerido" }),
-  ayudanteUserId: z.string().min(1, { message: "Requerido" }),
-  anioDeCarrera: z.number().min(1, { message: "Requerido" }),
+  ayudanteUsersIds: z.array(z.string()).optional(),
+  anioDeCarrera: z.string().min(1, { message: "Requerido" }),
   activo: z.boolean().default(true).catch(true),
   ac: z.string().min(1, { message: "Requerido" }),
   sedeId: z.string().min(1, { message: "Requerido" }),
   materiaId: z.string().min(1, { message: "Requerido" }),
   divisionId: z.string().min(1, { message: "Requerido" }),
-  turnoId: z.string().min(1, { message: "Requerido" }),
+  turno: z.enum([TurnoCurso.MANANA, TurnoCurso.NOCHE, TurnoCurso.TARDE]),
 });
 
 export const inputGetCursos = z.object({

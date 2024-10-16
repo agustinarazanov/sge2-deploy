@@ -193,11 +193,11 @@ export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEdita
           where: { userId: input.id },
           create: {
             userId: input.id,
-            activo: true,
             diasHorarios: "",
             especialidad: "",
             sede: "",
             usuarioCreadorId: userId,
+            activo: true,
           },
           update: {},
         });

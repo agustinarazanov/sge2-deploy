@@ -6,7 +6,8 @@ import { inputEditarMateria, inputAgregarMateria } from "@/shared/filters/materi
 import { type z } from "zod";
 import { useCallback, useEffect, useMemo } from "react";
 import { MateriaDropdownMultipleForm } from "@/app/_components/form/materias-dropdown-multiple";
-import { EstatusCorrelativa } from "@prisma/client";
+import { EstatusCorrelativa, MateriaDuracion, MateriaTipo } from "@prisma/client";
+import { FormSelect } from "@/components/ui/autocomplete";
 import {
   getUserLabelNameForSelect,
   SelectMultipleUsuarioForm,
@@ -129,6 +130,18 @@ export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
     return <div>Error al cargar...</div>;
   }
 
+  const materiaDuracion: { id: MateriaDuracion; label: string }[] = [
+    { id: MateriaDuracion.ANUAL, label: "Anual" },
+    { id: MateriaDuracion.CUATRIMESTRAL, label: "Cuatrimestral" },
+    { id: MateriaDuracion.AMBOS, label: "Ambos" },
+  ];
+
+  const materiaTipo: { id: MateriaTipo; label: string }[] = [
+    { id: MateriaTipo.INTEGRADORA, label: "Integradora" },
+    { id: MateriaTipo.OBLIGATORIA, label: "Obligatoria" },
+    { id: MateriaTipo.ELECTIVA, label: "Electiva" },
+  ];
+
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
@@ -164,26 +177,13 @@ export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
                 <div className="basis-1/2">
                   {/* Campo de Año */}
                   <div className="mt-4 w-full">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-white">Año</label>
-                    <select
-                      {...formHook.register("anio", {
-                        required: "Debes seleccionar un año",
-                      })}
+                    <FormSelect
+                      label={"Año"}
+                      control={control}
+                      name="anio"
                       className="mt-2 block w-full rounded-md border-gray-300 bg-white text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                    >
-                      <option value="">Seleccionar año</option>
-                      <option value={"1"}>1</option>
-                      <option value={"2"}>2</option>
-                      <option value={"3"}>3</option>
-                      <option value={"4"}>4</option>
-                      <option value={"5"}>5</option>
-                      <option value={"6"}>6</option>
-                    </select>
-                    {formHook.formState.errors.anio && (
-                      <span className="text-red-500">
-                        {formHook.formState.errors.anio.message ?? "El año es requerido"}
-                      </span>
-                    )}
+                      items={["1", "2", "3", "4", "5", "6"]}
+                    />
                   </div>
                 </div>
               </div>
@@ -192,39 +192,25 @@ export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
                 <div className="basis-1/2">
                   {/* Campo de Duración */}
                   <div className="mt-4 w-full">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-white">Duración</label>
-                    <select
-                      {...formHook.register("duracion", { required: "Debes seleccionar una duración" })}
+                    <FormSelect
+                      label={"Duración"}
+                      control={control}
+                      name="duracion"
                       className="mt-2 block w-full rounded-md border-gray-300 bg-white text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                    >
-                      <option value="ANUAL">Anual</option>
-                      <option value="CUATRIMESTRAL">Cuatrimestral</option>
-                      <option value="AMBOS">Ambos</option>
-                    </select>
-                    {formHook.formState.errors.duracion && (
-                      <span className="text-red-500">
-                        {formHook.formState.errors.duracion.message ?? "La duración es requerida"}
-                      </span>
-                    )}
+                      items={materiaDuracion}
+                    />
                   </div>
                 </div>
                 <div className="basis-1/2">
                   {/* Campo de Tipo */}
                   <div className="mt-4 w-full">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-white">Tipo</label>
-                    <select
-                      {...formHook.register("tipo", { required: "Debes seleccionar un tipo" })}
+                    <FormSelect
+                      label={"Tipo"}
+                      control={control}
+                      name="tipo"
                       className="mt-2 block w-full rounded-md border-gray-300 bg-white text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                    >
-                      <option value="INTEGRADORA">Integradora</option>
-                      <option value="OBLIGATORIA">Obligatoria</option>
-                      <option value="ELECTIVA">Electiva</option>
-                    </select>
-                    {formHook.formState.errors.tipo && (
-                      <span className="text-red-500">
-                        {formHook.formState.errors.tipo.message ?? "El tipo es requerido"}
-                      </span>
-                    )}
+                      items={materiaTipo}
+                    />
                   </div>
                 </div>
               </div>
