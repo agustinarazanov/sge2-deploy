@@ -10,11 +10,13 @@ import {
   getTodosLosUsuariosProcedure,
   getUsuarioPorIdProcedure,
   getAllTutoresEspecialidadesProcedure,
+  getUsuariosPorIdsProcedure,
 } from "../../services/admin/usuarios-admin.service";
 
 export const usuariosRouter = createTRPCRouter({
   getAll: getTodosLosUsuariosProcedure,
   getUsuarioPorId: getUsuarioPorIdProcedure,
+  getUsuariosPorIds: getUsuariosPorIdsProcedure,
   eliminarUsuario: eliminarUsuarioProcedure,
   editarUsuario: editarUsuarioProcedure,
 

@@ -7,6 +7,7 @@ import {
   inputGetUsuarios,
   inputGetTutor,
   inputEditarTutor,
+  inputGetUsuariosPorIds,
 } from "@/shared/filters/admin-usuarios-filter.schema";
 import {
   editarUsuario,
@@ -18,6 +19,7 @@ import {
   getAllUsuarios,
   getUsuarioPorId,
   getAllTutoresEspecialidades,
+  getUsuariosPorIds,
 } from "../../repositories/admin/usuarios-admin.repository";
 
 export const getTodosLosUsuariosProcedure = protectedProcedure.input(inputGetUsuarios).query(async ({ ctx, input }) => {
@@ -35,6 +37,16 @@ export const getUsuarioPorIdProcedure = protectedProcedure.input(inputGetUsuario
 
   return usuario;
 });
+
+export const getUsuariosPorIdsProcedure = protectedProcedure
+  .input(inputGetUsuariosPorIds)
+  .query(async ({ ctx, input }) => {
+    validarInput(inputGetUsuariosPorIds, input);
+
+    const usuarios = await getUsuariosPorIds(ctx, input);
+
+    return usuarios;
+  });
 
 export const getTutorPorIdProcedure = protectedProcedure.input(inputGetTutor).query(async ({ ctx, input }) => {
   console.log(ctx, input);

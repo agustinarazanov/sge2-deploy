@@ -144,7 +144,7 @@ export const FormSelect = <T extends FieldValues, TType extends ISelectItem | st
             value={value}
             onChange={(value) => {
               props.onChange?.(value);
-              field.onChange?.(value as PathValue<T, Path<T>>);
+              value && field.onChange?.(value as PathValue<T, Path<T>>);
             }}
             onBlur={field.onBlur}
             isDirty={fieldState.isDirty}

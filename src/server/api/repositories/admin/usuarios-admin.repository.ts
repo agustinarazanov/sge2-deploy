@@ -6,9 +6,11 @@ import {
   type inputEditarUsuario,
   type inputEditarTutor,
   type inputGetTutor,
+  type inputGetUsuariosPorIds,
 } from "@/shared/filters/admin-usuarios-filter.schema";
 import { type Prisma, type PrismaClient } from "@prisma/client";
 import { type z } from "zod";
+import { informacionUsuario } from "../usuario-helper";
 
 type InputGetAll = z.infer<typeof inputGetUsuarios>;
 export const getAllUsuarios = async (ctx: { db: PrismaClient }, input: InputGetAll) => {
@@ -130,6 +132,24 @@ export const getUsuarioPorId = async (ctx: { db: PrismaClient }, input: InputGet
   return usuario;
 };
 
+type InputGetUsuariosPorIds = z.infer<typeof inputGetUsuariosPorIds>;
+export const getUsuariosPorIds = async (ctx: { db: PrismaClient }, input: InputGetUsuariosPorIds) => {
+  const { ids } = input;
+
+  const usuarios = await ctx.db.user.findMany({
+    select: {
+      ...informacionUsuario,
+    },
+    where: {
+      id: {
+        in: ids,
+      },
+    },
+  });
+
+  return usuarios;
+};
+
 type InputGetTutorPorId = z.infer<typeof inputGetTutor>;
 export const getTutorPorId = async (ctx: { db: PrismaClient }, input: InputGetTutorPorId) => {
   const { id } = input;
@@ -173,11 +193,11 @@ export const editarUsuario = async (ctx: { db: PrismaClient }, input: InputEdita
           where: { userId: input.id },
           create: {
             userId: input.id,
-            activo: true,
             diasHorarios: "",
             especialidad: "",
             sede: "",
             usuarioCreadorId: userId,
+            activo: true,
           },
           update: {},
         });

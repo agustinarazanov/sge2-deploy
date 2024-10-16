@@ -1,12 +1,11 @@
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { type RouterOutputs, api } from "@/trpc/react";
-import { Button, ScrollArea, toast } from "@/components/ui";
+import { Button, ScrollArea } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { XIcon } from "lucide-react";
-import { RolesSelector } from "@/app/admin/usuarios/_components/filtros/roles-selector";
 import { AyudantesSelector } from "./ayudantes-selector";
 
 type AyudanteType = RouterOutputs["admin"]["usuarios"]["getAll"]["usuarios"][number];
@@ -26,7 +25,7 @@ export const AyudantesSelectorComponent = ({ initialAyudantes = [], onChange, cu
 
   const { data: ayudantesData } = api.admin.usuarios.getAll.useQuery({ rol: "3" });
 
-  const { control, setValue, watch } = useForm({
+  const { setValue, watch } = useForm({
     defaultValues: {
       ayudantes: initialAyudantes,
     },
