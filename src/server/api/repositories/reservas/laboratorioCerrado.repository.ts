@@ -6,13 +6,14 @@ import type {
   inputGetReservaLaboratorioPorUsuarioId,
   inputRechazarReservaLaboratorioCerrado,
   inputReservaLaboratorioCerrado,
+  inputReservaLaboratorioDiscrecional,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { type PrismaClient, type Prisma, type CursoDia, ReservaEstatus } from "@prisma/client";
 import type { z } from "zod";
 import { informacionUsuario } from "../usuario-helper";
 import { construirOrderByDinamico } from "@/shared/dynamic-orderby";
 import { lanzarErrorSiLaboratorioOcupado } from "./laboratorioEnUso.repository";
-import { obtenerHoraInicioFin, addMinutes, setHours, setMinutes } from "@/shared/get-date";
+import { obtenerHoraInicioFin, addMinutes, setHours, setMinutes, armarFechaReserva } from "@/shared/get-date";
 
 type InputGetPorUsuarioID = z.infer<typeof inputGetReservaLaboratorioPorUsuarioId>;
 export const getReservaPorUsuarioId = async (ctx: { db: PrismaClient }, input: InputGetPorUsuarioID) => {
@@ -279,9 +280,13 @@ export const editarReserva = async (ctx: { db: PrismaClient }, input: InputEdita
           usuarioCreadorId: true,
           usuarioSolicitoId: true,
           estatus: true,
+          fechaHoraInicio: true,
+          fechaHoraFin: true,
           reservaLaboratorioCerrado: {
             select: {
               curso: true,
+              esDiscrecional: true,
+              sedeId: true,
             },
           },
         },
@@ -301,9 +306,7 @@ export const editarReserva = async (ctx: { db: PrismaClient }, input: InputEdita
         },
       });
 
-      const { fechaHoraInicio, fechaHoraFin } = reserva.reservaLaboratorioCerrado
-        ? obtenerFechaHoraInicio(reserva.reservaLaboratorioCerrado.curso, input)
-        : { fechaHoraInicio: undefined, fechaHoraFin: undefined };
+      const { fechaHoraInicio, fechaHoraFin } = reserva;
 
       await tx.reserva.update({
         where: {
@@ -314,7 +317,7 @@ export const editarReserva = async (ctx: { db: PrismaClient }, input: InputEdita
           userId,
           fechaHoraInicio,
           fechaHoraFin,
-          reserva.reservaLaboratorioCerrado?.curso.sedeId,
+          reserva.reservaLaboratorioCerrado?.sedeId,
         ),
       });
       return reserva;
@@ -405,6 +408,60 @@ export const crearReservaLaboratorioCerrado = async (
     return reserva;
   } catch (error) {
     throw new Error(`Error creando reserva. ${(error as Error).message ?? ""}`);
+  }
+};
+
+type InputCrearReservaDiscrecional = z.infer<typeof inputReservaLaboratorioDiscrecional>;
+export const crearReservaLaboratorioCerradoDiscrecional = async (
+  ctx: {
+    db: PrismaClient;
+  },
+  input: InputCrearReservaDiscrecional,
+  userId: string,
+) => {
+  try {
+    const reserva = await ctx.db.$transaction(async (tx) => {
+      const reserva = await tx.reserva.create({
+        data: {
+          estatus: "PENDIENTE",
+          tipo: "LABORATORIO_CERRADO",
+          fechaHoraInicio: armarFechaReserva(input.fechaReserva, input.horaInicio),
+          fechaHoraFin: armarFechaReserva(input.fechaReserva, input.horaFin),
+          usuarioSolicitoId: userId,
+          usuarioCreadorId: userId,
+          usuarioModificadorId: userId,
+          reservaLaboratorioCerrado: {
+            create: {
+              esDiscrecional: true,
+              sedeId: Number(input.sedeId),
+              cursoId: null,
+              laboratorioId: null,
+              requierePC: input.requierePc,
+              requiereProyector: input.requiereProyector,
+              descripcion: input.observaciones,
+              equipoReservado: {
+                createMany: {
+                  data: input.equipoReservado.map((equipo) => ({
+                    equipoId: equipo.equipoId,
+                    usuarioCreadorId: userId,
+                    usuarioModificadorId: userId,
+                    cantidad: equipo.cantidad,
+                  })),
+                },
+              },
+              usuarioCreadorId: userId,
+              usuarioModificadorId: userId,
+            },
+          },
+        },
+      });
+
+      return reserva;
+    });
+
+    return reserva;
+  } catch (error) {
+    throw new Error(`Error creando reserva discrecional. ${(error as Error).message ?? ""}`);
   }
 };
 

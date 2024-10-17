@@ -6,11 +6,13 @@ import {
   inputGetReservaLaboratorioPorUsuarioId,
   inputRechazarReservaLaboratorioCerrado,
   inputReservaLaboratorioCerrado,
+  inputReservaLaboratorioDiscrecional,
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import {
   aprobarReserva,
   cancelarReserva,
   crearReservaLaboratorioCerrado,
+  crearReservaLaboratorioCerradoDiscrecional,
   editarReserva,
   getAllReservas,
   getReservaPorId,
@@ -108,6 +110,18 @@ export const inputCrearReservaLaboratorioCerradoProcedure = protectedProcedure
     const userId = ctx.session.user.id;
 
     const reserva = await crearReservaLaboratorioCerrado(ctx, input, userId);
+
+    return reserva;
+  });
+
+export const inputCrearReservaLaboratorioCerradoDiscrecionalProcedure = protectedProcedure
+  .input(inputReservaLaboratorioDiscrecional)
+  .mutation(async ({ ctx, input }) => {
+    validarInput(inputReservaLaboratorioDiscrecional, input);
+
+    const userId = ctx.session.user.id;
+
+    const reserva = await crearReservaLaboratorioCerradoDiscrecional(ctx, input, userId);
 
     return reserva;
   });

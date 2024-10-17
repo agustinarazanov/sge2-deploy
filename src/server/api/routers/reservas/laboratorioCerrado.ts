@@ -5,6 +5,7 @@ import {
   getReservaLaboratorioCerradoPorIdProcedure,
   getReservaLaboratorioCerradoPorUserProcedure,
   getTodasLasReservasProcedure,
+  inputCrearReservaLaboratorioCerradoDiscrecionalProcedure,
   inputCrearReservaLaboratorioCerradoProcedure,
   rechazarReservaProcedure,
 } from "../../services/reservas/laboratorioCerrado.service";
@@ -19,4 +20,5 @@ export const reservaLaboratorioCerradoRouter = createTRPCRouter({
   cancelarReserva: cancelarReservaProcedure,
   editarReserva: editarReservaProcedure,
   crearReserva: inputCrearReservaLaboratorioCerradoProcedure,
+  crearReservaDiscrecional: inputCrearReservaLaboratorioCerradoDiscrecionalProcedure,
 });

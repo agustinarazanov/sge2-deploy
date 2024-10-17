@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { enumReservaEstatus } from "./reservas-filter.schema";
-import { TurnoCurso } from "@prisma/client";
 
 const inputEquipoReservado = z.object({ equipoId: z.number(), cantidad: z.number() });
 
@@ -23,19 +22,9 @@ const inputReservaLaboratorioDiscrecionalBase = z.object({
 
 export const inputReservaLaboratorioDiscrecional = z
   .object({
-    id: z
-      .number()
-      .optional()
-      .refine((value) => value === undefined, { message: "No debe tener valor, se utilizo para Typecheck" }),
-    cursoId: z
-      .number()
-      .optional()
-      .refine((value) => value === undefined, { message: "No debe tener valor, se utilizo para Typecheck" }),
-
-    turno: z
-      .enum([TurnoCurso.MANANA, TurnoCurso.TARDE, TurnoCurso.NOCHE])
-      .default(TurnoCurso.MANANA)
-      .catch(TurnoCurso.MANANA),
+    sedeId: z.string().refine((value) => parseInt(value) >= 0, { message: "Debe seleccionar una sede" }),
+    horaInicio: z.string().min(1, { message: "Requerido" }),
+    horaFin: z.string().min(1, { message: "Requerido" }),
   })
   .merge(inputReservaLaboratorioDiscrecionalBase);
 

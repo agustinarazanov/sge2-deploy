@@ -1,9 +1,11 @@
 import { type RouterOutputs } from "@/trpc/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui";
-import { Badge } from "@/components/ui/badge";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CalendarIcon, IndentIcon, MapPinIcon, PhoneIcon } from "lucide-react";
+import { BadgeRol } from "@/app/_components/badge-rol";
+import { getDateISOString } from "@/shared/get-date";
 
 type UsuarioData = RouterOutputs["admin"]["usuarios"]["getUsuarioPorId"];
 type DetalleContenedor = {
@@ -31,7 +33,7 @@ function DetalleUsuario({ usuarioData }: DetalleContenedor) {
   } = usuarioData;
 
   return (
-    <div className="container mx-auto space-y-8 p-4">
+    <div className="container mx-auto space-y-8">
       <Card className="w-full">
         <CardHeader className="pb-2">
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
@@ -47,12 +49,10 @@ function DetalleUsuario({ usuarioData }: DetalleContenedor) {
                 {nombre} {apellido}
               </CardTitle>
               <p className="mb-1 ">{email}</p>
-              <p className="mb-2 text-sm ">Legajo: {legajo}</p>
+              <p className="mb-2 text-sm ">Legajo: {legajo ?? "-"}</p>
               <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
                 {usuarioRol.map((rol) => (
-                  <Badge key={rol.rolId} color="primary">
-                    {rol.rol.nombre}
-                  </Badge>
+                  <BadgeRol nombre={rol.rol.nombre} key={rol.rolId} />
                 ))}
               </div>
             </div>
@@ -88,7 +88,7 @@ function DetalleUsuario({ usuarioData }: DetalleContenedor) {
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 Fecha de Nacimiento
               </Label>
-              <p>{fechaNacimiento?.toLocaleDateString("es-ES")}</p>
+              <p>{getDateISOString(fechaNacimiento)}</p>
             </div>
           </div>
         </CardContent>

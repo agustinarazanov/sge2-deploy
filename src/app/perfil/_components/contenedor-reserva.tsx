@@ -57,7 +57,7 @@ export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsua
 
   return (
     <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as typeof activeTab)} className="w-full">
-      <TabsList className="grid w-full grid-cols-4">
+      <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
         <TabsTrigger value="libros">
           <BookIcon className="mr-2 h-4 w-4" />
           Libros

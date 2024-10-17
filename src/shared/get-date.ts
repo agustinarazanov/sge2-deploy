@@ -48,7 +48,7 @@ export const getDateTimeISO = (day: Date) => {
  * @param date fecha con el formato Date
  * @returns fecha con el formato yyyy-MM-dd
  */
-export const getDateISOString = (date: Date | undefined) => {
+export const getDateISOString = (date: Date | undefined | null) => {
   if (!date) return "";
 
   const dateIso = date.toISOString();

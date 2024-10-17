@@ -15,6 +15,7 @@ export default function ReservaDiscrecionalModal() {
 
   const handleClickSave = () => {
     router.refresh();
+    setOpen(false);
   };
 
   const handleClickCancel = () => setOpen(false);

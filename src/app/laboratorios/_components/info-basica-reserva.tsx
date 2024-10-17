@@ -1,9 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, ClockIcon, MapPinIcon, TextIcon, WrenchIcon, XIcon } from "lucide-react";
 import { Label } from "@/components/ui";
 import { api } from "@/trpc/react";
-import { BadgeEstatusReserva } from "@/app/_components/badge-estatus-reserva";
+import {
+  BadgeDiscrecionalReserva,
+  BadgeEstatusReserva,
+  BadgeLaboratorioAbiertoReserva,
+} from "@/app/_components/badge-estatus-reserva";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getDateISOString, getTimeISOString } from "@/shared/get-date";
 
@@ -41,7 +44,8 @@ export const ReservaDetalle = ({ reservaId, mostrarCompleto }: ReservaDetallePro
             <CardTitle className="mb-1 text-2xl">Reserva #{reserva.id}</CardTitle>
             <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
               <BadgeEstatusReserva estatus={reserva.reserva.estatus} />
-              <Badge color="secondary">{reserva.reserva.tipo}</Badge>
+              <BadgeDiscrecionalReserva esDiscrecional={reserva.esDiscrecional} />
+              <BadgeLaboratorioAbiertoReserva tipo={reserva.reserva.tipo} />
             </div>
           </div>
         </div>

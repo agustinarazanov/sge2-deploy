@@ -108,8 +108,10 @@ model ReservaLaboratorioCerrado {
     laboratorioId Int?
     laboratorio   Laboratorio? @relation(fields: [laboratorioId], references: [id], onDelete: Cascade)
 
-    cursoId Int
-    curso   Curso @relation(fields: [cursoId], references: [id], onDelete: Cascade)
+    cursoId Int?
+    curso   Curso? @relation(fields: [cursoId], references: [id], onDelete: Cascade)
+
+    esDiscrecional Boolean @default(false)
 
     equipoReservado ReservaLaboratorioCerradoEquipo[]
 

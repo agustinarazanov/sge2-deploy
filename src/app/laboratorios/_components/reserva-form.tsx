@@ -12,13 +12,13 @@ import {
 } from "@/shared/filters/reserva-laboratorio-filter.schema";
 import { FormTextarea, Textarea } from "@/components/ui/textarea";
 import { FormEquipoTipoSelector } from "./filtros/equipo-tipo-selector";
-import { CursoTurno, turnosValues } from "@/app/_components/turno-text";
+import { CursoTurno } from "@/app/_components/turno-text";
 import { Switch } from "@/components/ui/switch";
-import { FormSelect } from "@/components/ui/autocomplete";
 import { FormInputPoliticas } from "@/app/_components/input-form-politicas";
 import { esFechaPasada, getDateISOString } from "@/shared/get-date";
 import { ReservaEstatus, TurnoCurso } from "@prisma/client";
 import { ReservaDetalle } from "./info-basica-reserva";
+import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
 
 type Props = {
   cursoId?: string;
@@ -45,6 +45,7 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
   );
 
   const crearReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.crearReserva.useMutation();
+  const crearReservaDiscrecional = api.reservas.reservarLaboratorioCerrado.crearReservaDiscrecional.useMutation();
   const modificarReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.editarReserva.useMutation();
   const cancelarReservaLaboratorio = api.reservas.reservarLaboratorioCerrado.cancelarReserva.useMutation();
 
@@ -67,10 +68,12 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
       fechaReserva: esNuevo ? undefined : getDateISOString(reservaData?.reserva.fechaHoraInicio as unknown as Date),
       requierePc: reservaData?.requierePC ?? false,
       requiereProyector: reservaData?.requiereProyector ?? false,
-      turno: esNuevo ? TurnoCurso.MANANA : reservaData?.curso.turno,
+      turno: esNuevo ? TurnoCurso.MANANA : reservaData?.curso?.turno,
       observaciones: reservaData?.descripcion ?? "",
+      esDiscrecional: esDiscrecional,
+      sedeId: esDiscrecional ? String(reservaData?.sedeId) : undefined,
     } as FormReservarLaboratorioType;
-  }, [cursoId, esNuevo, reservaData, reservaId]);
+  }, [cursoId, esDiscrecional, esNuevo, reservaData, reservaId]);
 
   const formHook = useForm<FormReservarLaboratorioType>({
     mode: "onChange",
@@ -108,6 +111,27 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
 
   const onFormSubmit = async (formData: FormReservarLaboratorioType) => {
     console.log("Formulario enviado con datos:", formData);
+    if (esDiscrecional) {
+      crearReservaDiscrecional.mutate(
+        {
+          ...formData,
+          sedeId: String(formHook.watch("sedeId")),
+          horaInicio: formHook.watch("horaInicio"),
+          horaFin: formHook.watch("horaFin"),
+        },
+        {
+          onSuccess: () => {
+            toast.success("Reserva creada con éxito.");
+            onSubmit();
+          },
+          onError: (error) => {
+            toast.error(error?.message ?? "Error al crear la reserva");
+          },
+        },
+      );
+      return;
+    }
+
     if (esNuevo) {
       crearReservaLaboratorio.mutate(
         { ...formData, cursoId: Number(cursoId) },
@@ -123,10 +147,7 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
       );
       return;
     }
-    if (esDiscrecional) {
-      toast.success("Reserva discrecional creada con éxito.");
-      return;
-    }
+
     modificarReservaLaboratorio.mutate(
       { ...formData, id: reservaId, cursoId: Number(reservaData?.cursoId) },
       {
@@ -244,11 +265,23 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
 
             <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
               {esDiscrecional && (
-                <div className="mt-4 w-full">
-                  <FormSelect label={"Turno"} name="turno" className="mt-2" items={turnosValues} control={control} />
+                <div className="mt-4 basis-1/2">
+                  <SelectSedeForm
+                    name="sedeId"
+                    label={"Sede"}
+                    control={control}
+                    className="mt-2"
+                    placeholder={"Selecciona una sede"}
+                  />
                 </div>
               )}
-              <div className="mt-4 basis-1/3">
+              {/* {!esDiscrecional && (
+                <div className="mt-4 basis-1/2">
+                  <FormSelect label={"Turno"} name="turno" className="mt-2" items={turnosValues} control={control} readonly/>
+                </div>
+              )} */}
+
+              <div className="mt-4 basis-1/2">
                 {/* TODO: Habilitar fecha de reserva a los días de curso */}
                 <FormInput
                   label={"Fecha de reserva"}
@@ -256,10 +289,26 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
                   name="fechaReserva"
                   className="mt-2"
                   type={"date"}
-                  required
                 />
               </div>
             </div>
+
+            {esDiscrecional && (
+              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+                <div className="mt-4 basis-1/2">
+                  <FormInput
+                    label={"Hora de inicio"}
+                    control={control}
+                    name="horaInicio"
+                    className="mt-2"
+                    type={"time"}
+                  />
+                </div>
+                <div className="mt-4 basis-1/2">
+                  <FormInput label={"Hora de fin"} control={control} name="horaFin" className="mt-2" type={"time"} />
+                </div>
+              </div>
+            )}
 
             <div className="flex w-full flex-col justify-end gap-y-4 lg:justify-between">
               <div className="items-top flex space-x-2">
