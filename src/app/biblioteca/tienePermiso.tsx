@@ -16,7 +16,7 @@ export const TienePermiso = ({ permisos, fallback = null, children }: TienePermi
   }
 
   if (error) {
-    return <p>Error al verificar permisos.</p>;
+    return null;
   }
 
   return tienePermisos ? <>{children}</> : <>{fallback}</>;
