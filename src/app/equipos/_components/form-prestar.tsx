@@ -1,6 +1,6 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { Button, FormInput, toast } from "@/components/ui";
+import { Button, FormInput, toast, ScrollArea } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectUsuarioForm } from "@/app/_components/select-usuario";
 import { type z } from "zod";
@@ -103,55 +103,57 @@ export const EquipoFormPrestarORenovar = ({ equipoId, onSubmit, onCancel, renova
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
-        <div className="flex w-full flex-col items-center justify-center">
-          <div className="flex flex-col space-y-4 px-0 md:px-6">
-            <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
-              <div className="mt-4 basis-1/2">
-                <FormInput
-                  label={"Desde el día"}
-                  control={control}
-                  name="fechaInicio"
-                  className="mt-2"
-                  type={"date"}
-                  required
-                />
-              </div>
-              <div className="mt-4 basis-1/2">
-                <FormInput
-                  label={"Hasta el día"}
-                  control={control}
-                  name="fechaFin"
-                  className="mt-2"
-                  type={"date"}
-                  required
-                />
-              </div>
-            </div>
-
-            {!renovar && (
+        <ScrollArea className="max-h-[calc(100vh_-_20%)] w-full pr-4 md:max-h-[calc(100vh_-_30%)] lg:max-h-[calc(100vh_-_30%)]">
+          <div className="flex w-full flex-col items-center justify-center">
+            <div className="flex flex-col space-y-4 px-0 md:px-6">
               <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
-                <div className="mt-4 w-full">
-                  <SelectUsuarioForm
-                    name="usuarioSolicitante"
-                    realNameId="usuarioSolicitanteId"
+                <div className="mt-4 basis-1/2">
+                  <FormInput
+                    label={"Desde el día"}
                     control={control}
+                    name="fechaInicio"
                     className="mt-2"
-                    label={"Usuario solicitante"}
-                    placeholder={"Selecciona un usuario"}
+                    type={"date"}
+                    required
+                  />
+                </div>
+                <div className="mt-4 basis-1/2">
+                  <FormInput
+                    label={"Hasta el día"}
+                    control={control}
+                    name="fechaFin"
+                    className="mt-2"
+                    type={"date"}
+                    required
                   />
                 </div>
               </div>
-            )}
+
+              {!renovar && (
+                <div className="flex w-full flex-row lg:flex-row lg:justify-between lg:gap-x-4">
+                  <div className="mt-4 w-full">
+                    <SelectUsuarioForm
+                      name="usuarioSolicitante"
+                      realNameId="usuarioSolicitanteId"
+                      control={control}
+                      className="mb-3 mt-2"
+                      label={"Usuario solicitante"}
+                      placeholder={"Selecciona un usuario"}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-        <div className="flex w-full flex-row items-end justify-end space-x-4">
-          <Button title="Cancelar" type="button" variant="default" color="secondary" onClick={handleCancel}>
-            Cancelar
-          </Button>
-          <Button title={renovar ? "Renovar" : "Prestar"} type="submit" variant="default" color="primary">
-            {renovar ? "Renovar" : "Prestar"}
-          </Button>
-        </div>
+          <div className="flex w-full flex-row items-end justify-end space-x-4">
+            <Button title="Cancelar" type="button" variant="default" color="secondary" onClick={handleCancel}>
+              Cancelar
+            </Button>
+            <Button title={renovar ? "Renovar" : "Prestar"} type="submit" variant="default" color="primary">
+              {renovar ? "Renovar" : "Prestar"}
+            </Button>
+          </div>
+        </ScrollArea>
       </form>
     </FormProvider>
   );

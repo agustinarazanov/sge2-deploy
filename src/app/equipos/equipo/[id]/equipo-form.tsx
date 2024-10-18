@@ -136,7 +136,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
         <ScrollArea className="max-h-[calc(100vh_-_20%)] w-full pr-4 md:max-h-[calc(100vh_-_30%)] lg:max-h-[calc(100vh_-_30%)]">
-          <div className="flex w-full flex-col items-center justify-center">
+          <div className="flex w-full flex-col justify-center lg:items-center">
             <div className="flex flex-col space-y-4 px-0 md:px-6">
               <div className="flex w-full flex-col gap-x-4 md:flex-row lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/3">
@@ -282,7 +282,7 @@ export const EquipoForm = ({ id, onSubmit, onCancel }: Props) => {
               </div>
 
               <div className="flex w-full flex-col gap-x-4 md:flex-row lg:flex-row lg:justify-between">
-                <div className="mt-4 h-auto w-full">
+                <div className="mb-1 mt-4 h-auto w-full">
                   <FormTextarea label={"Observaciones"} name="observaciones" control={control} id="observaciones" />
                 </div>
               </div>
