@@ -8,6 +8,7 @@ import KeycloakProvider, { type KeycloakProfile } from "next-auth/providers/keyc
 import { env } from "@/env";
 import { db } from "@/server/db";
 import Credentials from "next-auth/providers/credentials";
+import { api } from "@/trpc/server";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -157,3 +158,19 @@ export const authOptions: NextAuthOptions = {
  * @see https://next-auth.js.org/configuration/nextjs
  */
 export const getServerAuthSession = () => getServerSession(authOptions);
+
+export const tienePermiso = async (permisos: string[]) => {
+  const tienePermiso = await api.permisos.usuarioTienePermisos({ permisos: permisos });
+
+  return tienePermiso;
+};
+
+export const tienePermisoYEstaLogueado = (permisos: string[]) => {
+  const session = getServerAuthSession();
+
+  const loTiene = tienePermiso(permisos);
+
+  const results = Promise.all([session, loTiene]);
+
+  return results;
+};

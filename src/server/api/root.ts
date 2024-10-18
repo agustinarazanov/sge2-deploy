@@ -9,6 +9,7 @@ import { divisionRouter } from "./routers/division";
 import { softwareRouter } from "./routers/software";
 import { emailRouter } from "./routers/emails";
 import { notificacionRouter } from "./routers/notificaciones";
+import { usuarioPermiso } from "./routers/permisos";
 
 /**
  * This is the primary router for your server.
@@ -26,6 +27,7 @@ export const appRouter = createTRPCRouter({
   software: softwareRouter,
   email: emailRouter,
   notificacion: notificacionRouter,
+  permisos: usuarioPermiso,
 });
 
 // export type definition of API
