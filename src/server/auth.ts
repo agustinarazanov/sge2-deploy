@@ -140,14 +140,14 @@ export const authOptions: NextAuthOptions = {
  */
 export const getServerAuthSession = () => getServerSession(authOptions);
 
-export const tienePermiso = async (permisos: string[]) => {
-  const tienePermiso = await api.permisos.usuarioTienePermisos({ permisos: permisos });
-  return tienePermiso;
-};
+// export const tienePermiso = async (permisos: string[]) => {
+//   const tienePermiso = await api.permisos.usuarioTienePermisos({ permisos: permisos });
+//   return tienePermiso;
+// };
 
-export const tienePermisoYEstaLogueado = (permisos: string[]) => {
-  const session = getServerAuthSession();
-  const loTiene = tienePermiso(permisos);
-  const results = Promise.all([session, loTiene]);
-  return results;
-};
+// export const tienePermisoYEstaLogueado = async (permisos: string[]) => {
+//   const session = getServerAuthSession();
+//   const loTiene = tienePermiso(permisos);
+//   const results = await Promise.all([session, loTiene]);
+//   return results;
+// };
