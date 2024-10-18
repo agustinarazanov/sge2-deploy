@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { LaboratorioCerradoForm } from "./reserva-form";
 
 type PageProps = {
-  params: { id: number; cursoId: string };
+  params: { id: number; cursoId: string | null | number };
 };
 
 export default function EditarReservaModal({ params: { id, cursoId } }: PageProps) {
@@ -25,9 +25,11 @@ export default function EditarReservaModal({ params: { id, cursoId } }: PageProp
     setTimeout(() => router.refresh(), 100); // Hack para que primero recargue la pagina y luego haga el back, de otra forma el back cancela el refresh
   };
 
+  const esDiscrecional = cursoId === null;
+
   return (
     <ModalDrawer
-      titulo="Editar reserva"
+      titulo={esDiscrecional ? "Editar reserva discrecional" : "Editar reserva"}
       description="Si modifica la reserva, volverá al estado pendiente de aprobación"
       trigger={<Button title="Editar reserva" variant="icon" color="ghost" icon={EditIcon} />}
       open={open}

@@ -65,7 +65,7 @@ export const SelectAutoresForm = <
       async
       items={autores}
       noOptionsComponent={
-        <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm text-white">
+        <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm">
           <span>No se encontró al autor</span>
           <Link href="href" className="text-primary">
             Crear nuevo autor

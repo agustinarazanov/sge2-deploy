@@ -71,7 +71,7 @@ export const PermisosSelector = ({ onPermisoChange, currentPermisoId, label }: P
         async
         items={permisos}
         noOptionsComponent={
-          <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm text-white">
+          <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm">
             <span>No se encontraron permisos</span>
           </div>
         }

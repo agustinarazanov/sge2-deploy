@@ -94,7 +94,7 @@ const MultiSelectFormField = React.forwardRef<HTMLButtonElement, MultiSelectForm
             ref={ref}
             {...props}
             onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-            className="hover:bg-card mt-2 flex h-fit min-h-12 w-full items-center justify-between rounded-md border bg-inherit p-2"
+            className="hover:bg-card mt-2 flex h-fit min-h-12 w-full items-center justify-between rounded-md border bg-input p-2"
             color={"secondary"}
           >
             {selectedValues.length > 0 ? (
@@ -128,7 +128,7 @@ const MultiSelectFormField = React.forwardRef<HTMLButtonElement, MultiSelectForm
                 </div>
                 <div className="flex items-center justify-between">
                   <XIcon
-                    className="mx-2 h-4 cursor-pointer text-muted-foreground"
+                    className="mx-2 h-4 cursor-pointer "
                     onClick={(event) => {
                       setSelectedValues([]);
                       selectedValuesSet.current.clear();
@@ -137,13 +137,13 @@ const MultiSelectFormField = React.forwardRef<HTMLButtonElement, MultiSelectForm
                     }}
                   />
                   <Separator orientation="vertical" className="flex h-full min-h-6" />
-                  <ChevronDown className="mx-2 h-4 cursor-pointer text-muted-foreground" />
+                  <ChevronDown className="h-4 cursor-pointer transition ease-in-out" />
                 </div>
               </div>
             ) : (
               <div className="mx-auto flex w-full items-center justify-between">
-                <span className="mx-3 text-sm text-muted-foreground">{placeholder}</span>
-                <ChevronDown className="mx-2 h-4 cursor-pointer text-muted-foreground" />
+                <span className="mx-3 text-sm text-black">{placeholder}</span>
+                <ChevronDown className="h-4 cursor-pointer transition ease-in-out " />
               </div>
             )}
           </Button>
@@ -162,7 +162,7 @@ const MultiSelectFormField = React.forwardRef<HTMLButtonElement, MultiSelectForm
             <CommandInput placeholder="Buscar..." onKeyDown={handleInputKeyDown} />
             <CommandList>
               <CommandEmpty>No se encontraron resultados.</CommandEmpty>
-              <CommandGroup className="custom-scrollbar max-h-60 overflow-auto">
+              <CommandGroup className="custom-scrollbar mt-1 max-h-60 overflow-auto">
                 {options.map((option) => {
                   const isSelected = selectedValuesSet.current.has(option.value);
                   return (

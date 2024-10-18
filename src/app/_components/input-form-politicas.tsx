@@ -24,7 +24,7 @@ export const FormInputPoliticas = <T extends FieldValues>({ name, control }: For
               />
               <b> Declaro conocer las nuevas políticas de uso de laboratorio</b>
             </label>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-black">
               La política de uso de laboratorio ha cambiado,{" "}
               <PoliticasPrivacidadModal triggerText="presione aquí para verla" />
             </p>

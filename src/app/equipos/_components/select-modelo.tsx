@@ -60,7 +60,7 @@ export const SelectModelosForm = <T extends FieldValues, TType extends string>({
       async
       items={modelos}
       noOptionsComponent={
-        <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm text-white">
+        <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm">
           <span>No se encontró el modelo</span>
           <Link href="href" className="text-primary">
             Crear nuevo modelo

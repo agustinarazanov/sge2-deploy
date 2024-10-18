@@ -49,7 +49,7 @@ export const LaboratorioCerradoReservaTable = ({ data, filters, filterByUser }: 
               <>
                 {!filterByUser && <VerReservaModal reservaID={original.reserva.id} />}
                 {filterByUser && !estaCancelada && (
-                  <EditarReservaModal params={{ id: original.reserva.id, cursoId: String(original.cursoId) }} />
+                  <EditarReservaModal params={{ id: original.reserva.id, cursoId: original.cursoId }} />
                 )}
 
                 <Button

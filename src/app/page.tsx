@@ -36,7 +36,7 @@ export default async function Home() {
               href={session ? "/api/auth/signout" : "/api/auth/signin"}
               className="rounded-full bg-slate-100 px-10 py-3 font-semibold no-underline transition hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20"
             >
-              {session ? "Sign out" : "Sign in"}
+              {session ? " Cerrar sesión" : "Iniciar sesión"}
             </Link>
             <div className="w-2/3 pt-5 text-center text-xl">
               <p>

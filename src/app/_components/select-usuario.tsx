@@ -65,7 +65,7 @@ export const SelectUsuarioForm = <T extends FieldValues, TType extends string>({
       async
       items={usuarios}
       noOptionsComponent={
-        <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm text-white">
+        <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm">
           <span>No se encontró al usuario</span>
         </div>
       }

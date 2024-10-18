@@ -17,9 +17,6 @@ export const getColumns = () => {
         return new Date(id).toLocaleDateString("es-ES");
       },
     }),
-    colHelper.accessor("usuarioCreadorId", {
-      header: "Usuario creador",
-    }),
     colHelper.display({
       header: "Cantidad de equipos",
       cell: (info) => {

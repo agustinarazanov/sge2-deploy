@@ -31,7 +31,7 @@ export const BibliotecaPrestamoEstadoFilter = ({ filters }: Props) => {
       <ToggleGroupItem
         value={"PENDIENTE" as EstadoReservaType}
         aria-label="Cambiar a pendientes"
-        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstatus === "PENDIENTE" })}
+        className={cn("basis-1/3 hover:bg-primary", { "bg-primary": currentEstatus === "PENDIENTE" })}
         onClick={() => handleTextChange("PENDIENTE")}
       >
         Pendientes
@@ -39,7 +39,7 @@ export const BibliotecaPrestamoEstadoFilter = ({ filters }: Props) => {
       <ToggleGroupItem
         value={"FINALIZADA" as EstadoReservaType}
         aria-label="Cambiar a finalizadas"
-        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstatus === "FINALIZADA" })}
+        className={cn("basis-1/3 hover:bg-primary", { "bg-primary": currentEstatus === "FINALIZADA" })}
         onClick={() => handleTextChange("FINALIZADA")}
       >
         Finalizados
@@ -47,7 +47,7 @@ export const BibliotecaPrestamoEstadoFilter = ({ filters }: Props) => {
       <ToggleGroupItem
         value={"" as EstadoReservaType}
         aria-label="Cambiar a ambos"
-        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstatus === "" })}
+        className={cn("basis-1/3 hover:bg-primary", { "bg-primary": currentEstatus === "" })}
         onClick={() => handleTextChange("")}
       >
         Ambos

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { api } from "@/trpc/react";
 import DetalleReserva from "./detalle-reserva";
 import type { RouterOutputs } from "@/trpc/react";
+import { getDateISOString, getDateTimeISO, getTimeISOString } from "@/shared/get-date";
 
 type UsuarioData = RouterOutputs["admin"]["usuarios"]["getUsuarioPorId"];
 
@@ -86,7 +87,7 @@ export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsua
             reservas={reservasLibros ?? []}
             columns={[
               { header: "ID", key: "id", className: "w-[100px]" },
-              { header: "Fecha de préstamo", key: (item) => item.fechaCreacion.toLocaleDateString("es-ES") },
+              { header: "Fecha de préstamo", key: (item) => getDateISOString(item.fechaCreacion) },
               { header: "Libro", key: (item) => item.libro?.titulo },
               {
                 header: "Estado",
@@ -112,7 +113,7 @@ export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsua
             reservas={reservasInventario ?? []}
             columns={[
               { header: "ID", key: "id", className: "w-[100px]" },
-              { header: "Fecha de préstamo", key: (item) => item.fechaCreacion.toLocaleDateString("es-ES") },
+              { header: "Fecha de préstamo", key: (item) => getDateISOString(item.fechaCreacion) },
               { header: "Nombre", key: (item) => item.equipo.modelo },
               { header: "Marca", key: (item) => item.equipo.marca.nombre },
               {
@@ -130,17 +131,28 @@ export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsua
       </TabsContent>
       <TabsContent value="laboratorio abierto">
         {isLoadingLaboratorioAbierto ? (
-          <div>Cargando reservas de laboratorio...</div>
+          <div>Cargando reservas de laboratorio abierto...</div>
         ) : (
           <DetalleReserva
             idUsuario={usuarioData.id}
             titulo="Reserva de Laboratorio abierto"
-            descripcion="Historial de Laboratorios abiertos"
+            descripcion="Historial de Reservas de Laboratorios abiertos"
             reservas={reservasLaboratorioAbierto ?? []}
             columns={[
               { header: "ID", key: "id", className: "w-[100px]" },
-              { header: "Fecha", key: (item) => item.fechaCreacion.toLocaleDateString("es-ES") },
-              { header: "Laboratorio", key: "laboratorio" },
+              {
+                header: "Fecha Solicitud Reserva",
+                key: (item) => getDateISOString(item.fechaCreacion),
+              },
+              {
+                header: "Hora Inicio",
+                key: (item) => getTimeISOString(item.reserva.fechaHoraInicio),
+              },
+              {
+                header: "Hora Fin",
+                key: (item) => getTimeISOString(item.reserva.fechaHoraFin),
+              },
+              { header: "Laboratorio", key: (item) => item.laboratorio?.nombre ?? "" },
               {
                 header: "Estado",
                 key: (item) => (
@@ -160,13 +172,24 @@ export default function ContenedorReserva({ usuarioData }: ClienteContenedorUsua
         ) : (
           <DetalleReserva
             idUsuario={usuarioData.id}
-            titulo="Reserva de Laboratorio cerrado"
-            descripcion="Historial de Laboratorios cerrados"
+            titulo="Reserva de Laboratorio"
+            descripcion="Historial de Reservas de Laboratorios"
             reservas={reservasLaboratorioCerrado ?? []}
             columns={[
               { header: "ID", key: "id", className: "w-[100px]" },
-              { header: "Fecha", key: (item) => item.fechaCreacion.toLocaleDateString("es-ES") },
-              { header: "Laboratorio", key: "laboratorio" },
+              {
+                header: "Fecha Solicitud Reserva",
+                key: (item) => getDateISOString(item.fechaCreacion),
+              },
+              {
+                header: "Hora Inicio",
+                key: (item) => getTimeISOString(item.reserva.fechaHoraInicio),
+              },
+              {
+                header: "Hora Fin",
+                key: (item) => getTimeISOString(item.reserva.fechaHoraFin),
+              },
+              { header: "Laboratorio", key: (item) => item.laboratorio?.nombre ?? "" },
               {
                 header: "Estado",
                 key: (item) => (

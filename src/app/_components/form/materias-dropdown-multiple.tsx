@@ -56,7 +56,7 @@ export const MateriaDropdownMultiple = (props: MateriaDropdownType): ReactElemen
           <SelectTrigger
             disabled
             id="selectMateria"
-            className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
+            className="h-10 bg-input transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
           >
             <SelectValue placeholder="Error cargando materias" />
           </SelectTrigger>

@@ -217,7 +217,7 @@ export const Autocomplete = <TType extends SelectItemAutocomplete | string, TMul
                 <ComboboxButton className={cn({ "ml-2": isLoading })}>
                   <ChevronDownIcon
                     key={`autocomplete-indicator`}
-                    className={cn("h-5 transition ease-in-out", {
+                    className={cn("h-4 opacity-50 transition ease-in-out", {
                       "rotate-180": open,
                     })}
                   />
@@ -238,7 +238,7 @@ export const Autocomplete = <TType extends SelectItemAutocomplete | string, TMul
                 ref={optionsRef}
                 style={{ top: `${top}px` }}
                 className={cn(
-                  "ring-none custom-scrollbar absolute z-50 max-h-80 w-full overflow-y-auto rounded-b border border-input bg-menu shadow-lg outline-none",
+                  "ring-none custom-scrollbar absolute z-50 mt-2 max-h-80 w-full overflow-y-auto rounded border border-input bg-menu shadow-lg outline-none ",
                 )}
               >
                 {filteredList.map((item) => {
@@ -266,7 +266,7 @@ export const Autocomplete = <TType extends SelectItemAutocomplete | string, TMul
                 {!filteredList.length &&
                   (noOptionsComponent ?? (
                     <span className={cn("flex w-full items-center justify-center px-4 py-3 text-sm text-menu-item")}>
-                      No options
+                      No se encontraron resultados
                     </span>
                   ))}
               </ComboboxOptions>

@@ -14,7 +14,7 @@ export const EstadoReservaToString = ({
       <ToggleGroupItem
         value={ReservaEstatus.CANCELADA}
         aria-label="Cambiar a pendientes"
-        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstado === ReservaEstatus.CANCELADA })}
+        className={cn("basis-1/3 hover:bg-primary", { "bg-primary": currentEstado === ReservaEstatus.CANCELADA })}
         onClick={() => handleEstadoChange(ReservaEstatus.CANCELADA)}
       >
         Canceladas
@@ -22,7 +22,7 @@ export const EstadoReservaToString = ({
       <ToggleGroupItem
         value={ReservaEstatus.RECHAZADA}
         aria-label="Cambiar a pendientes"
-        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstado === ReservaEstatus.RECHAZADA })}
+        className={cn("basis-1/3 hover:bg-primary", { "bg-primary": currentEstado === ReservaEstatus.RECHAZADA })}
         onClick={() => handleEstadoChange(ReservaEstatus.RECHAZADA)}
       >
         Rechazadas
@@ -30,7 +30,7 @@ export const EstadoReservaToString = ({
       <ToggleGroupItem
         value={ReservaEstatus.PENDIENTE}
         aria-label="Cambiar a pendientes"
-        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstado === ReservaEstatus.PENDIENTE })}
+        className={cn("basis-1/3 hover:bg-primary", { "bg-primary": currentEstado === ReservaEstatus.PENDIENTE })}
         onClick={() => handleEstadoChange(ReservaEstatus.PENDIENTE)}
       >
         Pendientes
@@ -38,7 +38,7 @@ export const EstadoReservaToString = ({
       <ToggleGroupItem
         value={ReservaEstatus.FINALIZADA}
         aria-label="Cambiar a finalizadas"
-        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstado === ReservaEstatus.FINALIZADA })}
+        className={cn("basis-1/3 hover:bg-primary", { "bg-primary": currentEstado === ReservaEstatus.FINALIZADA })}
         onClick={() => handleEstadoChange(ReservaEstatus.FINALIZADA)}
       >
         Finalizadas
@@ -46,7 +46,7 @@ export const EstadoReservaToString = ({
       <ToggleGroupItem
         value={""}
         aria-label="Cambiar a ambos"
-        className={cn("basis-1/3 hover:bg-gray-500", { "bg-gray-500": currentEstado === "" })}
+        className={cn("basis-1/3 hover:bg-primary", { "bg-primary": currentEstado === "" })}
         onClick={() => handleEstadoChange("" as ReservaEstatus)}
       >
         Todas

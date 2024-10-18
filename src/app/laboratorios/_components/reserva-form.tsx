@@ -21,7 +21,7 @@ import { ReservaDetalle } from "./info-basica-reserva";
 import { SelectSedeForm } from "@/app/_components/select-ubicacion/select-sede";
 
 type Props = {
-  cursoId?: string;
+  cursoId?: string | null | number;
   reservaId?: number;
   onSubmit: () => void;
   onCancel: () => void;
@@ -318,7 +318,7 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
                   render={({ field }) => (
                     <label
                       htmlFor="requierePc"
-                      className="flex w-full items-center justify-between rounded-md border border-white p-2 hover:cursor-pointer hover:bg-gray-500"
+                      className="flex w-full items-center justify-between rounded-md border p-2 hover:cursor-pointer hover:bg-gray-100/20"
                     >
                       <div className="text-base">Requiere PCs para los alumnos</div>
                       <Switch id="requierePc" checked={field.value} onCheckedChange={field.onChange} />
@@ -334,7 +334,7 @@ export const LaboratorioCerradoForm = ({ reservaId, cursoId, onSubmit, onCancel 
                   render={({ field }) => (
                     <label
                       htmlFor="requiereProyector"
-                      className="flex w-full items-center justify-between rounded-md border border-white p-2 hover:cursor-pointer hover:bg-gray-500"
+                      className="flex w-full items-center justify-between rounded-md border p-2 hover:cursor-pointer hover:bg-gray-100/20"
                     >
                       <div className="text-base">Requiere proyector</div>
                       <Switch id="requiereProyector" checked={field.value} onCheckedChange={field.onChange} />

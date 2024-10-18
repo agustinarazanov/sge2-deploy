@@ -1,6 +1,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import UserPhoto from "../user-photo";
 import { type Session } from "next-auth";
+import Link from "next/link";
 
 export default function UserIcon(user: Session["user"] | undefined) {
   return (
@@ -25,12 +26,12 @@ export default function UserIcon(user: Session["user"] | undefined) {
         </div>
         <div className="py-1">
           <MenuItem>
-            <a
-              href="#"
+            <Link
+              href={user?.id ? `/perfil/${user.id}` : "#"}
               className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-slate-100 dark:text-gray-100 dark:data-[focus]:bg-black"
             >
-              Perfil
-            </a>
+              Mi perfil
+            </Link>
           </MenuItem>
           <MenuItem>
             <a

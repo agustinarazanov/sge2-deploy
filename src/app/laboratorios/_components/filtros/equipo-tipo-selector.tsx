@@ -74,7 +74,7 @@ export const EquipoTipoSelector = ({ onEquipoTipoChange, label, disabled }: Prop
         async
         items={equiposTipo}
         noOptionsComponent={
-          <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm text-white">
+          <div className="flex flex-col items-center justify-center gap-2 px-4 py-6 text-sm">
             <span>No se encontraron equipos</span>
           </div>
         }
@@ -152,7 +152,7 @@ export const FormEquipoTipoSelector = <T extends FieldValues>({ name: nombre }: 
       <div className="items-top flex space-x-2">
         <label
           htmlFor={name}
-          className="flex w-full items-center justify-between rounded-md border border-white p-2 hover:cursor-pointer hover:bg-gray-500"
+          className="flex w-full items-center justify-between rounded-md border p-2 hover:cursor-pointer hover:bg-gray-100/20"
         >
           <div className="text-base">Requiere instrumental</div>
           <Switch id={name} checked={requiereInstrumental} onCheckedChange={setRequiereInstrumental} />

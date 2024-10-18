@@ -73,6 +73,16 @@ const NotificationItems = ({
     return <></>;
   }
 
+  if (!notificaciones.length) {
+    return (
+      <MenuItem as="div" className="p-4">
+        <p>
+          <b>No hay notificaciones</b>
+        </p>
+      </MenuItem>
+    );
+  }
+
   return (
     <>
       {notificaciones.map((notificacion) => {

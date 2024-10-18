@@ -30,7 +30,7 @@ export const DatoUsuarioReserva = ({ usuario }: { usuario: UsuarioReserva | null
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button color="outline" className="flex flex-row gap-x-2 border-none">
+        <Button color="ghost" className="flex flex-row gap-x-2 border-none">
           <div>
             <Avatar className="h-6 w-6">
               <AvatarImage src={image ?? ""} alt={`Imagen de perfil de ${fullName}`} />
