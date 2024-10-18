@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { getServerSession, type DefaultSession, type NextAuthOptions } from "next-auth";
-import { type Adapter } from "next-auth/adapters";
+import type { Adapter, AdapterAccount } from "next-auth/adapters";
 import DiscordProvider from "next-auth/providers/discord";
 import KeycloakProvider, { type KeycloakProfile } from "next-auth/providers/keycloak";
 
@@ -30,12 +30,10 @@ const prismaAdapter = PrismaAdapter(db);
 
 const CustomAdapter = {
   ...prismaAdapter,
-  linkAccount: (account) => {
+  linkAccount: (account: AdapterAccount) => {
     delete account["not-before-policy"];
-    if (prismaAdapter.linkAccount) {
-      return prismaAdapter.linkAccount(account as Parameters<typeof prismaAdapter.linkAccount>[0]);
-    }
-    throw new Error("linkAccount method is undefined in prismaAdapter");
+    // @ts-expect-error string not assignable to Lowecase<string>
+    return prismaAdapter.linkAccount?.(account);
   },
 } as Adapter;
 
@@ -53,30 +51,15 @@ export const authOptions: NextAuthOptions = {
     signIn: async ({ user, account, profile }) => {
       const existingAccount = await db.account.findFirst({ where: { userId: user.id, provider: account?.provider } });
       if (!account || existingAccount) return true;
-
-      const existingUser = await db.user.findUnique({
-        where: { email: user.email ?? undefined },
-      });
-
-      if (existingUser) {
+      const existingUser = await db.user.findUnique({ where: { email: user.email ?? undefined } });
+      if (existingUser && profile) {
         delete account["not-before-policy"];
-        await db.account.create({
-          data: { ...account, userId: existingUser.id },
-        });
-        if (profile?.image) {
-          await db.user.update({
-            where: { id: existingUser.id },
-            data: { image: profile.image },
-          });
-        }
+        await db.account.create({ data: { ...account, userId: existingUser.id } });
       }
       return true;
     },
     session: ({ session, token }) => {
-      return {
-        ...session,
-        user: { ...session.user, id: token.sub },
-      };
+      return { ...session, user: { ...session.user, id: token.sub } };
     },
   },
   adapter: CustomAdapter,
@@ -103,6 +86,9 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.KEYCLOAK_CLIENT_SECRET ?? "",
       issuer: process.env.KEYCLOAK_ISSUER,
       async profile(profile: KeycloakProfile) {
+        const documentoTipo = await db.documentoTipo.findFirst({ where: { nombre: profile.documento_tipo } });
+        const provincia = await db.provincia.findFirst({ where: { nombre: profile.address.region } });
+        const pais = await db.pais.findFirst({ where: { nombreEspanol: profile.address.country } });
         return {
           id: profile.sub,
           name: profile.preferred_username,
@@ -111,32 +97,27 @@ export const authOptions: NextAuthOptions = {
           image: profile.picture,
           nombre: profile.given_name,
           apellido: profile.family_name,
-          fechaNacimiento: new Date(profile.birthdate),
-          legajo: profile.legajo,
+          fechaNacimiento: new Date(profile.birthdate.split("/").reverse().join("-")),
+          legajo: profile.legajo?.replace("-", ""),
           direccion: profile.address.street_address,
           ciudad: profile.address.locality,
           codigoPostal: profile.address.postal_code,
           telefonoCelular: profile.phone_number,
           documentoNumero: profile.documento,
           esDocente: profile.es_docente === "Docente",
-          documentoTipo: {
-            connect: {
-              id: (await db.documentoTipo.findFirst({ where: { nombre: profile.documento_tipo } }))?.id,
-            },
-          },
-          provincia: {
-            connect: {
-              iso_paisIso: {
-                iso: (await db.provincia.findFirst({ where: { nombre: profile.address.region } }))?.iso,
-                paisIso: profile.address.country,
-              },
-            },
-          },
-          pais: {
-            connect: {
-              iso: profile.address.country,
-            },
-          },
+          documentoTipo: documentoTipo ? { connect: { id: documentoTipo.id } } : undefined,
+          pais: pais ? { connect: { iso: pais.iso } } : undefined,
+          provincia:
+            provincia && pais
+              ? {
+                  connect: {
+                    iso_paisIso: {
+                      iso: provincia.iso,
+                      paisIso: pais.iso,
+                    },
+                  },
+                }
+              : undefined,
         };
       },
     }),
@@ -161,16 +142,12 @@ export const getServerAuthSession = () => getServerSession(authOptions);
 
 export const tienePermiso = async (permisos: string[]) => {
   const tienePermiso = await api.permisos.usuarioTienePermisos({ permisos: permisos });
-
   return tienePermiso;
 };
 
 export const tienePermisoYEstaLogueado = (permisos: string[]) => {
   const session = getServerAuthSession();
-
   const loTiene = tienePermiso(permisos);
-
   const results = Promise.all([session, loTiene]);
-
   return results;
 };
