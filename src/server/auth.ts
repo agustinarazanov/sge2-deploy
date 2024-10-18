@@ -8,7 +8,6 @@ import KeycloakProvider, { type KeycloakProfile } from "next-auth/providers/keyc
 import { env } from "@/env";
 import { db } from "@/server/db";
 import Credentials from "next-auth/providers/credentials";
-import { api } from "@/trpc/server";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`

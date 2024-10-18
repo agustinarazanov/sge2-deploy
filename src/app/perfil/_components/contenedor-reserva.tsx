@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { api } from "@/trpc/react";
 import DetalleReserva from "./detalle-reserva";
 import type { RouterOutputs } from "@/trpc/react";
-import { getDateISOString, getDateTimeISO, getTimeISOString } from "@/shared/get-date";
+import { getDateISOString, getTimeISOString } from "@/shared/get-date";
 
 type UsuarioData = RouterOutputs["admin"]["usuarios"]["getUsuarioPorId"];
 
