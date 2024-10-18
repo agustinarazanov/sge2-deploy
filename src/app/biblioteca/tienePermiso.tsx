@@ -12,7 +12,7 @@ export const TienePermiso = ({ permisos, fallback = null, children }: TienePermi
   const { tienePermisos, isLoading, error } = useTienePermisos(permisos);
 
   if (isLoading) {
-    return <p>Cargando permisos...</p>;
+    return null;
   }
 
   if (error) {
