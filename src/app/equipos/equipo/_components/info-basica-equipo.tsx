@@ -15,7 +15,7 @@ export const EquipoInformacionBasica = ({ equipoId }: { equipoId: number }) => {
   return (
     <>
       <div className="my-2 flex w-full flex-col space-y-4 px-0 text-left text-2xl md:px-6">Descripción:</div>
-      <div className="flex w-full flex-col space-x-0 px-12 sm:flex-row sm:space-x-4">
+      <div className="flex w-full flex-row space-x-0 px-12 sm:flex-row sm:space-x-4 md:flex-col lg:flex-row">
         <div className="flex w-full flex-col lg:flex-col lg:justify-between">
           <div className="mt-4">
             <div style={{ position: "relative", width: "200px", height: "200px" }}>

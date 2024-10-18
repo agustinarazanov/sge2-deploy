@@ -37,7 +37,7 @@ export default function PrestarEquipoModal({ equipoId }: PrestarEquipoModalProps
       open={open}
       onOpenChange={setOpen}
     >
-      <div className="flex flex-col">
+      <div className="flex h-auto w-full flex-col">
         <EquipoInformacionBasica equipoId={equipoId} />
 
         <Separator className="my-8 border-2" />

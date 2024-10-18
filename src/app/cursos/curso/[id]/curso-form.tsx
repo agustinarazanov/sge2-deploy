@@ -176,10 +176,10 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
   return (
     <FormProvider {...formHook}>
       <form onSubmit={handleSubmit(onFormSubmit)} className="relative flex w-full flex-col gap-4">
-        <ScrollArea className="max-h-[calc(100vh_-_20%)] w-full pr-4 md:max-h-[calc(100vh_-_30%)] lg:max-h-[calc(100vh_-_30%)]">
+        <ScrollArea className="max-h-[calc(100vh_-_22%)] w-full pr-4 md:max-h-[calc(100vh_-_30%)] lg:max-h-[calc(100vh_-_45%)]">
           <div className="flex w-full flex-col items-center justify-center">
             <div className="flex w-full flex-col space-y-4 px-0 md:px-6">
-              <div className="flex w-full flex-row gap-x-4">
+              <div className="flex w-full flex-col gap-x-4 md:flex-row lg:flex-row">
                 <div className="basis-1/2">
                   <SelectMateriasForm
                     label={"Materia"}
@@ -193,7 +193,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
               </div>
 
-              <div className="flex w-full flex-row gap-x-4">
+              <div className="flex w-full flex-col gap-x-4 md:flex-row lg:flex-row">
                 <div className="mt-4 w-full">
                   <FormSelect label={"Duración"} control={control} name="ac" className="mt-2" items={ac} />
                 </div>
@@ -222,7 +222,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                 </div>
               </div>
 
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="flex w-full flex-col gap-x-4 lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/3">
                   <FormSelect label={"Día 1"} control={control} name="dia1" className="mt-2" items={dias} />
                 </div>
@@ -264,7 +264,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                 )}
               </div>
 
-              <div className="flex w-full flex-row gap-x-4 lg:flex-row lg:justify-between">
+              <div className="flex w-full flex-col gap-x-4 md:flex-row lg:flex-row lg:justify-between">
                 <div className="mt-4 basis-1/2">
                   <SelectUsuarioForm
                     label={"Profesor"}
@@ -275,7 +275,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                   />
                 </div>
 
-                <div className="mt-4 basis-1/2">
+                <div className="mb-3 mt-4 basis-1/2 md:mb-0 lg:mb-0">
                   <label htmlFor="jefesTrabajoPracticoUserId">
                     Ayudantes:
                     <SelectMultipleUsuarioForm label={"Ayudantes"} control={control} name="ayudanteUsersIds" />

@@ -101,7 +101,7 @@ export const DivisionForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     name="nombre"
                     type={"text"}
-                    className="mt-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-300"
+                    className="me-1 mt-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-300"
                   />
                 </div>
                 <div className="mt-4 w-full">
@@ -113,7 +113,7 @@ export const DivisionForm = ({ id, onSubmit, onCancel }: Props) => {
                       validate: (value) =>
                         typeof value === "number" && value >= 1 && value <= 6 ? true : "Selecciona un año válido", // Valida que sea entre 1 y 6
                     })}
-                    className="mt-2 block w-full rounded-md border-gray-300 bg-white text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white" // Ajuste del color para modo oscuro
+                    className="mt-5 block w-full rounded-md border-gray-300 bg-white px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white" // Ajuste del color para modo oscuro
                   >
                     <option value="">Seleccionar año</option>
                     <option value={1}>1</option>
