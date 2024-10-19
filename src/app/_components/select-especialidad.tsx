@@ -39,7 +39,7 @@ export const SelectEspecialidadForm = <T extends FieldValues, TType extends ISel
           <SelectTrigger
             disabled
             id="selectSede"
-            className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
+            className="group-hover:border-input-hover h-10 transition-colors focus:border-primary focus:ring-0"
           >
             <SelectValue placeholder="Error cargando especialidades" />
           </SelectTrigger>
@@ -51,13 +51,13 @@ export const SelectEspecialidadForm = <T extends FieldValues, TType extends ISel
   if (!especialidades.length) {
     return (
       <div className="mt-2">
-        {props.label && <Label className="mb-3 block text-sm dark:text-input-label">{props.label}</Label>}
+        {props.label && <Label className="mb-3 block text-sm">{props.label}</Label>}
         <Select>
           <div className="flex flex-row items-center space-x-2">
             <SelectTrigger
               disabled
               id="selectSede"
-              className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
+              className="group-hover:border-input-hover h-10 transition-colors focus:border-primary focus:ring-0"
             >
               <SelectValue placeholder="No hay especialidades" />
             </SelectTrigger>

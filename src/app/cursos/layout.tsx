@@ -13,15 +13,13 @@ export default async function RootLayout({ children, modal }: LayoutProps) {
   const session = await getServerAuthSession();
 
   if (!session) {
-    redirect(INICIO_ROUTE.href);
+    return redirect(INICIO_ROUTE.href);
   }
 
   return (
-    <main className="flex flex-col">
-      <div className="flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        {children}
-        {modal}
-      </div>
-    </main>
+    <>
+      {children}
+      {modal}
+    </>
   );
 }

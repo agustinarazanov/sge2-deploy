@@ -5,22 +5,23 @@ import { Suspense, useMemo } from "react";
 import LoadingCursosTable from "./(listado)/loading-curso-table";
 import { inputGetCursos } from "@/shared/filters/cursos-filter.schema";
 import React from "react";
+import { CursosNuevoCurso } from "./(listado)/cursos-new-curso";
+import { CURSOS_ROUTE } from "@/shared/server-routes";
+import PageLayout from "@/components/ui/page-template";
 
 type PageProps = {
   searchParams: ReadonlyURLSearchParams;
 };
 
-export default async function Page({ searchParams }: PageProps) {
-  const filters = inputGetCursos.parse(searchParams);
+export default function Page({ searchParams }: PageProps) {
+  const filters = useMemo(() => inputGetCursos.parse(searchParams), [searchParams]);
   const filter_as_key = useMemo(() => JSON.stringify(filters), [filters]);
-
   return (
-    <>
-      <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">Listado de cursos</h3>
+    <PageLayout title={"Listado de cursos"} routes={CURSOS_ROUTE.subRutas} button={<CursosNuevoCurso />}>
       <ActionButtons filters={filters} />
       <Suspense key={filter_as_key} fallback={<LoadingCursosTable />}>
         <CursoTableContainer filters={filters} filterByUser={false} />
       </Suspense>
-    </>
+    </PageLayout>
   );
 }

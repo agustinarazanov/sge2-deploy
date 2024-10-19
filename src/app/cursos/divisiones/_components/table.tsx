@@ -21,23 +21,21 @@ export const DivisionesTable = ({ data }: DivisionesTableProps) => {
     router.refresh();
   };
   return (
-    <>
-      <DataTable
-        data={data ?? []}
-        columns={columns}
-        action={{
-          header: "Acciones",
-          cell({ original }) {
-            return (
-              <>
-                <EditDivisionModal divisionId={original.id.toString()} />
-                <RemoveDivisionModal divisionId={original.id} nombre={original.nombre} onSubmit={onDeleteDivision} />
-              </>
-            );
-          },
-        }}
-      />
-    </>
+    <DataTable
+      data={data ?? []}
+      columns={columns}
+      action={{
+        header: "Acciones",
+        cell({ original }) {
+          return (
+            <>
+              <EditDivisionModal divisionId={original.id.toString()} />
+              <RemoveDivisionModal divisionId={original.id} nombre={original.nombre} onSubmit={onDeleteDivision} />
+            </>
+          );
+        },
+      }}
+    />
   );
 };
 

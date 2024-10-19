@@ -63,7 +63,7 @@ export const CustomSelect = <TType extends ISelectItem | string>({
   return (
     <div className={cn("relative", className)}>
       {label && (
-        <Label htmlFor={id} className="mb-3 block text-sm dark:text-input-label">
+        <Label htmlFor={id} className="mb-3 block text-sm">
           {label}
         </Label>
       )}

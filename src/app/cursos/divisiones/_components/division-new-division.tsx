@@ -20,7 +20,7 @@ export const NuevaDivision = () => {
 
   return (
     <ModalDrawer
-      titulo={"Nueva División"}
+      titulo={"Nueva división"}
       description={"Crea una nueva división"}
       open={open}
       onOpenChange={setOpen}

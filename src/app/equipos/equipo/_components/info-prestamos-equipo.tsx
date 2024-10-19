@@ -22,7 +22,7 @@ export const EquipoInformacionPrestamos = (props: Props) => {
 
   return (
     <>
-      <div className="my-2 flex w-full flex-col space-y-4 px-0 text-left text-2xl md:px-6">Historial de Prestamos:</div>
+      <div className="my-2 flex w-full flex-col space-y-4 px-0 text-left text-2xl md:px-6">Historial de Préstamos:</div>
       <div className="flex w-full flex-col space-y-4 px-12">
         <table className="w-full table-auto border-collapse text-center">
           <thead>

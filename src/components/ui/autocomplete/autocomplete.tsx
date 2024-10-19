@@ -163,11 +163,11 @@ export const Autocomplete = <TType extends SelectItemAutocomplete | string, TMul
         {({ open }) => (
           <>
             {!label ? null : !labelTooltip ? (
-              <Label htmlFor={id} className="mb-3 block text-sm dark:text-input-label">
+              <Label htmlFor={id} className="mb-3 block text-sm">
                 {label}
               </Label>
             ) : (
-              <div className="mb-3 flex items-center gap-2 text-sm dark:text-input-label">
+              <div className="mb-3 flex items-center gap-2 text-sm">
                 {label}
                 {labelTooltip}
               </div>
@@ -194,7 +194,7 @@ export const Autocomplete = <TType extends SelectItemAutocomplete | string, TMul
                 className={({ open }) =>
                   cn(
                     inputBaseStyle,
-                    "!w-full pr-10 group-focus-within:!border-input-active group-hover:border-input-hover group-active:!border-input-active",
+                    "group-focus-within:!border-input-active group-hover:border-input-hover group-active:!border-input-active !w-full pr-10",
                     "disabled:group-focus-within:!border-disabled disabled:group-active:!border-disabled",
                     "placeholder:text-sm",
                     {
