@@ -7,7 +7,7 @@ type LayoutProps = {
 
 export default async function Layout({ children, modal }: LayoutProps) {
   return (
-    <main className="flex flex-col">
+    <main className="flex w-full flex-col">
       {children}
       {modal}
     </main>
