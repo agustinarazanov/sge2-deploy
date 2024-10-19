@@ -101,7 +101,7 @@ export const LABORATORIO_ABIERTO_ROUTE = {
   ],
 };
 
-export const EQUIPOS_ROUTE: AppRoute = {
+export const EQUIPOS_ROUTE = {
   href: "/equipos",
   label: "Equipos",
   isPublic: false,

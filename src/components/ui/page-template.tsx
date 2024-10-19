@@ -27,9 +27,7 @@ export default function PageLayout({ title, routes, button, children }: PageLayo
           <div className="ml-auto">{button ?? null}</div>
         </div>
       </header>
-      <main>
-        <div className="mx-auto space-y-6 px-4 py-6 pb-10 sm:px-6 lg:px-8">{children}</div>
-      </main>
+      <div className="mx-auto w-full space-y-6 px-4 py-6 pb-10 sm:px-6 lg:px-8">{children}</div>
     </>
   );
 }
