@@ -17,9 +17,9 @@ export default async function RootLayout({ children, modal }: LayoutProps) {
   }
 
   return (
-    <>
+    <main className="flex flex-col">
       {children}
       {modal}
-    </>
+    </main>
   );
 }

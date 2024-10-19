@@ -5,6 +5,8 @@ import LoadingBibliotecaPrestamosTable from "../(listado)/loading-biblioteca-pre
 import { inputGetAllPrestamosLibros } from "@/shared/filters/reservas-filter.schema";
 import BibliotecaPrestamosTableContainer from "../prestamos/_components/prestamos-table-container";
 import React from "react";
+import PageLayout from "@/components/ui/page-template";
+import { BIBLIOTECA_ROUTE } from "@/shared/server-routes";
 type PageProps = {
   searchParams: ReadonlyURLSearchParams;
 };
@@ -15,11 +17,11 @@ export default async function Page({ searchParams }: PageProps) {
   const filter_as_key = useMemo(() => JSON.stringify(filters), [filters]);
 
   return (
-    <>
+    <PageLayout title={"Mis Préstamos de Biblioteca"} routes={BIBLIOTECA_ROUTE.subRutas}>
       <ActionButtonsPrestamos filters={filters} />
       <Suspense key={filter_as_key} fallback={<LoadingBibliotecaPrestamosTable />}>
         <BibliotecaPrestamosTableContainer filters={filters} filterByUser />
       </Suspense>
-    </>
+    </PageLayout>
   );
 }
