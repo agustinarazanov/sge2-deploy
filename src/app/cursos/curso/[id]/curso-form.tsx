@@ -1,5 +1,3 @@
-"use client";
-
 import { FormProvider, useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { Button, ScrollArea, toast } from "@/components/ui";
@@ -49,30 +47,6 @@ const aniosDeCarrera = [
 ];
 
 const horas = ["0", "1", "2", "3", "4", "5", "6"].map((item) => ({
-  id: item,
-  label: item,
-}));
-
-const duracion = ["1", "2", "3", "4", "5", "6"].map((item) => ({
-  id: item,
-  label: item,
-}));
-
-const ac = [
-  { id: "ANUAL", label: "Anual" },
-  { id: "CUATRIMESTRAL", label: "Cuatrimestral" },
-];
-
-const dias = [
-  { id: "LUNES", label: "Lunes" },
-  { id: "MARTES", label: "Martes" },
-  { id: "MIERCOLES", label: "Miércoles" },
-  { id: "JUEVES", label: "Jueves" },
-  { id: "VIERNES", label: "Viernes" },
-  { id: "SABADO", label: "Sábado" },
-];
-
-const horas = ["0", "1", "2", "3", "4", "5"].map((item) => ({
   id: item,
   label: item,
 }));
@@ -153,8 +127,6 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
 
   const [profesorUser] = formHook.watch(["profesorUser"]);
   useEffect(() => formHook.setValue("profesorUserId", profesorUser?.id), [formHook, profesorUser]);
-
-  const esNuevo = id === undefined;
 
   const esNuevo = id === undefined;
 

@@ -4,7 +4,6 @@ import { EquiposFilterText } from "./filtros/equipos-filter-text";
 import { EquiposFilterArmario } from "./filtros/equipos-filter-armario";
 import { EquiposFilterTipo } from "./filtros/equipos-filter-tipo";
 import { type inputGetEquipos } from "@/shared/filters/equipos-filter.schema";
-import { EquiposButtons } from "../tipos/_components/buttons/action-buttons-links";
 
 type EquiposFilters = z.infer<typeof inputGetEquipos>;
 

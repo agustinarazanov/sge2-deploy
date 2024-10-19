@@ -126,11 +126,6 @@ export const getColumns = () => {
           hideSort: true,
         },
       },
-      meta: {
-        header: {
-          hideSort: true,
-        },
-      },
     }),
   ] as ColumnDef<CursosData>[];
 };
