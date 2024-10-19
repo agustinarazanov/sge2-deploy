@@ -6,7 +6,7 @@ import { LABORATORIO_ABIERTO_ROUTE } from "@/shared/server-routes";
 
 export default async function Page() {
   return (
-    <PageLayout title={"Tutores"} routes={LABORATORIO_ABIERTO_ROUTE.subRutas}>
+    <PageLayout route={LABORATORIO_ABIERTO_ROUTE}>
       <Suspense fallback={<LoadingTutoresContainer />}>
         <TutoresContainer />
       </Suspense>

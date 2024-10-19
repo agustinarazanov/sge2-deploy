@@ -19,7 +19,7 @@ export const BIBLIOTECA_ROUTE = {
   subRutas: [
     {
       href: "/biblioteca",
-      label: "Biblioteca",
+      label: "Todos los libros",
       isPublic: false,
     },
     {
@@ -62,7 +62,7 @@ export const LABORATORIO_ROUTE = {
     },
     {
       href: "/laboratorios/pantalla",
-      label: "Pantalla - (Construcción)",
+      label: "Pantalla 👷🏻‍♂️",
       isPublic: false,
     },
     {
@@ -113,7 +113,7 @@ export const EQUIPOS_ROUTE = {
   subRutas: [
     {
       href: "/equipos",
-      label: "Equipos",
+      label: "Todos los equipos",
       isPublic: false,
     },
     {
@@ -141,7 +141,7 @@ export const MATERIA_ROUTE = {
   subRutas: [
     {
       href: "/materias",
-      label: "Listado",
+      label: "Todas las materias",
       isPublic: false,
     },
   ],
@@ -154,7 +154,7 @@ export const CURSOS_ROUTE = {
   subRutas: [
     {
       href: "/cursos",
-      label: "Cursos",
+      label: "Todos los cursos",
       isPublic: false,
     },
     {

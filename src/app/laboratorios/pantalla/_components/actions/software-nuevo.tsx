@@ -27,7 +27,7 @@ export const AgregarAPantallaModal = () => {
       onOpenChange={setOpen}
       trigger={
         <Button type="button" color={"primary"} variant={"default"}>
-          <ScreenShareIcon className="mr-2 h-4 w-4" /> Agregar a pantalla - En construcción 👷🏻👷🏻‍♂️👷🏻‍♂️👷🏻‍♂️👷🏻‍♂️
+          <ScreenShareIcon className="h-4 w-4" />
         </Button>
       }
       className={"max-h-[calc(100vh_-_10%)]"}

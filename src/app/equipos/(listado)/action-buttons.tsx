@@ -14,7 +14,7 @@ type ActionButtonsProps = {
 export const ActionButtons = ({ filters }: ActionButtonsProps) => {
   return (
     <div className="relative flex w-full flex-col items-center justify-between space-y-3 md:space-x-1.5 lg:flex-row lg:space-y-0">
-      <div className="w-full space-y-3 sm:flex sm:flex-row sm:space-x-3 sm:space-y-0 md:basis-1/2">
+      <div className="w-full space-y-3 sm:flex sm:flex-row sm:space-x-3 sm:space-y-0 md:basis-3/4">
         <div className="md:basis-1/4">
           <EquiposFilterText filters={filters} />
         </div>

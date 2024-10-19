@@ -17,7 +17,7 @@ export default function Page({ searchParams }: PageProps) {
   const filter_as_key = useMemo(() => JSON.stringify(filters), [filters]);
 
   return (
-    <PageLayout title={"Mis Préstamos de Biblioteca"} routes={BIBLIOTECA_ROUTE.subRutas}>
+    <PageLayout route={BIBLIOTECA_ROUTE}>
       <ActionButtonsPrestamos filters={filters} />
       <Suspense key={filter_as_key} fallback={<LoadingBibliotecaPrestamosTable />}>
         <BibliotecaPrestamosTableContainer filters={filters} filterByUser />

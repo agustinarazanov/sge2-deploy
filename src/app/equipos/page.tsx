@@ -18,7 +18,7 @@ export default function Page({ searchParams }: PageProps) {
   const filter_as_key = useMemo(() => JSON.stringify(filters), [filters]);
 
   return (
-    <PageLayout title={"Listado de equipos"} routes={EQUIPOS_ROUTE.subRutas} buttons={<EquiposNuevoEquipoModal />}>
+    <PageLayout route={EQUIPOS_ROUTE} buttons={<EquiposNuevoEquipoModal />}>
       <ActionButtons filters={filters} />
       <div className="w-full">
         <Suspense key={filter_as_key} fallback={<LoadingEquiposTable />}>

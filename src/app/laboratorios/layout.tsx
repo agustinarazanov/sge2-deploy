@@ -18,11 +18,9 @@ export default async function RootLayout({ children, modal }: LayoutProps) {
   }
 
   return (
-    <main className="flex flex-col">
-      <div className="flex flex-col items-center justify-center gap-12 px-4">
-        {children}
-        {modal}
-      </div>
-    </main>
+    <>
+      {children}
+      {modal}
+    </>
   );
 }

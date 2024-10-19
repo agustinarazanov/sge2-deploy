@@ -1,31 +1,42 @@
 "use client";
 
-import { DisclosureButton } from "@headlessui/react";
-import { usePathname } from "next/navigation";
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
 import { APP_ROUTES, USER_ROUTES } from "@/shared/server-routes";
-import { Bell } from "lucide-react";
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
+import { Bell, ChevronDownIcon } from "lucide-react";
 
 export const MobileNavigation = ({ isLogged }: { isLogged: boolean }) => {
-  const pathname = usePathname();
   return APP_ROUTES.filter((link) => isLogged || link.isPublic).map((item) => {
-    const current = item.href.split("/")[1] === pathname.split("/")[1];
     return (
-      <DisclosureButton
-        key={item.label}
-        as="a"
-        href={item.href}
-        aria-current={current ? "page" : undefined}
-        className={classNames(
-          current ? "bg-slate-200 text-black" : "text-gray-100",
-          "block rounded-md px-3 py-2 text-base font-medium",
+      <Disclosure key={item.label} as="div" className="-mx-1">
+        {item.subRutas ? (
+          <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base leading-7 text-gray-900 hover:bg-gray-50">
+            {item.label}
+            <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
+          </DisclosureButton>
+        ) : (
+          <DisclosureButton
+            as="a"
+            href={item.href}
+            className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base leading-7 text-gray-900 hover:bg-gray-50"
+          >
+            {item.label}
+          </DisclosureButton>
         )}
-      >
-        {item.label}
-      </DisclosureButton>
+        {item.subRutas && (
+          <DisclosurePanel className="mt-2 space-y-2">
+            {item.subRutas?.map((item) => (
+              <DisclosureButton
+                key={item.label}
+                as="a"
+                href={item.href}
+                className="block rounded-lg py-2 pl-6 pr-3 text-sm leading-7 text-gray-900 hover:bg-gray-50"
+              >
+                {item.label}
+              </DisclosureButton>
+            ))}
+          </DisclosurePanel>
+        )}
+      </Disclosure>
     );
   });
 };
@@ -36,7 +47,7 @@ export const ProfilePanel = ({ id }: { id: string }) =>
       key={item.label}
       as="a"
       href={item.href}
-      className="block rounded-md px-3 py-2 text-base font-medium text-gray-100 hover:bg-gray-700 hover:text-white"
+      className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base leading-7 text-gray-900 hover:bg-gray-50"
     >
       {item.label}
     </DisclosureButton>

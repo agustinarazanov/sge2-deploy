@@ -26,7 +26,7 @@ export const NuevaDivision = () => {
       onOpenChange={setOpen}
       trigger={
         <Button color={"primary"}>
-          Nueva División
+          Nueva división
           <Plus size={16} className="ml-2" />
         </Button>
       }
