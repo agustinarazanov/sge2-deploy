@@ -7,10 +7,9 @@ type LayoutProps = {
 
 export default async function Layout({ children, modal }: LayoutProps) {
   return (
-    <>
-      <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">Laboratorio abierto</h3>
+    <div className="flex w-full flex-col">
       {children}
       {modal}
-    </>
+    </div>
   );
 }

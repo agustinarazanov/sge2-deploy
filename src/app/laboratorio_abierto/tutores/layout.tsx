@@ -5,10 +5,5 @@ type LayoutProps = {
 };
 
 export default async function Layout({ children }: LayoutProps) {
-  return (
-    <>
-      <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">Tutores</h3>
-      {children}
-    </>
-  );
+  return <div className="flex w-full flex-col">{children}</div>;
 }

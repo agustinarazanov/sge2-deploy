@@ -1,12 +1,12 @@
-import { ActionButtons } from "./_components/action-buttons/action-buttons";
 import LaboratorioAbiertoReservaContainer from "./_components/table/curso-table-container";
 import { Suspense } from "react";
 import LoadingLaboratorioAbiertoReserva from "./_components/table/loading-reserva-laboratorio-abierto";
+import PageLayout from "@/components/ui/page-template";
+import { LABORATORIO_ABIERTO_ROUTE } from "@/shared/server-routes";
 
 export default async function Page() {
   return (
-    <>
-      <ActionButtons />
+    <PageLayout title={"Laboratorio abierto"} routes={LABORATORIO_ABIERTO_ROUTE.subRutas}>
       <p className="text-center text-lg antialiased">
         El Laboratorio Abierto (LA) del Departamento de Ingeniería Electrónica de la UTN-FRBA está diseñado para
         facilitar el acceso al instrumental del departamento a estudiantes, egresados, docentes y asociados de esta
@@ -18,6 +18,6 @@ export default async function Page() {
       <Suspense fallback={<LoadingLaboratorioAbiertoReserva />}>
         <LaboratorioAbiertoReservaContainer />
       </Suspense>
-    </>
+    </PageLayout>
   );
 }
