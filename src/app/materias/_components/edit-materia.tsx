@@ -29,7 +29,7 @@ export const EditMateriaModal = ({ materiaId }: EditMateriaProps) => {
       open={open}
       onOpenChange={setOpen}
       trigger={
-        <Button color={"primary"} className="flex items-center gap-2">
+        <Button color={"primary"} className="flex h-8 w-8 items-center gap-2 px-2 py-2">
           <EditIcon size={16} /> {/* Icono de edición */}
         </Button>
       }
