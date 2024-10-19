@@ -26,7 +26,7 @@ export default function PageLayout({ title, routes, buttons, children }: PageLay
               ))}
             </nav>
           </div>
-          <div className="flex flex-col gap-y-2">{buttons ?? null}</div>
+          <div className="flex gap-x-2">{buttons ?? null}</div>
         </div>
       </header>
       <div className="mx-auto w-full space-y-6 px-4 py-6 pb-10 sm:px-6 lg:px-8">{children}</div>

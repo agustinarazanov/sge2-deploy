@@ -20,7 +20,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <PageLayout
-      title={"Solicitudes de reservas de Laboratorio"}
+      title={"Solicitudes de reserva"}
       routes={LABORATORIO_ROUTE.subRutas}
       buttons={
         <>

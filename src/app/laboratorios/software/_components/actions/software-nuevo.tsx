@@ -30,8 +30,12 @@ export const SoftwareNuevoEditar = ({ softwareId }: SoftwareFormProps) => {
       open={open}
       onOpenChange={setOpen}
       trigger={
-        <Button type="button" color={softwareId ? "outline" : "primary"}>
-          <ButtonSoftawre softwareId={softwareId} />
+        <Button
+          type="button"
+          className={softwareId ? "h-8 w-8 px-2 py-2 text-black" : ""}
+          color={softwareId ? "outline" : "primary"}
+        >
+          <ButtonSoftware softwareId={softwareId} />
         </Button>
       }
       className={"max-h-[calc(100vh_-_10%)]"}
@@ -43,7 +47,7 @@ export const SoftwareNuevoEditar = ({ softwareId }: SoftwareFormProps) => {
   );
 };
 
-const ButtonSoftawre = ({ softwareId }: SoftwareFormProps) => {
+const ButtonSoftware = ({ softwareId }: SoftwareFormProps) => {
   if (softwareId) {
     return <EditIcon />;
   }

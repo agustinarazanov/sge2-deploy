@@ -9,7 +9,7 @@ import { AgregarAPantallaModal } from "./_components/actions/software-nuevo";
 export default async function Page() {
   return (
     <PageLayout
-      title={"Pantalla - En construcción 👷🏻👷🏻‍♂️👷🏻‍♂️👷🏻‍♂️👷🏻‍♂️"}
+      title={"Pantalla 👷🏻"}
       routes={LABORATORIO_ROUTE.subRutas}
       buttons={
         <>

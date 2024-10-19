@@ -10,7 +10,7 @@ import { AgregarAPantallaModal } from "../pantalla/_components/actions/software-
 export default async function Page() {
   return (
     <PageLayout
-      title={"Reserva Laboratorio - Cátedra"}
+      title={"Reserva de laboratorio"}
       routes={LABORATORIO_ROUTE.subRutas}
       buttons={
         <>
