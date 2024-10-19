@@ -156,7 +156,7 @@ export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     name="nombre"
                     type={"text"}
-                    className="mt-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-300"
+                    className="mt-2 bg-white text-gray-900"
                   />
                 </div>
               </div>
@@ -170,7 +170,7 @@ export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
                       control={control}
                       name="codigo"
                       type={"text"}
-                      className="mt-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-300"
+                      className="mt-2 bg-white text-gray-900"
                     />
                   </div>
                 </div>
@@ -181,7 +181,7 @@ export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
                       label={"Año"}
                       control={control}
                       name="anio"
-                      className="mt-2 block w-full rounded-md border-gray-300 bg-white text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className="mt-2 block w-full rounded-md border-gray-300 bg-white text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       items={["1", "2", "3", "4", "5", "6"]}
                     />
                   </div>
@@ -196,7 +196,7 @@ export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
                       label={"Duración"}
                       control={control}
                       name="duracion"
-                      className="mt-2 block w-full rounded-md border-gray-300 bg-white text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className="mt-2 block w-full rounded-md border-gray-300 bg-white text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       items={materiaDuracion}
                     />
                   </div>
@@ -208,7 +208,7 @@ export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
                       label={"Tipo"}
                       control={control}
                       name="tipo"
-                      className="mt-2 block w-full rounded-md border-gray-300 bg-white text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className="mt-2 block w-full rounded-md border-gray-300 bg-white text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       items={materiaTipo}
                     />
                   </div>
@@ -223,7 +223,7 @@ export const MateriaForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     name="director"
                     realNameId="directorUserId"
-                    className="mt-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-300"
+                    className="mt-2 bg-white text-gray-900"
                   />
                 </div>
 

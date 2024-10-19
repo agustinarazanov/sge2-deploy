@@ -8,8 +8,8 @@ const subrutasCurso = rutaCurso?.subRutas ?? [];
 
 export const ActionButtons = () => {
   return (
-    <div className="relative flex w-full flex-col items-center justify-between space-y-2 md:flex-row-reverse  md:space-x-1.5">
-      <div className="relative flex w-full flex-row justify-end space-x-2 sm:basis-1/2 md:w-auto md:basis-1/2">
+    <div className="relative flex w-full flex-col items-center justify-between space-y-2 md:flex-row-reverse md:space-x-2 md:space-y-0">
+      <div className="relative flex w-full flex-row justify-end space-x-2 sm:basis-1/2 md:w-auto md:basis-3/4">
         {subrutasCurso.map((subRuta, index) => (
           <Link key={index} href={subRuta.href} passHref>
             <Button color={"ghost"}>{subRuta.label}</Button>

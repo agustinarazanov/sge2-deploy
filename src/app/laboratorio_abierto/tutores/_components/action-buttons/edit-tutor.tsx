@@ -73,8 +73,8 @@ export const EditTutorModal = ({ isOpen, onClose, tutor }: Props) => {
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto max-w-md rounded-lg bg-white p-6 dark:bg-gray-800 dark:text-white">
-          <button onClick={onClose} className="absolute right-2 top-2 text-gray-500 dark:text-gray-300">
+        <Dialog.Panel className="mx-auto max-w-md rounded-lg bg-white p-6">
+          <button onClick={onClose} className="absolute right-2 top-2 text-gray-500">
             &times;
           </button>
           <FormProvider {...formHook}>

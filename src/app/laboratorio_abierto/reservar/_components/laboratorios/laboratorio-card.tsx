@@ -42,11 +42,11 @@ export function LaboratorioCard({ className, ...props }: CardProps & Laboratorio
 
 const AlertaLaboratorio = ({ alerta }: { alerta: string }) => {
   return (
-    <div className=" flex items-center space-x-4 rounded-md border border-warn p-4">
+    <div className=" border-warn flex items-center space-x-4 rounded-md border p-4">
       <AlertCircleIcon />
       <div className="flex-1 space-y-1">
         <p className="text-sm font-medium leading-none underline">Importante</p>
-        <p className="text-sm dark:text-muted-foreground">{alerta}</p>
+        <p className="text-sm">{alerta}</p>
       </div>
     </div>
   );

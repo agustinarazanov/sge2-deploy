@@ -12,12 +12,12 @@ export const ActionRedirect = () => {
       <BibliotecaNewLibro />
       <Button color={"ghost"}>
         <Link href={rutaBiblioteca?.href ?? "/"} passHref>
-          Ir a préstamos
+          Préstamos
         </Link>
       </Button>
       <Button color={"ghost"}>
         <Link href={rutaMisPrestamos?.href ?? "/"} passHref>
-          Ir a mis préstamos
+          Mis préstamos
         </Link>
       </Button>
     </>

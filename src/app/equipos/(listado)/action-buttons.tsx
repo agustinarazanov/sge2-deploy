@@ -16,7 +16,7 @@ type ActionButtonsProps = {
 export const ActionButtons = ({ filters }: ActionButtonsProps) => {
   return (
     <div className="relative flex w-full flex-col items-center justify-between space-y-3 md:space-x-1.5 lg:flex-row-reverse lg:space-y-0">
-      <div className="relative flex w-full flex-col justify-end space-y-3 sm:basis-1/2 sm:flex-row sm:space-x-2 sm:space-y-0 md:basis-1/3 md:space-y-0">
+      <div className="relative flex w-full flex-col justify-end space-y-3 sm:basis-1/2 sm:flex-row sm:space-x-2 sm:space-y-0 md:basis-2/5 md:space-y-0">
         <EquiposNuevoEquipoModal />
 
         <EquiposButtons />

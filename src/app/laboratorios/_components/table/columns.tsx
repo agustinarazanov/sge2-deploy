@@ -178,10 +178,7 @@ const HoraDia = ({ dia1, dia2, horaInicio1, horaInicio2, duracion1, duracion2, d
         if (esHoyDia1) {
           if (horaInicio1 >= hora || hora < finClase1) {
             return (
-              <div
-                key={hora}
-                className="flex h-5 w-5  justify-center rounded-full bg-primary dark:bg-[hsl(280,100%,50%)]"
-              >
+              <div key={hora} className="flex h-5 w-5  justify-center rounded-full bg-primary">
                 {hora}
               </div>
             );
@@ -191,10 +188,7 @@ const HoraDia = ({ dia1, dia2, horaInicio1, horaInicio2, duracion1, duracion2, d
         if (esHoyDia2) {
           if (horaInicio2 >= hora || hora < finClase2) {
             return (
-              <div
-                key={hora}
-                className="flex h-5 w-5 justify-center rounded-full bg-primary dark:bg-[hsl(280,100%,50%)]"
-              >
+              <div key={hora} className="flex h-5 w-5 justify-center rounded-full bg-primary">
                 {hora}
               </div>
             );
@@ -202,7 +196,7 @@ const HoraDia = ({ dia1, dia2, horaInicio1, horaInicio2, duracion1, duracion2, d
         }
 
         return (
-          <div key={hora} className="flex h-5 w-5 justify-center rounded-full bg-slate-300 dark:bg-gray-400">
+          <div key={hora} className="flex h-5 w-5 justify-center rounded-full bg-slate-300">
             {hora}
           </div>
         );

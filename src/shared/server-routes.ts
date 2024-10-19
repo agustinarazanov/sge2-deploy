@@ -1,7 +1,7 @@
-type AppRoute = {
+export type AppRoute = {
   href: string;
   label: string;
-  isPublic?: boolean;
+  isPublic: boolean;
   inConstruction?: boolean;
   subRutas?: AppRoute[];
 };
@@ -19,17 +19,17 @@ export const BIBLIOTECA_ROUTE = {
   subRutas: [
     {
       href: "/biblioteca",
-      label: "Listado",
+      label: "Biblioteca",
       isPublic: false,
     },
     {
       href: "/biblioteca/prestamos",
-      label: "Prestamos",
+      label: "Préstamos",
       isPublic: false,
     },
     {
       href: "/biblioteca/mis_prestamos",
-      label: "Mis prestamos",
+      label: "Mis préstamos",
       isPublic: false,
     },
   ],
@@ -52,22 +52,22 @@ export const LABORATORIO_ROUTE = {
     },
     {
       href: "/laboratorios/software",
-      label: "Aplicaciones en Laboratorios",
+      label: "Aplicaciones",
       isPublic: false,
     },
     {
       href: "/laboratorios/pantalla",
-      label: "Pantalla de Reservas",
+      label: "Reservas",
       isPublic: false,
     },
     {
       href: "/laboratorios/mis_reservas",
-      label: "Pantalla de mis reservas",
+      label: "Mis reservas",
       isPublic: false,
     },
     {
       href: "/laboratorios/solicitudes",
-      label: "Pantalla de solicitudes de reserva",
+      label: "Solicitudes",
       isPublic: false,
     },
   ],
@@ -118,12 +118,12 @@ export const EQUIPOS_ROUTE: AppRoute = {
     },
     {
       href: "/equipos/prestamos",
-      label: "Prestamos",
+      label: "Préstamos",
       isPublic: false,
     },
     {
       href: "/equipos/mis_prestamos",
-      label: "Mis Préstamos",
+      label: "Mis préstamos",
       isPublic: false,
     },
   ],
@@ -149,7 +149,7 @@ export const CURSOS_ROUTE = {
   subRutas: [
     {
       href: "/cursos",
-      label: "Listado",
+      label: "Cursos",
       isPublic: false,
     },
     {
@@ -197,6 +197,19 @@ export const APP_ROUTES: AppRoute[] = [
   LABORATORIO_ABIERTO_ROUTE,
   ADMIN_ROUTE,
   MATERIA_ROUTE,
+];
+
+export const USER_ROUTES = (id: string): AppRoute[] => [
+  {
+    href: "/perfil/" + id,
+    label: "Perfil",
+    isPublic: false,
+  },
+  {
+    href: "/api/auth/signout",
+    label: "Cerrar sesión",
+    isPublic: false,
+  },
 ];
 
 export const APP_ROUTES_MAP = APP_ROUTES.reduce(

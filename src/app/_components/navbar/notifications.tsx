@@ -16,7 +16,7 @@ export default function Notifications() {
   return (
     <Menu as="div" className="relative ml-3">
       <div>
-        <MenuButton className="relative rounded-full p-1 text-slate-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:bg-gray-500 dark:text-gray-100 dark:hover:text-white">
+        <MenuButton className="relative rounded-full p-1 text-slate-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
           <span className="absolute -inset-1.5" />
           <span className="sr-only">View notifications</span>
           <svg
@@ -38,7 +38,7 @@ export default function Notifications() {
       </div>
       <MenuItems
         transition
-        className="absolute right-0 z-10 mt-2 w-80 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-900"
+        className="absolute right-0 z-10 mt-2 w-80 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
       >
         <NotificationItems notificaciones={notif} isLoading={isLoading} isError={isError} />
       </MenuItems>
@@ -102,7 +102,7 @@ const NotificationItem = ({ notificacion }: { notificacion: NotificaionType[numb
       href={notificacion.link ?? "#"}
       passHref
       prefetch
-      className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-800 data-[focus]:bg-slate-100 dark:text-gray-100 dark:data-[focus]:bg-black  "
+      className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-800 data-[focus]:bg-slate-100"
     >
       <p>
         <b>{notificacion.titulo}</b>

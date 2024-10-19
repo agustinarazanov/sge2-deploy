@@ -52,11 +52,6 @@ export const sgePlugin = plugin(
         "--popover": "220 5% 12%",
       },
     });
-    addBase({
-      "html, body": {
-        "@apply dark:text-foreground dark:bg-background": {},
-      },
-    });
   },
   {
     theme: {

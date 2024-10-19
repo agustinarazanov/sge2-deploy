@@ -31,7 +31,7 @@ export function DataTablePaginationStandalone(props: DataTablePaginationProps) {
   const nextPage = () => setPageIndex(pageIndex + 1);
 
   return (
-    <div className="flex items-center justify-between px-2 sm:mt-4">
+    <div className="flex items-center justify-center px-2 sm:mt-4">
       <div className="flex flex-col items-center space-y-4 sm:flex-row sm:space-x-3 sm:space-y-0 lg:space-x-8">
         {rowCount > 0 && (
           <p className="text-sm font-medium">

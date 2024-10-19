@@ -19,7 +19,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
 
 export const inputBaseStyle = cn(
   "shadow-none outline-none focus:!ring-0 transition-colors min-w-[90px] w-auto min-h-[41px] max-h-[41px]",
-  "px-4 py-[9px] bg-input focus:border-input-active border border-input rounded-md focus:rounded-md hover:border-input-hover dark:text-input-label placeholder:text-input-placeholder",
+  "px-4 py-[9px] bg-input focus:border-input-active border border-input rounded-md focus:rounded-md hover:border-input-hover placeholder:text-sm",
   "disabled:!text-disabled disabled:!border-disabled disabled:focus:!border-disabled",
 );
 
@@ -48,7 +48,7 @@ export const Input = memo(
       return (
         <div className={cn("flex flex-col", className)}>
           {label && (
-            <label htmlFor={id} className="mb-3 text-sm dark:text-input-label">
+            <label htmlFor={id} className="mb-3 text-sm">
               {label}
             </label>
           )}

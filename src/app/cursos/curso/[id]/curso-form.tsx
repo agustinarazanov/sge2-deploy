@@ -271,7 +271,7 @@ export const CursoForm = ({ id, onSubmit, onCancel }: Props) => {
                     control={control}
                     name="profesorUser"
                     realNameId="profesorUserId"
-                    className="mt-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-300"
+                    className="mt-2 bg-white text-gray-900"
                   />
                 </div>
 

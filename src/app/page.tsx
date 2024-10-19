@@ -10,7 +10,7 @@ export default async function Home() {
     <main className="flex flex-col items-center justify-center">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          SGE <span className="text-blue-500 dark:text-[hsl(280,100%,70%)]">2.0</span>
+          SGE <span className="text-blue-500">2.0</span>
         </h1>
         <div className="flex flex-col items-center gap-2">
           <div className="flex flex-col items-center justify-center gap-4">
@@ -34,7 +34,7 @@ export default async function Home() {
             </div>
             <Link
               href={session ? "/api/auth/signout" : "/api/auth/signin"}
-              className="rounded-full bg-slate-100 px-10 py-3 font-semibold no-underline transition hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20"
+              className="rounded-full bg-slate-100 px-10 py-3 font-semibold no-underline transition hover:bg-slate-200"
             >
               {session ? " Cerrar sesión" : "Iniciar sesión"}
             </Link>

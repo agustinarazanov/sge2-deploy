@@ -26,7 +26,7 @@ export const NuevaMateria = () => {
       onOpenChange={setOpen}
       trigger={
         <Button color={"primary"}>
-          Nueva Materia
+          Nueva materia
           <Plus size={16} className="ml-2" />
         </Button>
       }
