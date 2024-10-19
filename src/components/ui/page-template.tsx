@@ -19,7 +19,7 @@ export default function PageLayout({ route, buttons, children }: PageLayoutProps
 
   useEffect(() => {
     if (!window) return;
-    const updateTitle = () => setCurrentTitle(window.innerWidth < 1024 ? subpathTitle || pathTitle : pathTitle);
+    const updateTitle = () => setCurrentTitle(window.innerWidth < 1024 ? (subpathTitle ?? pathTitle) : pathTitle);
     updateTitle();
     window.addEventListener("resize", updateTitle);
     return () => window.removeEventListener("resize", updateTitle);
