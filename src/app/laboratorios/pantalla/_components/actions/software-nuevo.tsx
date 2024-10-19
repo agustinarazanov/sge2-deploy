@@ -21,13 +21,13 @@ export const AgregarAPantallaModal = () => {
 
   return (
     <ModalDrawer
-      titulo={"Agregar a pantalla"}
+      titulo={"Agregar a pantalla - En construcción 👷🏻👷🏻‍♂️👷🏻‍♂️👷🏻‍♂️👷🏻‍♂️"}
       description={"Agregar curso a pantalla"}
       open={open}
       onOpenChange={setOpen}
       trigger={
         <Button type="button" color={"primary"} variant={"default"}>
-          <ScreenShareIcon className="mr-2 h-4 w-4" /> Agregar a pantalla
+          <ScreenShareIcon className="mr-2 h-4 w-4" /> Agregar a pantalla - En construcción 👷🏻👷🏻‍♂️👷🏻‍♂️👷🏻‍♂️👷🏻‍♂️ - Solo interfaz
         </Button>
       }
       className={"max-h-[calc(100vh_-_10%)]"}
