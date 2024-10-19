@@ -17,7 +17,7 @@ export default function Page({ searchParams }: PageProps) {
   const filters = useMemo(() => inputGetCursos.parse(searchParams), [searchParams]);
   const filter_as_key = useMemo(() => JSON.stringify(filters), [filters]);
   return (
-    <PageLayout title={"Listado de cursos"} routes={CURSOS_ROUTE.subRutas} buttons={<CursosNuevoCurso />}>
+    <PageLayout route={CURSOS_ROUTE} buttons={<CursosNuevoCurso />}>
       <ActionButtons filters={filters} />
       <Suspense key={filter_as_key} fallback={<LoadingCursosTable />}>
         <CursoTableContainer filters={filters} filterByUser={false} />

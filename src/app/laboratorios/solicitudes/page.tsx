@@ -20,8 +20,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <PageLayout
-      title={"Solicitudes de reserva"}
-      routes={LABORATORIO_ROUTE.subRutas}
+      route={LABORATORIO_ROUTE}
       buttons={
         <>
           <ReservaDiscrecionalModal />

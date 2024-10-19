@@ -9,8 +9,7 @@ import { AgregarAPantallaModal } from "./_components/actions/software-nuevo";
 export default async function Page() {
   return (
     <PageLayout
-      title={"Pantalla 👷🏻"}
-      routes={LABORATORIO_ROUTE.subRutas}
+      route={LABORATORIO_ROUTE}
       buttons={
         <>
           <ReservaDiscrecionalModal />

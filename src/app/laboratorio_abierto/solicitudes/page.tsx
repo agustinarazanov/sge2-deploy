@@ -17,7 +17,7 @@ export default async function Page({ searchParams }: PageProps) {
   const filter_as_key = useMemo(() => JSON.stringify(filters), [filters]);
 
   return (
-    <PageLayout title={"Solicitudes de reserva"} routes={LABORATORIO_ABIERTO_ROUTE.subRutas}>
+    <PageLayout route={LABORATORIO_ABIERTO_ROUTE}>
       <ActionButtonsPrestamos filters={filters} />
       <Suspense key={filter_as_key} fallback={<LoadingBibliotecaPrestamosTable />}>
         <LaboratorioAbiertoSolicitudesTableContainer filters={filters} />

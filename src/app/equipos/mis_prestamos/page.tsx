@@ -17,7 +17,7 @@ export default async function Page({ searchParams }: PageProps) {
   const filter_as_key = useMemo(() => JSON.stringify(filters), [filters]);
 
   return (
-    <PageLayout title={"Mis Préstamos de Equipos"} routes={EQUIPOS_ROUTE.subRutas}>
+    <PageLayout route={EQUIPOS_ROUTE}>
       <ActionButtonsPrestamos filters={filters} />
       <Suspense key={filter_as_key} fallback={<LoadingEquiposPrestamosTable />}>
         <EquiposPrestamosTableContainer filters={filters} filterByUser />

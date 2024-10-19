@@ -17,7 +17,7 @@ export default async function Page({ searchParams }: PageProps) {
   const filter_as_key = useMemo(() => JSON.stringify(filters), [filters]);
 
   return (
-    <PageLayout title={"Divisiones"} routes={CURSOS_ROUTE.subRutas} buttons={<NuevaDivision />}>
+    <PageLayout route={CURSOS_ROUTE} buttons={<NuevaDivision />}>
       <Suspense key={filter_as_key} fallback={<LoadingDivisionesTable />}>
         {" "}
         <DivisionesTableContainer />

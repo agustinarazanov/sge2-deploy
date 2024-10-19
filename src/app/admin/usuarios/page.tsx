@@ -18,9 +18,8 @@ export default async function Page({ searchParams }: PageProps) {
   const filter_as_key = JSON.stringify(filters);
 
   return (
-    <PageLayout title={"Usuarios"} routes={ADMIN_ROUTE.subRutas}>
+    <PageLayout route={ADMIN_ROUTE}>
       <AdminUsuariosActionButtons filters={filters} />
-
       <Suspense key={filter_as_key} fallback={<LoadingAdminUsuariosTable columns={adminUsuariosColumnas} />}>
         <AdminUsuariosTableContainer filters={filters} />
       </Suspense>

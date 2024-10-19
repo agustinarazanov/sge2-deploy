@@ -6,7 +6,7 @@ import { LABORATORIO_ABIERTO_ROUTE } from "@/shared/server-routes";
 
 export default async function Page() {
   return (
-    <PageLayout title={"Laboratorio abierto"} routes={LABORATORIO_ABIERTO_ROUTE.subRutas}>
+    <PageLayout route={LABORATORIO_ABIERTO_ROUTE}>
       <p className="text-center text-lg antialiased">
         El Laboratorio Abierto (LA) del Departamento de Ingeniería Electrónica de la UTN-FRBA está diseñado para
         facilitar el acceso al instrumental del departamento a estudiantes, egresados, docentes y asociados de esta

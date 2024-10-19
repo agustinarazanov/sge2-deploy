@@ -7,7 +7,7 @@ import { SoftwareNuevoEditar } from "./_components/actions/software-nuevo";
 
 export default async function Page() {
   return (
-    <PageLayout title={"Aplicaciones"} routes={LABORATORIO_ROUTE.subRutas} buttons={<SoftwareNuevoEditar />}>
+    <PageLayout route={LABORATORIO_ROUTE} buttons={<SoftwareNuevoEditar />}>
       <Suspense fallback={<LoadingSoftwareTable />}>
         <SoftwareTableContainer />
       </Suspense>

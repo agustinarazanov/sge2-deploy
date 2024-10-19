@@ -17,7 +17,7 @@ export default async function Page({ searchParams }: PageProps) {
   const filter_as_key = useMemo(() => JSON.stringify(filters), [filters]);
 
   return (
-    <PageLayout title={"Listado de materias"} routes={MATERIA_ROUTE.subRutas} buttons={<NuevaMateria />}>
+    <PageLayout route={MATERIA_ROUTE} buttons={<NuevaMateria />}>
       <Suspense key={filter_as_key} fallback={<LoadingMateriasTable />}>
         <MateriasTableContainer /> {/* Asegúrate de pasar los filtros al contenedor */}
       </Suspense>

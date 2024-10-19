@@ -81,11 +81,10 @@ export default async function Navbar() {
                   <UTNLogo />
                 </div>
               </div>
-              <div className="hidden flex-grow justify-center md:flex">
+              <div className="hidden flex-grow justify-center lg:flex">
                 <DesktopNavigation isLogged={isLogged} />
               </div>
               <div className="hidden items-center space-x-4 lg:flex">
-                {/* {isLogged && <DesktopNotificationButton />} */}
                 {isLogged && <Notifications />}
                 {isLogged && <DesktopProfileMenu {...user} />}
               </div>
@@ -96,7 +95,7 @@ export default async function Navbar() {
           </div>
 
           <DisclosurePanel className="lg:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+            <div className="space-y-1 px-3 pb-3 pt-2">
               <MobileNavigation isLogged={isLogged} />
             </div>
             {isLogged && <MobileProfileMenu {...user} />}
