@@ -7,13 +7,9 @@ type LayoutProps = {
 
 export default async function Layout({ children, modal }: LayoutProps) {
   return (
-    <>
-      <main className="flex w-full flex-col">
-        <div className="flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          {children}
-          {modal}
-        </div>
-      </main>
-    </>
+    <main className="flex flex-col">
+      {children}
+      {modal}
+    </main>
   );
 }

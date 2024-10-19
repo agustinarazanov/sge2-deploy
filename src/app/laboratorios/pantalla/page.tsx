@@ -1,16 +1,26 @@
 import { Suspense } from "react";
-import { PantallaActionButtons } from "./_components/actions/pantalla-action-button";
 import PantallaTableContainer from "./_components/table/container";
 import LoadingPantallaTable from "./_components/loading-pantalla";
+import PageLayout from "@/components/ui/page-template";
+import { LABORATORIO_ROUTE } from "@/shared/server-routes";
+import ReservaDiscrecionalModal from "../_components/reserva-discrecional-form";
+import { AgregarAPantallaModal } from "./_components/actions/software-nuevo";
 
 export default async function Page() {
   return (
-    <>
-      <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">Pantalla</h3>
-      <PantallaActionButtons />
+    <PageLayout
+      title={"Pantalla - En construcción 👷🏻👷🏻‍♂️👷🏻‍♂️👷🏻‍♂️👷🏻‍♂️"}
+      routes={LABORATORIO_ROUTE.subRutas}
+      buttons={
+        <>
+          <ReservaDiscrecionalModal />
+          <AgregarAPantallaModal />
+        </>
+      }
+    >
       <Suspense fallback={<LoadingPantallaTable />}>
         <PantallaTableContainer />
       </Suspense>
-    </>
+    </PageLayout>
   );
 }

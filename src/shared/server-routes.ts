@@ -57,7 +57,7 @@ export const LABORATORIO_ROUTE = {
     },
     {
       href: "/laboratorios/pantalla",
-      label: "Reservas",
+      label: "Pantalla - (Construcción)",
       isPublic: false,
     },
     {

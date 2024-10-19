@@ -1,16 +1,20 @@
 import { Suspense } from "react";
 import LoadingSoftwareTable from "./_components/loading-software";
-import { SoftwareActionButtons } from "./_components/actions/software-action-button";
 import SoftwareTableContainer from "./_components/table/container";
+import PageLayout from "@/components/ui/page-template";
+import { LABORATORIO_ROUTE } from "@/shared/server-routes";
+import { SoftwareNuevoEditar } from "./_components/actions/software-nuevo";
 
 export default async function Page() {
   return (
-    <>
-      <h3 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">Aplicaciones en Laboratorios</h3>
-      <SoftwareActionButtons />
+    <PageLayout
+      title={"Aplicaciones en Laboratorios"}
+      routes={LABORATORIO_ROUTE.subRutas}
+      buttons={<SoftwareNuevoEditar />}
+    >
       <Suspense fallback={<LoadingSoftwareTable />}>
         <SoftwareTableContainer />
       </Suspense>
-    </>
+    </PageLayout>
   );
 }

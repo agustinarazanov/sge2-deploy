@@ -21,6 +21,7 @@ export const SoftwareTable = ({ data }: BibliotecaTableProps) => {
   // TODO: Implement resizing
   return (
     <>
+      En construcción 👷🏻👷🏻‍♂️👷🏻‍♂️👷🏻‍♂️👷🏻‍♂️ - Filtros
       <DataTable
         data={data ?? []}
         columns={columns}
