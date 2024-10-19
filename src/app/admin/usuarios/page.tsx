@@ -5,6 +5,8 @@ import { AdminUsuariosActionButtons } from "./_components/action-button/action-b
 import AdminUsuariosTableContainer from "./_components/table/roles-table-container";
 import { adminUsuariosColumnas } from "./_components/table/columns";
 import { inputGetUsuarios } from "@/shared/filters/admin-usuarios-filter.schema";
+import PageLayout from "@/components/ui/page-template";
+import { ADMIN_ROUTE } from "@/shared/server-routes";
 
 type PageProps = {
   searchParams: ReadonlyURLSearchParams;
@@ -16,12 +18,12 @@ export default async function Page({ searchParams }: PageProps) {
   const filter_as_key = JSON.stringify(filters);
 
   return (
-    <>
+    <PageLayout title={"Administración - Usuarios"} routes={ADMIN_ROUTE.subRutas}>
       <AdminUsuariosActionButtons filters={filters} />
 
       <Suspense key={filter_as_key} fallback={<LoadingAdminUsuariosTable columns={adminUsuariosColumnas} />}>
         <AdminUsuariosTableContainer filters={filters} />
       </Suspense>
-    </>
+    </PageLayout>
   );
 }
