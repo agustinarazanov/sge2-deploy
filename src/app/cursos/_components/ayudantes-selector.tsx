@@ -55,7 +55,7 @@ export const AyudantesSelector = ({ onAyudanteChange, currentAyudanteId, label, 
             <SelectTrigger
               disabled
               id="selectAyudante"
-              className="h-10 transition-colors focus:border-primary focus:ring-0 group-hover:border-input-hover"
+              className="group-hover:border-input-hover h-10 transition-colors focus:border-primary focus:ring-0"
             >
               <SelectValue placeholder="Error cargando ayudantes" />
             </SelectTrigger>

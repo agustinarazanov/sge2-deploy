@@ -12,7 +12,7 @@ type PageProps = {
   searchParams: ReadonlyURLSearchParams;
 };
 
-export default async function Page({ searchParams }: PageProps) {
+export default function Page({ searchParams }: PageProps) {
   const filters = inputGetEquipos.parse(searchParams);
 
   const filter_as_key = useMemo(() => JSON.stringify(filters), [filters]);

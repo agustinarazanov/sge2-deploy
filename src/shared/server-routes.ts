@@ -32,6 +32,11 @@ export const BIBLIOTECA_ROUTE = {
       label: "Mis préstamos",
       isPublic: false,
     },
+    {
+      href: "/biblioteca/mis_prestamos",
+      label: "Mis prestamos",
+      isPublic: false,
+    },
   ],
 };
 

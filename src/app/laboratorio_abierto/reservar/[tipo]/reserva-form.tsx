@@ -196,6 +196,7 @@ export const LaboratorioAbiertoForm = ({ tipo, reservaId, onSubmit, onCancel }: 
                   control={control}
                   name="horaInicio"
                   className="mt-2"
+                  step={60 * 5}
                   type={"time"}
                 />
               </div>
